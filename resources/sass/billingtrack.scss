@@ -1,0 +1,207 @@
+//@import url(https://fonts.googleapis.com/css?family=Karla:300,400,600,700,300italic,400italic,600italic);
+//
+html {
+  -webkit-font-smoothing: antialiased;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Karla', sans-serif;
+  color: #414141;
+}
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+  font-family: 'Karla', sans-serif;
+}
+
+/*disallow event attachment to fa icon in a button*/
+ .btn > * {
+   pointer-events: none;
+ }
+
+ //Bootstrap 5 checkbox witch sizes
+.form-check-input {
+  clear: left;
+}
+
+.form-switch.form-switch-sm {
+  //margin-bottom: 0.5rem; /* JUST FOR STYLING PURPOSE */
+}
+
+.form-switch.form-switch-sm .form-check-input {
+  height: 1rem;
+  width: calc(1rem + 0.75rem);
+  border-radius: 2rem;
+}
+
+.form-switch.form-switch-md {
+  //margin-bottom: 1rem; /* JUST FOR STYLING PURPOSE */
+}
+
+.form-switch.form-switch-md .form-check-input {
+  height: 1.5rem;
+  width: calc(2rem + 0.75rem);
+  border-radius: 3rem;
+}
+
+.form-switch.form-switch-lg {
+  //margin-bottom: 1.5rem; /* JUST FOR STYLING PURPOSE */
+}
+
+.form-switch.form-switch-lg .form-check-input {
+  height: 2rem;
+  width: calc(3rem + 0.75rem);
+  border-radius: 4rem;
+}
+
+.form-switch.form-switch-xl {
+  //margin-bottom: 2rem; /* JUST FOR STYLING PURPOSE */
+}
+
+.form-switch.form-switch-xl .form-check-input {
+  height: 2.5rem;
+  width: calc(4rem + 0.75rem);
+  border-radius: 5rem;
+}
+
+.small-box {
+  h3 {
+    font-size: 24px;
+  }
+}
+
+.datepicker {
+  z-index: 1151 !important;
+}
+
+.pdf-embed {
+  width: 100%;
+  height: 650px;
+}
+
+.badge-draft {
+  color: #FFF;
+  background-color: #999999;
+}
+
+.badge-open {
+  color: #FFF;
+  background-color: #999999;
+}
+
+.badge-sent {
+  color: #FFF;
+  background-color: #3A87AD;
+}
+
+.badge-partial {
+  color: #FFF;
+  background-color: #3A87AD;
+}
+
+.badge-received {
+  color: #FFF;
+  background-color: #aaad25;
+}
+
+.badge-paid {
+  color: #FFF;
+  background-color: #468847;
+}
+
+.badge-approved {
+  color: #FFF;
+  background-color: #468847;
+}
+
+.badge-rejected, .badge-overdue {
+  color: #FFF;
+  background-color: #B94A48;
+}
+
+.badge-extra, .badge-overdue {
+  color: #FFF;
+  background-color: #B94A48;
+}
+
+.badge-canceled {
+  color: #FFF;
+  background-color: #333333;
+}
+
+.badge-unprocessed {
+  color: #FFF;
+  background-color: #363875;
+}
+
+.content-wrapper-public {
+  margin-left: 0;
+}
+
+.public-wrapper {
+  width: 938px;
+  margin: auto;
+}
+
+.public-doc-wrapper {
+  background-color: white;
+  -webkit-box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.75);
+  box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.75);
+}
+
+.direct-chat-scope {
+  margin-left: 5px;
+}
+
+.todo-list {
+  & > li {
+    .tools {
+      display: block;
+    }
+  }
+}
+
+// nav pills
+.nav-pills-dark .nav-link {
+  border-radius: 0.25rem;
+}
+
+.nav-pills-dark .nav-link {
+  color: #ffffff;
+}
+
+.nav-pills-dark .nav-link:not(.active):hover {
+  color: #6c757d;
+}
+
+.nav-pills-light .nav-link {
+  border-radius: 0.25rem;
+}
+
+.nav-pills-light .nav-link {
+  color: #000000;
+}
+
+.nav-pills-light .nav-link:not(.active):hover {
+  color: #6c757d;
+}
+
+//back to top button
+.back-to-top {
+  background: none;
+  margin: 0;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 50px;
+  height: 50px;
+  z-index: 100;
+  display: none;
+  text-decoration: none;
+  color: #1f2a75;
+  background-color: transparent;
+}
+.back-to-top i {
+  font-size: 40px;
+}
