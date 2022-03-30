@@ -20,7 +20,7 @@ class UpdateChecker
         $options = array('http' => array('user_agent' => 'BillingTrack'));
         $context = stream_context_create($options);
 
-        $this->currentVersion = json_decode(file_get_contents('https://api.github.com/repos/cytech/BillingTrack/releases/latest', false, $context), true)['tag_name'];
+        $this->currentVersion = json_decode(file_get_contents('https://api.github.com/repos/cytech/BillingTrack-Wired/releases/latest', false, $context), true)['tag_name'];
 
     }
 

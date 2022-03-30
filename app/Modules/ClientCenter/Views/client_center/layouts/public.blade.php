@@ -32,5 +32,8 @@
     </div>
 </div>
 <div id="modal-placeholder"></div>
+<a href="#" class="back-to-top">
+    <i class="fa fa-chevron-circle-up"></i>
+</a>
 </body>
 </html>

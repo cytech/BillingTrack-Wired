@@ -13,7 +13,11 @@
             <form action="" method="get">
                 <div class="row g-3 mb-3 align-items-center">
                     <div class="col-sm-4 text-end fw-bold">
+                        @if($moduletype <> 'Purchaseorder')
                         <label class="col-form-label">@lang('bt.client')</label>
+                        @else
+                        <label class="col-form-label">@lang('bt.vendor')</label>
+                        @endif
                     </div>
                     <div class="col-sm-7">
                         @if($moduletype <> 'Purchaseorder')

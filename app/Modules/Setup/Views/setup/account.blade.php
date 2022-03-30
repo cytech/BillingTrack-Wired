@@ -3,9 +3,9 @@
 @section('content')
     <section class="content-header">
         <h1>@lang('bt.account_setup')</h1>
-        <h2>This is the initial SuperAdmin account creation setup.</h2>
-        <h3>The superadmin has <b>full</b> control over <b>all</b> aspects of the application.</h3>
-        <h3>After creation and login, go to "Tools->Manage ACL and create standard user or admin accounts.</h3>
+        <h2>@lang('bt.account_setup_h1')</h2>
+        <h3>@lang('bt.account_setup_h2')</h3>
+        <h3>@lang('bt.account_setup_h3')</h3>
     </section>
     <section class="content">
         {!! Form::open(['route' => 'setup.postAccount', 'class' => 'form-install', 'autocomplete' => 'off']) !!}

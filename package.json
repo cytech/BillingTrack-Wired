@@ -23,7 +23,7 @@
         "sass-loader": "^12.1.0"
     },
     "dependencies": {
-        "admin-lte-v4": "file:../admin-lte-v4",
+        "admin-lte-v4": "github:cytech/AdminLTE#v4-dev",
         "alpinejs": "^3.8.1",
         "autosize": "^5.0.1",
         "bootstrap-icons": "^1.8.1",

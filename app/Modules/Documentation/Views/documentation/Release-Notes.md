@@ -1,6 +1,6 @@
 Release Notes
 ---
-### BillingTrack 6.0.0 (2022-01-01)
+### BillingTrack 6.0.0 (2022-05-01)
 - Combine and optimize javascript in Scheduler Module
 - complete rework of client unique_name, all client lookups now based on client name.    
   possible breaking change for add-on developers accessing the firstOrCreateByUniquename method.  
@@ -17,14 +17,15 @@ Release Notes
       In the cases where many reminders were created on the same event, **ONLY THE LAST CREATED REMINDER WILL BE TRANSFERRED**.  
       The old schedule_reminders table is then deleted.
 - Livewired module create modals
-- Livewired all lookups (employees, vendors, products, itemlookups)
+- Livewired all lookups (clients, employees, vendors, products, itemlookups)
 - Livewired all datatables and removed yajra/datatables
 - remove/replace Jquery and all dependencies
 - update to Bootstrap 5 and adminlte v4
 - Added ACL via Spatie/permissions
 - add Laravolt Avatar
 - cleanup online payment systems, replace deprecated PayPal/rest-api-php with srmklive/laravel-paypal
-- Upgrade to Laravel 9
+- Upgrade to Laravel 9 and all dependencies
+
 
 ### BillingTrack 5.3.3 (2021-11-05)
 - fix error in purchaseorder observer

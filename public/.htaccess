@@ -5,22 +5,6 @@
 
     RewriteEngine On
 
-    # Rewrite to prevent access...
-    RewriteRule ^app/.* index.php [L,NC]
-    RewriteRule ^bootstrap/.* index.php [L,NC]
-    RewriteRule ^config/.* index.php [L,NC]
-    RewriteRule ^database/.* index.php [L,NC]
-    RewriteRule ^resources/.* index.php [L,NC]
-    RewriteRule ^storage/.* index.php [L,NC]
-    RewriteRule ^templates/.* index.php [L,NC]
-    RewriteRule ^vendor/.* index.php [L,NC]
-    RewriteRule ^custom/addons/.* index.php [L,NC]
-    RewriteRule ^custom/overrides/.* index.php [L,NC]
-    RewriteRule ^artisan index.php [L,NC]
-    RewriteRule ^composer.json index.php [L,NC]
-    RewriteRule ^composer.lock index.php [L,NC]
-    RewriteRule ^.env index.php [L,NC]
-
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
@@ -35,8 +19,3 @@
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
 </IfModule>
-
-<Files .env>
-order allow,deny
-Deny from all
-</Files>
