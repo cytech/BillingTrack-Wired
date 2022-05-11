@@ -22,7 +22,7 @@ return [
             'collation' => 'utf8mb4_unicode_ci',
             'prefix' => '',
             'strict' => env('DB_STRICT', false),
-            'engine' => null,
+            'engine' => 'innodb',
             //'charset'   => 'utf8',
             //'collation' => 'utf8_unicode_ci',
 

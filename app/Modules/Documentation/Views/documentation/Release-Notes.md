@@ -1,5 +1,7 @@
 Release Notes
 ---
+### BillingTrack 6.0.1 (2022-05-01)
+- minor ui fixes
 ### BillingTrack 6.0.0 (2022-05-01)
 - Combine and optimize javascript in Scheduler Module
 - complete rework of client unique_name, all client lookups now based on client name.    

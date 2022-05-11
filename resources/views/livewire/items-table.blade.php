@@ -86,7 +86,7 @@
                         </td>
                         <td>{!! Form::select('new-tax_rate_id', $taxRates, null, ['wire:model.defer' => 'new_item.tax_rate_id', 'class' => 'form-control']) !!}</td>
                         <td>{!! Form::select('new-tax_rate_2_id', $taxRates, null, ['wire:model.defer' => 'new_item.tax_rate_2_id', 'class' => 'form-control']) !!}</td>
-                        <td>
+                        <td style='white-space: nowrap'>
                             <button class="btn btn-sm btn-warning ms-4 me-2"
                                     wire:click="clearItem()"
                                     title="@lang('bt.clear')">

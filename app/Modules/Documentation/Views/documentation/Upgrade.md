@@ -9,15 +9,29 @@ Upgrade
 ---
 
 <a id="how-to-upgrade-billingtrack"></a>
-### How to Upgrade BillingTrack
+# How to Upgrade BillingTrack
+**Upgrade Existing v6.x.x installation**
+- Git pull (if originally cloned) or download and overwrite existing
+  installation.
+- if downloading and extracting zip, delete the
+  contents of:
+    - "YOUR\_BILLINGTRACK\_WEBSITE/public"
+    - "YOUR_BILLINGTRACK_WEBSITE/database/seeds"
+    - "YOUR\_BILLINGTRACK\_WEBSITE/app"  
+      directories prior to extracting.
+- Run composer update
+- Start-> YOUR\_BILLINGTRACK\_WEBSITE/setup
+- After migration completes, signin.
 
--   Git pull (if originally cloned) or download and overwrite existing
-    installation. (if downloading and extracting zip, delete the
-    contents of "YOUR\_BILLINGTRACK\_WEBSITE/public", "YOUR\_BILLINGTRACK\_WEBSITE/database/seeds" and
-    "YOUR\_BILLINGTRACK\_WEBSITE/app" directory prior to extracting.)
--   Run composer update
--   Start YOUR\_BILLINGTRACK\_WEBSITE/setup
--   After migration completes, signin.
+# UPGRADE FROM BILLINGTRACK 5.X.X
+**Minimum PHP requirement for BillingTrack-Wired (v6.X.X) is PHP >= 8.0.2**
+- Create a new installation/site. (see [How to Install BillingTrack](Installation.md))
+- Although it is theoretically possible to do so, do not attempt to upgrade an existing BillingTrack 5.x.x Site.
+- This is a new repository and existing cloners will not be able to pull the update.
+- This will upgrade the existing BillingTrack database, but it is **HIGHLY** recommended to backup the existing database and copy to a new one.
+- After copying old database to new and modifying the .env file per the installation instructions to reflect the NEW copied database:
+- Start-> YOUR\_BILLINGTRACK\_WEBSITE/setup
+- After migration completes (this may take a while. 10 minutes is not unusual), signin.
 
 ---
 

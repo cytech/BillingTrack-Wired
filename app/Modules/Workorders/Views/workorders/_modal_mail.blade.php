@@ -39,11 +39,9 @@
                             {!! Form::textarea('body', $body, ['id' => 'body', 'class' => 'form-control']) !!}
                         </div>
                     </div>
-                    <div class="mb-3 d-flex align-items-center">
-                        <label class="form-label col-sm-4 fs-5 fw-bold text-end me-2">@lang('bt.attach_pdf')</label>
-                        <div class="col-sm-8">
-                            {!! Form::checkbox('attach_pdf', 1, config('bt.attachPdf'), ['id' => 'attach_pdf']) !!}
-                        </div>
+                    <div class="ms-5 form-check form-switch form-switch-md">
+                        {{ Form::checkbox('attach_pdf', 1, config('bt.attachPdf'), ['id' => 'attach_pdf', 'class' => 'form-check-input']) }}
+                        {{ Form::label('attach_pdflabel', trans('bt.attach_pdf'), ['class' => 'form-check-label fw-bold ps-3 pt-1', 'for' => 'attach_pdf']) }}
                     </div>
                 </form>
             </div>

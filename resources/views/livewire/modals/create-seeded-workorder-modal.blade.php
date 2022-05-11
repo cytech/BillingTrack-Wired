@@ -155,7 +155,7 @@
     let wire_id = window.livewire.find(modal_id.getAttribute("wire:id"))
     modal_id.querySelectorAll("input[name^=resources]").forEach(res => {
         res.addEventListener("click", () => {
-            wire_id.set('selected_qty.' + res.value, 0)
+            wire_id.set('selected_qty.' + res.value, 1)
         })
     })
 </script>

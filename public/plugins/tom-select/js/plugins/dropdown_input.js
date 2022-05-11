@@ -1,5 +1,5 @@
 /**
-* Tom Select v2.0.1
+* Tom Select v2.0.2
 * Licensed under the Apache License, Version 2.0 (the "License");
 */
 
@@ -175,7 +175,7 @@
 	 *
 	 */
 	function plugin () {
-	  var self = this;
+	  const self = this;
 	  self.settings.shouldOpen = true; // make sure the input is shown even if there are no options to display in the dropdown
 
 	  self.hook('before', 'setup', () => {
@@ -183,7 +183,11 @@
 	    addClasses(self.control_input, 'dropdown-input');
 	    const div = getDom('<div class="dropdown-input-wrap">');
 	    div.append(self.control_input);
-	    self.dropdown.insertBefore(div, self.dropdown.firstChild);
+	    self.dropdown.insertBefore(div, self.dropdown.firstChild); // set a placeholder in the select control
+
+	    const placeholder = getDom('<input class="items-placeholder" tabindex="-1" />');
+	    placeholder.placeholder = self.settings.placeholder;
+	    self.control.append(placeholder);
 	  });
 	  self.on('initialize', () => {
 	    // set tabIndex on control to -1, otherwise [shift+tab] will put focus right back on control_input

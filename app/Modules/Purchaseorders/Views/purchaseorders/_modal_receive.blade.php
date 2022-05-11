@@ -38,8 +38,10 @@
                             @endforeach
                             </tbody>
                         </table>
-                        {{ Form::label('itemrec', trans('bt.update_products')) }}
-                        {{ Form::checkbox('itemrec', 1, config('bt.updateProductsDefault', ['id' => 'itemrec', 'class' => 'checkbox'])) }}
+                        <div class="ms-3 form-check form-switch form-switch-md">
+                            {{ Form::checkbox('itemrec', 1, config('bt.updateProductsDefault'), ['id' => 'itemrec', 'class' => 'form-check-input']) }}
+                            {{ Form::label('itemrec', trans('bt.update_products'), ['class' => 'form-check-label fw-bold ps-3 pt-1', 'for' => 'itemrec']) }}
+                        </div>
                     </div>
                 </form>
             </div>

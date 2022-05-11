@@ -1,5 +1,5 @@
 /**
-* Tom Select v2.0.1
+* Tom Select v2.0.2
 * Licensed under the Apache License, Version 2.0 (the "License");
 */
 
@@ -147,6 +147,15 @@
 	      // if dropdown hasn't been opened yet, the option won't exist
 	      option.classList.remove('selected'); // selected class won't be removed yet
 
+	      UpdateCheckbox(option);
+	    }
+	  }); // check when item added
+
+	  self.on('item_add', value => {
+	    var option = self.getOption(value);
+
+	    if (option) {
+	      // if dropdown hasn't been opened yet, the option won't exist
 	      UpdateCheckbox(option);
 	    }
 	  }); // remove items when selected option is clicked

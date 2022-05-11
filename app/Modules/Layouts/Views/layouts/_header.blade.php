@@ -2,13 +2,13 @@
     <div class="container-fluid">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link" data-lte-toggle="sidebar-full" href="#" role="button"><i
+                <a id="sidebar-button" class="nav-link" data-lte.pushmenu.remember.state="true" data-lte-toggle="sidebar-full" href="#" role="button"><i
                             class="fas fa-bars"></i></a>
             </li>
         </ul>
         @push('scripts')
             <script>
-                //need to connect up scss bs4 themes...
+                //need to connect up scss bs5 themes...
                 //style datatable header and btn-primary like the navbar
                 const top_bar = document.querySelector('.bg-{{ $headBackground }}');
                 const bg = getComputedStyle(top_bar).backgroundColor;
