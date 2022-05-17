@@ -64,7 +64,7 @@ One of two things will happen when you visit this URL in your browser:
 <a id="i-forgot-my-password---how-can-i-reset-it"></a>
 ### I forgot my password - how can I reset it?
 
-1.  Get the ResetPassword-2018.zip utility from the resources/misc
+1.  Get the ResetPassword.zip utility from the resources/misc
     directory of this repository.
 2.  Unzip the contents.
 3.  Upload the unzipped ResetPassword folder to the app/Modules folder
