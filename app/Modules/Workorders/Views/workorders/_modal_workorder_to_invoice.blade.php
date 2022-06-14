@@ -17,7 +17,8 @@
                         <div class="col-sm-6">
                             <x-fp_common
                                     id="to_invoice_workorder_date"
-                                    class="form-control">
+                                    class="form-control"
+                                    value="{{config('bt.convertWorkorderDate') == 'jobdate' ? request('job_date') : date('Y-m-d')}}">
                             </x-fp_common>
                         </div>
                     </div>

@@ -1,5 +1,7 @@
 Release Notes
 ---
+### BillingTrack 6.0.2 (2022-06-14)
+- fix workorderToInvoice date setting
 ### BillingTrack 6.0.1 (2022-05-01)
 - minor ui fixes
 ### BillingTrack 6.0.0 (2022-05-01)

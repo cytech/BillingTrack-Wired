@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 6.0.2
+- fix workorderToInvoice date setting
+
 ## 6.0.1
 - minor ui fixes
 - merge pr4131 into admin-lte-v4 v4-dev fork (fix sidemenu collapse)
