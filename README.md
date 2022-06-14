@@ -176,8 +176,8 @@ BillingTrack.conf
 -   DB\_DATABASE=
 -   DB\_USERNAME=
 -   DB\_PASSWORD=  
-    to your \*\*NEW\*\* database settings.
-
+    to your \*\*NEW\*\* database settings.  
+NOTE: Do not change APP_ENV=local. Changing this will cause migrations to fail without feedback. Changing this value to "production" has no beneficial effect on BillingTrack operation.
 6. save .env file.
 -   Run "php artisan key:generate"
 -   This copies the app key into the .env file, attached to the APP_KEY= line.

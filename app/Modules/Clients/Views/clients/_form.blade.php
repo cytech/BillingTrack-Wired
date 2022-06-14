@@ -11,6 +11,14 @@
                 <h4 class="card-title">@lang('bt.client')</h4>
             </div>
             <div class="card-body">
+{{--                <div class="row col-md-12 mb-1" id="col-client-type">--}}
+{{--                    <div class="col-md-4 fw-bold text-end">--}}
+{{--                        <label class="col-form-label">@lang('bt.client_type'): </label>--}}
+{{--                    </div>--}}
+{{--                    <div class="col-md-8">--}}
+{{--                        {!! Form::select('client_type', ['0' => trans('bt.lead'), '1' => trans('bt.prospect'), '2' => trans('bt.customer'), '3' => trans('bt.affiliate')], ((isset($editMode) and $editMode) ? null : 0), ['id' => 'client_type', 'class' => 'form-select']) !!}--}}
+{{--                    </div>--}}
+{{--                </div>--}}
                 <div class="row col-md-12 mb-1" id="col-client-is_company">
                     <div class="col-md-4 fw-bold text-end">
                         <label class="col-form-label">@lang('bt.company_or_individual'): </label>
