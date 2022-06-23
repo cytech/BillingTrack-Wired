@@ -64,6 +64,26 @@
                         </datalist>
                     </div>
                 </div>
+                <!-- Employee Type input-->
+                <div class="row col-md-6 mb-3">
+                    <div class="col-md-4 text-end">
+                        <label class="col-form-label fw-bold"
+                               for="type_id">@lang('bt.type')</label>
+                    </div>
+                    <div class="col-md-8">
+                        {!! Form::select('type_id', $types, null , ['id' => 'type_id', 'class' => 'form-select']) !!}
+                    </div>
+                </div>
+                <!-- Expected Termination Date input-->
+                <div class="row col-md-6 mb-3">
+                    <div class="col-md-4 text-end">
+                        <label class="col-form-label fw-bold"
+                               for="term_date">@lang('bt.term_date')</label>
+                    </div>
+                    <div class="col-md-8">
+                        {!! Form::date('term_date', $employees->term_date,['id'=>'term_date', 'class'=>'form-control']) !!}
+                    </div>
+                </div>
                 <!-- Billing Rate input-->
                 <div class="row col-md-6 mb-3">
                     <div class="col-md-4 text-end">

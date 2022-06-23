@@ -317,6 +317,10 @@ class SchedulerController extends Controller
         })->where('resource_table', 'employees')->orderBy('name')->get('resource_id');
 
         $employees_unscheduled = Employee::where('active', '=', '1')->where('schedule', '=', '1')
+            ->where(function ($query) use ($date){
+                $query->whereNull('term_date')
+                    ->orWhere('term_date', '>', $date);
+            })
             ->whereNotIn('id', $employees_appointments)
             ->whereNotIn('id', $employees_scheduled)
             ->orderBy('short_name')->get(['id', 'short_name', 'driver']);

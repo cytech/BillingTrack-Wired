@@ -10,13 +10,15 @@ class ModuleTable extends DataTableComponent
     //public bool $showSearch = false;
     public string $defaultSortColumn = '';
     public string $defaultSortDirection = 'asc';
-    public $module_type, $module_fullname, $keyedStatuses;
+    public $module_type, $module_fullname, $keyedStatuses, $reqstatus;
     public bool $responsive = false; // true causing z-index issues with action dropdown
 
     protected $listeners = ['reset_bulk_select' => 'resetBulkSelect'];  //emit from _js_global swal:bulkConfirm
 
     public function mount()
     {
+        $this->reqstatus = request('status');
+
         if ($this->module_type == 'TimeTrackingProject') {
             $this->module_fullname = 'BT\\Modules\\TimeTracking\\Models\\TimeTrackingProject';
         } elseif ($this->module_type == 'Schedule' || $this->module_type == 'RecurringEvent') {
@@ -146,10 +148,10 @@ class ModuleTable extends DataTableComponent
             return $this->module_fullname::getSelect()
                 ->leftJoin('clients_custom', 'clients_custom.client_id', '=', 'clients.id')
                 ->with(['currency'])
-                ->status(request('status'));;
+                ->status($this->reqstatus);
         } elseif ($this->module_type == 'RecurringInvoice') {
             return $this->module_fullname::with(['client', 'activities', 'amount.recurringInvoice.currency'])->select('recurring_invoices.*', 'recurring_invoices.id as number')
-                ->status(request('status'))
+                ->status($this->reqstatus)
                 ->clientId(request('client'))
                 ->companyProfileId(request('company_profile'));
         } elseif ($this->module_type == 'Payment') {
@@ -158,16 +160,16 @@ class ModuleTable extends DataTableComponent
             return $this->module_fullname::defaultQuery()
                 ->categoryId(request('category'))
                 ->vendorId(request('vendor'))
-                ->status(request('status'))
+                ->status($this->reqstatus)
                 ->companyProfileId(request('company_profile'));
         } elseif ($this->module_type == 'TimeTrackingProject') {
             return $this->module_fullname::getSelect()
                 ->with('client')
                 ->companyProfileId(request('company_profile'))
-                ->statusId(request('status'));
+                ->statusId($this->reqstatus);
         } elseif ($this->module_type == 'Purchaseorder') {
             return $this->module_fullname::with(['vendor', 'activities', 'amount.purchaseorder.currency'])->select('purchaseorders.*')
-                ->status(request('status'))
+                ->status($this->reqstatus)
                 ->vendorId(request('vendor'))
                 ->companyProfileId(request('company_profile'));
         } elseif ($this->module_type == 'Schedule') {
@@ -179,13 +181,13 @@ class ModuleTable extends DataTableComponent
         } elseif ($this->module_type == 'ScheduleCategory') {
             return $this->module_fullname::select('schedule_categories.*');
         } elseif ($this->module_type == 'Employee') {
-            return $this->module_fullname::select('employees.*')->status(request('status'));
+            return $this->module_fullname::select('employees.*')->status($this->reqstatus);
         } elseif ($this->module_type == 'Vendor') {
-            return $this->module_fullname::select('vendors.*')->status(request('status'));
+            return $this->module_fullname::select('vendors.*')->status($this->reqstatus);
         } elseif ($this->module_type == 'Product') {
             return $this->module_fullname::with('category', 'vendor', 'inventorytype')
                 ->with('taxRate', 'taxRate2')
-                ->status(request('status'));
+                ->status($this->reqstatus);
         } elseif ($this->module_type == 'Category') {
             return $this->module_fullname::select('categories.*');
         } elseif ($this->module_type == 'ItemLookup') {
@@ -204,7 +206,7 @@ class ModuleTable extends DataTableComponent
         } else {
             return $this->module_fullname::with(['client', 'activities', 'amount.' . lcfirst($this->module_type) . '.currency'])
                 ->select(lcfirst($this->module_type) . 's.*')
-                ->status(request('status'))
+                ->status($this->reqstatus)
                 ->clientId(request('client'))
                 ->companyProfileId(request('company_profile'));
         }

@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 6.0.3
+- add employee type and termination date
+- update employees available query to include null term_date or term_date > $date
+- fix datatable status on paginate
+
 ## 6.0.2
 - fix workorderToInvoice date setting
 

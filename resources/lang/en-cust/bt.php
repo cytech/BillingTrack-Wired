@@ -856,6 +856,7 @@ return [
     'technician'                               => 'Technician',
     'template'                                 => 'Template',
     'terms_and_conditions'                     => 'Terms and Conditions',
+    'term_date'                                => 'Termination Date',
     'text'                                     => 'Text',
     'textarea'                                 => 'Textarea',
     'third_quarter'                            => 'Third Quarter',

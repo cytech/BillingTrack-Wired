@@ -11,6 +11,7 @@
 namespace BT\Modules\Employees\Controllers;
 
 use BT\Modules\Employees\Models\Employee;
+use BT\Modules\Employees\Models\EmployeeType;
 use BT\Modules\Employees\Requests\EmployeeRequest;
 use BT\Http\Controllers\Controller;
 use BT\Modules\ItemLookups\Models\ItemLookup;
@@ -41,8 +42,9 @@ class EmployeeController extends Controller
     public function create()
     {
         $titles = Title::pluck('name', 'id');
+        $types = EmployeeType::pluck('name', 'id');
 
-        return view('employees.create', compact('titles'))
+        return view('employees.create', compact('titles', 'types'))
             ->with('returnUrl', $this->getReturnUrl());
     }
 
@@ -63,10 +65,12 @@ class EmployeeController extends Controller
         $employees->short_name = null;
         //
         $employees->title = $request->title;
+        $employees->type_id = $request->type_id;
+        $employees->term_date = $request->term_date;
         $employees->billing_rate = $request->billing_rate ?: 0;
-        $employees->schedule = $request->schedule ? $request->schedule : 0;
-        $employees->active = $request->active ? $request->active : 0;
-        $employees->driver = $request->driver ? $request->driver : 0;
+        $employees->schedule = $request->schedule ?: 0;
+        $employees->active = $request->active ?: 0;
+        $employees->driver = $request->driver ?: 0;
         $employees->save();
 
         if (config('bt.emptolup') == 1) {
@@ -86,8 +90,9 @@ class EmployeeController extends Controller
     {
         $employees = Employee::find($id);
         $titles = Title::pluck('name', 'id');
+        $types = EmployeeType::pluck('name', 'id');
 
-        return view('employees.edit', compact('employees', 'titles'))
+        return view('employees.edit', compact('employees', 'titles', 'types'))
             ->with('returnUrl', $this->getReturnUrl());
     }
 
@@ -109,10 +114,12 @@ class EmployeeController extends Controller
         $employees->short_name = null;
         //
         $employees->title = $request->title;
+        $employees->type_id = $request->type_id;
+        $employees->term_date = $request->term_date;
         $employees->billing_rate = $request->billing_rate;
-        $employees->schedule = $request->schedule ? $request->schedule : 0;
-        $employees->active = $request->active ? $request->active : 0;
-        $employees->driver = $request->driver ? $request->driver : 0;
+        $employees->schedule = $request->schedule ?: 0;
+        $employees->active = $request->active ?: 0;
+        $employees->driver = $request->driver ?: 0;
         $employees->save();
 
         if (config('bt.emptolup') == 1) {

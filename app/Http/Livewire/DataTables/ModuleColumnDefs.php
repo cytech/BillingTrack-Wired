@@ -372,28 +372,25 @@ class ModuleColumnDefs
             ];
         } elseif ($module_type == 'Employee') {
             $default_columns = [
-                Column::make(__('bt.id'), 'id')
+                Column::make(__('bt.number'), 'number')
                     ->sortable(),
-                Column::make(__('bt.employee_number'), 'number')
-                    ->sortable(),
-                Column::make(__('bt.first_name'), 'first_name')
+                Column::make(__('bt.name'), 'full_name')
                     ->sortable()
                     ->searchable(),
-                Column::make(__('bt.last_name'), 'last_name')
-                    ->sortable()
-                    ->searchable(),
-                Column::make(__('bt.employee_short_name'), 'short_name')
-                    ->sortable(),
                 Column::make(__('bt.employee_title'), 'title')
                     ->sortable(),
                 Column::make(__('bt.employee_billing_rate'), 'billing_rate')
                     ->sortable(),
-                Column::make(__('bt.employees_scheduled'), 'schedule')
-                    ->sortable(),
-                Column::make(__('bt.active'), 'active')
-                    ->sortable(),
-                Column::make(__('bt.employee_driver'), 'driver')
-                    ->sortable(),
+                Column::make(__('bt.type'), 'type.name'),
+//                    ->sortable(),
+                Column::make(__('bt.term_date'), 'formatted_term_date'),
+//                    ->sortable(),
+                Column::make(__('bt.schedule'), 'formatted_schedule'),
+//                    ->sortable(),
+                Column::make(__('bt.active'), 'formatted_active'),
+//                    ->sortable(),
+                Column::make(__('bt.employee_driver'), 'formatted_driver'),
+//                    ->sortable(),
                 Column::make('Action')
                     ->format(function ($value, $column, $row) {
                         return view('employees._actions')->withModel($row);
