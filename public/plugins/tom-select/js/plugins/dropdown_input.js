@@ -1,5 +1,5 @@
 /**
-* Tom Select v2.0.2
+* Tom Select v2.0.3
 * Licensed under the Apache License, Version 2.0 (the "License");
 */
 
@@ -186,7 +186,7 @@
 	    self.dropdown.insertBefore(div, self.dropdown.firstChild); // set a placeholder in the select control
 
 	    const placeholder = getDom('<input class="items-placeholder" tabindex="-1" />');
-	    placeholder.placeholder = self.settings.placeholder;
+	    placeholder.placeholder = self.settings.placeholder || '';
 	    self.control.append(placeholder);
 	  });
 	  self.on('initialize', () => {

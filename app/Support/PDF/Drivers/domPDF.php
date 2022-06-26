@@ -37,7 +37,7 @@ class domPDF extends PDFAbstract
         $batch = '';
         if (is_array($html)) {
             foreach ($html as $doc) {
-                $batch .= $doc . "<div style=\"page-break-after: always;\"></div>";
+                $batch .= $doc; // . "<div style=\"page-break-after: always;\"></div>"; //not needed with dompdf 2
             }
             $pdf->loadHtml($batch);
         } else {

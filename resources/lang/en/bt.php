@@ -244,7 +244,7 @@ return [
     'creating_new_client'                      => 'Creating new client',
     'creating_new_vendor'                      => 'Creating new vendor',
     'criteria_batchprint'                      => 'Select Criteria for BatchPrint',
-    'criteria_batchprint_list'                 => 'Criteria:<br>Quotes- sent or approved, not converted to workorder or invoice<br> Workorders - sent or approved, not converted to invoice<br> Invoices - sent (not paid)<br> Note: If there are a large number of documents in the daterange, this will take a long time to generate the PDF',
+    'criteria_batchprint_list'                 => 'Criteria:<br>Quotes- sent or approved, not converted to workorder or invoice<br> Workorders - By Job Date, sent or approved, not converted to invoice<br> Invoices - sent (not paid)<br> Note: If there are a large number of documents in the daterange, this will take a long time to generate the PDF',
     'criteria_timesheet'                       => 'Select Criteria for TimeSheet',
     'currencies'                               => 'Currencies',
     'currency'                                 => 'Currency',

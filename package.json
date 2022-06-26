@@ -1,12 +1,12 @@
 {
     "private": true,
     "scripts": {
-        "dev": "npm run development",
-        "prod": "npm run production",
+        "dev": "mix",
         "development": "mix",
         "watch": "mix watch",
         "watch-poll": "mix watch -- --watch-options-poll=1000",
         "hot": "mix watch --hot",
+        "prod": "mix --production",
         "production": "mix --production"
     },
     "devDependencies": {
@@ -14,13 +14,10 @@
         "@popperjs/core": "^2.11.2",
         "axios": "^0.27.0",
         "bootstrap": "^5.1.3",
-        "cross-env": "^7.0.3",
         "laravel-mix": "^6.0.11",
-        "lodash": "^4.17.20",
-        "postcss": "^8.2.4",
         "resolve-url-loader": "^5.0.0",
-        "sass": "^1.32.6",
-        "sass-loader": "^12.1.0"
+        "sass": "^1.53.0",
+        "sass-loader": "^12.6.0"
     },
     "dependencies": {
         "admin-lte-v4": "github:cytech/AdminLTE#v4-dev",
