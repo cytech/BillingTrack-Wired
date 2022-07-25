@@ -4,11 +4,33 @@ namespace BT\Http\Livewire\DataTables;
 
 use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 
 class TrashTable extends DataTableComponent
 {
-    public bool $showSearch = false;
     public $module_type, $module_fullname;
+
+    public function configure(): void
+    {
+        $this->setPrimaryKey('id');
+        $this->setSearchDisabled();
+        $this->setTableAttributes([
+            'default' => true,
+            'class'   => 'datatable',
+        ]);
+        //replace v1 addAttributes for recurringinvoice -> id 5%, category -> action 10%,  user -> action 10%
+        $this->setThAttributes(function(Column $column) {
+            if ($column->isLabel()) {
+                return [
+                    'default' => true,
+                    //'class' => 'bg-green',
+                    'width' => '8%'
+                ];
+            }
+
+            return [];
+        });
+    }
 
     protected $listeners = ['reset_bulk_select' => 'resetBulkSelect'];  //emit from _js_global swal:bulkConfirm
 
@@ -39,15 +61,11 @@ class TrashTable extends DataTableComponent
         ];
     }
 
-    public function setTableClass(): ?string
-    {
-        return 'table dataTable';
-    }
 
     public function restore(): void
     {
-        if ($this->selectedRowsQuery->count() > 0) {
-            $ids = $this->selectedKeys();
+        if ($this->getSelectedCount() > 0) {
+            $ids = $this->getSelected();
             $swaldata = [
                 'title'     => __('bt.trash_restoreselected_warning'),
                 'ids'         => $ids,
@@ -56,13 +74,13 @@ class TrashTable extends DataTableComponent
             ];
             $this->dispatchBrowserEvent('swal:bulkConfirm', $swaldata);
         }
-        $this->resetBulk();
+        $this->clearSelected();
     }
 
     public function delete(): void
     {
-        if ($this->selectedRowsQuery->count() > 0) {
-            $ids = $this->selectedKeys();
+        if ($this->getSelectedCount() > 0) {
+            $ids = $this->getSelected();
             $swaldata = [
                 'title' => __('bt.bulk_delete_record_warning'),
                 'ids'     => $ids,
@@ -71,20 +89,20 @@ class TrashTable extends DataTableComponent
             ];
             $this->dispatchBrowserEvent('swal:bulkConfirm', $swaldata);
         }
-        $this->resetBulk();
+        $this->clearSelected();
     }
 
     public function resetBulkSelect()
     {
-        $this->resetBulk();
+        $this->clearSelected();
     }
 
-    public function query(): Builder
+    public function builder(): Builder
     {
         if ($this->module_type == 'Purchaseorder') {
-            return $this->module_fullname::has('vendor')->with('vendor')->onlyTrashed();
+            return $this->module_fullname::has('vendor')->with('vendor')->onlyTrashed()->select('purchaseorders.*');
         } elseif ($this->module_type == 'Client') {
-            return $this->module_fullname::onlyTrashed();
+            return $this->module_fullname::getSelect()->onlyTrashed();
         } elseif ($this->module_type == 'Expense') {
             return $this->module_fullname::defaultQuery()->onlyTrashed();
         } elseif ($this->module_type == 'TimeTrackingProject') {
@@ -93,8 +111,12 @@ class TrashTable extends DataTableComponent
             return $this->module_fullname::with(['latestOccurrence' => function ($q) {
                 $q->onlyTrashed();
             }, 'category'])->select('schedule.*')->onlyTrashed();
+        } elseif ($this->module_type == 'RecurringInvoice') {
+            return $this->module_fullname::with(['client', 'activities', 'amount.recurringInvoice.currency'])
+                ->select('recurring_invoices.*', 'recurring_invoices.id as number')
+                ->onlyTrashed();
         } else {
-            return $this->module_fullname::has('client')->with('client')->onlyTrashed();
+            return $this->module_fullname::has('client')->with('client')->onlyTrashed()->select(lcfirst($this->module_type) . 's.*');
         }
     }
 }

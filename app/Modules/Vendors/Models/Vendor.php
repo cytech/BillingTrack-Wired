@@ -171,6 +171,10 @@ class Vendor extends Model
             return config('bt.purchaseordersDueAfter');
     }
 
+    public function getFormattedActiveAttribute(){
+        return $this->active ? trans('bt.yes') : trans('bt.no');
+    }
+
     /*
         |--------------------------------------------------------------------------
         | Scopes

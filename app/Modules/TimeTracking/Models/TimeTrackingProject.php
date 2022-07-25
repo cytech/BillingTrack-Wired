@@ -89,14 +89,8 @@ class TimeTrackingProject extends Model
 
     public function getStatusTextAttribute()
     {
-        $statuses = TimeTrackingProjectStatuses::lists();
-
-        if (isset($statuses[$this->attributes['status_id']]))
-        {
-            return $statuses[$this->attributes['status_id']];
-        }
-
-        return null;
+        $statuses = TimeTrackingProjectStatuses::statuses();
+        return $statuses[$this->attributes['status_id']];
     }
 
     /*

@@ -4,14 +4,33 @@ namespace BT\Http\Livewire\DataTables;
 
 use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 
 class ModuleTable extends DataTableComponent
 {
-    //public bool $showSearch = false;
-    public string $defaultSortColumn = '';
-    public string $defaultSortDirection = 'asc';
     public $module_type, $module_fullname, $keyedStatuses, $reqstatus;
-    public bool $responsive = false; // true causing z-index issues with action dropdown
+
+    public function configure(): void
+    {
+        $this->setPrimaryKey('id');
+        $this->setPerPageAccepted([10, 25, 50, 100]);
+        $this->setTableAttributes([
+            'default' => true,
+            'class'   => 'datatable',
+        ]);
+        //replace v1 addAttributes for recurringinvoice -> id 5%, category -> action 10%,  user -> action 10%
+        $this->setThAttributes(function (Column $column) {
+            if ($column->isField('id') || $column->isLabel()) {
+                return [
+                    'default' => true,
+                    //'class' => 'bg-green',
+                    'width'   => '8%'
+                ];
+            }
+
+            return [];
+        });
+    }
 
     protected $listeners = ['reset_bulk_select' => 'resetBulkSelect'];  //emit from _js_global swal:bulkConfirm
 
@@ -25,7 +44,7 @@ class ModuleTable extends DataTableComponent
             $this->module_fullname = 'BT\\Modules\\Scheduler\\Models\\Schedule';
         } elseif ($this->module_type == 'ScheduleCategory') {
             $this->module_fullname = 'BT\\Modules\\Scheduler\\Models\\Category';
-            $this->showSearch = false;
+            $this->setSearchDisabled();
         } elseif ($this->module_type == 'Employee') {
             $this->module_fullname = 'BT\\Modules\\Employees\\Models\\Employee';
         } elseif ($this->module_type == 'Vendor') {
@@ -34,44 +53,39 @@ class ModuleTable extends DataTableComponent
             $this->module_fullname = 'BT\\Modules\\Products\\Models\\Product';
         } elseif ($this->module_type == 'Category') {
             $this->module_fullname = 'BT\\Modules\\Categories\\Models\\Category';
-            $this->showSearch = false;
+            $this->setSearchDisabled();
         } elseif ($this->module_type == 'ItemLookup') {
             $this->module_fullname = 'BT\\Modules\\ItemLookups\\Models\\ItemLookup';
         } elseif ($this->module_type == 'MailQueue') {
             $this->module_fullname = 'BT\\Modules\\MailQueue\\Models\\MailQueue';
-            $this->showSearch = false;
+            $this->setSearchDisabled();
         } elseif ($this->module_type == 'User') {
             $this->module_fullname = 'BT\\Modules\\Users\\Models\\User';
-            $this->showSearch = false;
+            $this->setSearchDisabled();
         } elseif ($this->module_type == 'Client') {
-            $this->defaultSortColumn = 'name';
-            $this->defaultSortDirection = 'asc';
+            $this->setDefaultSort('name');
             $this->module_fullname = 'BT\\Modules\\Clients\\Models\\Client';
         } elseif ($this->module_type == 'RecurringInvoice') {
-            $this->defaultSortColumn = 'client_id';
-            $this->defaultSortDirection = 'asc';
+            $this->setDefaultSort('client_id');
             $this->module_fullname = 'BT\\Modules\\RecurringInvoices\\Models\\RecurringInvoice';
         } elseif ($this->module_type == 'Payment') {
-            $this->defaultSortColumn = 'paid_at';
-            $this->defaultSortDirection = 'asc';
+            $this->setDefaultSort('paid_at');
             $this->module_fullname = 'BT\\Modules\\Payments\\Models\\Payment';
         } else {
-            $this->defaultSortColumn = lcfirst($this->module_type) . '_date';
-            $this->defaultSortDirection = 'desc';
+            $this->setDefaultSort(lcfirst($this->module_type) . '_date', 'desc');
             $this->module_fullname = 'BT\\Modules\\' . $this->module_type . 's\\Models\\' . $this->module_type;
         }
     }
 
     public function resetBulkSelect()
     {
-        $this->resetBulk();
+        $this->clearSelected();
     }
 
     public function columns(): array
     {
         $status_model = 'BT\\Support\\Statuses\\' . $this->module_type . 'Statuses';
         $statuses = class_exists($status_model) ? $status_model::listsAllFlat() + ['overdue' => trans('bt.overdue')] : null;
-
         return ModuleColumnDefs::columndefs($statuses, $this->module_type);
     }
 
@@ -100,15 +114,10 @@ class ModuleTable extends DataTableComponent
         }
     }
 
-    public function setTableClass(): ?string
-    {
-        return 'table table-striped dataTable ';
-    }
-
     public function changestatus($status): void
     {
-        if ($this->selectedRowsQuery->count() > 0) {
-            $ids = $this->selectedKeys();
+        if ($this->getSelectedCount() > 0) {
+            $ids = $this->getSelected();
             $swaldata = [
                 'title'       => __('bt.bulk_change_status_record_warning'),
                 'ids'         => $ids,
@@ -117,7 +126,6 @@ class ModuleTable extends DataTableComponent
                 'status'      => $status
             ];
             $this->dispatchBrowserEvent('swal:bulkConfirm', $swaldata);
-
         }
     }
 
@@ -130,8 +138,8 @@ class ModuleTable extends DataTableComponent
         } else {
             $route = route(lcfirst($this->module_type) . 's.bulk.delete');
         }
-        if ($this->selectedRowsQuery->count() > 0) {
-            $ids = $this->selectedKeys();
+        if ($this->getSelectedCount() > 0) {
+            $ids = $this->getSelected();
             $swaldata = [
                 'title'   => __('bt.bulk_trash_record_warning'),
                 'message' => __('bt.bulk_trash_record_warning_msg'),
@@ -142,72 +150,61 @@ class ModuleTable extends DataTableComponent
         }
     }
 
-    public function query(): Builder
+    public function builder(): Builder
     {
-        if ($this->module_type == 'Client') {
-            return $this->module_fullname::getSelect()
-                ->leftJoin('clients_custom', 'clients_custom.client_id', '=', 'clients.id')
-                ->with(['currency'])
-                ->status($this->reqstatus);
-        } elseif ($this->module_type == 'RecurringInvoice') {
-            return $this->module_fullname::with(['client', 'activities', 'amount.recurringInvoice.currency'])->select('recurring_invoices.*', 'recurring_invoices.id as number')
+        if ($this->module_type == 'RecurringInvoice') {
+            return $this->module_fullname::select('recurring_invoices.*', 'recurring_invoices.id as number')
                 ->status($this->reqstatus)
-                ->clientId(request('client'))
+                ->companyProfileId(request('company_profile'));
+        } elseif ($this->module_type == 'Purchaseorder') {
+            return $this->module_fullname::select('purchaseorders.*')
+                ->status($this->reqstatus)
                 ->companyProfileId(request('company_profile'));
         } elseif ($this->module_type == 'Payment') {
-            return $this->module_fullname::has('client')->has('invoice')->with('client', 'invoice', 'paymentMethod');
+            return $this->module_fullname::has('client')->has('invoice')
+                ->select(lcfirst($this->module_type) . 's.*');
         } elseif ($this->module_type == 'Expense') {
-            return $this->module_fullname::defaultQuery()
+            return $this->module_fullname::select(lcfirst($this->module_type) . 's.*')
                 ->categoryId(request('category'))
                 ->vendorId(request('vendor'))
                 ->status($this->reqstatus)
                 ->companyProfileId(request('company_profile'));
         } elseif ($this->module_type == 'TimeTrackingProject') {
-            return $this->module_fullname::getSelect()
-                ->with('client')
-                ->companyProfileId(request('company_profile'))
-                ->statusId($this->reqstatus);
-        } elseif ($this->module_type == 'Purchaseorder') {
-            return $this->module_fullname::with(['vendor', 'activities', 'amount.purchaseorder.currency'])->select('purchaseorders.*')
-                ->status($this->reqstatus)
-                ->vendorId(request('vendor'))
-                ->companyProfileId(request('company_profile'));
+            return $this->module_fullname::companyProfileId(request('company_profile'))
+                ->statusId($this->reqstatus)
+                ->getSelect();
         } elseif ($this->module_type == 'Schedule') {
-            return $this->module_fullname::with(['latestOccurrence', 'category'])->where('isRecurring', '<>', '1')
-                ->select('schedule.*');
+            return $this->module_fullname::where('isRecurring', '<>', '1')->select('schedule.*');
         } elseif ($this->module_type == 'RecurringEvent') {
-            return $this->module_fullname::with(['category'])->where('isRecurring', '=', '1')
-                ->select('schedule.*');
+            return $this->module_fullname::where('isRecurring', '=', '1')->select('schedule.*');
         } elseif ($this->module_type == 'ScheduleCategory') {
             return $this->module_fullname::select('schedule_categories.*');
+        } elseif ($this->module_type == 'Client') {
+            return $this->module_fullname::getSelect()->status($this->reqstatus);
         } elseif ($this->module_type == 'Employee') {
             return $this->module_fullname::select('employees.*')->status($this->reqstatus);
         } elseif ($this->module_type == 'Vendor') {
             return $this->module_fullname::select('vendors.*')->status($this->reqstatus);
         } elseif ($this->module_type == 'Product') {
-            return $this->module_fullname::with('category', 'vendor', 'inventorytype')
-                ->with('taxRate', 'taxRate2')
-                ->status($this->reqstatus);
+            return $this->module_fullname::select('products.*')->status($this->reqstatus);
         } elseif ($this->module_type == 'Category') {
             return $this->module_fullname::select('categories.*');
         } elseif ($this->module_type == 'ItemLookup') {
-            return $this->module_fullname::select('item_lookups.*')->with('taxRate', 'taxRate2')->orderBy('resource_table', 'asc')
-                ->orderBy('name', 'asc');
+            return $this->module_fullname::select('item_lookups.*')->orderBy('resource_table', 'asc')->orderBy('name', 'asc');
         } elseif ($this->module_type == 'MailQueue') {
             return $this->module_fullname::select('mail_queue.*')->orderBy('sent', 'asc');
         } elseif ($this->module_type == 'User') {
-            if (auth()->user()->hasRole('superadmin')){
+            if (auth()->user()->hasRole('superadmin')) {
                 return $this->module_fullname::select('id', 'name', 'email', 'client_id')
                     ->userType(request('userType'));
-            }else{
+            } else {
                 return $this->module_fullname::select('id', 'name', 'email', 'client_id')
                     ->role(['admin', 'user', 'client']);
             }
-        } else {
-            return $this->module_fullname::with(['client', 'activities', 'amount.' . lcfirst($this->module_type) . '.currency'])
-                ->select(lcfirst($this->module_type) . 's.*')
+        } else { //quotes, workorders, invoices
+            return $this->module_fullname::
+            select(lcfirst($this->module_type) . 's.*')
                 ->status($this->reqstatus)
-                ->clientId(request('client'))
                 ->companyProfileId(request('company_profile'));
         }
     }

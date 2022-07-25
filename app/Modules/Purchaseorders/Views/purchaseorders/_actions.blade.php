@@ -1,5 +1,5 @@
 
-<div class="btn-group">
+<div class="btn-group position-static">
     <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="dropdown">
         @lang('bt.options')
     </button>

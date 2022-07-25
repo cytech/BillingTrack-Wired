@@ -105,6 +105,10 @@ class Product extends Model
         return NumberFormatter::format($this->attributes['price']);
     }
 
+    public function getFormattedActiveAttribute(){
+        return $this->active ? trans('bt.yes') : trans('bt.no');
+    }
+
     //inventory tracked scope
     public function scopeTracked($query)
     {
@@ -115,11 +119,11 @@ class Product extends Model
     {
         if ($status == 'active')
         {
-            $query->where('active', 1);
+            $query->where($this->table . '.active', 1);
         }
         elseif ($status == 'inactive')
         {
-            $query->where('active', 0);
+            $query->where($this->table . '.active', 0);
         }
 
         return $query;
