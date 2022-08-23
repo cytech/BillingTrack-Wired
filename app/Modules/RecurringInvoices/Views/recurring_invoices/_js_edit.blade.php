@@ -67,7 +67,7 @@
             axios.post('{{ route('recurringInvoices.update', [$recurringInvoice->id]) }}', data).then(function () {
                 axios.get('{{ route('recurringInvoices.recurringInvoiceEdit.refreshEdit', [$recurringInvoice->id]) }}')
                     .then(response => {
-                        document.getElementById('div-recurring-invoice-edit').innerHTML = response.data
+                        setInnerHTML(document.getElementById('div-recurring-invoice-edit'), response.data)
                         window.livewire.rescan();
                         Swal.close()
                     })

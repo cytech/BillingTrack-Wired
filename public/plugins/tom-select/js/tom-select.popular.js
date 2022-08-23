@@ -1,5 +1,5 @@
 /**
-* Tom Select v2.0.3
+* Tom Select v2.1.0
 * Licensed under the Apache License, Version 2.0 (the "License");
 */
 
@@ -193,24 +193,20 @@
 	  };
 	}
 
+	// @ts-ignore TS2691 "An import path cannot end with a '.ts' extension"
 	// https://github.com/andrewrk/node-diacritics/blob/master/index.js
 	var latin_pat;
 	const accent_pat = '[\u0300-\u036F\u{b7}\u{2be}]'; // \u{2bc}
 
-	const accent_reg = new RegExp(accent_pat, 'g');
+	const accent_reg = new RegExp(accent_pat, 'gu');
 	var diacritic_patterns;
 	const latin_convert = {
 	  'æ': 'ae',
 	  'ⱥ': 'a',
 	  'ø': 'o'
 	};
-	const convert_pat = new RegExp(Object.keys(latin_convert).join('|'), 'g');
-	/**
-	 * code points generated from toCodePoints();
-	 * removed 65339 to 65345
-	 */
-
-	const code_points = [[67, 67], [160, 160], [192, 438], [452, 652], [961, 961], [1019, 1019], [1083, 1083], [1281, 1289], [1984, 1984], [5095, 5095], [7429, 7441], [7545, 7549], [7680, 7935], [8580, 8580], [9398, 9449], [11360, 11391], [42792, 42793], [42802, 42851], [42873, 42897], [42912, 42922], [64256, 64260], [65313, 65338], [65345, 65370]];
+	const convert_pat = new RegExp(Object.keys(latin_convert).join('|'), 'gu');
+	const code_points = [[0, 65535]];
 	/**
 	 * Remove accents
 	 * via https://github.com/krisk/Fuse/issues/133#issuecomment-318692703
@@ -229,7 +225,6 @@
 	 *
 	 */
 
-
 	const arrayToPattern = (chars, glue = '|') => {
 	  if (chars.length == 1) {
 	    return chars[0];
@@ -245,6 +240,10 @@
 	  }
 
 	  return '(?:' + chars.join(glue) + ')';
+	};
+	const escapeToPattern = chars => {
+	  const escaped = chars.map(diacritic => escape_regex(diacritic));
+	  return arrayToPattern(escaped);
 	};
 	/**
 	 * Get all possible combinations of substrings that add up to the given string
@@ -270,7 +269,7 @@
 	 *
 	 */
 
-	const generateDiacritics = () => {
+	const generateDiacritics = code_points => {
 	  var diacritics = {};
 	  code_points.forEach(code_range => {
 	    for (let i = code_range[0]; i <= code_range[1]; i++) {
@@ -279,13 +278,22 @@
 
 	      if (latin == diacritic.toLowerCase()) {
 	        continue;
+	      } // skip when latin is a string longer than 3 characters long
+	      // bc the resulting regex patterns will be long
+	      // eg:
+	      // latin صلى الله عليه وسلم length 18 code point 65018
+	      // latin جل جلاله length 8 code point 65019
+
+
+	      if (latin.length > 3) {
+	        continue;
 	      }
 
 	      if (!(latin in diacritics)) {
 	        diacritics[latin] = [latin];
 	      }
 
-	      var patt = new RegExp(arrayToPattern(diacritics[latin]), 'iu');
+	      var patt = new RegExp(escapeToPattern(diacritics[latin]), 'iu');
 
 	      if (diacritic.match(patt)) {
 	        continue;
@@ -293,13 +301,23 @@
 
 	      diacritics[latin].push(diacritic);
 	    }
-	  });
-	  var latin_chars = Object.keys(diacritics); // latin character pattern
+	  }); // filter out if there's only one character in the list
+
+	  let latin_chars = Object.keys(diacritics);
+
+	  for (let i = 0; i < latin_chars.length; i++) {
+	    const latin = latin_chars[i];
+
+	    if (diacritics[latin].length < 2) {
+	      delete diacritics[latin];
+	    }
+	  } // latin character pattern
 	  // match longer substrings first
 
-	  latin_chars = latin_chars.sort((a, b) => b.length - a.length);
-	  latin_pat = new RegExp('(' + arrayToPattern(latin_chars) + accent_pat + '*)', 'g'); // build diacritic patterns
-	  // ae needs: 
+
+	  latin_chars = Object.keys(diacritics).sort((a, b) => b.length - a.length);
+	  latin_pat = new RegExp('(' + escapeToPattern(latin_chars) + accent_pat + '*)', 'gu'); // build diacritic patterns
+	  // ae needs:
 	  //	(?:(?:ae|Æ|Ǽ|Ǣ)|(?:A|Ⓐ|Ａ...)(?:E|ɛ|Ⓔ...))
 
 	  var diacritic_patterns = {};
@@ -308,7 +326,7 @@
 	    var pattern = substrings.map(sub_pat => {
 	      sub_pat = sub_pat.map(l => {
 	        if (diacritics.hasOwnProperty(l)) {
-	          return arrayToPattern(diacritics[l]);
+	          return escapeToPattern(diacritics[l]);
 	        }
 
 	        return l;
@@ -327,27 +345,20 @@
 
 	const diacriticRegexPoints = regex => {
 	  if (diacritic_patterns === undefined) {
-	    diacritic_patterns = generateDiacritics();
+	    diacritic_patterns = generateDiacritics(code_points);
 	  }
 
 	  const decomposed = regex.normalize('NFKD').toLowerCase();
 	  return decomposed.split(latin_pat).map(part => {
-	    if (part == '') {
-	      return '';
-	    } // "ﬄ" or "ffl"
-
-
+	    // "ﬄ" or "ffl"
 	    const no_accent = asciifold(part);
+
+	    if (no_accent == '') {
+	      return '';
+	    }
 
 	    if (diacritic_patterns.hasOwnProperty(no_accent)) {
 	      return diacritic_patterns[no_accent];
-	    } // 'أهلا' (\u{623}\u{647}\u{644}\u{627}) or 'أهلا' (\u{627}\u{654}\u{647}\u{644}\u{627})
-
-
-	    const composed_part = part.normalize('NFC');
-
-	    if (composed_part != part) {
-	      return arrayToPattern([part, composed_part]);
 	    }
 
 	    return part;
@@ -513,10 +524,10 @@
 	      }
 
 	      if (word.length > 0) {
-	        regex = escape_regex(word);
-
 	        if (this.settings.diacritics) {
-	          regex = diacriticRegexPoints(regex);
+	          regex = diacriticRegexPoints(word);
+	        } else {
+	          regex = escape_regex(word);
 	        }
 
 	        if (respect_word_boundaries) regex = "\\b" + regex;
@@ -1532,6 +1543,7 @@
 	    this.isInputHidden = false;
 	    this.isSetup = false;
 	    this.ignoreFocus = false;
+	    this.ignoreHover = false;
 	    this.hasOptions = false;
 	    this.currentResults = void 0;
 	    this.lastValue = '';
@@ -1730,7 +1742,13 @@
 	      settings.load = loadDebounce(settings.load, settings.loadThrottle);
 	    }
 
-	    self.control_input.type = input.type; // clicking on an option should select it
+	    self.control_input.type = input.type;
+	    addEvent(dropdown, 'mouseenter', e => {
+	      var target_match = parentMatch(e.target, '[data-selectable]', dropdown);
+	      if (target_match) self.onOptionHover(e, target_match);
+	    }, {
+	      capture: true
+	    }); // clicking on an option should select it
 
 	    addEvent(dropdown, 'click', evt => {
 	      const option = parentMatch(evt.target, '[data-selectable]');
@@ -1764,7 +1782,7 @@
 	    addEvent(focus_node, 'resize', () => self.positionDropdown(), passive_event);
 	    addEvent(focus_node, 'blur', e => self.onBlur(e));
 	    addEvent(focus_node, 'focus', e => self.onFocus(e));
-	    addEvent(focus_node, 'paste', e => self.onPaste(e));
+	    addEvent(control_input, 'paste', e => self.onPaste(e));
 
 	    const doc_mousedown = evt => {
 	      // blur if target is outside of this instance
@@ -1791,18 +1809,24 @@
 	      }
 	    };
 
-	    var win_scroll = () => {
+	    const win_scroll = () => {
 	      if (self.isOpen) {
 	        self.positionDropdown();
 	      }
 	    };
 
+	    const win_hover = () => {
+	      self.ignoreHover = false;
+	    };
+
 	    addEvent(document, 'mousedown', doc_mousedown);
 	    addEvent(window, 'scroll', win_scroll, passive_event);
 	    addEvent(window, 'resize', win_scroll, passive_event);
+	    addEvent(window, 'mousemove', win_hover, passive_event);
 
 	    this._destroy = () => {
 	      document.removeEventListener('mousedown', doc_mousedown);
+	      window.removeEventListener('mousemove', win_hover);
 	      window.removeEventListener('scroll', win_scroll);
 	      window.removeEventListener('resize', win_scroll);
 	      if (label) label.removeEventListener('click', label_click);
@@ -2008,21 +2032,29 @@
 	    // input and create Items for each separate value
 
 
-	    if (self.settings.splitOn) {
-	      // Wait for pasted text to be recognized in value
-	      setTimeout(() => {
-	        var pastedText = self.inputValue();
+	    if (!self.settings.splitOn) {
+	      return;
+	    } // Wait for pasted text to be recognized in value
 
-	        if (!pastedText.match(self.settings.splitOn)) {
-	          return;
-	        }
 
-	        var splitInput = pastedText.trim().split(self.settings.splitOn);
-	        iterate(splitInput, piece => {
+	    setTimeout(() => {
+	      var pastedText = self.inputValue();
+
+	      if (!pastedText.match(self.settings.splitOn)) {
+	        return;
+	      }
+
+	      var splitInput = pastedText.trim().split(self.settings.splitOn);
+	      iterate(splitInput, piece => {
+	        piece = hash_key(piece);
+
+	        if (this.options[piece]) {
+	          self.addItem(piece);
+	        } else {
 	          self.createItem(piece);
-	        });
-	      }, 0);
-	    }
+	        }
+	      });
+	    }, 0);
 	  }
 	  /**
 	   * Triggered on <input> keypress.
@@ -2054,6 +2086,7 @@
 
 	  onKeyDown(e) {
 	    var self = this;
+	    self.ignoreHover = true;
 
 	    if (self.isLocked) {
 	      if (e.keyCode !== KEY_TAB) {
@@ -2114,6 +2147,8 @@
 	          self.onOptionSelect(e, self.activeOption);
 	          preventDefault(e); // if the option_create=null, the dropdown might be closed
 	        } else if (self.settings.create && self.createItem()) {
+	          preventDefault(e); // don't submit form when searching for a value
+	        } else if (document.activeElement == self.control_input && self.isOpen) {
 	          preventDefault(e);
 	        }
 
@@ -2183,6 +2218,17 @@
 	      self.refreshOptions();
 	      self.trigger('type', value);
 	    }
+	  }
+	  /**
+	   * Triggered when the user rolls over
+	   * an option in the autocomplete dropdown menu.
+	   *
+	   */
+
+
+	  onOptionHover(evt, option) {
+	    if (this.ignoreHover) return;
+	    this.setActiveOption(option, false);
 	  }
 	  /**
 	   * Triggered on <input> focus.
@@ -2538,7 +2584,7 @@
 	   */
 
 
-	  setActiveOption(option) {
+	  setActiveOption(option, scroll = true) {
 	    if (option === this.activeOption) {
 	      return;
 	    }
@@ -2553,7 +2599,7 @@
 	      'aria-selected': 'true'
 	    });
 	    addClasses(option, 'active');
-	    this.scrollToOption(option);
+	    if (scroll) this.scrollToOption(option);
 	  }
 	  /**
 	   * Sets the dropdown_content scrollTop to display the option
@@ -3186,19 +3232,34 @@
 	   */
 
 
-	  clearOptions() {
+	  clearOptions(filter) {
+	    const boundFilter = (filter || this.clearFilter).bind(this);
 	    this.loadedSearches = {};
 	    this.userOptions = {};
 	    this.clearCache();
-	    var selected = {};
+	    const selected = {};
 	    iterate(this.options, (option, key) => {
-	      if (this.items.indexOf(key) >= 0) {
+	      if (boundFilter(option, key)) {
 	        selected[key] = this.options[key];
 	      }
 	    });
 	    this.options = this.sifter.items = selected;
 	    this.lastQuery = null;
 	    this.trigger('option_clear');
+	  }
+	  /**
+	   * Used by clearOptions() to decide whether or not an option should be removed
+	   * Return true to keep an option, false to remove
+	   *
+	   */
+
+
+	  clearFilter(option, value) {
+	    if (this.items.indexOf(value) >= 0) {
+	      return true;
+	    }
+
+	    return false;
 	  }
 	  /**
 	   * Returns the dom element of the option
@@ -3519,11 +3580,11 @@
 	  refreshValidityState() {
 	    var self = this;
 
-	    if (!self.input.checkValidity) {
+	    if (!self.input.validity) {
 	      return;
 	    }
 
-	    self.isValid = self.input.checkValidity();
+	    self.isValid = self.input.validity.valid;
 	    self.isInvalid = !self.isValid;
 	  }
 	  /**
@@ -3750,9 +3811,7 @@
 	      }
 	    }
 
-	    const values = rm_items.map(item => item.dataset.value); // allow the callback to abort
-
-	    if (!values.length || typeof self.settings.onDelete === 'function' && self.settings.onDelete.call(self, values, e) === false) {
+	    if (!self.shouldDelete(rm_items, e)) {
 	      return false;
 	    }
 
@@ -3769,6 +3828,20 @@
 	    self.showInput();
 	    self.positionDropdown();
 	    self.refreshOptions(false);
+	    return true;
+	  }
+	  /**
+	   * Return true if the items should be deleted
+	   */
+
+
+	  shouldDelete(items, evt) {
+	    const values = items.map(item => item.dataset.value); // allow the callback to abort
+
+	    if (!values.length || typeof this.settings.onDelete === 'function' && this.settings.onDelete(values, evt) === false) {
+	      return false;
+	    }
+
 	    return true;
 	  }
 	  /**
@@ -4212,7 +4285,9 @@
 
 	    self.hook('before', 'close', () => {
 	      if (!self.isOpen) return;
-	      self.focus_node.focus();
+	      self.focus_node.focus({
+	        preventScroll: true
+	      });
 	    });
 	  });
 	}
@@ -4275,9 +4350,9 @@
 	    var orig_render_item = self.settings.render.item;
 
 	    self.settings.render.item = (data, escape) => {
-	      var rendered = getDom(orig_render_item.call(self, data, escape));
+	      var item = getDom(orig_render_item.call(self, data, escape));
 	      var close_button = getDom(html);
-	      rendered.appendChild(close_button);
+	      item.appendChild(close_button);
 	      addEvent(close_button, 'mousedown', evt => {
 	        preventDefault(evt, true);
 	      });
@@ -4285,12 +4360,12 @@
 	        // propagating will trigger the dropdown to show for single mode
 	        preventDefault(evt, true);
 	        if (self.isLocked) return;
-	        var value = rendered.dataset.value;
-	        self.removeItem(value);
+	        if (!self.shouldDelete([item], evt)) return;
+	        self.removeItem(item);
 	        self.refreshOptions(false);
 	        self.inputState();
 	      });
-	      return rendered;
+	      return item;
 	    };
 	  });
 	}

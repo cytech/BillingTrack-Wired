@@ -83,7 +83,7 @@
             axios.post('{{ route('workorders.update', [$workorder->id]) }}', data).then(function () {
                 axios.get('{{ route('workorders.workorderEdit.refreshEdit', [$workorder->id]) }}')
                     .then(response => {
-                        document.getElementById('div-workorder-edit').innerHTML = response.data
+                        setInnerHTML(document.getElementById('div-workorder-edit'), response.data)
                         window.livewire.rescan();
                         Swal.close()
                     })

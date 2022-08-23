@@ -17,7 +17,7 @@
         "laravel-mix": "^6.0.11",
         "resolve-url-loader": "^5.0.0",
         "sass": "^1.53.0",
-        "sass-loader": "^12.6.0"
+        "sass-loader": "^13.0.2"
     },
     "dependencies": {
         "admin-lte-v4": "github:cytech/AdminLTE#v4-dev",
@@ -31,7 +31,7 @@
         "sortablejs": "^1.14.0",
         "sweetalert2": "^11.1.2",
         "tippy.js": "^6.2.7",
-        "tom-select": "^2.0.0",
+        "tom-select": "^2.1.0",
         "vanilla-datetimerange-picker": "github:cytech/vanilla-datetimerange-picker#main"
     }
 }

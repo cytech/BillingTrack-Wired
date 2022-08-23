@@ -30,6 +30,7 @@ class ExpenseRequest extends FormRequest
             'category_name'      => trans('bt.category'),
             'description'        => trans('bt.description'),
             'amount'             => trans('bt.amount'),
+            'tax'                => trans('bt.tax'),
         ];
     }
 
@@ -54,6 +55,7 @@ class ExpenseRequest extends FormRequest
             'category_name'      => 'required',
             'description'        => 'max:255',
             'amount'             => 'required|numeric',
+            'tax'                => 'numeric',
         ];
     }
 }

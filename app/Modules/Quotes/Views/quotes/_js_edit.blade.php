@@ -80,7 +80,7 @@
             axios.post('{{ route('quotes.update', [$quote->id]) }}', data).then(function () {
                 axios.get('{{ route('quotes.quoteEdit.refreshEdit', [$quote->id]) }}')
                     .then(response => {
-                        document.getElementById('div-quote-edit').innerHTML = response.data
+                        setInnerHTML(document.getElementById('div-quote-edit'), response.data)
                         window.livewire.rescan();
                         Swal.close()
                     })

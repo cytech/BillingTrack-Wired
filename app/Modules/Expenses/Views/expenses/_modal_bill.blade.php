@@ -59,6 +59,7 @@
                             </div>
                         </div>
                     @else
+                        @lang('bt.client'): {{ $expense->client->name }}
                         <p>@lang('bt.no_open_invoices')</p>
                     @endif
                 </form>

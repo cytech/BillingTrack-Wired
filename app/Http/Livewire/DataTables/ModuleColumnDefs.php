@@ -188,7 +188,7 @@ class ModuleColumnDefs
                     ->sortable()
                     ->format(function ($value, $row, Column $column) {
                         $ret = $row->category->name;
-                        if ($row->vendor->name)
+                        if ($row->vendor)
                             $ret .= '<br><span class="text-muted">' . $row->vendor->name . '</span>';
                         return $ret;
                     })
@@ -207,6 +207,8 @@ class ModuleColumnDefs
                                 $ret .= '<br><span class="badge bg-danger">' . trans('bt.not_billed') . '</span>';
                         else
                             $ret .= '<br><span class="badge bg-secondary">' . trans('bt.not_billable') . '</span>';
+                        if ($row->client)
+                            $ret .= '<br><span class="text-muted">' . $row->client->name . '</span>';
 
                         return $ret;
                     })

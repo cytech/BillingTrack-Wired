@@ -66,7 +66,7 @@
             axios.post('{{ route('invoices.update', [$invoice->id]) }}', data).then(function () {
                 axios.get('{{ route('invoices.invoiceEdit.refreshEdit', [$invoice->id]) }} ')
                     .then(response => {
-                        document.getElementById('div-invoice-edit').innerHTML = response.data
+                        setInnerHTML(document.getElementById('div-invoice-edit'), response.data)
                         window.livewire.rescan();
                         Swal.close()
                     })

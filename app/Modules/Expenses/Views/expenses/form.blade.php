@@ -74,7 +74,7 @@
                                     <livewire:vendor-search
                                             name="vendor"
                                             value="{!! $editMode ? $expense->vendor_id : null !!}"
-                                            description="{!! $editMode ? $expense->vendor->name : null !!}"
+                                            description="{!! $editMode ? $expense->vendor->name ?? null : null !!}"
                                             placeholder="{{ __('bt.select_or_create_vendor') }}"
                                             :searchable="true"
                                             noResultsMessage="{{__('bt.vendor_not_found_create')}}"
@@ -89,7 +89,7 @@
                                             {{-- module base name, adds hidden fields with _id and _name --}}
                                             name="client"
                                             value="{!! $editMode ? $expense->client_id : null !!}"
-                                            description="{!! $editMode ? $expense->client->name : null !!}"
+                                            description="{!! $editMode ? $expense->client->name ?? null : null !!}"
                                             placeholder="{{ __('bt.select_or_create_client') }}"
                                             :searchable="true"
                                             noResultsMessage="{{__('bt.client_not_found_create')}}"

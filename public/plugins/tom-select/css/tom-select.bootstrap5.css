@@ -2,7 +2,7 @@
  * Tom Select bootstrap 5
  */
 /**
- * tom-select.css (v2.0.3)
+ * tom-select.css (v2.1.0)
  * Copyright (c) contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
@@ -272,7 +272,7 @@
   outline: none !important;
 }
 .has-items .ts-control > input {
-  margin: 0 4px !important;
+  margin: 0px 4px !important;
 }
 .ts-control.rtl {
   text-align: right;
@@ -282,7 +282,7 @@
   right: auto;
 }
 .ts-control.rtl .ts-control > input {
-  margin: 0 4px 0 -2px !important;
+  margin: 0px 4px 0px -2px !important;
 }
 .disabled .ts-control {
   opacity: 0.5;
@@ -338,14 +338,10 @@
   background: #fff;
   cursor: default;
 }
-.ts-dropdown .create:hover,
-.ts-dropdown .option:hover,
 .ts-dropdown .active {
   background-color: #e9ecef;
   color: #1e2125;
 }
-.ts-dropdown .create:hover.create,
-.ts-dropdown .option:hover.create,
 .ts-dropdown .active.create {
   color: #1e2125;
 }

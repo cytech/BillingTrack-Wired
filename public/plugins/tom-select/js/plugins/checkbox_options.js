@@ -1,5 +1,5 @@
 /**
-* Tom Select v2.0.3
+* Tom Select v2.1.0
 * Licensed under the Apache License, Version 2.0 (the "License");
 */
 
@@ -46,13 +46,13 @@
 	  }
 	};
 
-	// https://github.com/andrewrk/node-diacritics/blob/master/index.js
+	// @ts-ignore TS2691 "An import path cannot end with a '.ts' extension"
 	const latin_convert = {
 	  'æ': 'ae',
 	  'ⱥ': 'a',
 	  'ø': 'o'
 	};
-	new RegExp(Object.keys(latin_convert).join('|'), 'g');
+	new RegExp(Object.keys(latin_convert).join('|'), 'gu');
 
 	/**
 	 * Return a dom element from either a dom query string, jQuery object, a dom element or html string
@@ -110,10 +110,12 @@
 	    setTimeout(() => {
 	      var checkbox = option.querySelector('input');
 
-	      if (option.classList.contains('selected')) {
-	        checkbox.checked = true;
-	      } else {
-	        checkbox.checked = false;
+	      if (checkbox instanceof HTMLInputElement) {
+	        if (option.classList.contains('selected')) {
+	          checkbox.checked = true;
+	        } else {
+	          checkbox.checked = false;
+	        }
 	      }
 	    }, 1);
 	  }; // add checkbox to option template
