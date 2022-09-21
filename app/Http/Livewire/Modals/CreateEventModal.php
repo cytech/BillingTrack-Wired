@@ -144,7 +144,6 @@ class CreateEventModal extends Component
             $employee = Employee::find($this->resource_id);
             if ($employee && $employee->schedule == 1) { //employee exists and is scheduleable...
                 $scheduleItem = ScheduleResource::firstOrNew(['occurrence_id' => $occurrence->id]);
-                $scheduleItem->id = $event->id;
                 $scheduleItem->occurrence_id = $occurrence->id;
                 $scheduleItem->resource_table = 'employees';
                 $scheduleItem->resource_id = $employee->id;

@@ -8,6 +8,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - add employee type and termination date
 - update employees available query to include null term_date or term_date > $date
 - fix datatable status on paginate
+- fix error with employee resource id in scheduler
+- update laravel-livewire-tables to V2
 
 ## 6.0.2
 - fix workorderToInvoice date setting
