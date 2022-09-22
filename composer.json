@@ -5,7 +5,7 @@
     "license": "MIT",
     "type": "project",
     "require": {
-        "php": "^8.0.2",
+        "php": "^8.1",
         "askedio/laravel-soft-cascade": "dev-master",
         "barryvdh/laravel-ide-helper": "^2.9",
         "doctrine/dbal": "^3.0",

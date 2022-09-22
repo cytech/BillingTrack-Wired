@@ -45,7 +45,7 @@ class SetupController extends Controller
     public function prerequisites()
     {
         $errors = [];
-        $versionRequired = '8.0.2';
+        $versionRequired = '8.1';
         $dbDriver = config('database.default');
         $dbConfig = config('database.connections.' . $dbDriver);
 

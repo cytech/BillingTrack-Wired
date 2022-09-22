@@ -40,7 +40,7 @@ requirements below to determine whether or not you will be able to
 install and use the software. .
 
 - A web server of some sort - Apache, nginx, etc.
-- PHP &gt;= 8.0.2
+- PHP &gt;= 8.1
 - MySQL or MariaDB
 - A modern and updated web browser
 - BCMath PHP Extension
@@ -193,6 +193,7 @@ Note: In some instances a fresh install will throw an "unknown error" alert box.
 
 # How to Upgrade BillingTrack
 **Upgrade Existing v6.x.x installation**
+- NOTE: BillingTrack-wired v6.0.3 and later require PHP &gt;= 8.1
 - Git pull (if originally cloned) or download and overwrite existing
   installation.
 - if downloading and extracting zip, delete the

@@ -1,9 +1,12 @@
 Release Notes
 ---
-### BillingTrack 6.0.3 (2022-07-01)
+### BillingTrack 6.0.3 (2022-09-26)
 - add employee type and termination date
 - update employees available query to include null term_date or term_date > $date
 - fix datatable status on paginate
+- fix error with employee resource id in scheduler
+- update laravel-livewire-tables to V2
+- modified create-seeded-workorder-modal checkbox selection
 ### BillingTrack 6.0.2 (2022-06-14)
 - fix workorderToInvoice date setting
 ### BillingTrack 6.0.1 (2022-05-01)
