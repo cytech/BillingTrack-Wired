@@ -89,52 +89,53 @@
                         <br>
                         <b>@lang('bt.available_employees')</b><br>
                         @lang('bt.select_workers_toworkorder')<br>
-                        <div id="ScrollCB1" style="max-height:200px;overflow:auto">
-                            <div id="wtable">
-                                @foreach($available_employees as $key => $value)
-                                    @if($value->driver)
-                                        <label class="mb-1" style="display:block;color:blue;">
-                                    @else
-                                        <label class="mb-1" style="display:block;">
-                                    @endif
-                                        <input style="margin-right:5px;"
-                                               type="checkbox"
-                                               name="workers[]"
-                                               wire:model.defer="selected_employees"
-                                               value="{{$value->id}}"
-                                        />
-                                        {{$value->short_name}}
+                        <div class="form-check ps-4" id="ScrollCB1" style="max-height:200px;overflow:auto">
+                            @foreach($available_employees as $key => $value)
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       name="workers[]"
+                                       id="workers{{$value->id}}"
+                                       wire:model.defer="selected_employees"
+                                       value="{{$value->id}}"
+                                       style="transform: scale(1.3);"
+                                />
+                                @if($value->driver)
+                                    <label class="form-check-label mb-1" style="display:block;color:blue;">
+                                @else
+                                    <label class="form-check-label mb-1" style="display:block;">
+                                @endif
+                                    {{$value->short_name}}
                                     </label>
-                                @endforeach
-                            </div>
+                            @endforeach
                         </div>
                     </div>
                     <div class="col-6">
                         <br>
                         <b>@lang('bt.available_equip')</b><br>
                         @lang('bt.select_items_toworkorder')
-                        <div id="ScrollCB2" style="max-height:200px;overflow:auto">
-                            <div id="rtable">
-                                @foreach($available_resources as $key => $value)
-                                    <label class="mb-1" style="display:block;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
-                                        <input
-                                                type="checkbox"
-                                                name="resources[]"
-                                                wire:model="selected_resources.{{$key}}"
-                                                value="{{$value->id}}"/>
-                                        {{ $value->name }}
-                                        <input
-                                                type="number"
-                                                name="quantity[{{$value->id}}]"
-                                                wire:model.defer="selected_qty.{{$value->id}}"
-                                                min="0"
-                                                style="width:40px;height:25px;margin-left:10px;margin-right:5px;"
-                                                {{ !in_array($value->id, $selected_resources) ? 'disabled' : '' }}
-                                                value="0"
-                                        />
-                                    </label>
-                                @endforeach
-                            </div>
+                        <div class="form-check ps-4" id="ScrollCB2" style="max-height:200px;overflow:auto">
+                            @foreach($available_resources as $key => $value)
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       name="resources[]"
+                                       id="resources{{$value->id}}"
+                                       wire:model="selected_resources.{{$key}}"
+                                       value="{{$value->id}}"
+                                       style="transform: scale(1.3);"
+                                />
+                                <label class="mb-1" style="display:block;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+                                    {{ $value->name }}
+                                    <input
+                                            type="number"
+                                            name="quantity[{{$value->id}}]"
+                                            wire:model.defer="selected_qty.{{$value->id}}"
+                                            min="0"
+                                            style="width:40px;height:25px;margin-left:10px;margin-right:5px;"
+                                            {{ !in_array($value->id, $selected_resources) ? 'disabled' : '' }}
+                                            value="0"
+                                    />
+                                </label>
+                            @endforeach
                         </div>
                     </div>
                 </div>
