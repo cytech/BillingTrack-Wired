@@ -42,15 +42,15 @@
 
         addEvent(document, 'input', '#name', (e) => {
             if (hasUniqueName === false) {
-                document.getElementById('unique_name_suf').value = Math.random().toString(36).substr(2, 5)
+                document.getElementById('unique_name_suf').value = Math.random().toString(36).slice(2, 7)
             }
-            document.getElementById('unique_name_pre').value = e.target.value.substr(0, 10) + '_'
+            document.getElementById('unique_name_pre').value = e.target.value.slice(0, 10) + '_'
             document.getElementById('unique_name').value = document.getElementById('unique_name_pre').value + document.getElementById('unique_name_suf').value
         });
 
         addEvent(document, 'focusout', '#unique_name_suf', (e) => {
             if (e.target.value === '') {
-                e.target.value = Math.random().toString(36).substr(2, 5)
+                e.target.value = Math.random().toString(36).slice(2, 7)
             }
             document.getElementById('unique_name').value = document.getElementById('unique_name_pre').value + e.target.value
 

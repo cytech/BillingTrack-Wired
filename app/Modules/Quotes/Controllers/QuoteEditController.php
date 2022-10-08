@@ -30,6 +30,8 @@ class QuoteEditController extends Controller
 
     public function edit($id)
     {
+        $this->setPreviousUrl();
+
         $quote = Quote::with(['items.amount.item.quote.currency'])->find($id);
 
         return view('quotes.edit')

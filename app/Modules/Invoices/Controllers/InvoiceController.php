@@ -26,13 +26,9 @@ class InvoiceController extends Controller
     public function index()
     {
         $this->setReturnUrl();
+        $status = request('status') === 'all_statuses' ? '' : request('status');
 
-        $status = request('status', 'all_statuses');
-        $statuses = InvoiceStatuses::listsAllFlat() + ['overdue' => trans('bt.overdue')];
-        $keyedStatuses = collect(InvoiceStatuses::lists())->except(4);
-        $companyProfiles = ['' => trans('bt.all_company_profiles')] + CompanyProfile::getList();
-
-        return view('invoices.index', compact('status', 'statuses', 'keyedStatuses', 'companyProfiles'));
+        return view('invoices.index')->with('status', $status);
     }
 
     public function delete($id)

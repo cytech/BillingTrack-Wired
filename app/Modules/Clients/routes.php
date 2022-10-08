@@ -25,6 +25,7 @@ Route::middleware(['web', 'auth.admin'])
         Route::name('ajax.modalEdit')->post('ajax/modal_edit', [ClientController::class, 'ajaxModalEdit']);
         Route::name('ajax.modalUpdate')->post('ajax/modal_update/{id}', [ClientController::class, 'ajaxModalUpdate']);
         Route::name('ajax.checkDuplicateName')->post('ajax/check_duplicate_name', [ClientController::class, 'ajaxCheckDuplicateName']);
+        Route::name('saveTab')->post('save_tab', [ClientController::class, 'saveTab']);
 
         Route::group(['prefix' => '{clientId}/contacts'], function () {
             Route::name('contacts.create')->get('create', [ContactController::class, 'create']);

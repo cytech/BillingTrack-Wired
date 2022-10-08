@@ -26,13 +26,9 @@ class QuoteController extends Controller
     public function index()
     {
         $this->setReturnUrl();
+        $status = request('status') === 'all_statuses' ? '' : request('status');
 
-        $status = request('status', 'all_statuses');
-        $statuses = QuoteStatuses::listsAllFlat();
-        $keyedStatuses = collect(QuoteStatuses::lists());//->except(3);
-        $companyProfiles = ['' => trans('bt.all_company_profiles')] + CompanyProfile::getList();
-
-        return view('quotes.index', compact('status', 'statuses', 'keyedStatuses', 'companyProfiles'));
+        return view('quotes.index')->with('status', $status);
     }
 
     public function delete($id)

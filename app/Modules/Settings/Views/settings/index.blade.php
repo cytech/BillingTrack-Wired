@@ -57,7 +57,7 @@
             });
 
             addEvent(document, 'click', "#setting-tabs a", (e) => {
-                const tabId = e.target.getAttribute('href').substr(1)
+                const tabId = e.target.getAttribute('href').slice(1)
                 axios.post("{{ route('settings.saveTab') }}", {settingTabId: tabId});
             })
 

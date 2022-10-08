@@ -27,13 +27,9 @@ class WorkorderController extends Controller
     public function index()
     {
         $this->setReturnUrl();
+        $status = request('status') === 'all_statuses' ? '' : request('status');
 
-        $status = request('status', 'all_statuses');
-        $statuses = WorkorderStatuses::listsAllFlat();
-        $keyedStatuses = collect(WorkorderStatuses::lists())->except(4);
-        $companyProfiles = ['' => trans('bt.all_company_profiles')] + CompanyProfile::getList();
-
-        return view('workorders.index', compact('status', 'statuses', 'keyedStatuses', 'companyProfiles'));
+        return view('workorders.index')->with('status', $status);
     }
 
     public function delete($id)

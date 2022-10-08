@@ -29,6 +29,8 @@ class WorkorderEditController extends Controller
 
     public function edit($id)
     {
+        $this->setPreviousUrl();
+
         $workorder = Workorder::with(['workorderItems.amount.item.workorder.currency'])->find($id);
 
         return view('workorders.edit')

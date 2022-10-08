@@ -6,6 +6,15 @@
             addEvent(document, 'click', '#btn-add-contact', (e) => {
                 loadModal('{{ route('clients.contacts.create', [$client->id]) }}')
             });
+
+            addEvent(document, 'click', "#clientview-tabs a", (e) => {
+                const tabId = e.target.getAttribute('href').slice(1)
+                axios.post("{{ route('clients.saveTab') }}", {clientviewTabId: tabId});
+            })
+
+            let stid = '{{ session('clientviewTabId') }}' ? '{{ session('clientviewTabId') }}' : 'tab-details'
+            var triggerEl = new bootstrap.Tab(document.querySelector('#clientview-tabs a[href="#' + stid + '"]'))
+            triggerEl.show() // Select tab by name
         })
     </script>
 @stop
@@ -46,7 +55,7 @@
             <div class="col-12">
                 <div class="card m-2">
                     <div class="card-header d-flex p-0">
-                        <ul class="nav nav-pills p-2">
+                        <ul class="nav nav-pills p-2" id="clientview-tabs">
                             <li class="nav-item "><a class="nav-link active show" data-bs-toggle="tab"
                                                      href="#tab-details">@lang('bt.details')</a></li>
                             <li class="nav-item "><a class="nav-link" data-bs-toggle="tab"
@@ -161,26 +170,25 @@
                             </div>
                             <div id="tab-quotes" class="tab-pane">
                                 <div class="card">
-                                    @include('quotes._table')
-                                    <div class="card-footer"><p class="text-center"><strong><a
-                                                        href="{{ route('quotes.index') }}?client={{ $client->id }}">@lang('bt.view_all')</a></strong>
-                                        </p></div>
+                                    <div class="card-body">
+                                        <livewire:data-tables.module-table :module_type="'Quote'" :clientid="$client->id"/>
+                                    </div>
+
                                 </div>
                             </div>
                             <div id="tab-workorders" class="tab-pane">
                                 <div class="card">
-                                    @include('workorders._table')
-                                    <div class="card-footer"><p class="text-center"><strong><a
-                                                        href="{{ route('workorders.index') }}?client={{ $client->id }}">@lang('bt.view_all')</a></strong>
-                                        </p></div>
+                                    <div class="card-body">
+                                        <livewire:data-tables.module-table :module_type="'Workorder'" :clientid="$client->id"/>
+                                    </div>
+
                                 </div>
                             </div>
                             <div id="tab-invoices" class="tab-pane">
                                 <div class="card">
-                                    @include('invoices._table')
-                                    <div class="card-footer"><p class="text-center"><strong><a
-                                                        href="{{ route('invoices.index') }}?client={{ $client->id }}">@lang('bt.view_all')</a></strong>
-                                        </p></div>
+                                    <div class="card-body">
+                                        <livewire:data-tables.module-table :module_type="'Invoice'" :clientid="$client->id"/>
+                                    </div>
                                 </div>
                             </div>
                             <div id="tab-recurring-invoices" class="tab-pane">

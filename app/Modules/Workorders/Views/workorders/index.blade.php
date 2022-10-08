@@ -8,10 +8,7 @@
                 <div class="btn-group float-end">
                     <div class="btn-group">
                         {!! Form::open(['method' => 'GET', 'id' => 'filter', 'class'=>"form-inline"]) !!}
-                        <div class="input-group">
-                            {!! Form::select('company_profile', $companyProfiles, request('company_profile'), ['class' => 'filter_options form-select w-auto me-1']) !!}
-                            {!! Form::select('status', $statuses, request('status'), ['class' => 'filter_options form-select w-auto me-1']) !!}
-                        </div>
+                            {!! Form::hidden('client', request('client')) !!}
                         {!! Form::close() !!}
                         <a class="btn btn-secondary rounded border" href="{{ route('utilities.batchprint', ['module' => 'workorders']) }}" title="Batch Print by DateRange"><i
                                     class="fa fa-print"></i> @lang('bt.batchprint')</a>
@@ -31,7 +28,7 @@
         @include('layouts._alerts')
         <div class="card ">
             <div class="card-body">
-                <livewire:data-tables.module-table :module_type="'Workorder'" :keyedStatuses="$keyedStatuses"/>
+                <livewire:data-tables.module-table :module_type="'Workorder'"  :reqstatus="$status"/>
             </div>
         </div>
     </section>

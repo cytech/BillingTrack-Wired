@@ -78,7 +78,7 @@
     <script type="text/javascript">
         ready(function () {
             addEvent(document, 'click', "#trash-tabs a", (e) => {
-                const tabId = e.target.getAttribute('href').substr(1)
+                const tabId = e.target.getAttribute('href').slice(1)
                 axios.post("{{ route('utilities.saveTab') }}", {trashTabId: tabId});
             })
             let ttid = '{{ session('trashTabId') }}' ? '{{ session('trashTabId') }}' : 'tab-clients'

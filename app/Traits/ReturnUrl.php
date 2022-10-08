@@ -18,6 +18,11 @@ trait ReturnUrl
         session(['returnUrl' => request()->fullUrl()]);
     }
 
+    public function setPreviousUrl()
+    {
+        session(['returnUrl' => url()->previous()]);
+    }
+
     public function getReturnUrl()
     {
         return session('returnUrl');

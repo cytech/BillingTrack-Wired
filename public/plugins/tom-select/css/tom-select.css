@@ -1,5 +1,5 @@
 /**
- * tom-select.css (v2.1.0)
+ * tom-select.css (v2.2.1)
  * Copyright (c) contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
@@ -12,8 +12,18 @@
  * governing permissions and limitations under the License.
  *
  */
+:root {
+  --ts-pr-clear-button:	0;
+  --ts-pr-caret:	0;
+  --ts-pr-min:	.75rem;
+}
+
 .ts-wrapper.single .ts-control, .ts-wrapper.single .ts-control input {
   cursor: pointer;
+}
+
+.ts-control {
+  padding-right: max(var(--ts-pr-min), var(--ts-pr-clear-button) + var(--ts-pr-caret)) !important;
 }
 
 .ts-wrapper.plugin-drag_drop.multi > .ts-control > div.ui-sortable-placeholder {
@@ -35,21 +45,22 @@
   margin-right: 0.5rem;
 }
 
-.plugin-clear_button .ts-control {
-  padding-right: calc(1em + (3 * 6px)) !important;
+.plugin-clear_button {
+  --ts-pr-clear-button: 1em;
 }
 .plugin-clear_button .clear-button {
   opacity: 0;
   position: absolute;
-  top: 8px;
+  top: 50%;
+  transform: translateY(-50%);
   right: calc(8px - 6px);
   margin-right: 0 !important;
   background: transparent !important;
   transition: opacity 0.5s;
   cursor: pointer;
 }
-.plugin-clear_button.single .clear-button {
-  right: calc(8px - 6px + 2rem);
+.plugin-clear_button.form-select .clear-button, .plugin-clear_button.single .clear-button {
+  right: max( var(--ts-pr-caret), 8px);
 }
 .plugin-clear_button.focus.has-items .clear-button, .plugin-clear_button:not(.disabled):hover.has-items .clear-button {
   opacity: 1;
@@ -105,9 +116,6 @@
   flex: none;
   min-width: 4px;
 }
-.ts-wrapper.plugin-input_autogrow.has-items.focus .ts-control > input::-webkit-input-placeholder {
-  color: transparent;
-}
 .ts-wrapper.plugin-input_autogrow.has-items.focus .ts-control > input::-ms-input-placeholder {
   color: transparent;
 }
@@ -146,28 +154,42 @@
   vertical-align: middle;
   display: inline-block;
   padding: 0 6px;
-  border-left: 1px solid #d0d0d0;
   border-radius: 0 2px 2px 0;
   box-sizing: border-box;
-  margin-left: 6px;
 }
 .ts-wrapper.plugin-remove_button .item .remove:hover {
   background: rgba(0, 0, 0, 0.05);
 }
-.ts-wrapper.plugin-remove_button .item.active .remove {
-  border-left-color: #cacaca;
-}
 .ts-wrapper.plugin-remove_button.disabled .item .remove:hover {
   background: none;
-}
-.ts-wrapper.plugin-remove_button.disabled .item .remove {
-  border-left-color: white;
 }
 .ts-wrapper.plugin-remove_button .remove-single {
   position: absolute;
   right: 0;
   top: 0;
   font-size: 23px;
+}
+
+.ts-wrapper.plugin-remove_button:not(.rtl) .item .remove {
+  border-left: 1px solid #d0d0d0;
+  margin-left: 6px;
+}
+.ts-wrapper.plugin-remove_button:not(.rtl) .item.active .remove {
+  border-left-color: #cacaca;
+}
+.ts-wrapper.plugin-remove_button:not(.rtl).disabled .item .remove {
+  border-left-color: white;
+}
+
+.ts-wrapper.plugin-remove_button.rtl .item .remove {
+  border-right: 1px solid #d0d0d0;
+  margin-right: 6px;
+}
+.ts-wrapper.plugin-remove_button.rtl .item.active .remove {
+  border-right-color: #cacaca;
+}
+.ts-wrapper.plugin-remove_button.rtl.disabled .item .remove {
+  border-right-color: white;
 }
 
 .ts-wrapper {

@@ -20,7 +20,7 @@ abstract class AbstractStatuses
 
     /**
      * Returns an array of statuses to populate dropdown list.
-     *
+     * removes 1st item (all_statuses)
      * @return array
      */
     public static function lists()
@@ -37,6 +37,24 @@ abstract class AbstractStatuses
         return $statuses;
     }
 
+    /**
+     * Returns an array of statuses to populate dropdown list.
+     * does not remove 1st item (all_statuses)
+     * @return array
+     */
+    public static function listsAll()
+    {
+        $statuses = static::$statuses;
+
+
+        foreach ($statuses as $key => $status)
+        {
+            $statuses[$key] = trans('bt.' . $status);
+        }
+
+        return $statuses;
+    }
+
     public static function listsAllFlat()
     {
         $statuses = [];
@@ -44,6 +62,24 @@ abstract class AbstractStatuses
         foreach (static::$statuses as $status)
         {
             $statuses[$status] = trans('bt.' . $status);
+        }
+
+        return $statuses;
+    }
+
+    public static function listsAllFlatDT($module_type)
+    {
+        $statuses = [];
+
+        foreach (static::$statuses as $key => $status)
+            if ($key === array_key_first(static::$statuses)) {
+                $statuses[''] = trans('bt.' . $status);
+            } else {
+                $statuses[$status] = trans('bt.' . $status);
+            }
+
+        if ($module_type === 'Invoice' || $module_type === 'Purchaseorder') {
+            $statuses['overdue'] = __('bt.overdue');
         }
 
         return $statuses;

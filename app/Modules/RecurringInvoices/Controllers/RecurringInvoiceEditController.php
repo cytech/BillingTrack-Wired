@@ -31,6 +31,8 @@ class RecurringInvoiceEditController extends Controller
 
     public function edit($id)
     {
+        $this->setPreviousUrl();
+
         $recurringInvoice = RecurringInvoice::with(['items.amount.item.recurringInvoice.currency'])->find($id);
 
         return view('recurring_invoices.edit')

@@ -11,6 +11,7 @@
                         <div class="input-group">
                             {!! Form::select('company_profile', $companyProfiles, request('company_profile'), ['class' => 'filter_options form-select w-auto me-1']) !!}
                             {!! Form::select('status', $statuses, request('status'), ['class' => 'filter_options form-select w-auto me-1']) !!}
+                            {!! Form::hidden('client', request('client')) !!}
                         </div>
                         {!! Form::close() !!}
                     </div>
@@ -29,7 +30,7 @@
         @include('layouts._alerts')
         <div class="card ">
             <div class="card-body">
-                <livewire:data-tables.module-table :module_type="'RecurringInvoice'"/>
+                <livewire:data-tables.module-table :module_type="'RecurringInvoice'" :clientid="request('client')"/>
             </div>
         </div>
     </section>

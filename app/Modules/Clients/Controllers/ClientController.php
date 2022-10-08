@@ -91,7 +91,7 @@ class ClientController extends Controller
             ->with('invoices', $invoices)
             ->with('quotes', $quotes)
             ->with('workorders', $workorders)
-            ->with('payments', Payment::clientId($clientId)->orderBy('paid_at', 'desc')->get())
+            ->with('payments', Payment::clientId($clientId)->orderBy('paid_at', 'desc')->take(config('bt.resultsPerPage'))->get())
             ->with('recurringInvoices', $recurringInvoices)
             ->with('customFields', CustomField::forTable('clients')->get())
             ->with('frequencies', Frequency::lists())
@@ -173,5 +173,10 @@ class ClientController extends Controller
         }
 
         return response()->json(['is_duplicate' => 0]);
+    }
+
+    public function saveTab()
+    {
+        session(['clientviewTabId' => request('clientviewTabId')]);
     }
 }

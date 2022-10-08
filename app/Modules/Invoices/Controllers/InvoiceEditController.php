@@ -31,6 +31,8 @@ class InvoiceEditController extends Controller
 
     public function edit($id)
     {
+        $this->setPreviousUrl();
+
         $invoice = Invoice::with(['items.amount.item.invoice.currency'])->find($id);
 
         return view('invoices.edit')

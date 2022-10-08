@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 6.0.4
+- fix regression in datatable search returnurl
+- add red/bold to overdue invoice due_at in datatable
+- move company profile and status filters to datatables for Quotes, Workorders and Invoices
+- add saveTab to client view
+- replace deprecated javascript substr() with slice()
+
 ## 6.0.3
 - Requires PHP &gt;= 8.1
 - add employee type and termination date

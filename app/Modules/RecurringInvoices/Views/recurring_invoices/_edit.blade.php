@@ -135,7 +135,7 @@
                         <x-fp_common
                                 id="stop_date"
                                 class="form-control form-control-sm"
-                                value="{{$recurringInvoice->stop_date}}"
+                                value="{{$recurringInvoice->stop_date == '0000-00-00' ? '' : $recurringInvoice->stop_date}}"
                         ></x-fp_common>
                     </div>
                     <div class="mb-3">

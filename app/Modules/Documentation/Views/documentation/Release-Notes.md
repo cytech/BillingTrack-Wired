@@ -1,5 +1,11 @@
 Release Notes
 ---
+### BillingTrack 6.0.4 (2022-10-14)
+- fix regression in datatable search returnurl
+- add red/bold to overdue invoice due_at in datatable
+- move company profile and status filters to datatables for Quotes, Workorders and Invoices
+- add saveTab to client view
+- replace deprecated javascript substr() with slice() 
 ### BillingTrack 6.0.3 (2022-09-26)
 - add employee type and termination date
 - update employees available query to include null term_date or term_date > $date

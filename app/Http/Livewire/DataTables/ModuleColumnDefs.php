@@ -90,7 +90,8 @@ class ModuleColumnDefs
                     ->format(fn($value, $row, Column $column) => DateFormatter::format($row->{lcfirst($module_type) . '_date'})),
                 Column::make($col_title_date_due, $col_db_date_due)
                     ->sortable(fn(Builder $query, string $direction) => $query->orderBy($col_db_date_due, $direction))
-                    ->format(fn($value, $row, Column $column) => DateFormatter::format($row->$col_db_date_due)),
+                    ->format(fn($value, $row, Column $column) => $row->isOverdue ? '<div style="color: red; font-weight: bold;">' .  DateFormatter::format($row->$col_db_date_due) . '</div>': DateFormatter::format($row->$col_db_date_due))
+                    ->html(),
                 $col_client_vendor,
                 Column::make(trans('bt.summary'), 'summary')
                     ->sortable(),

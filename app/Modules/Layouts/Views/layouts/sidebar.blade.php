@@ -77,7 +77,7 @@
                 @if(\BT\Modules\Settings\Models\Setting::isModuleEnabled('purchaseorder'))
                     <li class="nav-item">
                         <a class="nav-link"
-                           href="{{ route('purchaseorders.index', ['status' => config('bt.invoiceStatusFilter')]) }}">
+                           href="{{ route('purchaseorders.index', ['status' => config('bt.purchaseorderStatusFilter')]) }}">
                             <i class="nav-icon fas fa-file-alt fa-fw"></i>
                             <p>@lang('bt.purchaseorders')</p>
                         </a>

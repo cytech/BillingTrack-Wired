@@ -33,7 +33,7 @@
         @include('layouts._alerts')
         <div class="card ">
             <div class="card-body">
-                <livewire:data-tables.module-table :module_type="'Payment'"/>
+                <livewire:data-tables.module-table :module_type="'Payment'"  :clientid="request('client')"/>
             </div>
         </div>
     </section>

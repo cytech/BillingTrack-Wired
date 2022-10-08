@@ -11,6 +11,7 @@
                         <div class="input-group">
                             {!! Form::select('company_profile', $companyProfiles, request('company_profile'), ['class' => 'filter_options form-select w-auto me-1']) !!}
                             {!! Form::select('status', $statuses, request('status'), ['class' => 'filter_options form-select w-auto me-1']) !!}
+                            {!! Form::hidden('vendor', request('vendor')) !!}
                         </div>
                         {!! Form::close() !!}
                     </div>

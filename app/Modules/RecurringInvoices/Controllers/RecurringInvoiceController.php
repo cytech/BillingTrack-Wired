@@ -29,8 +29,9 @@ class RecurringInvoiceController extends Controller
         $statuses = ['all_statuses' => trans('bt.all_statuses'), 'active' => trans('bt.active'), 'inactive' => trans('bt.inactive')];
         $companyProfiles = ['' => trans('bt.all_company_profiles')] + CompanyProfile::getList();
         $frequencies = Frequency::lists();
+        $clientid = request('client');
 
-        return view('recurring_invoices.index', compact('status', 'statuses', 'frequencies', 'companyProfiles'));
+        return view('recurring_invoices.index', compact('status', 'statuses', 'frequencies', 'companyProfiles', 'clientid'));
     }
 
     public function bulkDelete()
