@@ -11,6 +11,7 @@
 
 use BT\Modules\Currencies\Controllers\CurrencyController;
 
+Route::name('currencies.getExchangeRate')->post('currencies/get-exchange-rate', [CurrencyController::class, 'getExchangeRate']);
 Route::middleware(['web', 'auth.admin'])
     ->prefix('currencies')->name('currencies.')->group(function () {
         Route::name('index')->get('/', [CurrencyController::class, 'index']);
@@ -19,5 +20,5 @@ Route::middleware(['web', 'auth.admin'])
         Route::name('edit')->get('{id}/edit', [CurrencyController::class, 'edit']);
         Route::name('update')->post('{id}', [CurrencyController::class, 'update']);
         Route::name('delete')->get('{id}/delete', [CurrencyController::class, 'delete']);
-        Route::name('getExchangeRate')->post('get-exchange-rate', [CurrencyController::class, 'getExchangeRate']);
+//        Route::name('getExchangeRate')->post('get-exchange-rate', [CurrencyController::class, 'getExchangeRate']);
     });

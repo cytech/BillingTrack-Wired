@@ -81,7 +81,7 @@ class RecurringInvoiceObserver
         elseif (!$recurringInvoice->exchange_rate)
         {
             $currencyConverter               = CurrencyConverterFactory::create();
-            $recurringInvoice->exchange_rate = $currencyConverter->convert(config('bt.baseCurrency'), $recurringInvoice->currency_code);
+            $recurringInvoice->exchange_rate = $currencyConverter->convert(config('bt.currencyConversionKey'), config('bt.baseCurrency'), $recurringInvoice->currency_code);
         }
 
     }

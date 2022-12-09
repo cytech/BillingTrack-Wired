@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 6.0.5
+- fix regression in Base Currency setting and currency conversion
+
 ## 6.0.4
 - fix regression in datatable search returnurl
 - add red/bold to overdue invoice due_at in datatable

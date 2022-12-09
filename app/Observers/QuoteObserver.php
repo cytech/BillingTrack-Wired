@@ -110,7 +110,7 @@ class QuoteObserver
         elseif (!$quote->exchange_rate)
         {
             $currencyConverter    = CurrencyConverterFactory::create();
-            $quote->exchange_rate = $currencyConverter->convert(config('bt.baseCurrency'), $quote->currency_code);
+            $quote->exchange_rate = $currencyConverter->convert(config('bt.currencyConversionKey'), config('bt.baseCurrency'), $quote->currency_code);
         }
 
         $quote->url_key = str_random(32);

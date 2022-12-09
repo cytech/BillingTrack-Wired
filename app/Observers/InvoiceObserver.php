@@ -97,7 +97,7 @@ class InvoiceObserver
             $invoice->exchange_rate = 1;
         } elseif (!$invoice->exchange_rate) {
             $currencyConverter = CurrencyConverterFactory::create();
-            $invoice->exchange_rate = $currencyConverter->convert(config('bt.baseCurrency'), $invoice->currency_code);
+            $invoice->exchange_rate = $currencyConverter->convert(config('bt.currencyConversionKey'), config('bt.baseCurrency'), $invoice->currency_code);
         }
 
         $invoice->url_key = str_random(32);

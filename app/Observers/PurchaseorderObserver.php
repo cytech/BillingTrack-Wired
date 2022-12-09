@@ -113,7 +113,7 @@ class PurchaseorderObserver
         elseif (!$purchaseorder->exchange_rate)
         {
             $currencyConverter      = CurrencyConverterFactory::create();
-            $purchaseorder->exchange_rate = $currencyConverter->convert(config('bt.baseCurrency'), $purchaseorder->currency_code);
+            $purchaseorder->exchange_rate = $currencyConverter->convert(config('bt.currencyConversionKey'), config('bt.baseCurrency'), $purchaseorder->currency_code);
         }
 
         $purchaseorder->url_key = str_random(32);

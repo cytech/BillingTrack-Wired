@@ -1,5 +1,8 @@
 Release Notes
 ---
+### BillingTrack 6.0.5 (2022-12-09)
+- fix regression in Base Currency setting and currency conversion
+
 ### BillingTrack 6.0.4 (2022-10-14)
 - fix regression in datatable search returnurl
 - add red/bold to overdue invoice due_at in datatable

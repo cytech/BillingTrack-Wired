@@ -108,7 +108,7 @@ class WorkorderObserver
             $workorder->exchange_rate = 1;
         } elseif (!$workorder->exchange_rate) {
             $currencyConverter = CurrencyConverterFactory::create();
-            $workorder->exchange_rate = $currencyConverter->convert(config('bt.baseCurrency'), $workorder->currency_code);
+            $workorder->exchange_rate = $currencyConverter->convert(config('bt.currencyConversionKey'), config('bt.baseCurrency'), $workorder->currency_code);
         }
 
         $workorder->url_key = str_random(32);

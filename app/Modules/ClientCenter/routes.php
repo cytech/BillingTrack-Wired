@@ -20,7 +20,7 @@ use BT\Modules\ClientCenter\Controllers\ClientCenterWorkorderController;
 
 Route::middleware('web')
     ->prefix('client_center')->name('clientCenter.')->group(function () {
-        Route::get('/', 'ClientCenterDashboardController@redirectToLogin');
+        Route::get('/', [ClientCenterDashboardController::class, 'redirectToLogin']);
         Route::name('public.invoice.show')->get('invoice/{invoiceKey}', [ClientCenterPublicInvoiceController::class, 'show']);
         Route::name('public.invoice.pdf')->get('invoice/{invoiceKey}/pdf', [ClientCenterPublicInvoiceController::class, 'pdf']);
         Route::name('public.invoice.html')->get('invoice/{invoiceKey}/html', [ClientCenterPublicInvoiceController::class, 'html']);
