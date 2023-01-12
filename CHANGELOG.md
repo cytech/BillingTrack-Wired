@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 6.0.6
+- update Fullcalendar to v6.x
+- update chart.js to v4.x
+- update axios to v1.x
+- update vanilla-datetimerange-picker fork
+- update all dependencies
+
 ## 6.0.5
 - fix regression in Base Currency setting and currency conversion
 

@@ -24,9 +24,7 @@ mix.copyDirectory('node_modules/tom-select/dist/css', 'public/plugins/tom-select
 mix.copyDirectory('node_modules/tom-select/dist/js', 'public/plugins/tom-select/js' )
 mix.copy('node_modules/vanilla-datetimerange-picker/dist/vanilla-datetimerange-picker.css', 'public/plugins/vanilla-datetimerange-picker/vanilla-datetimerange-picker.css');
 mix.copy('node_modules/vanilla-datetimerange-picker/dist/vanilla-datetimerange-picker.js', 'public/plugins/vanilla-datetimerange-picker/vanilla-datetimerange-picker.js');
-mix.copy('node_modules/fullcalendar/main.min.js', 'public/plugins/fullcalendar/main.min.js')
-mix.copy('node_modules/fullcalendar/main.min.css', 'public/plugins/fullcalendar/main.min.css')
-mix.copy('node_modules/chart.js/dist/chart.js', 'public/plugins/chart.js/chart.js');
+mix.copy('node_modules/chart.js/dist/chart.umd.js', 'public/plugins/chart.js/chart.umd.js');
 mix.copy('node_modules/moment/moment.js', 'public/plugins/moment/moment.js');
 mix.copy('node_modules/moment/min/moment.min.js', 'public/plugins/moment/moment.min.js');
 mix.copy('node_modules/alpinejs/dist/cdn.min.js', 'public/plugins/alpinejs/cdn.min.js');

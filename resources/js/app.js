@@ -6,19 +6,25 @@
  */
 
 require('./bootstrap');
-
-// import 'jquery-ui/ui/widgets/autocomplete';
-// import 'jquery-ui/ui/widgets/dialog';
-// import 'jquery-ui/ui/widgets/sortable';
-//datatables.net
-// import 'datatables.net/js/jquery.dataTables.min';
-// import 'datatables.net-bs4/js/dataTables.bootstrap4.min';
-// Default SortableJS
+// SortableJS https://github.com/SortableJS/Sortable
 import Sortable from 'sortablejs/Sortable.min';
 window.Sortable = Sortable;
 // autosize https://github.com/jackmoore/autosize
 import autosize from "autosize";
 window.autosize = autosize;
+// fullcalendar https://github.com/fullcalendar/fullcalendar
+import { Calendar } from '@fullcalendar/core';
+window.Calendar = Calendar;
+import interactionPlugin from '@fullcalendar/interaction';
+window.interactionPlugin = interactionPlugin;
+import dayGridPlugin from '@fullcalendar/daygrid';
+window.dayGridPlugin = dayGridPlugin;
+import timeGridPlugin from '@fullcalendar/timegrid';
+window.timeGridPlugin = timeGridPlugin;
+import listPlugin from '@fullcalendar/list';
+window.listPlugin = listPlugin;
+import bootstrap5Plugin from '@fullcalendar/bootstrap5'
+window.bootstrap5Plugin = bootstrap5Plugin
 
 //alpinejs
 // import Alpine from 'alpinejs'

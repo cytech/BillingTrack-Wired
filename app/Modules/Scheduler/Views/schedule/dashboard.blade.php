@@ -171,7 +171,7 @@
     </section>
 @stop
 @section('javaScript')
-    {!! Html::script('plugins/chart.js/chart.js') !!}
+    {!! Html::script('plugins/chart.js/chart.umd.js') !!}
 
     <script>
         var monthEvents = [

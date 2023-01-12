@@ -1,8 +1,6 @@
 @section('javaScript')
 
     {!! Html::style('plugins/bootstrap-icons/font/bootstrap-icons.css') !!}
-    {!! Html::style('plugins/fullcalendar/main.min.css') !!}
-    {!! Html::script('plugins/fullcalendar/main.min.js') !!}
 
     <style>
         .fc-day-today {
@@ -16,7 +14,15 @@
             /* init first - init first */
             var calendarEl = document.getElementById('calendar');
 
-            calendar = new FullCalendar.Calendar(calendarEl, {
+            let calendar = new Calendar(calendarEl, {
+                plugins: [
+                    dayGridPlugin,
+                    interactionPlugin,
+                    dayGridPlugin,
+                    timeGridPlugin,
+                    listPlugin,
+                    bootstrap5Plugin
+                ],
                 initialView: 'dayGridMonth',
                 themeSystem: '{!! config('bt.schedulerFcThemeSystem') !!}', //'standard' 'bootstrap5'
                 headerToolbar: {
