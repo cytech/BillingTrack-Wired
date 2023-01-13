@@ -10,6 +10,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - update axios to v1.x
 - update vanilla-datetimerange-picker fork
 - update all dependencies
+- migrate webpack to vite
+- allow_html in markdown config for documentation images
 
 ## 6.0.5
 - fix regression in Base Currency setting and currency conversion

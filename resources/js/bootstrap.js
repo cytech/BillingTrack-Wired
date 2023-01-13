@@ -1,15 +1,28 @@
-
 // This code may be modified to fit the specific needs of your application.
 
-try {
-    window._ = require('lodash');
-    window.Tippy = require('tippy.js').default;
-    window.Swal = require('sweetalert2');
-    window.bootstrap = require('bootstrap');
-    require('admin-lte-v4');
-    require('flatpickr');
-    confirmDatePlugin = require('flatpickr/dist/plugins/confirmDate/confirmDate');
-} catch (e) {}
+// window._ = require('lodash');
+// import _ from 'lodash';
+// window._ = _;
+
+import Tippy from 'tippy.js'
+
+window.Tippy = Tippy
+
+import Swal from 'sweetalert2'
+
+window.Swal = Swal
+
+import * as bootstrap from 'bootstrap'
+
+window.bootstrap = bootstrap
+
+import adminltev4 from 'admin-lte-v4'
+
+import flatpickr from 'flatpickr'
+
+import confirmDatePluginImport from 'flatpickr/dist/plugins/confirmDate/confirmDate'
+
+confirmDatePlugin = confirmDatePluginImport
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
@@ -17,7 +30,9 @@ try {
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
-window.axios = require('axios');
+import axios from 'axios'
+
+window.axios = axios;
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 

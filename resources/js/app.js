@@ -1,29 +1,37 @@
-
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-require('./bootstrap');
+import './bootstrap';
+import '../sass/app.scss'
 // SortableJS https://github.com/SortableJS/Sortable
 import Sortable from 'sortablejs/Sortable.min';
+
 window.Sortable = Sortable;
 // autosize https://github.com/jackmoore/autosize
 import autosize from "autosize";
+
 window.autosize = autosize;
 // fullcalendar https://github.com/fullcalendar/fullcalendar
-import { Calendar } from '@fullcalendar/core';
+import {Calendar} from '@fullcalendar/core';
+
 window.Calendar = Calendar;
 import interactionPlugin from '@fullcalendar/interaction';
+
 window.interactionPlugin = interactionPlugin;
 import dayGridPlugin from '@fullcalendar/daygrid';
+
 window.dayGridPlugin = dayGridPlugin;
 import timeGridPlugin from '@fullcalendar/timegrid';
+
 window.timeGridPlugin = timeGridPlugin;
 import listPlugin from '@fullcalendar/list';
+
 window.listPlugin = listPlugin;
 import bootstrap5Plugin from '@fullcalendar/bootstrap5'
+
 window.bootstrap5Plugin = bootstrap5Plugin
 
 //alpinejs

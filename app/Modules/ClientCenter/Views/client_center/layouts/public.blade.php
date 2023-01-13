@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
     <meta name="csrf-token" content="{{ csrf_token() }}"/>
-    <link rel="stylesheet" href="/css/app.css">
-    <script src="/js/app.js"></script>
+    <link rel="stylesheet" href="/build/assets/app.css">
+    <script src="/build/assets/app.js"></script>
     <title>{{ config('bt.headerTitleText') }}</title>
     @include('layouts._head')
 

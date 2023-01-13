@@ -7,9 +7,9 @@
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('bt.headerTitleText') }}</title>
-    <link rel="stylesheet" href="/css/app.css">
+    <link rel="stylesheet" href="/build/assets/app.css">
     @include('layouts._head')
-    <script src="/js/app.js"></script>
+    <script src="/build/assets/app.js"></script>
         @include('layouts._js_global')
         @yield('javaScript')
 </head>

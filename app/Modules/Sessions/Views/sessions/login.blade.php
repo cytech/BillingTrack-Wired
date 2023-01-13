@@ -5,8 +5,8 @@
     <title>@lang('bt.welcome')</title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="stylesheet" href="/css/app.css">
-    <script src="/js/app.js"></script>
+    <link rel="stylesheet" href="/build/assets/app.css">
+    <script src="/build/assets/app.js"></script>
     <link href="{{ asset('favicon.png') }}" rel="icon" type="image/png">
     @if (file_exists(base_path('custom/custom.css')))
         <link href="{{ asset('custom/custom.css') }}" rel="stylesheet" type="text/css"/>
