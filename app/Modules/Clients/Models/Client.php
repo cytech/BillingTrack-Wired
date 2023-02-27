@@ -315,7 +315,8 @@ class Client extends Model
             $q->select('id')
                 ->from('invoices')
                 ->where('invoices.client_id', '=', DB::raw(DB::getTablePrefix() . 'clients.id'))
-                ->where('invoices.invoice_status_id', '<>', DB::raw(InvoiceStatuses::getStatusId('canceled')));
+                ->where('invoices.invoice_status_id', '<>', DB::raw(InvoiceStatuses::getStatusId('canceled')))
+                ->whereNull('deleted_at');
         })->toSql();
     }
 
