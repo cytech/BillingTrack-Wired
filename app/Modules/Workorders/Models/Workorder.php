@@ -32,7 +32,7 @@ class Workorder extends Model
 
     protected $appends = ['formatted_workorder_date', 'formatted_expires_at', 'formatted_job_date', 'status_text', 'formatted_summary'];
 
-    protected $dates = ['expires_at', 'workorder_date','job_date','deleted_at'];
+    protected $casts = ['expires_at' => 'datetime', 'workorder_date' => 'datetime','job_date' => 'datetime', 'deleted_at' => 'datetime'];
 
     /*
     |--------------------------------------------------------------------------

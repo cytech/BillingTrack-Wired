@@ -20,7 +20,7 @@ class Contact extends Model
 
     protected $table = 'vendor_contacts';
 
-    protected $dates = ['deleted_at'];
+    protected $casts = ['deleted_at' => 'datetime'];
 
     protected $guarded = ['id'];
 

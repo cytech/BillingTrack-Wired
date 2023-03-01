@@ -6,36 +6,36 @@
     "type": "project",
     "require": {
         "php": "^8.1",
-        "askedio/laravel-soft-cascade": "^9.0.0",
-        "barryvdh/laravel-ide-helper": "^2.9",
+        "askedio/laravel-soft-cascade": "^10.0.0",
+        "barryvdh/laravel-ide-helper": "^v2.13.0",
         "doctrine/dbal": "^3.0",
-        "dompdf/dompdf": "^v2.0.0",
-        "graham-campbell/markdown": "^v14.0.0",
+        "dompdf/dompdf": "^v2.0.3",
+        "graham-campbell/markdown": "^v15.0.0",
         "guzzlehttp/guzzle": "^7.2",
-        "ifsnop/mysqldump-php": "2.*",
+        "ifsnop/mysqldump-php": "v2.10",
         "knplabs/knp-snappy": "^1.2",
-        "laravel/framework": "^9.2",
-        "laravel/helpers": "^1.4",
+        "laravel/framework": "^10.0",
+        "laravel/helpers": "^1.6",
         "laravel/legacy-factories": "^1.1",
-        "laravel/tinker": "^2.7",
-        "laravelcollective/html": "^6.2",
-        "laravolt/avatar": "^4.1",
-        "livewire/livewire": "^2.7",
-        "mollie/mollie-api-php": "^2.29",
-        "rappasoft/laravel-livewire-tables": "^v2.7.0",
+        "laravel/tinker": "^2.8",
+        "laravelcollective/html": "^v6.4.0",
+        "laravolt/avatar": "^5.0.0",
+        "livewire/livewire": "^v2.12.1",
+        "mollie/mollie-api-php": "^2.50",
+        "rappasoft/laravel-livewire-tables": "^v2.11.0",
         "simshaun/recurr": "^v5.0.0",
-        "sonata-project/exporter": "^2.5",
-        "spatie/laravel-permission": "^5.5",
-        "srmklive/paypal": "~3.0",
-        "stripe/stripe-php": "^7.69"
+        "sonata-project/exporter": "^3.1.1",
+        "spatie/laravel-permission": "^5.9.1",
+        "srmklive/paypal": "^3.0.19",
+        "stripe/stripe-php": "^v10.7.0"
     },
     "require-dev": {
-        "spatie/laravel-ignition": "^1.0",
-        "nunomaduro/collision": "^6.1",
+        "spatie/laravel-ignition": "^2.0",
+        "nunomaduro/collision": "^7.0",
         "barryvdh/laravel-debugbar": "^3.5",
         "fakerphp/faker": "^1.13",
         "mockery/mockery": "^1.4",
-        "phpunit/phpunit": "^9.3"
+        "phpunit/phpunit": "^10.0"
     },
     "autoload": {
         "classmap": [
@@ -87,6 +87,6 @@
             "symfony/thanks": false
         }
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "prefer-stable": true
 }

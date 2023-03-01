@@ -27,7 +27,7 @@ class TimeTrackingProject extends Model
 
     protected $softCascade = ['tasks'];
 
-    protected $dates = ['deleted_at'];
+    protected $casts = ['deleted_at' => 'datetime'];
 
     protected $table = 'time_tracking_projects';
 

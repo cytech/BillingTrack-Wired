@@ -32,7 +32,7 @@ class ScheduleOccurrence extends Model {
 
 	protected $guarded = ['id'];
 
-	protected $dates = ['start_date','end_date', 'reminder_date', 'deleted_at'];
+    protected $casts = ['start_date' => 'datetime','end_date' => 'datetime', 'reminder_date' => 'datetime', 'deleted_at' => 'datetime'];
 
 	protected $appends = ['formatted_start_date', 'formatted_end_date'];
 

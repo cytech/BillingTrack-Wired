@@ -36,7 +36,7 @@ class Payment extends Model
      */
     protected $guarded = ['id'];
 
-    protected $dates = ['paid_at','deleted_at'];
+    protected $casts = ['paid_at' => 'datetime', 'deleted_at' => 'datetime'];
 
     protected $appends = ['formatted_paid_at','formatted_amount'];
 

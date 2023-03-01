@@ -18,7 +18,7 @@ class WorkorderAmount extends Model
 {
     use SoftDeletes;
 
-    protected $dates = ['deleted_at'];
+    protected $casts = ['deleted_at' => 'datetime'];
 
     /**
      * Guarded properties

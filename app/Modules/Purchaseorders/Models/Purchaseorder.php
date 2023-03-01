@@ -33,7 +33,7 @@ class Purchaseorder extends Model
 
     protected $guarded = ['id'];
 
-    protected $dates = ['due_at', 'purchaseorder_date', 'deleted_at'];
+    protected $casts = ['due_at' => 'datetime', 'purchaseorder_date' => 'datetime','deleted_at' => 'datetime'];
 
     protected $appends = ['formatted_purchaseorder_date', 'formatted_due_at', 'formatted_summary'];
 

@@ -15,15 +15,13 @@ function formatAddress($object)
     {
         $address = config('bt.addressFormat');
 
-        $address = str_replace('{{ address }}', $object->address, $address);
-        $address = str_replace('{{ city }}', $object->city, $address);
-        $address = str_replace('{{ state }}', $object->state, $address);
-        $address = str_replace('{{ zip }}', $object->zip, $address);
-        $address = str_replace('{{ zip_code }}', $object->zip, $address);
-        $address = str_replace('{{ postal_code }}', $object->zip, $address);
-        $address = str_replace('{{ country }}', $object->country, $address);
-
-        return $address;
+        $address = str_replace('{{ address }}', (string) $object->address, $address);
+        $address = str_replace('{{ city }}', (string) $object->city, $address);
+        $address = str_replace('{{ state }}', (string) $object->state, $address);
+        $address = str_replace('{{ zip }}', (string) $object->zip, $address);
+        $address = str_replace('{{ zip_code }}', (string) $object->zip, $address);
+        $address = str_replace('{{ postal_code }}', (string) $object->zip, $address);
+        return str_replace('{{ country }}', (string) $object->country, $address);
     }
 
     return '';
@@ -34,15 +32,13 @@ function formatAddress2($object)
     {
         $address = config('bt.addressFormat');
 
-        $address = str_replace('{{ address }}', $object->address_2, $address);
-        $address = str_replace('{{ city }}', $object->city_2, $address);
-        $address = str_replace('{{ state }}', $object->state_2, $address);
-        $address = str_replace('{{ zip }}', $object->zip_2, $address);
-        $address = str_replace('{{ zip_code }}', $object->zip_2,$address);
-        $address = str_replace('{{ postal_code }}', $object->zip_2, $address);
-        $address = str_replace('{{ country }}', $object->country_2, $address);
-
-        return $address;
+        $address = str_replace('{{ address }}', (string) $object->address_2, $address);
+        $address = str_replace('{{ city }}', (string) $object->city_2, $address);
+        $address = str_replace('{{ state }}', (string) $object->state_2, $address);
+        $address = str_replace('{{ zip }}', (string) $object->zip_2, $address);
+        $address = str_replace('{{ zip_code }}', (string) $object->zip_2,$address);
+        $address = str_replace('{{ postal_code }}', (string) $object->zip_2, $address);
+        return str_replace('{{ country }}', (string) $object->country_2, $address);
     }
 
     return '';

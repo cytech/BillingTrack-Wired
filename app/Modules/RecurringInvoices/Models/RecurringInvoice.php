@@ -26,7 +26,7 @@ class RecurringInvoice extends Model
 
     protected $softCascade = ['recurringInvoiceItems', 'custom', 'amount', 'activities'];
 
-    protected $dates = ['deleted_at'];
+    protected $casts = ['deleted_at' => 'datetime'];
 
     protected $guarded = ['id'];
 

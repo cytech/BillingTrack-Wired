@@ -25,7 +25,7 @@ class TimeTrackingTask extends Model
 
     protected $softCascade = ['timers'];
 
-    protected $dates = ['deleted_at'];
+    protected $casts = ['deleted_at' => 'datetime'];
 
     protected $table = 'time_tracking_tasks';
 

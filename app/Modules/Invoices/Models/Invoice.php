@@ -33,7 +33,7 @@ class Invoice extends Model
 
     protected $guarded = ['id'];
 
-    protected $dates = ['due_at', 'invoice_date', 'deleted_at'];
+    protected $casts = ['due_at' => 'datetime', 'invoice_date' => 'datetime', 'deleted_at' => 'datetime'];
 
     protected $appends = ['formatted_invoice_date', 'formatted_due_at', 'formatted_summary'];
 

@@ -154,7 +154,7 @@ BillingTrack.conf
         error_page 404 /index.php;
      
         location ~ \.php$ {
-            fastcgi_pass unix:/var/run/php/php8.0-fpm.sock;
+            fastcgi_pass unix:/var/run/php/php8.1-fpm.sock;
             fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
             include fastcgi_params;
         }
@@ -207,7 +207,7 @@ Note: In some instances a fresh install will throw an "unknown error" alert box.
 - After migration completes, signin.
 
 # UPGRADE FROM BILLINGTRACK 5.X.X
-**Minimum PHP requirement for BillingTrack-Wired (v6.X.X) is PHP >= 8.0.2**
+**Minimum PHP requirement for BillingTrack-Wired (v6.X.X) is PHP >= 8.1**
 - Create a new installation/site. (see [How to Install BillingTrack](#how-to-install-billingtrack))
 - Although it is theoretically possible to do so, do not attempt to upgrade an existing BillingTrack 5.x.x Site.
 - This is a new repository and existing cloners will not be able to pull the update.

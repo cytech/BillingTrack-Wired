@@ -29,7 +29,7 @@ class Schedule extends Model {
 
     protected $appends = ['text_trans', 'rule_start', 'formatted_date_trashed'];
 
-    protected $dates = ['deleted_at'];
+    protected $casts = ['deleted_at' => 'datetime'];
 
 	protected $guarded = ['id'];
 

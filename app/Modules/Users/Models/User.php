@@ -30,7 +30,7 @@ class User extends Authenticatable
 
     protected $softCascade = ['custom'];
 
-    protected $dates = ['deleted_at'];
+    protected $casts = ['deleted_at' => 'datetime'];
 
     protected $table = 'users';
 

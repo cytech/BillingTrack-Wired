@@ -25,7 +25,7 @@ class ScheduleResource extends Model {
 
 	protected $guarded = ['id'];
 
-    protected $dates = ['deleted_at'];
+    protected $casts = ['deleted_at' => 'datetime'];
 
     public function occurrence()
     {

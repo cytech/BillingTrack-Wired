@@ -23,7 +23,7 @@ class ScheduleReminderLegacy extends Model
 
 	protected $guarded = ['id'];
 
-	protected $dates = ['reminder_date', 'deleted_at'];
+	protected $casts = ['reminder_date' => 'datetime', 'deleted_at' => 'datetime'];
 
 	protected $table = 'schedule_reminders';
 

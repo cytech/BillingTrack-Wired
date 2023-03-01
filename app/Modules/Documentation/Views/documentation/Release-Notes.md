@@ -1,5 +1,21 @@
 Release Notes
 ---
+### BillingTrack 6.1.0 (2023-03-01)
+- Upgrade to Laravel 10
+- update Laravel deprecated $dates to $casts
+- update all dependencies
+- fix php8.1 null deprecations
+
+### BillingTrack 6.0.6 (2023-01-12)
+- update Fullcalendar to v6.x
+- update chart.js to v4.x
+- update axios to v1.x
+- update vanilla-datetimerange-picker fork
+- update all dependencies
+- migrate webpack to vite
+- allow_html in markdown config for documentation images
+- fix client balance lookup for soft deletes
+
 ### BillingTrack 6.0.5 (2022-12-09)
 - fix regression in Base Currency setting and currency conversion
 

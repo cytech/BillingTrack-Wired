@@ -18,7 +18,7 @@ class ExpenseCustom extends Model
 {
     use SoftDeletes;
 
-    protected $dates = ['deleted_at'];
+    protected $casts = ['deleted_at' => 'datetime'];
 
     protected $table = 'expenses_custom';
 

@@ -23,8 +23,6 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->registerPolicies();
-
         // superadmin doesn't need permissions
         // https://docs.spatie.be/laravel-permission/v3/basic-usage/super-admin/
         Gate::before(function ($user, $ability) {

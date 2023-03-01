@@ -21,7 +21,7 @@ class Category extends Model {
 
 	protected $fillable = [ 'name', 'text_color', 'bg_color' ];
 
-    protected $dates = ['deleted_at'];
+    protected $casts = ['deleted_at' => 'datetime'];
 
     public function getInUseAttribute()
     {

@@ -27,7 +27,7 @@ class QuoteItem extends Model
 
     protected $softCascade = ['amount'];
 
-    protected $dates = ['deleted_at'];
+    protected $casts = ['deleted_at' => 'datetime'];
 
     protected $guarded = ['id'];
 

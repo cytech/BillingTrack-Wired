@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 6.1.0
+- Upgrade to Laravel 10
+- update Laravel deprecated $dates to $casts
+- update all dependencies
+- fix php8.1 null deprecations
+
 ## 6.0.6
 - update Fullcalendar to v6.x
 - update chart.js to v4.x
@@ -12,6 +18,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - update all dependencies
 - migrate webpack to vite
 - allow_html in markdown config for documentation images
+- fix client balance lookup for soft deletes
 
 ## 6.0.5
 - fix regression in Base Currency setting and currency conversion

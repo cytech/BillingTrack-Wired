@@ -33,7 +33,7 @@ class Quote extends Model
 
     protected $guarded = ['id'];
 
-    protected $dates = ['expires_at', 'quote_date','deleted_at'];
+    protected $casts = ['expires_at' => 'datetime', 'quote_date' => 'datetime', 'deleted_at' => 'datetime'];
 
     protected $appends = ['formatted_quote_date', 'formatted_expires_at','status_text', 'formatted_summary'];
 

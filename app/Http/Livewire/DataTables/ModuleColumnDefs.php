@@ -314,7 +314,7 @@ class ModuleColumnDefs
                     ->sortable(),
                 Column::make(__('bt.term_date'), 'term_date')
                     ->sortable()
-                    ->format(fn($value, $row, Column $column) => DateFormatter::format($row->term_date)),
+                    ->format(fn($value, $row, Column $column) => $row->formatted_term_date),
                 Column::make(__('bt.schedule'), 'schedule')
                     ->sortable()
                     ->format(fn($value, $row, Column $column) => $row->formatted_schedule),

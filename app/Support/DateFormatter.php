@@ -21,7 +21,7 @@ class DateFormatter
      *
      * @return array
      */
-    static function formats()
+    static function formats(): array
     {
         return [
             'm/d/Y' => [ //php (jquery datetimepicker)
@@ -77,7 +77,7 @@ class DateFormatter
      *
      * @return array
      */
-    public static function dropdownArray()
+    public static function dropdownArray(): array
     {
         $formats = self::formats();
 
@@ -95,10 +95,11 @@ class DateFormatter
      * Converts a stored date to the user formatted date.
      *
      * @param string $date The yyyy-mm-dd standardized date
-     * @param bool $includeTime Whether or not to include the time
+     * @param bool $includeTime Whether to include the time
      * @return string             The user formatted date
+     * @throws \Exception
      */
-    public static function format($date = null, $includeTime = false)
+    public static function format($date = null, $includeTime = false): string
     {
         $date = new DateTime($date);
 
@@ -115,9 +116,9 @@ class DateFormatter
      * Converts a user submitted date back to standard yyyy-mm-dd format.
      *
      * @param  string $userDate The user submitted date
-     * @return string             The yyyy-mm-dd standardized date
+     * @return string|null      The yyyy-mm-dd standardized date
      */
-    public static function unformat($userDate = null, $includeTime = false)
+    public static function unformat($userDate = null, $includeTime = false): ?string
     {
         if ($userDate)
         {
@@ -138,8 +139,9 @@ class DateFormatter
      *
      * @param string $date The yyyy-mm-dd h:i:s standardized date
      * @return int             The unix epoch millisecond date
+     * @throws \Exception
      */
-    public static function formatEpoch($date = null, $milli = null)
+    public static function formatEpoch($date = null, $milli = null): int
     {
         $date = new DateTime($date);
         return !$milli ? strtotime($date->format('Y-m-d H:i:s')) : strtotime($date->format('Y-m-d H:i:s')) * 1000;
@@ -148,10 +150,11 @@ class DateFormatter
     /**
      * Converts a stored time to the user formatted time.
      *
-     * @param time $time The H:i:s standardized time
-     * @return time             The user formatted time
+     * @param string $time The H:i:s standardized time
+     * @return string             The user formatted time
+     * @throws \Exception
      */
-    public static function formattime($time = null)
+    public static function formattime($time = null): string
     {
         $time = new DateTime($time);
 
@@ -161,10 +164,10 @@ class DateFormatter
     /**
      * Converts a user submitted time back to standard H:i:s format.
      *
-     * @param  time $userTime The user submitted time
-     * @return time             The H:i:s standardized time
+     * @param  string $userTime The user submitted time
+     * @return string|null             The H:i:s standardized time
      */
-    public static function unformattime($userTime = null)
+    public static function unformattime($userTime = null): ?string
     {
         if ($userTime)
         {
@@ -179,11 +182,12 @@ class DateFormatter
     /**
      * Adds a specified number of days to a yyyy-mm-dd formatted date.
      *
-     * @param  string $date The date
-     * @param  int $numDays The number of days to increment
+     * @param string $date The date
+     * @param int $numDays The number of days to increment
      * @return string The yyyy-mm-dd standardized incremented date
+     * @throws \Exception
      */
-    public static function incrementDateByDays($date, $numDays)
+    public static function incrementDateByDays($date, $numDays): string
     {
         $date = DateTime::createFromFormat('Y-m-d', $date);
 
@@ -195,12 +199,13 @@ class DateFormatter
     /**
      * Adds a specified number of periods to a yyyy-mm-dd formatted date.
      *
-     * @param  date $date The date
-     * @param  int $period 1 = Days, 2 = Weeks, 3 = Months, 4 = Years
-     * @param  int $numPeriods The number of periods to increment
+     * @param string $date The date
+     * @param int $period 1 = Days, 2 = Weeks, 3 = Months, 4 = Years
+     * @param int $numPeriods The number of periods to increment
      * @return string The yyyy-mm-dd standardized incremented date
+     * @throws \Exception
      */
-    public static function incrementDate($date, $period, $numPeriods)
+    public static function incrementDate($date, $period, $numPeriods): string
     {
         $date = DateTime::createFromFormat('Y-m-d', $date);
 
@@ -229,7 +234,7 @@ class DateFormatter
      * @param  int $monthNumber
      * @return string
      */
-    public static function getMonthShortName($monthNumber)
+    public static function getMonthShortName($monthNumber): string
     {
         return date('M', mktime(0, 0, 0, $monthNumber, 1, date('Y')));
     }
@@ -239,7 +244,7 @@ class DateFormatter
      *
      * @return string
      */
-    public static function getDatepickerFormat()
+    public static function getDatepickerFormat(): string
     {
         $formats = self::formats();
 

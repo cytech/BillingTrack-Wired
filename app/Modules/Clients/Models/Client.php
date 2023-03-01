@@ -28,7 +28,7 @@ class Client extends Model
     protected $softCascade = ['contacts', 'custom', 'invoices', 'workorders', 'quotes',  'projects','recurringInvoices',
                             'merchant', 'attachments', 'notes'];
 
-    protected $dates = ['deleted_at'];
+    protected $casts = ['deleted_at' => 'datetime'];
 
     protected $guarded = ['id', 'password'];
 
