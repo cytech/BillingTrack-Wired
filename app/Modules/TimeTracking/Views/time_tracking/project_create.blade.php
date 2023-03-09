@@ -10,7 +10,7 @@
 
     {!! Form::open(['route' => 'timeTracking.projects.store']) !!}
 
-    <section class="content-header">
+    <section class="app-content-header">
         <h3 class="float-start px-3">
             @lang('bt.create_project')
         </h3>

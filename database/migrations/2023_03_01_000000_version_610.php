@@ -14,6 +14,7 @@ class Version610 extends Migration
      */
     public function up()
     {
+        Setting::saveByKey('skin','{"headBackground":"purple","headClass":"light","sidebarMode":"open"}');
         Setting::saveByKey('version', '6.1.0');
     }
 

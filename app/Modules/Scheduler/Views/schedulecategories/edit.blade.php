@@ -3,7 +3,7 @@
 @section('content')
     @include('layouts._alerts')
 
-    <section class="content-header">
+    <section class="app-content-header">
         {!! Form::model($categories, array('route' => array('scheduler.categories.update', $categories->id),
                                'id'=>'categories_form','action'=>'#','method' => 'PUT', 'class'=>'form-horizontal')) !!}
         <div class="card card-light">

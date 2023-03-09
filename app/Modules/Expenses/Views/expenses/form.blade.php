@@ -9,7 +9,7 @@
 
     {!! Form::hidden('user_id', auth()->user()->id) !!}
 
-    <section class="content-header">
+    <section class="app-content-header">
         <h3 class="float-start px-3">
             @lang('bt.expense_form')
         </h3>

@@ -1,7 +1,7 @@
 @extends('setup.master')
 
 @section('content')
-    <section class="content-header">
+    <section class="app-content-header">
         <h1>@lang('bt.account_setup')</h1>
         <h2>@lang('bt.account_setup_h1')</h2>
         <h3>@lang('bt.account_setup_h2')</h3>

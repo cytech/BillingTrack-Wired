@@ -1,5 +1,5 @@
 @include('workorders._js_edit')
-<section class="content-header">
+<section class="app-content-header">
     <h3 class="float-start px-3">@lang('bt.workorder') #{{ $workorder->number }}</h3>
     @if ($workorder->viewed)
         <span style="margin-start: 10px;" class="badge bg-success">@lang('bt.viewed')</span>

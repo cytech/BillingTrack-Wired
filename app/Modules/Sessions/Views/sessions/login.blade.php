@@ -23,15 +23,15 @@
 <body class="login-page login-bg">
 @if(!config('app.demo'))
     <div class="brand-link mb-5">
-        <img src="/img/billingtrack_logo.svg" alt="BillingTrack Logo" class="brand-image img-circle elevation-3 img-lg"
+        <img src="/img/billingtrack_logo.svg" alt="BillingTrack Logo" class="img-size-64 mb-5"
              style="opacity: .8">
-        <span class="brand-text display-1 ms-3"> {{ config('bt.headerTitleText', config('app.name','BillingTrack')) }}</span>
+        <span class="display-3 ms-3"> {{ config('bt.headerTitleText', config('app.name','BillingTrack')) }}</span>
     </div>
 @else
     <div class="brand-link mb-5">
-        <img src="/img/billingtrack_logo.svg" alt="BillingTrack Logo" class="brand-image img-circle elevation-3 img-lg"
+        <img src="/img/billingtrack_logo.svg" alt="BillingTrack Logo" class="img-size-64 mb-5"
              style="opacity: .8">
-        <span class="brand-text display-5 ms-3"> {{ config('bt.headerTitleText', config('app.name','BillingTrack')) }} Live Demo</span>
+        <span class="display-3 ms-3"> {{ config('bt.headerTitleText', config('app.name','BillingTrack')) }} Live Demo</span>
     </div>
 @endif
 <div class="container">

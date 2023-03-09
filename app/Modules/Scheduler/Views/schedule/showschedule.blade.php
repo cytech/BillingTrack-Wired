@@ -15,7 +15,7 @@
 
 @section('content')
     @include('layouts._alerts')
-    <div class="content-header">
+    <div class="app-content-header">
         <div class="card">
             <div class="col-md-12 col-md-offset-2">
                 <div class="card card-default-default">
@@ -150,7 +150,7 @@
                                                                     <td> {{ $emp->formatted_start_time }}</td>
                                                                     <td> {{ $emp->formatted_end_time }}</td>
                                                                     <td><a href="{!! url('/workorders') . '/' . $emp->id . '/edit' !!}">
-                                                                        <span class="badge bg-success">{{ mb_strimwidth($emp->client->name,0,15,'...') }}</span></a>
+                                                                        <span class="badge text-bg-success">{{ mb_strimwidth($emp->client->name,0,15,'...') }}</span></a>
                                                                     </td>
                                                                 </tr>
                                                             @endforeach
@@ -192,7 +192,7 @@
                                                                     <td> {{ $prod->formatted_start_time }}</td>
                                                                     <td> {{ $prod->formatted_end_time }}</td>
                                                                     <td><a href="{!! url('/workorders') . '/' . $prod->id . '/edit' !!}">
-                                                                            <span class="badge bg-success">{{ mb_strimwidth($prod->client->name,0,15,'...') }}</span></a>
+                                                                            <span class="badge text-bg-success">{{ mb_strimwidth($prod->client->name,0,15,'...') }}</span></a>
                                                                     </td>
                                                                 </tr>
                                                             @endforeach

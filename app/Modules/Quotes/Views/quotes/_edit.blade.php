@@ -1,5 +1,5 @@
 @include('quotes._js_edit')
-<section class="content-header">
+<section class="app-content-header">
     <h3 class="float-start px-3">@lang('bt.quote') #{{ $quote->number }}</h3>
     @if ($quote->viewed)
         <span style="margin-start: 10px;" class="badge bg-success">@lang('bt.viewed')</span>

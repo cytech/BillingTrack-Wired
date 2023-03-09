@@ -9,7 +9,7 @@
 
     {!! Form::open(['route' => ['users.password.update', $user->id]]) !!}
 
-    <section class="content-header">
+    <section class="app-content-header">
         <h3 class="float-start px-3">
             @lang('bt.reset_password'): {{ $user->name }} ({{ $user->email }})
         </h3>

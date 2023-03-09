@@ -70,32 +70,20 @@
 <div class="row">
     <div class="col-md-2">
         <div class="mb-3">
-            <label class="form-label fw-bold">@lang('bt.skin_header_bg'): </label>
+            <label class="form-label fw-bold">@lang('bt.skin_theme'): </label>
             {!! Form::select('skin[headBackground]', $skins, json_decode(config('bt.skin'),true)['headBackground'], ['class' => 'form-select']) !!}
         </div>
     </div>
     <div class="col-md-2">
         <div class="mb-3">
-            <label class="form-label fw-bold">@lang('bt.skin_header_text'): </label>
+            <label class="form-label fw-bold">@lang('bt.skin_sidebar_theme'): </label>
             {!! Form::select('skin[headClass]', ['dark'=>'Dark', 'light'=>'Light'], json_decode(config('bt.skin'),true)['headClass'], ['class' => 'form-select']) !!}
         </div>
     </div>
     <div class="col-md-2">
         <div class="mb-3">
-            <label class="form-label fw-bold">@lang('bt.skin_menu_bg'): </label>
-            {!! Form::select('skin[sidebarBackground]', $skins, json_decode(config('bt.skin'),true)['sidebarBackground'], ['class' => 'form-select']) !!}
-        </div>
-    </div>
-    <div class="col-md-2">
-        <div class="mb-3">
-            <label class="form-label fw-bold">@lang('bt.skin_menu_text'): </label>
-            {!! Form::select('skin[sidebarClass]', ['dark'=>'Dark', 'light'=>'Light'], json_decode(config('bt.skin'),true)['sidebarClass'], ['class' => 'form-select']) !!}
-        </div>
-    </div>
-    <div class="col-md-2">
-        <div class="mb-3">
             <label class="form-label fw-bold">@lang('bt.skin_menu_mode'): </label>
-            {!! Form::select('skin[sidebarMode]', ['open'=>'Open', 'collapse'=>'Collapse'], json_decode(config('bt.skin'),true)['sidebarMode'], ['class' => 'form-select']) !!}
+            {!! Form::select('skin[sidebarMode]', ['open'=>'Open', 'mini'=>'Collapse'], json_decode(config('bt.skin'),true)['sidebarMode'], ['class' => 'form-select']) !!}
         </div>
     </div>
 </div>

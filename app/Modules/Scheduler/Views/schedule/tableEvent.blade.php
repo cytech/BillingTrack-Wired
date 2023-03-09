@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('content')
-    <section class="content-header">
+    <section class="app-content-header">
         <h3 class="float-start px-3">@lang('bt.events')</h3>
         <div class="btn-group float-end">
             <button class="btn btn-primary rounded border"

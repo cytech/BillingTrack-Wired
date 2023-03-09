@@ -7,7 +7,7 @@
 @section('content')
     @include('layouts._alerts')
 
-    <section class="content-header">
+    <section class="app-content-header">
         <section class="container-fluid">
             <div class="col-sm-12 mb-3">
                 <div class="fs-3 float-start">@lang('bt.batchprint')</div>

@@ -1,25 +1,9 @@
-//@import url(https://fonts.googleapis.com/css?family=Karla:300,400,600,700,300italic,400italic,600italic);
-//
-html {
-  -webkit-font-smoothing: antialiased;
-  scroll-behavior: smooth;
-}
-
-body {
-  font-family: 'Karla', sans-serif;
-  color: #414141;
-}
-
-h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
-  font-family: 'Karla', sans-serif;
-}
-
 /*disallow event attachment to fa icon in a button*/
  .btn > * {
    pointer-events: none;
  }
 
- //Bootstrap 5 checkbox witch sizes
+ //Bootstrap 5 checkbox switch sizes
 .form-check-input {
   clear: left;
 }
@@ -64,19 +48,8 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
   border-radius: 5rem;
 }
 
-.small-box {
-  h3 {
-    font-size: 24px;
-  }
-}
-
 .datepicker {
   z-index: 1151 !important;
-}
-
-.pdf-embed {
-  width: 100%;
-  height: 650px;
 }
 
 .badge-draft {
@@ -162,30 +135,30 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
   }
 }
 
-// nav pills
-.nav-pills-dark .nav-link {
-  border-radius: 0.25rem;
-}
-
-.nav-pills-dark .nav-link {
-  color: #ffffff;
-}
-
-.nav-pills-dark .nav-link:not(.active):hover {
-  color: #6c757d;
-}
-
-.nav-pills-light .nav-link {
-  border-radius: 0.25rem;
-}
-
-.nav-pills-light .nav-link {
-  color: #000000;
-}
-
-.nav-pills-light .nav-link:not(.active):hover {
-  color: #6c757d;
-}
+//// nav pills
+//.nav-pills-dark .nav-link {
+//  border-radius: 0.25rem;
+//}
+//
+//.nav-pills-dark .nav-link {
+//  color: #ffffff;
+//}
+//
+//.nav-pills-dark .nav-link:not(.active):hover {
+//  color: #6c757d;
+//}
+//
+//.nav-pills-light .nav-link {
+//  border-radius: 0.25rem;
+//}
+//
+//.nav-pills-light .nav-link {
+//  color: #000000;
+//}
+//
+//.nav-pills-light .nav-link:not(.active):hover {
+//  color: #6c757d;
+//}
 
 //back to top button
 .back-to-top {

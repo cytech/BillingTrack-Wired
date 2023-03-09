@@ -15,7 +15,7 @@
     @endif
 
     @include('layouts._alerts')
-    <section class="content-header">
+    <section class="app-content-header">
         <div class="card card-light">
             <div class="card-header">
                 <h3 class="card-title"><i

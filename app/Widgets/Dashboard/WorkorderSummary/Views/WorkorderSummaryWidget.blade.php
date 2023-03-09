@@ -51,48 +51,48 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-lg-6 col-md-12">
-                    <div class="small-box bg-purple">
+                    <div class="small-box text-bg-purple">
                         <div class="inner">
                             <h4 class="text-bold">{{ $workordersTotalDraft }}</h4>
                             <p>@lang('bt.draft_workorders')</p>
                         </div>
-                        <div class="icon"><i class="fa fa-pencil-alt"></i></div>
+                        <div class="small-box-icon"><i class="fa fa-pencil-alt"></i></div>
                         <a class="small-box-footer" href="{{ route('workorders.index') }}?status=draft">
                             @lang('bt.view_draft_workorders') <i class="fa fa-arrow-circle-right"></i>
                         </a>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-12">
-                    <div class="small-box bg-green">
+                    <div class="small-box text-bg-green">
                         <div class="inner">
                             <h4 class="text-bold">{{ $workordersTotalSent }}</h4>
                             <p>@lang('bt.sent_workorders')</p>
                         </div>
-                        <div class="icon"><i class="fa fa-share-square"></i></div>
+                        <div class="small-box-icon"><i class="fa fa-share-square"></i></div>
                         <a class="small-box-footer" href="{{ route('workorders.index') }}?status=sent">
                             @lang('bt.view_sent_workorders') <i class="fa fa-arrow-circle-right"></i>
                         </a>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-12">
-                    <div class="small-box bg-orange">
+                    <div class="small-box text-bg-orange">
                         <div class="inner">
                             <h4 class="text-bold">{{ $workordersTotalRejected }}</h4>
                             <p>@lang('bt.rejected_workorders')</p>
                         </div>
-                        <div class="icon"><i class="fa fa-thumbs-down"></i></div>
+                        <div class="small-box-icon"><i class="fa fa-thumbs-down"></i></div>
                         <a class="small-box-footer" href="{{ route('workorders.index') }}?status=rejected">
                             @lang('bt.view_rejected_workorders') <i class="fa fa-arrow-circle-right"></i>
                         </a>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-12">
-                    <div class="small-box bg-blue">
+                    <div class="small-box text-bg-blue">
                         <div class="inner">
                             <h4 class="text-bold">{{ $workordersTotalApproved }}</h4>
                             <p>@lang('bt.approved_workorders')</p>
                         </div>
-                        <div class="icon"><i class="fa fa-thumbs-up"></i></div>
+                        <div class="small-box-icon"><i class="fa fa-thumbs-up"></i></div>
                         <a class="small-box-footer" href="{{ route('workorders.index') }}?status=approved">
                             @lang('bt.view_approved_workorders') <i class="fa fa-arrow-circle-right"></i>
                         </a>

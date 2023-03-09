@@ -1,40 +1,14 @@
-<aside class="main-sidebar sidebar-mini sidebar-{{ $headClass }}">
-    <div class="brand-container bg-{{ $headBackground }} ">
-        <div class="brand-link ">
+<aside class="app-sidebar">
+    <div class="sidebar-brand bg-body">
+        <div class="brand-link">
             <img src="/img/billingtrack_logo.svg" alt="BillingTrack Logo"
-                 class="brand-image img-circle elevation-3 img-sm pe-1"
-                 style="opacity: .8">
-            <span class="brand-text fw-light">{{ config('bt.headerTitleText', config('app.name','BillingTrack')) }}</span>
+                 class="brand-image img-circle elevation-3 img-sm pe-1">
+            <span class="brand-text">{{ config('bt.headerTitleText', config('app.name','BillingTrack')) }}</span>
         </div>
-        <a id="pushmenu-button" class="pushmenu mx-1" data-lte.pushmenu.remember.state="true" data-enable-remember="true" data-lte-toggle="sidebar-mini" href="javascript:;"
-           role="button"><i
-                    class="fas fa-angle-double-left"></i></a>
     </div>
-    <div class="sidebar bg-{{ $sidebarBackground }}">
-        {{--        @if (config('bt.displayProfileImage'))--}}
-        {{--            <div class="user-panel">--}}
-        {{--                <div class="float-start image">--}}
-        {{--                    <img src="{{ $profileImageUrl }}" alt="User Image"/>--}}
-        {{--                </div>--}}
-        {{--                <div class="float-start info">--}}
-        {{--                    <p>{{ $userName }}</p>--}}
-        {{--                </div>--}}
-        {{--            </div>--}}
-        {{--        @endif--}}
-
-        {{--        @if (isset($displaySearch) and $displaySearch == true)--}}
-        {{--            <form action="{{ request()->fullUrl() }}" method="get" class="sidebar-form">--}}
-        {{--                <input type="hidden" name="status" value="{{ request('status') }}"/>--}}
-        {{--                <div class="input-group">--}}
-        {{--                    <input type="text" name="search" class="form-control"--}}
-        {{--                           placeholder="@lang('bt.search')..."/>--}}
-        {{--                <button type="submit" id="search-btn" class="btn btn-flat input-group-text "><i class="far fa-search"></i></button>--}}
-        {{--                </div>--}}
-        {{--            </form>--}}
-        {{--        @endif--}}
+    <div class="sidebar-wrapper">
         <nav class="mt-2">
-            <ul class="nav nav-pills-{{ $sidebarClass }} nav-sidebar flex-column" data-lte-toggle="treeview" role="menu"
-                data-accordion="false">
+            <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu" data-accordion="false">
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('dashboard.index') }}">
                         <i class="nav-icon fas fa-tachometer-alt fa-fw"></i>
@@ -306,14 +280,14 @@
                                 <p>@lang('bt.import_data')</p></a>
                         </li>
                         @if (!config('app.demo'))
-                        <li class="nav-item"><a class="nav-link" href="{{ route('utilities.database') }}"><i
-                                        class="fas fa-database fa-fw"></i>
-                                <p>@lang('bt.manage_database')</p></a>
-                        </li>
-                        <li class="nav-item"><a class="nav-link" href="{{ route('users.manage_acl') }}"><i
-                                        class="fas fa-user-lock fa-fw"></i>
-                                <p>@lang('bt.acl_manage')</p></a>
-                        </li>
+                            <li class="nav-item"><a class="nav-link" href="{{ route('utilities.database') }}"><i
+                                            class="fas fa-database fa-fw"></i>
+                                    <p>@lang('bt.manage_database')</p></a>
+                            </li>
+                            <li class="nav-item"><a class="nav-link" href="{{ route('users.manage_acl') }}"><i
+                                            class="fas fa-user-lock fa-fw"></i>
+                                    <p>@lang('bt.acl_manage')</p></a>
+                            </li>
                         @endif
                         @endhasrole
                     </ul>

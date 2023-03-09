@@ -3,7 +3,7 @@
 @section('content')
     <!--basic form starts-->
     @include('layouts._alerts')
-    <section class="content-header">
+    <section class="app-content-header">
         {!! Form::model($employees, array('route' => array('employees.update', $employees->id),
                                                         'id'=>'employees_form','action'=>'#','method' => 'PUT', 'class'=>'form-horizontal')) !!}
         <div class="card card-light">

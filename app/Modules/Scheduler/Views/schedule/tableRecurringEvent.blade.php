@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('content')
-    <section class="content-header">
+    <section class="app-content-header">
         <h3 class="float-start px-3">@lang('bt.recurring_events')</h3>
         <div class="btn-group float-end">
             <a href="{!! route('scheduler.editrecurringevent') !!}" class="btn btn-primary rounded border"><i

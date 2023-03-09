@@ -24,7 +24,7 @@
                             <td>{!! $workorder->formatted_end_time !!}</td>
                             <td>{!! ($workorder->will_call == 1 )?'Yes':'No' !!}</td>
                             <td><a href="{!! url('/workorders') . '/' . $workorder->id . '/edit' !!}">
-                                    <span class="badge bg-success">@lang('bt.link_to_workorder')</span></a></td>
+                                    <span class="badge text-bg-success">@lang('bt.link_to_workorder')</span></a></td>
                         </tr>
                     @endforeach
                     </tbody>

@@ -1,0 +1,33 @@
+[data-bs-theme="dark"] {
+  .sidebar-wrapper {
+    background-color: var(--bs-dark);
+  }
+
+  .sidebar-brand .brand-link .brand-image {
+    opacity: 0.8;
+    filter: invert(100%);
+  }
+}
+
+[data-bs-theme="light"] {
+  .sidebar-wrapper {
+    background-color: var(--bs-white);
+  }
+
+  .sidebar-brand .brand-link .brand-image {
+    opacity: 0.8;
+  }
+}
+
+@import "bt-lte-themes/blue";
+@import "bt-lte-themes/red";
+@import "bt-lte-themes/purple";
+@import "bt-lte-themes/yellow";
+@import "bt-lte-themes/indigo";
+@import "bt-lte-themes/pink";
+@import "bt-lte-themes/orange";
+@import "bt-lte-themes/green";
+@import "bt-lte-themes/teal";
+@import "bt-lte-themes/cyan";
+@import "bt-lte-themes/gray";
+@import "bt-lte-themes/graylight";

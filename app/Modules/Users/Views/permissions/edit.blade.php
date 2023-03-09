@@ -2,7 +2,7 @@
 
 @section('content')
     @include('layouts._alerts')
-    <section class="content-header">
+    <section class="app-content-header">
         <form method='POST' action="{{route('users.permissions.update', $permission->id)}}">
             @csrf
             @method('PUT')

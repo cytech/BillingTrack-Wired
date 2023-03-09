@@ -3,7 +3,7 @@
 @section('content')
     <!--basic form starts-->
     @include('layouts._alerts')
-    <section class="content-header">
+    <section class="app-content-header">
         {!! Form::open(['route' => 'products.store', 'class'=>'form-horizontal', 'autocomplete'=>'off']) !!}
         <div class="card card-light">
             <div class="card-header">

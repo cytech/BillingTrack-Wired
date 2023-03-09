@@ -1,5 +1,5 @@
 @include('recurring_invoices._js_edit')
-<section class="content-header">
+<section class="app-content-header">
     <h3 class="float-start px-3">@lang('bt.recurring_invoice') #{{ $recurringInvoice->id }}</h3>
     <div class="float-end">
         <div class="btn-group">

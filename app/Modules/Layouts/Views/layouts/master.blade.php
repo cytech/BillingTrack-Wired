@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="{{$headBackground}}">
 <!-- For RTL verison -->
 <!-- <html lang="en" dir="rtl"> -->
 <head>
@@ -11,20 +11,17 @@
     @include('layouts._head')
     <script defer src="{{ asset('plugins/alpinejs/cdn.min.js') }}"></script>
     <script src="/build/assets/app.js"></script>
-{{--    @vite(['resources/js/app.js'])--}}
+    {{--    @vite(['resources/js/app.js'])--}}
     @include('layouts._js_global')
 
     @yield('javaScript')
     @livewireStyles
 </head>
-{{--<body class=" hold-transition sidebar-mini sidebar-{{$sidebarMode}}">--}}
-<body class="layout-fixed sidebar-{{$sidebarMode}}">
-<div class="wrapper">
-
+<body class="layout-fixed sidebar-expand-lg sidebar-{{$sidebarMode}}">
+<div class="app-wrapper">
     @include('layouts._header')
     @include('layouts.sidebar')
-
-    <main class="content-wrapper">
+    <main class="app-main">
         @yield('content')
     </main>
 </div>
@@ -51,7 +48,7 @@
 
     modalsElement.addEventListener('shown.bs.modal', (e) => {
         let tinput = e.target.querySelector('input[type=text]:not(:read-only)')
-        if(tinput) tinput.focus()
+        if (tinput) tinput.focus()
     })
 
     modalsElement.addEventListener('hidden.bs.modal', () => {

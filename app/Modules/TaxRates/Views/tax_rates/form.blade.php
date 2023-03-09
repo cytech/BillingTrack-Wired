@@ -14,7 +14,7 @@
         {!! Form::open(['route' => 'taxRates.store']) !!}
     @endif
 
-    <section class="content-header">
+    <section class="app-content-header">
         <div class="container-fluid">
             <div class="col-sm-12">
                 <div class="fs-3 float-start">@lang('bt.tax_rate_form')</div>

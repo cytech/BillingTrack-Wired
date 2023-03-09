@@ -4,7 +4,7 @@
     {!! Form::model($payment, ['route' => ['payments.update', $payment->id]]) !!}
     {!! Form::hidden('invoice_id') !!}
     {!! Form::hidden('client_id') !!}
-    <section class="content-header">
+    <section class="app-content-header">
         <h3 class="float-start px-3">
             @lang('bt.payment_form')
         </h3>

@@ -1,0 +1,93 @@
+[data-bs-theme="green-dark"] {
+  .bg-body {
+    --bs-body-color: var(--bs-white);
+    --bs-body-color-rgb: #{to-rgb($white)};
+    --bs-body-bg: var(--bs-green);
+    --bs-body-bg-rgb: #{to-rgb($green)};
+    --bs-navbar-color: var(--bs-white);
+    --bs-tertiary-bg: #{$green-600};
+    --bs-emphasis-color: var(--bs-white);
+    --bs-emphasis-color-rgb: #{to-rgb($white)};
+  }
+
+  .bg-body.dropdown-menu {
+    --bs-dropdown-color: var(--bs-white);
+    --bs-dropdown-bg: var(--bs-green);
+  }
+
+  .bg-body .dropdown-item.active {
+    background-color: #{$green-700};
+  }
+
+  .btn-primary {
+    --bs-btn-color: var(--bs-white);
+    --bs-btn-bg: #{mix($gray-600, $green-400, 0%)};
+    --bs-btn-border-color: #{rgba($black, .25)};
+    --bs-btn-hover-bg: #{darken(mix($gray-600, $green-400, 0%), 5%)};
+    --bs-btn-hover-border-color: #{rgba($black, .25)};
+    --bs-btn-active-bg: #{darken(mix($gray-600, $green-400, 0%), 10%)};
+    --bs-btn-active-border-color: #{rgba($black, .5)};
+    --bs-btn-focus-border-color: #{rgba($black, .5)};
+    --bs-btn-focus-box-shadow: 0 0 0 .25rem rgba(0, 0, 0, .2);
+  }
+
+  .lwtable { //livewire ModuleTable thead textcolor
+    color:var(--bs-white);
+  }
+  .sidebar-wrapper {
+    background-color: var(--bs-green);
+    --lte-sidebar-color: var(--bs-white);
+    --lte-sidebar-submenu-color: var(--bs-white);
+  }
+
+  .sidebar-brand .brand-link .brand-image {
+    opacity: 0.8;
+    filter: invert(100%);
+  }
+}
+
+[data-bs-theme="green-light"] {
+  .bg-body {
+    --bs-body-color: var(--bs-white);
+    --bs-body-color-rgb: #{to-rgb($white)};
+    --bs-body-bg: var(--bs-green);
+    --bs-body-bg-rgb: #{to-rgb($green)};
+    --bs-navbar-color: var(--bs-white);
+    --bs-tertiary-bg: #{$green-600};
+    --bs-emphasis-color: var(--bs-white);
+    --bs-emphasis-color-rgb: #{to-rgb($white)};
+  }
+
+  .bg-body.dropdown-menu {
+    --bs-dropdown-color: var(--bs-white);
+    --bs-dropdown-bg: var(--bs-green);
+  }
+
+  .bg-body .dropdown-item.active {
+    background-color: #{$green-700};
+  }
+
+  .btn-primary {
+    --bs-btn-color: var(--bs-white);
+    --bs-btn-bg: #{mix($gray-600, $green-400, 0%)};
+    --bs-btn-border-color: #{rgba($black, .25)};
+    --bs-btn-hover-bg: #{darken(mix($gray-600, $green-400, 0%), 5%)};
+    --bs-btn-hover-border-color: #{rgba($black, .25)};
+    --bs-btn-active-bg: #{darken(mix($gray-600, $green-400, 0%), 10%)};
+    --bs-btn-active-border-color: #{rgba($black, .5)};
+    --bs-btn-focus-border-color: #{rgba($black, .5)};
+    --bs-btn-focus-box-shadow: 0 0 0 .25rem rgba(0, 0, 0, .2);
+  }
+
+  .lwtable { //livewire ModuleTable thead textcolor
+    color:var(--bs-white);
+  }
+  .sidebar-wrapper {
+    background-color: var(--bs-white);
+  }
+
+  .sidebar-brand .brand-link .brand-image {
+    opacity: 0.8;
+    filter: invert(100%);
+  }
+}

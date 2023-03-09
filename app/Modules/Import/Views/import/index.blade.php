@@ -4,7 +4,7 @@
 
     {!! Form::open(['route' => 'import.upload', 'files' => true]) !!}
 
-    <section class="content-header">
+    <section class="app-content-header">
         <div class="container-fluid">
             <div class="col-sm-12">
                 <div class="fs-3 float-start">@lang('bt.import_data')</div>

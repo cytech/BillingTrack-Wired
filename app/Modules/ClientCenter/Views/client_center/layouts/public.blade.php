@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="public-layout">
+<html class="public-layout" data-bs-theme="purple-light">
 <head>
     <meta charset="UTF-8">
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
@@ -15,19 +15,18 @@
 
     @yield('javaScript')
 </head>
-<body class="layout-boxed sidebar-mini ">
-<div class="wrapper">
-    <header class="main-header navbar navbar-expand navbar-{{ $headClass }} bg-{{ $headBackground }} border-bottom">
-        <div class="brand-container bg-{{ $headBackground }} ">
+<body class="layout-fixed">
+<div class="app-wrapper">
+    <div class="app-header ">
+        <div class="sidebar-brand bg-body">
            <div class="brand-link ">
             <img src="/img/billingtrack_logo.svg" alt="BillingTrack Logo"
-                 class="brand-image img-circle elevation-3 img-sm pe-1"
-                 style="opacity: .8">
-            <span class="brand-text fw-light">{{ config('bt.headerTitleText', config('app.name','BillingTrack')) }}</span>
+                 class="brand-image img-circle elevation-3 img-sm pe-1">
+            <span class="brand-text">{{ config('bt.headerTitleText', config('app.name','BillingTrack')) }}</span>
         </div>
         </div>
-    </header>
-    <div class="content-wrapper content-wrapper-public mt-2">
+    </div>
+    <div class="app-main">
         @yield('content')
     </div>
 </div>

@@ -8,7 +8,7 @@
 @section('content')
     @include('layouts._alerts')
 
-    <section class="content-header">
+    <section class="app-content-header">
         <div class="card">
             <div class="col-lg-12">
                 <div class="card card-light">

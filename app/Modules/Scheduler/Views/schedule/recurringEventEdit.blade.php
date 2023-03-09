@@ -2,7 +2,7 @@
 
 @section('content')
     @include('layouts._alerts')
-    <section class="content-header">
+    <section class="app-content-header">
         <div class="container-fluid m-2">
             {!! Form::model($schedule,['route' => ['scheduler.updaterecurringevent', $schedule->id],'id' => 'recurringevent', 'accept-charset' => 'utf-8']) !!}
             <div class="card card-light">

@@ -1,5 +1,5 @@
 @include('purchaseorders._js_edit')
-<section class="content-header">
+<section class="app-content-header">
     <h3 class="float-start px-3">@lang('bt.purchaseorder') #{{ $purchaseorder->number }}</h3>
     @if ($purchaseorder->status_text)
         <span style="margin-start: 10px;"

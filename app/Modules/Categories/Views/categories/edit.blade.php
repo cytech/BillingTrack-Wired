@@ -3,7 +3,7 @@
 @section('content')
     <!--basic form starts-->
     @include('layouts._alerts')
-    <section class="content-header">
+    <section class="app-content-header">
         {!! Form::model($categories, array('route' => array('categories.update', $categories->id),
                                                        'id'=>'categories_form','action'=>'#','method' => 'PUT', 'class'=>'form-horizontal')) !!}
 

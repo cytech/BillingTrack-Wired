@@ -44,7 +44,7 @@
 @stop
 
 @section('content')
-    <section class="content-header">
+    <section class="app-content-header">
         <h1>@lang('bt.database_setup')</h1>
     </section>
     <section class="content">

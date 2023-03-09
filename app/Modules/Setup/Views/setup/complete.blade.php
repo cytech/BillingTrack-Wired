@@ -1,7 +1,7 @@
 @extends('setup.master')
 
 @section('content')
-    <section class="content-header">
+    <section class="app-content-header">
         <h1>@lang('bt.installation_complete')</h1>
     </section>
     <section class="content">

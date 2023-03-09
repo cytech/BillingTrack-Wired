@@ -202,7 +202,7 @@
 @stop
 
 @section('content')
-    <section class="content-header">
+    <section class="app-content-header">
         <h3 class="float-start px-3">@lang('bt.time_tracking')
             <small>{{ $project->name }}</small>
         </h3>

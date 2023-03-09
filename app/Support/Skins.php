@@ -17,11 +17,12 @@ class Skins
     {
 
         $skins = [
-            'black' => 'Black',
+            'light' => 'BS5 Light',
+            'dark' => 'BS5 Dark',
             'blue' => 'Blue',
             'cyan' => 'Cyan',
             'gray' => 'Gray',
-            'gray-light' => 'Gray (light)',
+            'graylight' => 'Gray (light)',
             'green' => 'Green',
             'indigo' => 'Indigo',
             'orange' => 'Orange',
@@ -29,7 +30,6 @@ class Skins
             'purple' => 'Purple',
             'red' => 'Red',
             'teal' => 'Teal',
-            'white' => 'White',
             'yellow' => 'Yellow',
         ];
 

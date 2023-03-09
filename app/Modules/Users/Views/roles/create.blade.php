@@ -3,7 +3,7 @@
 @section('content')
     @include('layouts._alerts')
 
-    <section class="content-header">
+    <section class="app-content-header">
         <form method='POST' action="{{ route('users.roles.store') }}">
             @csrf
             <div class="card card-light">

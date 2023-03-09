@@ -20,7 +20,7 @@
 @stop
 
 @section('content')
-    <section class="content-header">
+    <section class="app-content-header">
         <div class="container-fluid">
             <div class="col-sm-12 align-items-center">
                 <div class="fs-3 float-start">{{__('bt.view_client') . ' - ' . $client->name}}</div>

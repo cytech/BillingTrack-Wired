@@ -69,7 +69,7 @@
 @stop
 
 @section('content')
-    <section class="content-header">
+    <section class="app-content-header">
         {!! Form::open(['route' => 'settings.update', 'files' => true, 'id' => 'form-settings']) !!}
         <div class="container-fluid">
             <div class="col-sm-12">

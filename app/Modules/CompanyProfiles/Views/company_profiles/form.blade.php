@@ -20,7 +20,7 @@
         {!! Form::open(['route' => 'companyProfiles.store', 'files' => true]) !!}
     @endif
 
-    <section class="content-header">
+    <section class="app-content-header">
         <div class="container-fluid">
             <div class="col-sm-12">
                 <div class="fs-3 float-start">@lang('bt.company_profile_form')</div>

@@ -33,23 +33,16 @@ class ModuleTable extends DataTableComponent
             'default' => true,
             'class'   => 'datatable',
         ]);
-        //really need to revamp the skinning....
-        $defaultSkin = json_decode('{"headBackground":"purple","headClass":"light","sidebarBackground":"white","sidebarClass":"light","sidebarMode":"open"}', true);
-
-        $skin = (config('bt.skin') ? json_decode(config('bt.skin'), true) : $defaultSkin);
-
-        $skin['headClass'] == 'dark' ? $skin['headClass'] = 'light' : $skin['headClass'] = 'dark';
 
         $this->setTheadAttributes([
             'default' => true,
-            'class'   => 'text-' . $skin['headClass'] . ' ' . 'bg-' . $skin['headBackground'],
+            'class'   => 'bg-body lwtable',
         ]);
-        //replace v1 addAttributes for recurringinvoice -> id 5%, category -> action 10%,  user -> action 10%
+
         $this->setThAttributes(function (Column $column) {
             if ($column->isField('id') || $column->isLabel()) {
                 return [
                     'default' => true,
-                    //'class' => 'bg-green',
                     'width'   => '8%'
                 ];
             }
