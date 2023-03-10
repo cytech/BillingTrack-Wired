@@ -58,7 +58,7 @@ class BeforeMiddleware
             // Override the framework mail configuration with the values provided by the application
             config(['mail.driver' => (config('bt.mailDriver')) ? config('bt.mailDriver') : 'smtp']);
             config(['mail.host' => config('bt.mailHost')]);
-            config(['mail.port' => config('bt.mailPort')]);
+            config(['mail.port' => config('bt.mailPort') ? config('bt.mailPort') : null]);
             config(['mail.encryption' => config('bt.mailEncryption')]);
             config(['mail.username' => config('bt.mailUsername')]);
             config(['mail.password' => $mailPassword]);
