@@ -8,15 +8,17 @@
                 const from_date = document.getElementById('from_date').value
                 const to_date = document.getElementById('to_date').value
                 const company_profile_id = document.getElementById('company_profile_id').value
+                const report_type = document.querySelector('input[name=report_type]:checked').value
 
                 axios.post("{{ route('reports.timesheet.validate') }}", {
                     from_date: from_date,
                     to_date: to_date,
-                    company_profile_id: company_profile_id
+                    company_profile_id: company_profile_id,
+                    report_type: report_type
                 }).then(function () {
                     document.getElementById('form-validation-placeholder').innerHTML = ''
                     output_type = document.querySelector('input[name=output_type]:checked').value
-                    query_string = "?from_date=" + from_date + "&to_date=" + to_date + "&company_profile_id=" + company_profile_id;
+                    query_string = "?from_date=" + from_date + "&to_date=" + to_date + "&company_profile_id=" + company_profile_id + "&report_type=" + report_type;
                     if (output_type === 'preview') {
                         document.getElementById('preview').style.display = 'block'
                         document.getElementById('preview-results').setAttribute('src', "{{ route('reports.timesheet.html') }}" + query_string)
@@ -74,6 +76,20 @@
                             document.getElementById('to_date').value = '{{ \Carbon\Carbon::now()->endOfWeek()->subWeek() }}'
                         </script>
                     </div>
+                    <div class="row">
+                    <div class="col-md-6 mt-5">
+                        <label class="form-label fw-bold pe-1">Report Type:</label>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="report_type" value="condensed"
+                                   checked="checked">
+                            <label class="form-check-label">Condensed</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="report_type" value="detailed">
+                            <label class="form-check-label ">Detailed</label>
+                        </div>
+                    </div>
+                </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6 mt-3">

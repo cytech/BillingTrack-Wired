@@ -3,7 +3,7 @@
 @section('content')
     <table>
         <tr>
-            <td style="width: 50%;" valign="top">
+            <td style="width: 50%; vertical-align:top;">
                 @if( isset($results['client_name']))
                     <span style="font-weight: bold">{{ mb_strtoupper(trans('bt.bill_to')) }}</span><br>{{ $results['client_name'] }}<br>
                     @if ($results['client_address']) {!! $results['client_address'] !!}<br>@endif
@@ -15,7 +15,7 @@
                     <p> No results with current criteria </p>
                 @endif
             </td>
-            <td style="width: 50%; text-align: right;" valign="top">
+            <td style="width: 50%; text-align: right;  vertical-align:top;">
                 {{--{!! $logo !!}<br>--}}
                 <span style="font-weight: bold">{{ $results['companyProfile_company'] }}</span><br>
                 {!! $results['companyProfile_address'] !!}<br>

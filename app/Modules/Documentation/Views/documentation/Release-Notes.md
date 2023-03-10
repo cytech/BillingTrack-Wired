@@ -1,10 +1,15 @@
-Release Notes
+Release Notes  
 ---
-### BillingTrack 6.1.0 (2023-03-01)
+---
+
+### BillingTrack 6.1.0 (2023-04-01)
 - Upgrade to Laravel 10
 - update Laravel deprecated $dates to $casts
 - update all dependencies
 - fix php8.1 null deprecations
+- adminlte to v4-dev-bs530
+- revamp skinning with bootstrap 5.3 color-modes
+- add condensed option to timesheet report
 
 ### BillingTrack 6.0.6 (2023-01-12)
 - update Fullcalendar to v6.x

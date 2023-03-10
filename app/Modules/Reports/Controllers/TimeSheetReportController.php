@@ -52,7 +52,8 @@ class TimeSheetReportController extends Controller
         $results = $this->timeSheetReport->getResults(
             request('from_date'),
             request('to_date'),
-            request('company_profile_id'));
+            request('company_profile_id'),
+            request('report_type'));
 
         return view('reports.output.timesheet_report')
             ->with('results', $results);
@@ -66,7 +67,8 @@ class TimeSheetReportController extends Controller
         $results = $this->timeSheetReport->getResults(
             request('from_date'),
             request('to_date'),
-            request('company_profile_id'));
+            request('company_profile_id'),
+            request('report_type'));
 
         $html = view('reports.output.timesheet_report')
             ->with('results', $results)->render();

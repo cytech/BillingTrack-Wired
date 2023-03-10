@@ -9,6 +9,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - update Laravel deprecated $dates to $casts
 - update all dependencies
 - fix php8.1 null deprecations
+- adminlte to v4-dev-bs530
+- revamp skinning with bootstrap 5.3 color-modes
+- add condensed option to timesheet report
 
 ## 6.0.6
 - update Fullcalendar to v6.x

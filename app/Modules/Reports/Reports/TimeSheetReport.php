@@ -16,7 +16,7 @@ use BT\Support\DateFormatter;
 use DB;
 
 class TimeSheetReport {
-	public function getResults( $fromDate, $toDate, $companyProfileId = null ) {
+	public function getResults( $fromDate, $toDate, $companyProfileId = null, $report_type = null ) {
 		$results = [
 			'from_date' => '',
 			'to_date'   => '',
@@ -25,18 +25,32 @@ class TimeSheetReport {
 			'records'   => [],
 		];
 
-		$invoices = Invoice::select( 'invoice_items.invoice_id AS InvoiceID', 'invoices.number AS InvoiceNumber',
-			'clients.name AS CustomerName', 'invoice_items.name AS ItemName',
-			'invoice_items.quantity AS ItemQty', 'employees.number AS EmpNumber',
-			'invoices.invoice_date AS DateFinished', DB::raw( 'CONCAT(employees.last_name,", ",employees.first_name) AS FullName' ) )
-		                   ->join( 'invoice_items', 'invoice_items.invoice_id', '=', 'invoices.id' )
-		                   ->join( 'clients', 'clients.id', '=', 'invoices.client_id' )
-		                   ->join( 'employees', 'employees.id', '=', 'invoice_items.resource_id' )
-		                   ->whereBetween( 'invoice_date', [ $fromDate, $toDate ] )
-		                   ->where( 'invoice_items.resource_table', 'employees' )
-		                   ->orderBy( 'FullName', 'ASC' )
-		                   ->orderBy( 'DateFinished', 'ASC' );
+        if ($report_type == 'condensed'){
+            $invoices = Invoice::select('invoice_items.invoice_id AS InvoiceID', 'invoices.number AS InvoiceNumber',
+                'clients.name AS CustomerName', 'invoice_items.name AS ItemName',
+                DB::raw('sum(invoice_items.quantity) AS ItemQty'), 'employees.number AS EmpNumber',
+                'invoices.invoice_date AS DateFinished', DB::raw('CONCAT(employees.last_name,", ",employees.first_name) AS FullName'))
+                ->join('invoice_items', 'invoice_items.invoice_id', '=', 'invoices.id')
+                ->join('clients', 'clients.id', '=', 'invoices.client_id')
+                ->join('employees', 'employees.id', '=', 'invoice_items.resource_id')
+                ->whereBetween('invoice_date', [$fromDate, $toDate])
+                ->where('invoice_items.resource_table', 'employees')
+                ->groupBy('EmpNumber')
+                ->orderBy('FullName', 'ASC');
 
+        }else {
+            $invoices = Invoice::select('invoice_items.invoice_id AS InvoiceID', 'invoices.number AS InvoiceNumber',
+                'clients.name AS CustomerName', 'invoice_items.name AS ItemName',
+                'invoice_items.quantity AS ItemQty', 'employees.number AS EmpNumber',
+                'invoices.invoice_date AS DateFinished', DB::raw('CONCAT(employees.last_name,", ",employees.first_name) AS FullName'))
+                ->join('invoice_items', 'invoice_items.invoice_id', '=', 'invoices.id')
+                ->join('clients', 'clients.id', '=', 'invoices.client_id')
+                ->join('employees', 'employees.id', '=', 'invoice_items.resource_id')
+                ->whereBetween('invoice_date', [$fromDate, $toDate])
+                ->where('invoice_items.resource_table', 'employees')
+                ->orderBy('FullName', 'ASC')
+                ->orderBy('DateFinished', 'ASC');
+        }
 		if ( $companyProfileId ) {
 			$companyProfile = CompanyProfile::where( 'id', $companyProfileId )->first();
 			$results['companyProfile_company'] = $companyProfile->company;
@@ -51,6 +65,7 @@ class TimeSheetReport {
 		$results['from_date'] = DateFormatter::format( $fromDate );
 		$results['to_date']   = DateFormatter::format( $toDate );
 		$results['total_records'] = count($invoices);
+        $results['report_type'] = $report_type;
 
 		if ( ! count( $invoices ) ) {
 

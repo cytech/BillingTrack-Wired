@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>BillingTrack - Self hosted invoicing for freelancers and small businesses</title>
     <link rel="stylesheet" href="/build/assets/app.css">
@@ -11,18 +10,18 @@
     @include('layouts._js_global')
 </head>
 <body>
-<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-    <div class="container mb-4">
-        <div class="navbar-header">
-            <a class="navbar-brand">
-                <img src="/img/billingtrack_logo.svg" class="brand-image img-circle elevation-3 img-sm me-3"
-                     style="opacity: .8">
+<nav class="app-header  border-bottom">
+    <div class="container-fluid">
+        <div class="sidebar-brand bg-body">
+            <div class="brand-link ">
+                <img src="/img/billingtrack_logo.svg" alt="BillingTrack Logo"
+                     class="brand-image img-circle elevation-3 img-sm pe-1">
                 <span class="brand-text "><h3>BillingTrack Documentation</h3></span>
-            </a>
+            </div>
         </div>
     </div>
 </nav>
-<div class="container">
+<div class="container mt-5">
     <div class="row">
         <div class="col-lg-3">
             <div class="bs-sidebar">
