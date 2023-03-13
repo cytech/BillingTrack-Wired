@@ -9,7 +9,7 @@
     <script src="/build/assets/app.js"></script>
     @include('layouts._js_global')
 </head>
-<body>
+<body class="layout-fixed sidebar-expand-lg">
 <nav class="app-header  border-bottom">
     <div class="container-fluid">
         <div class="sidebar-brand bg-body">

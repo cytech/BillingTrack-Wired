@@ -54,7 +54,7 @@
                             <h4 class="text-bold">{{ $quotesTotalDraft }}</h4>
                             <p>@lang('bt.draft_quotes')</p>
                         </div>
-                        <div class="small-box-icon"><i class="fa fa-pencil-alt"></i></div>
+                        <div class="small-box-faicon"><i class="fa fa-pencil-alt"></i></div>
                         <a class="small-box-footer" href="{{ route('quotes.index') }}?status=draft">
                             @lang('bt.view_draft_quotes') <i class="fa fa-arrow-circle-right"></i>
                         </a>
@@ -66,7 +66,7 @@
                             <h4 class="text-bold">{{ $quotesTotalSent }}</h4>
                             <p>@lang('bt.sent_quotes')</p>
                         </div>
-                        <div class="small-box-icon"><i class="fa fa-share-square"></i></div>
+                        <div class="small-box-faicon"><i class="fa fa-share-square"></i></div>
                         <a class="small-box-footer" href="{{ route('quotes.index') }}?status=sent">
                             @lang('bt.view_sent_quotes') <i class="fa fa-arrow-circle-right"></i>
                         </a>
@@ -78,7 +78,7 @@
                             <h4 class="text-bold">{{ $quotesTotalRejected }}</h4>
                             <p>@lang('bt.rejected_quotes')</p>
                         </div>
-                        <div class="small-box-icon"><i class="fa fa-thumbs-down"></i></div>
+                        <div class="small-box-faicon"><i class="fa fa-thumbs-down"></i></div>
                         <a class="small-box-footer" href="{{ route('quotes.index') }}?status=rejected">
                             @lang('bt.view_rejected_quotes') <i class="fa fa-arrow-circle-right"></i>
                         </a>
@@ -90,7 +90,7 @@
                             <h4 class="text-bold">{{ $quotesTotalApproved }}</h4>
                             <p>@lang('bt.approved_quotes')</p>
                         </div>
-                        <div class="small-box-icon"><i class="fa fa-thumbs-up"></i></div>
+                        <div class="small-box-faicon"><i class="fa fa-thumbs-up"></i></div>
                         <a class="small-box-footer" href="{{ route('quotes.index') }}?status=approved">
                             @lang('bt.view_approved_quotes') <i class="fa fa-arrow-circle-right"></i>
                         </a>

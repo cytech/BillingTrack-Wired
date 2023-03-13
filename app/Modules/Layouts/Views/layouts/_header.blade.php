@@ -14,7 +14,7 @@
                 </a>
                 <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
                     <!-- User image -->
-                    <li class="user-header">
+                    <li class="user-header text-bg-light">
                         <img src="{{ $profileImageUrl }}" class="user-image" alt="User Image"/>
                         <p>
                             @if(!auth()->user()->client_id)

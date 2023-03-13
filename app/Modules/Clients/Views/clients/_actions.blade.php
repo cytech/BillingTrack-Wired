@@ -22,6 +22,6 @@
         <div class="dropdown-divider"></div>
         <a class="dropdown-item" href="#"
            onclick="swalConfirm('@lang('bt.trash_client_warning')', '@lang('bt.trash_client_warning_msg')', '{{ route('clients.delete', [$model->id]) }}');"><i
-                    class="fa fa-trash-alt text-red"></i> @lang('bt.trash')</a>
+                    class="fa fa-trash-alt text-danger"></i> @lang('bt.trash')</a>
     </div>
 </div>

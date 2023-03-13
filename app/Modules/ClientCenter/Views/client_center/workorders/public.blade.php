@@ -7,6 +7,8 @@
             addEvent(document, 'click', ".btn-notes", (e) => {
                 document.getElementById('view-doc').toggleid()
                 document.getElementById('view-notes').toggleid()
+                if (document.getElementById('approve-btn')) document.getElementById('approve-btn').toggleid()
+                if (document.getElementById('reject-btn')) document.getElementById('reject-btn').toggleid()
                 document.getElementById(e.target.dataset.buttonToggle).style.display = 'block'
                 e.target.style.display = 'none'
             });
@@ -47,14 +49,18 @@
                     </div>
                 @endif
                 @if (in_array($workorder->status_text, ['draft', 'sent']))
-                    <a href="#" class="btn btn-primary"
+                    <div class="btn-group">
+                    <a id="approve-btn" href="#" class="btn btn-primary"
                        onclick="swalConfirm('@lang('bt.confirm_approve_workorder')', '', '{{ route('clientCenter.public.workorder.approve', [$workorder->url_key]) }}','view-doc');">
                         <i class="fa fa-thumbs-up"></i> @lang('bt.approve')
                     </a>
-                    <a href="#" class="btn btn-primary"
+                    </div>
+                    <div class="btn-group">
+                    <a id="reject-btn" href="#" class="btn btn-primary"
                        onclick="swalConfirm('@lang('bt.confirm_reject_workorder')', '', '{{ route('clientCenter.public.workorder.reject', [$workorder->url_key]) }}','view-doc');">
                         <i class="fa fa-thumbs-down"></i> @lang('bt.reject')
                     </a>
+                    </div>
                 @endif
             </div>
             <div class="public-doc-wrapper">

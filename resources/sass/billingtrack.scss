@@ -3,6 +3,23 @@
    pointer-events: none;
  }
 
+//adminlte .small-box-icon for fontawesome in widgets
+.small-box-faicon {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  z-index: 0;
+  height: 70px;
+  font-size: 50px;
+  color: rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s linear;
+}
+
+// override adminlte form-control and form-select backgrounds
+.form-control, .form-select{
+  background-color: var(--bs-light)
+}
+
  //Bootstrap 5 checkbox switch sizes
 .form-check-input {
   clear: left;

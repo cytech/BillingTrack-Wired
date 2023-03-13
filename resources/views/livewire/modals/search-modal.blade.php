@@ -26,7 +26,7 @@
                                     noResultsMessage="{{__('bt.client_not_found')}}"
                                     :readonly="$readonly ?? null"
                             />
-                            @error('resource_id') <span class="text-sm text-red">{{ $message }}</span> @enderror
+                            @error('resource_id') <span class="text-sm text-danger">{{ $message }}</span> @enderror
                         @else
                             <livewire:vendor-search
                                     {{-- module base name, adds hidden fields with _id and _name --}}
@@ -39,7 +39,7 @@
                                     noResultsMessage="{{__('bt.vendor_not_found')}}"
                                     :readonly="$readonly ?? null"
                             />
-                            @error('resource_id') <span class="text-sm text-red">{{ $message }}</span> @enderror
+                            @error('resource_id') <span class="text-sm text-danger">{{ $message }}</span> @enderror
                         @endif
                     </div>
                 </div>

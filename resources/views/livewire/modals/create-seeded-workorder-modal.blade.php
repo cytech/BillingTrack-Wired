@@ -37,7 +37,7 @@
                                 noResultsMessage="{{__('bt.client_not_found_create')}}"
                                 :readonly="$readonly"
                         />
-                        @error('resource_name') <span class="text-sm text-red">{{ $message }}</span> @enderror
+                        @error('resource_name') <span class="text-sm text-danger">{{ $message }}</span> @enderror
                     </div>
                 </div>
                 <div class="row g-3 mb-3 align-items-center">
@@ -62,7 +62,7 @@
                                 value="08:00"
                                 wire:model="start_time"
                         ></x-fp_time>
-                        @error('start_time') <span class="text-sm text-red">{{ $message }}</span> @enderror
+                        @error('start_time') <span class="text-sm text-danger">{{ $message }}</span> @enderror
                     </div>
                     <div class="col-sm-2 text-end fw-bold">
                         <label for="end_time" class="col-form-label">@lang('bt.end_time')</label>
@@ -75,7 +75,7 @@
                                 value="09:00"
                                 wire:model="end_time"
                         ></x-fp_time>
-                        @error('end_time') <span class="text-sm text-red">{{ $message }}</span> @enderror
+                        @error('end_time') <span class="text-sm text-danger">{{ $message }}</span> @enderror
                     </div>
                     <div class="col-sm-2 text-end fw-bold">
                         <label class="form-check-label" for="will_call">@lang('bt.will_call')</label>
@@ -89,7 +89,7 @@
                         <br>
                         <b>@lang('bt.available_employees')</b><br>
                         @lang('bt.select_workers_toworkorder')<br>
-                        <div class="form-check ps-4" id="ScrollCB1" style="max-height:200px;overflow:auto">
+                        <div class="form-check" id="ScrollCB1" style="max-height:200px;overflow:auto;padding-left:1.75em">
                             @foreach($available_employees as $key => $value)
                                 <input class="form-check-input"
                                        type="checkbox"
@@ -113,7 +113,7 @@
                         <br>
                         <b>@lang('bt.available_equip')</b><br>
                         @lang('bt.select_items_toworkorder')
-                        <div class="form-check ps-4" id="ScrollCB2" style="max-height:200px;overflow:auto">
+                        <div class="form-check" id="ScrollCB2" style="max-height:200px;overflow:auto;padding-left:1.75em">
                             @foreach($available_resources as $key => $value)
                                 <input class="form-check-input"
                                        type="checkbox"

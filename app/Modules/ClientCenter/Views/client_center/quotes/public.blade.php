@@ -7,8 +7,8 @@
             addEvent(document, 'click', ".btn-notes", (e) => {
                 document.getElementById('view-doc').toggleid()
                 document.getElementById('view-notes').toggleid()
-                document.getElementById('approve-btn').toggleid()
-                document.getElementById('reject-btn').toggleid()
+                if (document.getElementById('approve-btn')) document.getElementById('approve-btn').toggleid()
+                if (document.getElementById('reject-btn')) document.getElementById('reject-btn').toggleid()
                 document.getElementById(e.target.dataset.buttonToggle).style.display = 'block'
                 e.target.style.display = 'none'
             });

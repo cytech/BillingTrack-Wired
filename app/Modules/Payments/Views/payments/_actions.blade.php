@@ -12,7 +12,7 @@
 
         <a class="dropdown-item" href ="#"
                onclick="swalConfirm('@lang('bt.trash_record_warning')', '', '{{ route('payments.delete', [$model->id]) }}');">
-            <i class="fa fa-trash-alt text-red"></i> @lang('bt.trash')</a>
+            <i class="fa fa-trash-alt text-danger"></i> @lang('bt.trash')</a>
     </div>
 </div>
 

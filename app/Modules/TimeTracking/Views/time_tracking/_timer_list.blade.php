@@ -27,7 +27,7 @@
                 @if ($timer->formatted_end_at)
                     <div class="tools" style="font-size: 1.25em;">
                     <button class="btn btn-delete-timer" data-timer-id="{{ $timer->id }}"
-                       data-toggle="tooltip" title="@lang('bt.trash_timer')"><i class="fa fa-trash-alt text-red"></i></button>
+                       data-toggle="tooltip" title="@lang('bt.trash_timer')"><i class="fa fa-trash-alt text-danger"></i></button>
                     </div>
                 @endif
             </td>

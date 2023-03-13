@@ -26,7 +26,7 @@
                                 :searchable="true"
                                 noResultsMessage="{{  __('bt.no_results_employee') }}"
                         />
-                        @error('title') <span class="text-sm text-red">{{ $message }}</span> @enderror
+                        @error('title') <span class="text-sm text-danger">{{ $message }}</span> @enderror
                     </div>
                 </div>
                 <div class="row g-3 mb-3 align-items-center">
@@ -68,7 +68,7 @@
                                 :value="$start_date"
                                 wire:model="start_date"
                         ></x-fp_datetime>
-                        @error('start_date') <span class="text-sm text-red">{{ $message }}</span> @enderror
+                        @error('start_date') <span class="text-sm text-danger">{{ $message }}</span> @enderror
                     </div>
                 </div>
                 <div class="row g-3 mb-3 align-items-center">
@@ -84,7 +84,7 @@
                                 :value="$end_date"
                                 wire:model="end_date"
                         ></x-fp_datetime>
-                        @error('end_date') <span class="text-sm text-red">{{ $message }}</span> @enderror
+                        @error('end_date') <span class="text-sm text-danger">{{ $message }}</span> @enderror
                     </div>
                 </div>
                 {{--                                 <div class="row g-3 mb-3 align-items-center">--}}
@@ -113,13 +113,14 @@
                                value="0"/></div>
                     <div class="col-auto">
                         <select wire:model.defer="reminder_interval_id" id="reminder_interval" name="reminder_interval"
-                                class="form-select ">
+                                class="form-select">
                             @foreach($reminder_interval as $key => $value)
                                 <option value="{{$key}}" @if($loop->first) selected @endif>{{$value}}</option>
                             @endforeach
                         </select></div>
                     <div class="col-auto">
-                        <label>@lang('bt.before_event_start')</label></div>
+                        <label class="fw-bold fs-8">@lang('bt.before_event_start')</label>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" wire:click.prevent="doCancel()">

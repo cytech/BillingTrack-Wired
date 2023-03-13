@@ -55,7 +55,7 @@
                             <h4 class="text-bold">{{ $invoicesTotalDraft }}</h4>
                             <p>@lang('bt.draft_invoices')</p>
                         </div>
-                        <div class="small-box-icon">
+                        <div class="small-box-faicon">
                             <i class="fa fa-pencil-alt"></i>
                         </div>
                         <a href="{{ route('invoices.index') }}?status=draft" class="small-box-footer">
@@ -69,7 +69,7 @@
                             <h4 class="text-bold">{{ $invoicesTotalSent }}</h4>
                             <p>@lang('bt.sent_invoices')</p>
                         </div>
-                        <div class="small-box-icon">
+                        <div class="small-box-faicon">
                             <i class="fa fa-share-square"></i>
                         </div>
                         <a class="small-box-footer" href="{{ route('invoices.index') }}?status=sent">
@@ -83,7 +83,7 @@
                             <h4 class="text-bold">{{ $invoicesTotalOverdue }}</h4>
                             <p>@lang('bt.overdue_invoices')</p>
                         </div>
-                        <div class="small-box-icon"><i class="fa fa-exclamation"></i></div>
+                        <div class="small-box-faicon"><i class="fa fa-exclamation"></i></div>
                         <a class="small-box-footer" href="{{ route('invoices.index') }}?status=overdue">
                             @lang('bt.view_overdue_invoices') <i class="fa fa-arrow-circle-right"></i>
                         </a>
@@ -95,7 +95,7 @@
                             <h4 class="text-bold">{{ $invoicesTotalPaid }}</h4>
                             <p>@lang('bt.payments_collected')</p>
                         </div>
-                        <div class="small-box-icon"><i class="fa fa-heart"></i></div>
+                        <div class="small-box-faicon"><i class="fa fa-heart"></i></div>
                         <a class="small-box-footer" href="{{ route('payments.index') }}">
                             @lang('bt.view_payments') <i class="fa fa-arrow-circle-right"></i>
                         </a>

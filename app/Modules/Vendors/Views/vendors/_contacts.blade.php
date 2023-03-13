@@ -90,7 +90,7 @@
                                 <div class="dropdown-divider"></div>
                                 <button class="btn btn-link btn-delete-contact dropdown-item"
                                         data-contact-id={{ $contact->id }}><i
-                                            class="fa fa-trash-alt text-red"></i> @lang('bt.trash')</button>
+                                            class="fa fa-trash-alt text-danger"></i> @lang('bt.trash')</button>
                             </div>
                         </div>
                     </td>

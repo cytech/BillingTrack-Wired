@@ -48,7 +48,7 @@
                                     class="fa fa-print"></i> @lang('bt.pdf')</a>
                         <a class="dropdown-item" href="#"
                            onclick="swalConfirm('@lang('bt.trash_record_warning')', '','{{ route('workorders.delete', [$workorder->id]) }}');"><i
-                                    class="fa fa-trash-alt text-red"></i> @lang('bt.trash')</a>
+                                    class="fa fa-trash-alt text-danger"></i> @lang('bt.trash')</a>
                     </div>
                 </div>
             </td>

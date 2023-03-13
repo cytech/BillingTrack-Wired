@@ -31,7 +31,7 @@
                                     noResultsMessage="{{__('bt.client_not_found_create')}}"
                                     :readonly="$readonly"
                             />
-                            @error('resource_name') <span class="text-sm text-red">{{ $message }}</span> @enderror
+                            @error('resource_name') <span class="text-sm text-danger">{{ $message }}</span> @enderror
                         @else
                             <livewire:vendor-search
                                     name="vendor"
@@ -42,7 +42,7 @@
                                     noResultsMessage="{{__('bt.vendor_not_found_create')}}"
                                     :readonly="$readonly"
                             />
-                            @error('resource_name') <span class="text-sm text-red">{{ $message }}</span> @enderror
+                            @error('resource_name') <span class="text-sm text-danger">{{ $message }}</span> @enderror
                         @endif
                     </div>
                 </div>
@@ -53,7 +53,7 @@
                         </div>
                         <div class="col-sm-7">
                             <x-fp_common wire:model.lazy="module_date"/>
-                            @error('module_date') <span class="text-sm text-red">{{ $message }}</span> @enderror
+                            @error('module_date') <span class="text-sm text-danger">{{ $message }}</span> @enderror
                         </div>
                     </div>
                 @endif
@@ -84,7 +84,7 @@
                             <x-fp_common
                                     wire:model.lazy="next_date"
                             ></x-fp_common>
-                            @error('next_date') <span class="text-sm text-red">{{ $message }}</span> @enderror
+                            @error('next_date') <span class="text-sm text-danger">{{ $message }}</span> @enderror
                         </div>
                     </div>
                     <div class="row g-3 mb-3 align-items-center">

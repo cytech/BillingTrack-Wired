@@ -57,7 +57,7 @@
                                    value="0"/></div>
                         <div class="col-auto">
                             <select id="reminder_interval" name="reminder_interval"
-                                    class="form-select ">
+                                    class="form-select">
                                 @foreach($reminder_interval as $key => $value)
                                     <option value="{{$key}}" @if($loop->first) selected @endif>{{$value}}</option>
                                 @endforeach

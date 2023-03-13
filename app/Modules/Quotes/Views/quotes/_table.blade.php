@@ -56,7 +56,7 @@
                            id="btn-public-quote"><i class="fa fa-globe"></i> @lang('bt.public')</a>
                         <a class="dropdown-item" href="#"
                            onclick="swalConfirm('@lang('bt.trash_record_warning')', '','{{ route('quotes.delete', [$quote->id]) }}');"><i
-                                    class="fa fa-trash-alt text-red"></i> @lang('bt.trash')</a>
+                                    class="fa fa-trash-alt text-danger"></i> @lang('bt.trash')</a>
                     </div>
                 </div>
             </td>

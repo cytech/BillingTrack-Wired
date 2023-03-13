@@ -41,7 +41,7 @@
                         <div><h1 class="fw-bold">{!! $monthEvent !!}</h1></div>
                         <p>@lang('bt.events_this_month')</p>
                     </div>
-                    <div class="small-box-icon"><i class="fas fa-tasks"></i></div>
+                    <div class="small-box-faicon"><i class="fas fa-tasks"></i></div>
                     <a class="small-box-footer" href="{!! route('scheduler.fullcalendar') !!}">
                         @lang('bt.vevents_this_month')
                         <i class="fa fa-arrow-circle-right"></i>
@@ -54,7 +54,7 @@
                         <div><h1 class="fw-bold">{!! $lastMonthEvent !!}</h1></div>
                         <p>@lang('bt.events_last_month')</p>
                     </div>
-                    <div class="small-box-icon"><i class="fas fa-tasks"></i></div>
+                    <div class="small-box-faicon"><i class="fas fa-tasks"></i></div>
                     <a class="small-box-footer" href="{!! route('scheduler.fullcalendar') !!}?status=last">
                         @lang('bt.vevents_last_month')
                         <i class="fa fa-arrow-circle-right"></i>
@@ -67,7 +67,7 @@
                         <div><h1 class="fw-bold">{!! $nextMonthEvent !!}</h1></div>
                         <p>@lang('bt.events_next_month')</p>
                     </div>
-                    <div class="small-box-icon"><i class="fas fa-tasks"></i></div>
+                    <div class="small-box-faicon"><i class="fas fa-tasks"></i></div>
                     <a class="small-box-footer" href="{!! route('scheduler.fullcalendar') !!}?status=next">
                         @lang('bt.vevents_next_month')
                         <i class="fa fa-arrow-circle-right"></i>
@@ -84,7 +84,7 @@
                         <div>{!! $thisinvoices !!} @lang('bt.this_sent_invoices')</div>
                         <div>{!! $thispayments !!} @lang('bt.this_received_payments')</div>
                     </div>
-                    <div class="small-box-icon"><i class="fas fa-info-circle"></i></div>
+                    <div class="small-box-faicon"><i class="fas fa-info-circle"></i></div>
                 </div>
             </div>
             <div class="col-lg-4 col-md-4">
@@ -95,7 +95,7 @@
                         <div>{!! $lastinvoices !!} @lang('bt.last_sent_invoices')</div>
                         <div>{!! $lastpayments !!} @lang('bt.last_received_payments')</div>
                     </div>
-                    <div class="small-box-icon"><i class="fas fa-info-circle"></i></div>
+                    <div class="small-box-faicon"><i class="fas fa-info-circle"></i></div>
                 </div>
             </div>
             <div class="col-lg-4 col-md-4">
@@ -106,7 +106,7 @@
                         <div>{!! $nextinvoices !!} @lang('bt.next_sent_invoices')</div>
                         <div>{!! $nextpayments !!} @lang('bt.next_received_payments')</div>
                     </div>
-                    <div class="small-box-icon"><i class="fas fa-info-circle"></i></div>
+                    <div class="small-box-faicon"><i class="fas fa-info-circle"></i></div>
                 </div>
             </div>
         </div>

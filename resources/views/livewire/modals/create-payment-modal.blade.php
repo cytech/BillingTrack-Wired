@@ -25,7 +25,7 @@
                                     noResultsMessage="{{__('bt.client_not_found_create')}}"
                                     :readonly="$readonly"
                             />
-                            @error('resource_id') <span class="text-sm text-red">{{ $message }}</span> @enderror
+                            @error('resource_id') <span class="text-sm text-danger">{{ $message }}</span> @enderror
                         </div>
                     </div>
                     <div class="row g-3 mb-3 align-items-center">
@@ -46,7 +46,7 @@
                                     </option>
                                 @endforeach
                             </select>
-                            @error('invoice_id') <span class="text-sm text-red">{{ $message }}</span> @enderror
+                            @error('invoice_id') <span class="text-sm text-danger">{{ $message }}</span> @enderror
                         </div>
                     </div>
                 @endif
@@ -55,7 +55,7 @@
                         <label class="col-form-label">@lang('bt.amount')</label></div>
                     <div class="col-sm-7">
                         {!! Form::text('payment_amount', null, ['wire:model' => 'amount', 'id' => 'payment_amount', 'class' => 'form-control', 'placeholder' => 'xxx.xx']) !!}
-                        @error('amount') <span class="text-sm text-red">{{ $message }}</span> @enderror
+                        @error('amount') <span class="text-sm text-danger">{{ $message }}</span> @enderror
                     </div>
                 </div>
                 <div class="row g-3 mb-3 align-items-center">
@@ -69,7 +69,7 @@
                                 :value="$paymentdate"
                                 wire:model="paymentdate"
                         ></x-fp_common>
-                        @error('paymentdate') <span class="text-sm text-red">{{ $message }}</span> @enderror
+                        @error('paymentdate') <span class="text-sm text-danger">{{ $message }}</span> @enderror
                     </div>
                 </div>
                 <div class="row g-3 mb-3 align-items-center">

@@ -58,7 +58,7 @@
                                         noResultsMessage="{{  __('bt.no_results_product') }}"
                                 />
                             @endif
-                            @error('new_item.name') <span class="text-sm text-red">{{ $message }}</span> @enderror
+                            @error('new_item.name') <span class="text-sm text-danger">{{ $message }}</span> @enderror
                             @if(!$resource_id)
                                 <label for="save_item_as" class="mt-2">
                                     <input wire:model="save_item_as"
@@ -76,13 +76,13 @@
                         </td>
                         <td>{!! Form::textarea('new-description', null, ['wire:model.defer' => 'new_item.description', 'class' => 'form-control', 'rows' => 1]) !!}
                             @error('new_item.description') <span
-                                    class="text-sm text-red">{{ $message }}</span> @enderror
+                                    class="text-sm text-danger">{{ $message }}</span> @enderror
                         </td>
                         <td>{!! Form::text('new-quantity', null, ['wire:model.defer' => 'new_item.quantity', 'class' => 'form-control']) !!}
-                            @error('new_item.quantity') <span class="text-sm text-red">{{ $message }}</span> @enderror
+                            @error('new_item.quantity') <span class="text-sm text-danger">{{ $message }}</span> @enderror
                         </td>
                         <td>{!! Form::text('new-price', null, ['wire:model.defer' => 'new_item.price', 'class' => 'form-control']) !!}
-                            @error('new_item.price') <span class="text-sm text-red">{{ $message }}</span> @enderror
+                            @error('new_item.price') <span class="text-sm text-danger">{{ $message }}</span> @enderror
                         </td>
                         <td>{!! Form::select('new-tax_rate_id', $taxRates, null, ['wire:model.defer' => 'new_item.tax_rate_id', 'class' => 'form-control']) !!}</td>
                         <td>{!! Form::select('new-tax_rate_2_id', $taxRates, null, ['wire:model.defer' => 'new_item.tax_rate_2_id', 'class' => 'form-control']) !!}</td>

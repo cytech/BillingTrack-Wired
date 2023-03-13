@@ -31,12 +31,13 @@
                     end: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth,listWeek,listDay'
                 },
                 buttonText: {
-                    month: 'Month',
-                    week: 'Week',
-                    day: 'Day',
-                    listMonth: 'Month List',
-                    listWeek: 'Week List',
-                    listDay: 'Day List'
+                    today: '@lang('bt.today')',
+                    month: '@lang('bt.month')',
+                    week: '@lang('bt.week')',
+                    day: '@lang('bt.day')',
+                    listMonth: '@lang('bt.month_list')',
+                    listWeek: '@lang('bt.week_list')',
+                    listDay: '@lang('bt.day_list')'
                 },
                 aspectRatio: '{!! config('bt.schedulerFcAspectRatio') !!}',//1.35 default
                 eventOrder: "-category,start",

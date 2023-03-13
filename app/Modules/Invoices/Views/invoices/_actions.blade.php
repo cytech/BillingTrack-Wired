@@ -29,11 +29,11 @@
         @if($model->quote || $model->workorder)
             <a class="dropdown-item" href="#"
                onclick="swalConfirm('@lang('bt.trash_record_warning')','@lang('bt.trash_invoice_warning_assoc_msg')', '{{ route('invoices.delete', [$model->id]) }}');"><i
-                        class="fa fa-trash-alt text-red"></i> @lang('bt.trash')</a>
+                        class="fa fa-trash-alt text-danger"></i> @lang('bt.trash')</a>
         @else
             <a class="dropdown-item" href="#"
                onclick="swalConfirm('@lang('bt.trash_record_warning')', '@lang('bt.trash_invoice_warning_msg')', '{{ route('invoices.delete', [$model->id]) }}');"><i
-                        class="fa fa-trash-alt text-red"></i> @lang('bt.trash')</a>
+                        class="fa fa-trash-alt text-danger"></i> @lang('bt.trash')</a>
         @endif
     </div>
 </div>

@@ -53,6 +53,13 @@
             addEvent(document, 'click', ".btn-notes", (e) => {
                 document.getElementById('view-doc').toggleid()
                 document.getElementById('view-notes').toggleid()
+                document.querySelectorAll('.btn-pay').forEach((item) => {
+                    if (item.style.display === 'none') {
+                        item.style.display = 'block'
+                    }else{
+                        item.style.display = 'none'
+                    }
+                });
                 document.getElementById(e.target.dataset.buttonToggle).style.display = 'block'
                 e.target.style.display = 'none'
             });

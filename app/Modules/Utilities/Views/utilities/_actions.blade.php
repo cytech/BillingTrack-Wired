@@ -10,6 +10,6 @@
         <a class="dropdown-item" href="#"
            onclick="swalConfirm('@lang('bt.trash_deletesingle_warning')', '', '{{ route('utilities.delete_trash',
                                     [$model->id, 'entity' => get_class($model)]) }}');"><i
-                    class="fa fa-trash-alt text-red"></i> @lang('bt.delete')</a>
+                    class="fa fa-trash-alt text-danger"></i> @lang('bt.delete')</a>
     </div>
 </div>

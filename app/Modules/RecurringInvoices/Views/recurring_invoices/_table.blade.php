@@ -33,7 +33,7 @@
                                     class="fa fa-edit"></i> @lang('bt.edit')</a>
                         <a class="dropdown-item" href="{{ route('recurringInvoices.delete', [$recurringInvoice->id]) }}"
                            onclick="return confirm('@lang('bt.trash_record_warning')');"><i
-                                    class="fa fa-trash-alt text-red"></i> @lang('bt.trash')</a>
+                                    class="fa fa-trash-alt text-danger"></i> @lang('bt.trash')</a>
                     </div>
                 </div>
             </td>

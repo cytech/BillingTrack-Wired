@@ -5,7 +5,7 @@
     <div class="mb-3 d-flex align-items-center">
         {!! Form::label('frequency',trans('bt.frequency_string'),['class'=>'col-sm-2 text-end fw-bold pe-3']) !!}
         <div class="col-sm-6 ">
-            {!! Form::text('frequency',null,['class'=>'form-control ','placeholder'=>__('bt.frequency'),'readonly']) !!}
+            {!! Form::text('frequency',null,['class'=>'form-control','placeholder'=>__('bt.frequency'),'readonly']) !!}
         </div>
     </div>
     <div class="mb-3 d-flex align-items-center">

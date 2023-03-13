@@ -17,7 +17,7 @@
                         class="dropdown-item"
                     >
                         @if($action == 'trash' || $action == 'delete')
-                            <i class="fa fa-trash-alt text-red"></i> {{ $title }}</a>
+                            <i class="fa fa-trash-alt text-danger"></i> {{ $title }}</a>
                         @else
                         <i class="fa fa-exchange-alt"></i> {{ $title }}</a>
                         @endif

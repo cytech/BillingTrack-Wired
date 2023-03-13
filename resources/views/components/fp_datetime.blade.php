@@ -28,6 +28,7 @@
             type="text"
             value="{{$value}}"
             data-input
+            class="text-bg-light"
             {{$attributes}}
     />
     <span class="input-group-text"><i class="fas fa-calendar-alt"></i> </span>

@@ -17,11 +17,11 @@
         @if($model->quote)
             <a class="dropdown-item" href="#"
                onclick="swalConfirm('@lang('bt.trash_record_warning')','@lang('bt.trash_workorder_warning_assoc_msg')', '{{ route('workorders.delete', [$model->id]) }}');"><i
-                        class="fa fa-trash-alt text-red"></i> @lang('bt.trash')</a>
+                        class="fa fa-trash-alt text-danger"></i> @lang('bt.trash')</a>
         @else
             <a class="dropdown-item" href="#"
                onclick="swalConfirm('@lang('bt.trash_record_warning')', '', '{{ route('workorders.delete', [$model->id]) }}');"><i
-                        class="fa fa-trash-alt text-red"></i> @lang('bt.trash')</a>
+                        class="fa fa-trash-alt text-danger"></i> @lang('bt.trash')</a>
         @endif
     </div>
 </div>

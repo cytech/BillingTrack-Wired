@@ -36,6 +36,7 @@
             type="text"
             value="{{$value}}"
             data-input
+            class="text-bg-light"
             {{$attributes}}
     />
     <span class="input-group-text p-1"><i class="far fa-clock"></i> </span>

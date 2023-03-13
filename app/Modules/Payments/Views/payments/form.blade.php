@@ -43,7 +43,7 @@
                         </div>
                         <div class="mb-3">
                             <label>@lang('bt.note')</label>
-                            {!! Form::textarea('note', null, ['id' => 'note', 'rows' => '2', 'class' => 'form-control ']) !!}
+                            {!! Form::textarea('note', null, ['id' => 'note', 'rows' => '2', 'class' => 'form-control']) !!}
                         </div>
                         @if ($customFields->count())
                             @include('custom_fields._custom_fields')

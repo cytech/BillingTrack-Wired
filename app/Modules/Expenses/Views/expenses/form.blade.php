@@ -46,7 +46,7 @@
                             <div class="col-md-4">
                                 <div class="mb-3">
                                     <label>* @lang('bt.category'): </label>
-                                    {!! Form::text('category_name', null, ['id' => 'category_name', 'class' => 'form-control category-lookup','list'=>'catlistid']) !!}
+                                    {!! Form::text('category_name', null, ['id' => 'category_name', 'class' => 'form-control','list'=>'catlistid']) !!}
                                     <datalist id='catlistid'>
                                         @foreach($categories as $category)
                                             <option>{!! $category !!}</option>
