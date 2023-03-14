@@ -7,7 +7,7 @@
                 <div class="fs-3 float-start">@lang('bt.quotes')</div>
                 <div class="btn-group float-end">
                     <div class="btn-group">
-                        {!! Form::open(['method' => 'GET', 'id' => 'filter', 'class'=>"form-inline"]) !!}
+                        {!! Form::open(['method' => 'GET', 'id' => 'filter']) !!}
                             {!! Form::hidden('client', request('client')) !!}
                         {!! Form::close() !!}
                     </div>

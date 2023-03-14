@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('bt.headerTitleText') }}</title>
     <link rel="stylesheet" href="/build/assets/app.css">
@@ -24,7 +23,7 @@
     <div class="container">
         <div class="align-items-center">
             <img src="/img/billingtrack_logo.svg" alt="BillingTrack Logo"
-                 class="brand-image img-circle elevation-3 img-lg"
+                 class="brand-image img-circle elevation-3 img-size-50"
                  style="opacity: .8">
             <span class="brand-text h1 ms-5">{{ config('bt.headerTitleText', config('app.name','BillingTrack')) }}</span>
         </div>

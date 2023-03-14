@@ -1,4 +1,4 @@
-<div class="card card-light">
+<div class="card card-outline card-primary">
     <div class="card-body">
         <span class="float-start"><strong>@lang('bt.subtotal')</strong></span><span
                 class="float-end">{{ $quote->amount->formatted_subtotal }}</span>

@@ -7,7 +7,7 @@
                 <div class="fs-3 float-start">@lang('bt.workorders')</div>
                 <div class="btn-group float-end">
                     <div class="btn-group">
-                        {!! Form::open(['method' => 'GET', 'id' => 'filter', 'class'=>"form-inline"]) !!}
+                        {!! Form::open(['method' => 'GET', 'id' => 'filter']) !!}
                             {!! Form::hidden('client', request('client')) !!}
                         {!! Form::close() !!}
                         <a class="btn btn-secondary rounded border" href="{{ route('utilities.batchprint', ['module' => 'workorders']) }}" title="Batch Print by DateRange"><i

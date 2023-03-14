@@ -25,7 +25,7 @@
         @include('layouts._alerts')
         <div class="row">
             <div class="col-md-12">
-                <div class="card card-light">
+                <div class="card card-outline card-primary">
                     <div class="card-body" id="create-project">
                         <div class="mb-3">
                             <label>* @lang('bt.project_name'): </label>

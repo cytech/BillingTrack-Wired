@@ -1,9 +1,7 @@
 @include('invoices._js_edit_to')
-
-<div class="card card-light">
+<div class="card card-outline card-primary">
     <div class="card-header">
         <h3 class="card-title">@lang('bt.to')</h3>
-
         <div class="card-tools float-end">
             <button class="btn btn-secondary btn-sm"
                     {{--                                     params 3 thru ...> mount(,,$modulefullname, $module_id = null, $search_type)--}}

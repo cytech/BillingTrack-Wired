@@ -90,7 +90,7 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <div class="card card-light">
+                    <div class="card card-outline card-primary">
                         <div class="card-header">
                             <h3 class="card-title">@lang('bt.summary')</h3>
                         </div>
@@ -103,7 +103,7 @@
             <livewire:items-table :module="$invoice" />
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="card m-2">
+                    <div class="card card-outline card-primary m-2">
                         <div class="card-header d-flex p-0">
                             <ul class="nav nav-tabs p-2">
                                 <li class="nav-item"><a class="nav-link active show" href="#tab-additional"
@@ -187,7 +187,7 @@
             <div id="div-totals">
                 @include('invoices._edit_totals')
             </div>
-            <div class="card card-light">
+            <div class="card card-outline card-primary">
                 <div class="card-header">
                     <h3 class="card-title">@lang('bt.options')</h3>
                 </div>

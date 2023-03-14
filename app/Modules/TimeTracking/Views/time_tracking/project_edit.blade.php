@@ -219,7 +219,7 @@
     <section class="container-fluid">
         <div class="row">
             <div class="col-lg-10">
-                <div class="card card-light">
+                <div class="card card-outline card-primary">
                     <div class="card-header">
                         <h3 class="card-title"><i class="fa fa-list"></i> @lang('bt.tasks')</h3>
                         <div class="card-tools float-end">
@@ -251,7 +251,7 @@
                         </ul>
                     </div>
                 </div>
-                <div class="card card-light">
+                <div class="card card-outline card-primary">
                     <div class="card-header">
                         <h3 class="card-title"><i class="fa fa-list"></i> @lang('bt.billed_tasks')</h3>
                     </div>
@@ -287,7 +287,7 @@
                 <div id="div-totals">
                     @include('time_tracking._project_edit_totals')
                 </div>
-                <div class="card card-light">
+                <div class="card card-outline card-primary">
                     <div class="card-header">
                         <h3 class="card-title">@lang('bt.options')</h3>
                     </div>

@@ -1,5 +1,5 @@
 @include('quotes._js_edit_from')
-<div class="card card-light">
+<div class="card card-outline card-primary">
     <div class="card-header">
         <h3 class="card-title">@lang('bt.from')</h3>
         <div class="card-tools float-end">

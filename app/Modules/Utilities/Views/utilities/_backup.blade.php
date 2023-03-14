@@ -31,7 +31,7 @@
                     <div class="col-md-12">
                         <h3>@lang('bt.set_clients_inactive')</h3>
                         @if (!config('app.demo'))
-                            {!! Form::open(['route' => 'utilities.clientprior.database','method' => 'get', 'id' => 'clientprior', 'class'=>"form-inline"]) !!}
+                            {!! Form::open(['route' => 'utilities.clientprior.database','method' => 'get', 'id' => 'clientprior']) !!}
                             <div class="col-md-6 mb-3">@lang('bt.set_clients_inactive_msg')</div>
                             <div class="row align-items-center">
                                 <div class="col-md-2">
@@ -59,7 +59,7 @@
                     <div class="col-md-12">
                         <h3>@lang('bt.database_entities_trash')</h3>
                         @if (!config('app.demo'))
-                            {!! Form::open(['route' => 'utilities.trashprior.database','method' => 'get', 'id' => 'tprior', 'class'=>"form-inline"]) !!}
+                            {!! Form::open(['route' => 'utilities.trashprior.database','method' => 'get', 'id' => 'tprior']) !!}
                             {{--            quotes workorders invoices payments purchaseorders schedule--}}
                             <div class="col-md-6 mb-3">
                                 @lang('bt.database_entities_trash_msg')
@@ -106,7 +106,7 @@
                     <div class="col-md-12">
                         <h3>@lang('bt.database_entities_delete_trash')</h3>
                         @if (!config('app.demo'))
-                            {!! Form::open(['route' => 'utilities.deleteprior.database','method' => 'get', 'id' => 'dprior', 'class'=>"form-inline"]) !!}
+                            {!! Form::open(['route' => 'utilities.deleteprior.database','method' => 'get', 'id' => 'dprior']) !!}
                             {{--            quotes workorders invoices payments purchaseorders schedule--}}
                             <div class="col-md-6 mb-3">
                                 @lang('bt.database_entities_delete_trash_msg')

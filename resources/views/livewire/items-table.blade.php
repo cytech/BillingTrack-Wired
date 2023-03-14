@@ -1,8 +1,8 @@
 <div class="row">
     <div class="col-sm-12 table-responsive" style="overflow-x: visible;">
-        <div class="card card-light">
-            <div class="card-header">
-                <h3 class="card-title">@lang('bt.add_item')</h3>
+        <div class="card card-outline card-primary">
+            <div class="card-header bg-secondary-subtle">
+                <h3 class="card-title fw-bold">@lang('bt.add_item')</h3>
                 <div class="card-tools float-right">
                     <button class="btn btn-primary btn-sm"
                             {{--                                     params 3 thru ...> mount(,,$modulefullname, $module_id = null, $resource_type)--}}
@@ -103,7 +103,9 @@
                 </table>
             </div>
             <div class="card-body">
-                <h3 class="card-title">@lang('bt.items')</h3>
+                <div class="row">
+                <span class="card-title fw-bold border border-5">@lang('bt.items')</span>
+                </div>
                 <table id="item-table" class="table table-hover">
                     <thead>
                     <tr>
