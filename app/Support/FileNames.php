@@ -13,20 +13,32 @@ namespace BT\Support;
 
 class FileNames
 {
-    public static function invoice($invoice)
+    public static function document($document)
     {
-        return trans('bt.invoice') . '_' . str_replace('/', '-', $invoice->number) . '.pdf';
+        switch ($document->document_type) {
+            case 1:
+                return trans('bt.quote') . '_' . str_replace('/', '-', $document->number) . '.pdf';
+            case 2:
+                return trans('bt.workorder') . '_' . str_replace('/', '-', $document->number) . '.pdf';
+            case 3:
+                return trans('bt.invoice') . '_' . str_replace('/', '-', $document->number) . '.pdf';
+        }
     }
 
-    public static function quote($quote)
-    {
-        return trans('bt.quote') . '_' . str_replace('/', '-', $quote->number) . '.pdf';
-    }
-
-    public static function workorder($workorder)
-    {
-        return trans('bt.workorder') . '_' . str_replace('/', '-', $workorder->number) . '.pdf';
-    }
+//    public static function invoice($invoice)
+//    {
+//        return trans('bt.invoice') . '_' . str_replace('/', '-', $invoice->number) . '.pdf';
+//    }
+//
+//    public static function quote($quote)
+//    {
+//        return trans('bt.quote') . '_' . str_replace('/', '-', $quote->number) . '.pdf';
+//    }
+//
+//    public static function workorder($workorder)
+//    {
+//        return trans('bt.workorder') . '_' . str_replace('/', '-', $workorder->number) . '.pdf';
+//    }
 
     public static function purchaseorder($purchaseorder)
     {

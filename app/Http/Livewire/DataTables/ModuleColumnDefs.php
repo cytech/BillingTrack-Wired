@@ -30,7 +30,8 @@ class ModuleColumnDefs
                         ->html();
                     $col_invoice_id = null;
                     $col_title_date_due = trans('bt.due');
-                    $col_db_date_due = 'due_at';
+//                    $col_db_date_due = 'due_at';
+                    $col_db_date_due = 'action_date';
                     $col_formatted_balance = Column::make(__('bt.balance'), 'amount.balance')
                         ->format(fn($value, $row, Column $column) => CurrencyFormatter::format($value, $row->currency));
                     break;
@@ -42,7 +43,8 @@ class ModuleColumnDefs
                         ->html();
                     $col_invoice_id = null;
                     $col_title_date_due = trans('bt.due');
-                    $col_db_date_due = 'due_at';
+//                    $col_db_date_due = 'due_at';
+                    $col_db_date_due = 'action_date';
                     $col_formatted_balance = Column::make(__('bt.balance'), 'amount.balance')
                         ->format(fn($value, $row, Column $column) => CurrencyFormatter::format($value, $row->currency));
                     break;
@@ -57,20 +59,22 @@ class ModuleColumnDefs
                         ->format(function ($value, $row, Column $column) {
                             $ret = '';
                             if ($row->invoice_id)
-                                $ret .= '<a href="' . route('invoices.edit', [$row->invoice_id]) . '">' . trans('bt.invoice') . '</a>';
+                                $ret .= '<a href="' . route('documents.edit', [$row->convertedtoinvoice()->id]) . '">' . trans('bt.invoice') . '</a>';
                             elseif ($row->workorder_id)
-                                $ret .= '<a href="' . route('workorders.edit', [$row->workorder_id]) . '">' . trans('bt.workorder') . '</a>';
+                                $ret .= '<a href="' . route('documents.edit', [$row->convertedtoworkorder()->id]) . '">' . trans('bt.workorder') . '</a>';
                             else
                                 $ret .= trans('bt.no');
                             return $ret;
                         })
                         ->html();
                     $col_title_date_due = trans('bt.expires');
-                    $col_db_date_due = 'expires_at';
+//                    $col_db_date_due = 'expires_at';
+                    $col_db_date_due = 'action_date';
                     $col_formatted_balance = null;
             }
             $default_columns = [
-                Column::make(__('bt.status'), lcfirst($module_type) . '_status_id')
+//                Column::make(__('bt.status'), lcfirst($module_type) . '_status_id')
+                Column::make(__('bt.status'), 'document_status_id')
                     ->format(function ($value, $row, Column $column) use ($statuses) {
                         $ret = '<span class="badge badge-' . strtolower($statuses[$row->status_text]) . '">' . $statuses[$row->status_text] . '</span>';
                         if ($row->viewed)
@@ -83,11 +87,14 @@ class ModuleColumnDefs
                 Column::make(trans('bt.' . lcfirst($module_type)), 'number')
                     ->searchable()
                     ->sortable()
-                    ->format(fn($value, $row, Column $column) => '<a href="/' . lcfirst($module_type) . 's/' . $row->id . '/edit">' . $value . '</a>')
+                    ->format(fn($value, $row, Column $column) => '<a href="/documents/' . $row->id . '/edit">' . $value . '</a>')
                     ->html(),
-                Column::make(trans('bt.date'), lcfirst($module_type) . '_date')
-                    ->sortable(fn(Builder $query, string $direction) => $query->orderBy(lcfirst($module_type) . '_date', $direction))
-                    ->format(fn($value, $row, Column $column) => DateFormatter::format($row->{lcfirst($module_type) . '_date'})),
+//                Column::make(trans('bt.date'), lcfirst($module_type) . '_date')
+                Column::make(trans('bt.date'), 'document_date')
+//                    ->sortable(fn(Builder $query, string $direction) => $query->orderBy(lcfirst($module_type) . '_date', $direction))
+//                    ->format(fn($value, $row, Column $column) => DateFormatter::format($row->{lcfirst($module_type) . '_date'})),
+                    ->sortable(fn(Builder $query, string $direction) => $query->orderBy('document_date', $direction))
+                    ->format(fn($value, $row, Column $column) => DateFormatter::format($row->{'document_date'})),
                 Column::make($col_title_date_due, $col_db_date_due)
                     ->sortable(fn(Builder $query, string $direction) => $query->orderBy($col_db_date_due, $direction))
                     ->format(fn($value, $row, Column $column) => $row->isOverdue ? '<div style="color: red; font-weight: bold;">' .  DateFormatter::format($row->$col_db_date_due) . '</div>': DateFormatter::format($row->$col_db_date_due))
@@ -100,7 +107,8 @@ class ModuleColumnDefs
                 $col_formatted_balance,
                 $col_invoice_id,
                 Column::make('Action')
-                    ->label(fn($row, Column $column) => view(lcfirst($module_type) . 's._actions')->withModel($row)),
+//                    ->label(fn($row, Column $column) => view(lcfirst($module_type) . 's._actions')->withModel($row)),
+                    ->label(fn($row, Column $column) => view('documents._actions')->withModel($row)),
             ];
         } elseif ($module_type == 'Client') { //Client column defs
             $default_columns = [
@@ -232,9 +240,12 @@ class ModuleColumnDefs
                 Column::make(trans('bt.created'), 'created_at')
                     ->sortable(fn(Builder $query, string $direction) => $query->orderBy('created_at', $direction))
                     ->format(fn($value, $row, Column $column) => DateFormatter::format($row->created_at)),
-                Column::make(trans('bt.due_date'), 'due_at')
-                    ->sortable(fn(Builder $query, string $direction) => $query->orderBy('due_at', $direction))
-                    ->format(fn($value, $row, Column $column) => DateFormatter::format($row->due_at)),
+//                Column::make(trans('bt.due_date'), 'due_at')
+                Column::make(trans('bt.due_date'), 'action_date')
+//                    ->sortable(fn(Builder $query, string $direction) => $query->orderBy('due_at', $direction))
+//                    ->format(fn($value, $row, Column $column) => DateFormatter::format($row->due_at)),
+                    ->sortable(fn(Builder $query, string $direction) => $query->orderBy('action_date', $direction))
+                    ->format(fn($value, $row, Column $column) => DateFormatter::format($row->action_date)),
                 Column::make(trans('bt.unbilled_hours'))
                     ->label(fn($row, Column $column) => $row->unbilled_hours),
                 Column::make(trans('bt.billed_hours'))

@@ -4,6 +4,8 @@ namespace BT\Providers;
 
 use BT\Modules\Attachments\Models\Attachment;
 use BT\Modules\CompanyProfiles\Models\CompanyProfile;
+use BT\Modules\Documents\Models\Document;
+use BT\Modules\Documents\Models\DocumentItem;
 use BT\Modules\Expenses\Models\Expense;
 use BT\Modules\Invoices\Models\Invoice;
 use BT\Modules\Invoices\Models\InvoiceItem;
@@ -26,6 +28,8 @@ use BT\Observers\AttachmentObserver;
 use BT\Observers\ClientObserver;
 use BT\Modules\Clients\Models\Client;
 use BT\Observers\CompanyProfileObserver;
+use BT\Observers\DocumentItemObserver;
+use BT\Observers\DocumentObserver;
 use BT\Observers\ExpenseObserver;
 use BT\Observers\InvoiceItemObserver;
 use BT\Observers\InvoiceObserver;
@@ -86,6 +90,10 @@ class ObserverServiceProvider extends ServiceProvider
         Vendor::observe(VendorObserver::class);
         Purchaseorder::observe(PurchaseorderObserver::class);
         PurchaseorderItem::observe(PurchaseorderItemObserver::class);
+        Document::observe(DocumentObserver::class);
+        DocumentItem::observe(DocumentItemObserver::class);
+
+
 
 
     }

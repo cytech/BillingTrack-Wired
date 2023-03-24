@@ -47,7 +47,7 @@
             "Database\\Seeders\\": "database/seeders/"
         },
         "files": [
-            "app/Constants.php"
+            "app/BTConstants.php"
         ]
     },
     "autoload-dev": {

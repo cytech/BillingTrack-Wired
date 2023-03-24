@@ -12,6 +12,10 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
+        'BT\Events\DocumentModified' => [
+            'BT\Events\Listeners\DocumentModifiedListener',
+        ],
+
         'BT\Events\CheckAttachment' => [
             'BT\Events\Listeners\CheckAttachmentListener',
         ],

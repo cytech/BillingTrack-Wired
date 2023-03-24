@@ -49,11 +49,12 @@ class CreateModuleModal extends Component
      * @param null $lineitem
      * item resource id to add item to module create - currently only purchaseorder item from Products
      */
-    public function mount($modulefullname, $moduleop, $resource_id = null, $module_id = null, $readonly = null, $lineitem = null)
+    public function mount($modulefullname, $module_type, $moduleop, $resource_id = null, $module_id = null, $readonly = null, $lineitem = null)
     {
         $this->modulefullname = $modulefullname;
         // strip model name from full namespace
-        $this->moduletype = Str::afterLast($modulefullname, '\\');
+//        $this->moduletype = Str::afterLast($modulefullname, '\\');
+        $this->moduletype = $module_type;
         $this->moduleop = $moduleop;
 
         if ($resource_id) {
@@ -193,9 +194,11 @@ class CreateModuleModal extends Component
                         'recurring_period'    => $this->recurring_period,
                     ];
                     break;
-                default: //Quote, Workorder, Invoice
+                default: //Quote, Workorder, Invoice, Document
                     $createfields = [
-                        lcfirst($this->moduletype) . '_date' => $this->module_date,
+                        'document_type' => constant('DOCUMENT_TYPE_'.strtoupper($this->moduletype))['document_type'],
+//                        lcfirst($this->moduletype) . '_date' => $this->module_date,
+                        'document_date' => $this->module_date,
                         'user_id'                            => $this->user_id,
                         'client_id'                          => $this->resource_id,
                         'group_id'                           => $this->group_id,
@@ -231,7 +234,8 @@ class CreateModuleModal extends Component
             // Close Modal After Logic
             $this->emit('hideModal');
 
-            return redirect()->route(lcfirst($this->moduletype) . 's.edit', $module->id)
+//            return redirect()->route(lcfirst($this->moduletype) . 's.edit', $module->id)
+            return redirect()->route('documents.edit', $module->id)
                 ->with('alertSuccess', trans('bt.record_successfully_created'));
 
         } elseif ($this->moduleop == 'copy') {

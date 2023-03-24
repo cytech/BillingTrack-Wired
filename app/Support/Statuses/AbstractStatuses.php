@@ -37,6 +37,31 @@ abstract class AbstractStatuses
         return $statuses;
     }
 
+    public static function listsType($module_type)
+    {
+        $statuses = static::$statuses;
+
+        unset($statuses[0]);
+
+        foreach ($statuses as $key => $status)
+        {
+            $statuses[$key] = trans('bt.' . $status);
+        }
+
+        switch ($module_type){
+            case 1:
+            case 2:
+                unset($statuses[6]);
+                break;
+            case 3:
+                unset($statuses[3]);
+                unset($statuses[4]);
+                break;
+        }
+
+        return $statuses;
+    }
+
     /**
      * Returns an array of statuses to populate dropdown list.
      * does not remove 1st item (all_statuses)

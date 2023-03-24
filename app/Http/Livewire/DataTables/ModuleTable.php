@@ -89,11 +89,15 @@ class ModuleTable extends DataTableComponent
             $this->setDefaultSort('paid_at');
             $this->module_fullname = 'BT\\Modules\\Payments\\Models\\Payment';
         } else { //quote, workorder, invoice, purchaseorder
-            $this->setDefaultSort(lcfirst($this->module_type) . '_date', 'desc');
+//            $this->setDefaultSort(lcfirst($this->module_type) . '_date', 'desc');
+            $this->setDefaultSort('document_date', 'desc');
             if (in_array($this->module_type, ['Invoice', 'Quote', 'Workorder', 'Purchaseorder'])) {
-                $this->keyedStatuses = collect(('BT\\Support\\Statuses\\' . $this->module_type . 'Statuses')::lists())->except(4);
+//                $this->keyedStatuses = collect(('BT\\Support\\Statuses\\' . $this->module_type . 'Statuses')::lists())->except(4);
+                $this->keyedStatuses = collect(('BT\\Support\\Statuses\\DocumentStatuses')::lists())->except(4, 6);
             }
-            $this->module_fullname = 'BT\\Modules\\' . $this->module_type . 's\\Models\\' . $this->module_type;
+//            $this->module_fullname = 'BT\\Modules\\' . $this->module_type . 's\\Models\\' . $this->module_type;
+//            $this->module_fullname = 'BT\\Modules\\Documents\\Models\\' . $this->module_type;
+            $this->module_fullname = 'BT\\Modules\\Documents\\Models\\Document';
         }
     }
 
@@ -104,7 +108,8 @@ class ModuleTable extends DataTableComponent
 
     public function columns(): array
     {
-        $status_model = 'BT\\Support\\Statuses\\' . $this->module_type . 'Statuses';
+//        $status_model = 'BT\\Support\\Statuses\\' . $this->module_type . 'Statuses';
+        $status_model = 'BT\\Support\\Statuses\\DocumentStatuses';
         $statuses = class_exists($status_model) ? $status_model::listsAllFlat() + ['overdue' => trans('bt.overdue')] : null;
         return ModuleColumnDefs::columndefs($statuses, $this->module_type);
     }
@@ -113,29 +118,37 @@ class ModuleTable extends DataTableComponent
     {
         //filters only applied to 'Invoice', 'Quote', 'Workorder'
         if (in_array($this->module_type, ['Invoice', 'Quote', 'Workorder'])) {
-            $status_model = 'BT\\Support\\Statuses\\' . $this->module_type . 'Statuses';
+//            $status_model = 'BT\\Support\\Statuses\\' . $this->module_type . 'Statuses';
+            $status_model = 'BT\\Support\\Statuses\\DocumentStatuses';
 
             return [
                 SelectFilter::make(__('bt.status'))
                     ->options($status_model::listsAllFlatDT($this->module_type))
                     ->filter(function (Builder $builder, string $value) {
                         if ($value === 'draft') {
-                            $builder->where(lcfirst($this->module_type) . '_status_id', 1);
+//                            $builder->where(lcfirst($this->module_type) . '_status_id', 1);
+                            $builder->where('document_status_id', 1);
                         } elseif ($value === 'sent') {
-                            $builder->where(lcfirst($this->module_type) . '_status_id', 2);
+//                            $builder->where(lcfirst($this->module_type) . '_status_id', 2);
+                            $builder->where('document_status_id', 2);
                         } elseif ($value === 'paid') {
-                            $builder->where(lcfirst($this->module_type) . '_status_id', 3);
+//                            $builder->where(lcfirst($this->module_type) . '_status_id', 3);
+                            $builder->where('document_status_id', 6);
                         } elseif ($value === 'canceled') {
                             //cancelled status_id different in invoice
                             if ($this->module_type === 'Invoice'){
-                                $builder->where(lcfirst($this->module_type) . '_status_id', 4);
+//                                $builder->where(lcfirst($this->module_type) . '_status_id', 4);
+                                $builder->where('document_status_id', 5);
                             } else{
-                                $builder->where(lcfirst($this->module_type) . '_status_id', 5);
+//                                $builder->where(lcfirst($this->module_type) . '_status_id', 5);
+                                $builder->where('document_status_id', 5);
                             }
                         } elseif ($value === 'approved') {
-                            $builder->where(lcfirst($this->module_type) . '_status_id', 3);
+//                            $builder->where(lcfirst($this->module_type) . '_status_id', 3);
+                            $builder->where('document_status_id', 3);
                         } elseif ($value === 'rejected') {
-                            $builder->where(lcfirst($this->module_type) . '_status_id', 4);
+//                            $builder->where(lcfirst($this->module_type) . '_status_id', 4);
+                            $builder->where('document_status_id', 4);
                         } elseif ($value === 'overdue') {
                             $builder->Overdue();
                         }
@@ -268,7 +281,8 @@ class ModuleTable extends DataTableComponent
         } else { //quotes, workorders, invoices
             if ($this->reqstatus) $this->setFilter(snake_case(__('bt.status')), $this->reqstatus);
             return $this->module_fullname::
-            select(lcfirst($this->module_type) . 's.*')
+//            select(lcfirst($this->module_type) . 's.*')
+            select('documents.*')->where('document_type', constant('DOCUMENT_TYPE_'.strtoupper($this->module_type))['document_type'])
                 ->clientId($this->clientid)
                 ->companyProfileId(request('company_profile'));
         }
