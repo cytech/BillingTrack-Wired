@@ -39,9 +39,9 @@
             });
 
             document.querySelectorAll('.custom-form-field').forEach((e) => {
-                const fieldName = e.target.dataset.invoicesFieldName
+                const fieldName = e.dataset.customformFieldName
                 if (fieldName !== undefined) {
-                    custom_fields[e.target.dataset.invoicesFieldName] = e.target.value
+                    custom_fields[e.dataset.customformFieldName] = e.value
                 }
             });
 

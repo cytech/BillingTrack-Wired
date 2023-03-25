@@ -53,9 +53,9 @@
             });
 
             document.querySelectorAll('.custom-form-field').forEach((e) => {
-                const fieldName = e.target.dataset.quotesFieldName
+                const fieldName = e.dataset.customformFieldName
                 if (fieldName !== undefined) {
-                    custom_fields[e.target.dataset.quotesFieldName] = e.target.value
+                    custom_fields[e.dataset.customformFieldName] = e.value
                 }
             });
 
