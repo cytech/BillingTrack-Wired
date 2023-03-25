@@ -247,7 +247,7 @@ class CreateModuleModal extends Component
     public function copyModule()
     {
         $moduleitemfullname = $this->modulefullname . 'Item';
-        $modulemodeventfullname = 'BT\\Events\\' . $this->moduletype . 'Modified';
+
         if ($this->moduletype == 'Purchaseorder') {
             $searchmodel = Vendor::class;
             $swaldatatext = __('bt.creating_new_vendor');
@@ -262,7 +262,7 @@ class CreateModuleModal extends Component
         switch ($this->moduletype) {
             case 'Purchaseorder':
                 $fromModule = $this->modulefullname::find($this->module_id);
-
+                $modulemodeventfullname = 'BT\\Events\\' . $this->moduletype . 'Modified';
                 $createfields = [
                     lcfirst($this->moduletype) . '_date' => $this->module_date,
                     'user_id'                            => $this->user_id,
@@ -302,7 +302,7 @@ class CreateModuleModal extends Component
                 break;
             case 'RecurringInvoice':
                 $fromModule = $this->modulefullname::find($this->module_id);
-
+                $modulemodeventfullname = 'BT\\Events\\' . $this->moduletype . 'Modified';
                 $createfields = [
                     'user_id'             => $this->user_id,
                     'client_id'           => $this->resource_id,
@@ -344,9 +344,11 @@ class CreateModuleModal extends Component
                 break;
             default: //Quote, Workorder, Invoice
                 $fromModule = $this->modulefullname::find($this->module_id);
-
+                $modulemodeventfullname = 'BT\\Events\\DocumentModified';
                 $createfields = [
-                    lcfirst($this->moduletype) . '_date' => $this->module_date,
+                    'document_type' => constant('DOCUMENT_TYPE_'.strtoupper($this->moduletype))['document_type'],
+//                        lcfirst($this->moduletype) . '_date' => $this->module_date,
+                    'document_date' => $this->module_date,
                     'user_id'                            => $this->user_id,
                     'client_id'                          => $this->resource_id,
                     'group_id'                           => $this->group_id,
@@ -378,7 +380,8 @@ class CreateModuleModal extends Component
                 foreach ($fromModule->items as $item) {
                     $moduleitemfullname::create(
                         [
-                            lcfirst(snake_case($this->moduletype)) . '_id' => $toModule->id,
+//                            lcfirst(snake_case($this->moduletype)) . '_id' => $toModule->id,
+                            'document_id' => $toModule->id,
                             'name'                                         => $item->name,
                             'description'                                  => $item->description,
                             'quantity'                                     => $item->quantity,
@@ -400,7 +403,8 @@ class CreateModuleModal extends Component
         // Close Modal After Logic
         $this->emit('hideModal');
 
-        return redirect()->route(lcfirst($this->moduletype) . 's.edit', $toModule->id)
+//        return redirect()->route(lcfirst($this->moduletype) . 's.edit', $toModule->id)
+        return redirect()->route('documents.edit', $toModule->id)
             ->with('alertSuccess', trans('bt.record_successfully_created'));
     }
 

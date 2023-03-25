@@ -198,7 +198,8 @@ class ModuleTable extends DataTableComponent
                 'title'       => __('bt.bulk_change_status_record_warning'),
                 'ids'         => $ids,
                 'module_type' => $this->module_type,
-                'route'       => $this->module_type == 'TimeTrackingProject' ? route('timeTracking.projects.bulk.status') : route(lcfirst($this->module_type) . 's.bulk.status'),
+//                'route'       => $this->module_type == 'TimeTrackingProject' ? route('timeTracking.projects.bulk.status') : route(lcfirst($this->module_type) . 's.bulk.status'),todo
+                'route'       => $this->module_type == 'TimeTrackingProject' ? route('timeTracking.projects.bulk.status') : route('documents.bulk.status'),
                 'status'      => $status
             ];
             $this->dispatchBrowserEvent('swal:bulkConfirm', $swaldata);
@@ -212,7 +213,8 @@ class ModuleTable extends DataTableComponent
         } elseif ($this->module_type == 'Schedule' || $this->module_type == 'RecurringInvoice') {
             $route = route('scheduler.bulk.delete');
         } else {
-            $route = route(lcfirst($this->module_type) . 's.bulk.delete');
+//            $route = route(lcfirst($this->module_type) . 's.bulk.delete');todo
+            $route = route('documents.bulk.delete');
         }
         if ($this->getSelectedCount() > 0) {
             $ids = $this->getSelected();

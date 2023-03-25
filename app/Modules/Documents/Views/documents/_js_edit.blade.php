@@ -53,9 +53,9 @@
             });
 
             document.querySelectorAll('.custom-form-field').forEach((e) => {
-                const fieldName = e.target.dataset.documentsFieldName
+                const fieldName = e.dataset.customformFieldName
                 if (fieldName !== undefined) {
-                    custom_fields[e.target.dataset.documentsFieldName] = e.target.value
+                    custom_fields[e.dataset.customformFieldName] = e.value
                 }
             });
 
@@ -64,7 +64,7 @@
             let data = {
                 number: document.getElementById('number').value,
                 document_date: document.getElementById('document_date').value,
-                expires_at: document.getElementById('expires_at').value,
+                action_date: document.getElementById('action_date').value,
                 document_status_id: document.getElementById('document_status_id').value,
                 items: items,
                 terms: document.getElementById('terms').value,

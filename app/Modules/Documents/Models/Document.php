@@ -151,7 +151,9 @@ class Document extends Model
 
     public function custom()
     {
-        return $this->hasOne('BT\Modules\CustomFields\Models\DocumentCustom');
+//        return $this->hasOne('BT\Modules\CustomFields\Models\DocumentCustom');
+        $customclass = $this->moduletype() . 'Custom';
+        return $this->hasOne('BT\Modules\CustomFields\Models\\'.$customclass, strtolower($this->moduletype()) . '_id');
     }
 
     public function expense()

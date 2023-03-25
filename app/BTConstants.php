@@ -14,5 +14,7 @@ if (!defined('APP_NAME')) {
                                      'modulefullname' => addslashes(\BT\Modules\Documents\Models\Document::class),
                                      'module_type'    => 'Invoice']);
     define('DOCUMENT_TYPE_RECURRINGINVOICE', [4, addslashes(\BT\Modules\RecurringInvoices\Models\RecurringInvoice::class)]);
-    define('DOCUMENT_TYPE_PURCHASEORDER', [5, addslashes(\BT\Modules\Purchaseorders\Models\Purchaseorder::class)]);
+    define('DOCUMENT_TYPE_PURCHASEORDER', ['document_type'  => 5,
+                                           'modulefullname' => addslashes(\BT\Modules\Purchaseorders\Models\Purchaseorder::class),
+                                           'module_type'    => 'Purchaseorder']);
 }

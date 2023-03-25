@@ -33,6 +33,8 @@ class DocumentObserver
 
         // Create the custom document record.
         //$document->custom()->save(new DocumentCustom()); todo
+        $customclass = 'BT\\Modules\\CustomFields\\Models\\' . $document->moduletype() . 'Custom';
+        $document->custom()->save(new $customclass());
     }
 
     /**
