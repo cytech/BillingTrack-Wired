@@ -47,9 +47,9 @@
             });
 
             document.querySelectorAll('.custom-form-field').forEach((e) => {
-                const fieldName = e.target.dataset.workordersFieldName
+                const fieldName = e.dataset.customformFieldName
                 if (fieldName !== undefined) {
-                    custom_fields[e.target.dataset.workordersFieldName] = e.target.value
+                    custom_fields[e.dataset.customformFieldName] = e.value
                 }
             });
 
