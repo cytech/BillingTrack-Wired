@@ -11,7 +11,7 @@
             axios.post('{{ route('documentToInvoice.store') }}', {
                 document_id: {{ $document_id }},
                 client_id: {{ $client_id }},
-                invoice_date: document.getElementById('to_invoice_date').value,
+                document_date: document.getElementById('to_invoice_date').value,
                 group_id: document.getElementById('to_invoice_group_id').value,
                 user_id: {{ $user_id }}
             }).then(function (response) {

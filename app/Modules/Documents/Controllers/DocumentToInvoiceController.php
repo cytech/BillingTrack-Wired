@@ -30,6 +30,7 @@ class DocumentToInvoiceController extends Controller
     public function create()
     {
         return view('documents._modal_document_to_invoice')
+            ->with('title', request('title'))
             ->with('document_id', request('document_id'))
             ->with('client_id', request('client_id'))
             ->with('groups', Group::getList())
@@ -43,12 +44,12 @@ class DocumentToInvoiceController extends Controller
 
         $invoice = $this->documentToInvoice->convert(
             $document,
-            $request->input('invoice_date'),
-            DateFormatter::incrementDateByDays($request->input('invoice_date'), $document->client->client_terms),
+            $request->input('document_date'),
+            DateFormatter::incrementDateByDays($request->input('document_date'), $document->client->client_terms),
             $request->input('group_id'),
             'Invoice'
         );
 
-        return response()->json(['redirectTo' => route('invoices.edit', ['id' => $invoice->id])], 200);
+        return response()->json(['redirectTo' => route('documents.edit', ['id' => $invoice->id])], 200);
     }
 }

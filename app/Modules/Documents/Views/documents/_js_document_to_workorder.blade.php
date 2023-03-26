@@ -11,7 +11,7 @@
             axios.post('{{ route('documentToWorkorder.store') }}', {
                 document_id: {{ $document_id }},
                 client_id: {{ $client_id }},
-                workorder_date: document.getElementById('to_workorder_date').value,
+                document_date: document.getElementById('to_workorder_date').value,
                 group_id: document.getElementById('to_workorder_group_id').value,
                 user_id: {{ $user_id }}
             }).then(function (response) {

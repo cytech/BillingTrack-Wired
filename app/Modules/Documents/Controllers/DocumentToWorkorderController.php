@@ -30,6 +30,7 @@ class DocumentToWorkorderController extends Controller
     public function create()
     {
         return view('documents._modal_document_to_workorder')
+            ->with('title', request('title'))
             ->with('document_id', request('document_id'))
             ->with('client_id', request('client_id'))
             ->with('groups', Group::getList())
@@ -43,12 +44,12 @@ class DocumentToWorkorderController extends Controller
 
         $workorder = $this->documentToWorkorder->convert(
             $document,
-            $request->input('workorder_date'),
-            DateFormatter::incrementDateByDays($request->input('workorder_date'), config('bt.workordersExpireAfter')),
+            $request->input('document_date'),
+            DateFormatter::incrementDateByDays($request->input('document_date'), config('bt.workordersExpireAfter')),
             $request->input('group_id'),
             'Workorder'
         );
 
-        return response()->json(['redirectTo' => route('workorders.edit', ['id' => $workorder->id])], 200);
+        return response()->json(['redirectTo' => route('documents.edit', ['id' => $workorder->id])], 200);
     }
 }

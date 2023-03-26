@@ -5,6 +5,7 @@
 
         document.getElementById('btn-document-to-invoice').addEventListener('click', () => {
             loadModal('{{ route('documentToInvoice.create') }}', {
+                title: '@lang('bt.'.strtolower($document->moduletype()).'_to_invoice')',
                 document_id: {{ $document->id }},
                 client_id: {{ $document->client_id }}
             })
@@ -12,6 +13,7 @@
 
         document.getElementById('btn-document-to-workorder').addEventListener('click', () => {
             loadModal('{{ route('documentToWorkorder.create') }}', {
+                title: '@lang('bt.'.strtolower($document->moduletype()).'_to_workorder')',
                 document_id: {{ $document->id }},
                 client_id: {{ $document->client_id }}
             })

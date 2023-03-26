@@ -19,11 +19,16 @@ class ConvertToModule
     public function convert($module, $moduleDate, $dueAt, $groupId, $toModuleType)
     {
         $moduleType = class_basename($module);
-        $toModuleModel = 'BT\Modules\\' . $toModuleType . 's\Models\\' . $toModuleType;
-        $toModuleStatuses = 'BT\Support\Statuses\\' . $toModuleType . 'Statuses';
-        $toModuleEvent = 'BT\Events\\' . $toModuleType . 'Modified';
-        $toModuleItem = 'BT\Modules\\' . $toModuleType . 's\Models\\' . $toModuleType . 'Item';
-        $moduleStatuses = 'BT\Support\Statuses\\' . $moduleType . 'Statuses';
+//        $toModuleModel = 'BT\Modules\\' . $toModuleType . 's\Models\\' . $toModuleType;
+//        $toModuleStatuses = 'BT\Support\Statuses\\' . $toModuleType . 'Statuses';
+//        $toModuleEvent = 'BT\Events\\' . $toModuleType . 'Modified';
+//        $toModuleItem = 'BT\Modules\\' . $toModuleType . 's\Models\\' . $toModuleType . 'Item';
+//        $moduleStatuses = 'BT\Support\Statuses\\' . $moduleType . 'Statuses';
+        $toModuleModel = 'BT\Modules\Documents\Models\Document';
+        $toModuleStatuses = 'BT\Support\Statuses\DocumentStatuses';
+        $toModuleEvent = 'BT\Events\DocumentModified';
+        $toModuleItem = 'BT\Modules\Documents\Models\DocumentItem';
+        $moduleStatuses = 'BT\Support\Statuses\DocumentStatuses';
         $module_id = strtolower($toModuleType) . '_id';
         $module_status_id = strtolower($moduleType) . '_status_id';
         $module_items = strtolower($moduleType) . 'Items';
@@ -43,13 +48,15 @@ class ConvertToModule
         ];
 
         if ($toModuleType == 'Invoice') {
-            $record['invoice_date'] = $moduleDate;
-            $record['due_at'] = $dueAt;
-            $record['invoice_status_id'] = $toModuleStatuses::getStatusId('draft');
+            $record['document_type'] = 3;
+            $record['document_date'] = $moduleDate;
+            $record['action_date'] = $dueAt;
+            $record['document_status_id'] = $toModuleStatuses::getStatusId('draft');
         } else { //module workorder
-            $record['workorder_date'] = $moduleDate;
-            $record['expires_at'] = $dueAt;
-            $record['workorder_status_id'] = $toModuleStatuses::getStatusId('draft');
+            $record['document_type'] = 2;
+            $record['document_date'] = $moduleDate;
+            $record['action_date'] = $dueAt;
+            $record['document_status_id'] = $toModuleStatuses::getStatusId('draft');
         }
 
         $toModule = $toModuleModel::create($record);
@@ -62,7 +69,8 @@ class ConvertToModule
 
         foreach ($module->$module_items as $item) {
             $itemRecord = [
-                $module_id       => $toModule->id,
+//                $module_id       => $toModule->id,
+                'document_id'       => $toModule->id,
                 'name'           => $item->name,
                 'description'    => $item->description,
                 'quantity'       => $item->quantity,

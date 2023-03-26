@@ -2,6 +2,9 @@ Release Notes
 ---
 ---
 
+### BillingTrack 7.0.0
+- Merged core modules
+
 ### BillingTrack 6.1.0 (2023-04-01)
 - Upgrade to Laravel 10
 - update Laravel deprecated $dates to $casts

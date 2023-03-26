@@ -123,6 +123,34 @@ return new class extends Migration {
             $invoice->updateQuietly();
         }
 
+        //update quote workorder_id and invoice_id refs to new documents
+        $quotes = \BT\Modules\Documents\Models\Document::where('document_type', 1)->get();
+
+        foreach ($quotes as $quote){
+            if ($quote->workorder_id > 0 || $quote->invoice_id > 0) {
+                if ($quote->workorder_id > 0) {
+                    $quotedoc = \BT\Modules\Documents\Models\Document::where('document_type', 2)->where('document_id', $quote->workorder_id)->first();
+                    $quote->workorder_id = $quotedoc->id;
+                }
+                if ($quote->invoice_id > 0) {
+                    $invoicedoc = \BT\Modules\Documents\Models\Document::where('document_type', 3)->where('document_id', $quote->invoice_id)->first();
+                    $quote->invoice_id = $invoicedoc->id;
+                }
+                $quote->updateQuietly();
+            }
+        }
+
+        //update workorder  invoice_id refs to new documents
+        $workorders = \BT\Modules\Documents\Models\Document::where('document_type',2)->get();
+
+        foreach ($workorders as $workorder){
+                if ($workorder->invoice_id > 0) {
+                    $invoicedoc = \BT\Modules\Documents\Models\Document::where('document_type', 3)->where('document_id', $workorder->invoice_id)->first();
+                    $workorder->invoice_id = $invoicedoc->id;
+                    $workorder->updateQuietly();
+                }
+        }
+
         Schema::enableForeignKeyConstraints();
 
     }

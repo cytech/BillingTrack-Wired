@@ -52,13 +52,15 @@ class Document extends Model
 
     public function convertedtoinvoice(){
         if ($this->invoice_id){
-            return $this->withTrashed()->where('document_type',  DOCUMENT_TYPE_INVOICE['document_type'])->where('document_id', $this->invoice_id)->first();
+//            return $this->withTrashed()->where('document_type',  DOCUMENT_TYPE_INVOICE['document_type'])->where('document_id', $this->invoice_id)->first();
+            return $this->withTrashed()->find($this->invoice_id);
         }
     }
 
     public function convertedtoworkorder(){
         if ($this->workorder_id){
-            return $this->withTrashed()->where('document_type',  DOCUMENT_TYPE_WORKORDER['document_type'])->where('document_id', $this->workorder_id)->first();
+//            return $this->withTrashed()->where('document_type',  DOCUMENT_TYPE_WORKORDER['document_type'])->where('id', $this->workorder_id)->first();
+            return $this->withTrashed()->find($this->workorder_id);
         }
     }
 

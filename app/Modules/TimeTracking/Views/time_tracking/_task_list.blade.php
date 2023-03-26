@@ -8,12 +8,12 @@
             </span>
             <input type="checkbox" class="checkbox-bulk-action" data-task-id="{{ $task->id }}">
             @if (!$task->activeTimer)
-                <button class="btn btn-sm bg-green btn-start-timer" data-task-id="{{ $task->id }}"><i
+                <button class="btn btn-sm btn-green btn-start-timer" data-task-id="{{ $task->id }}"><i
                             class="fa fa-play"></i> <strong>@lang('bt.start_timer')<br>
                         {{ $task->formatted_hours }} @lang('bt.hours')</strong>
                 </button>
             @else
-                <button class="btn btn-sm bg-red btn-stop-timer" data-timer-id="{{ $task->activeTimer->id }}"
+                <button class="btn btn-sm btn-red btn-stop-timer" data-timer-id="{{ $task->activeTimer->id }}"
                         data-task-id="{{ $task->id }}"><i class="fa fa-stop"></i> <strong>@lang('bt.stop_timer')<br>
                         <span id="hours_{{ $task->id }}">00</span>:<span id="minutes_{{ $task->id }}">00</span>:<span
                                 id="seconds_{{ $task->id }}">00</span></strong>
