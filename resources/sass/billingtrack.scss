@@ -152,6 +152,63 @@
   }
 }
 
+.todo-list {
+  list-style: none;
+  margin: 0;
+  overflow: auto;
+  padding: 0;
+}
+
+.todo-list > li {
+  border-radius: 2px;
+  background-color: #f8f9fa;
+  border-left: 2px solid #e9ecef;
+  color: #495057;
+  margin-bottom: 2px;
+  padding: 10px;
+}
+
+.todo-list > li:last-of-type {
+  margin-bottom: 0;
+}
+
+.todo-list > li > input[type="checkbox"] {
+  margin: 0 10px 0 5px;
+}
+
+.todo-list > li .text {
+  display: inline-block;
+  font-weight: 600;
+  margin-left: 5px;
+}
+
+.todo-list > li .badge {
+  font-size: .7rem;
+  margin-left: 10px;
+}
+
+.todo-list > li .tools {
+  color: #dc3545;
+  display: none;
+  float: right;
+}
+
+.todo-list > li .tools > .fa,
+.todo-list > li .tools > .fas,
+.todo-list > li .tools > .far,
+.todo-list > li .tools > .fab,
+.todo-list > li .tools > .fal,
+.todo-list > li .tools > .fad,
+.todo-list > li .tools > .svg-inline--fa,
+.todo-list > li .tools > .ion {
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+.todo-list > li:hover .tools {
+  display: inline-block;
+}
+
 //// nav pills
 //.nav-pills-dark .nav-link {
 //  border-radius: 0.25rem;
