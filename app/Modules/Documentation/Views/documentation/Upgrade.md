@@ -24,7 +24,7 @@ Upgrade
 - After migration completes, signin.
 
 # UPGRADE FROM BILLINGTRACK 5.X.X
-**Minimum PHP requirement for BillingTrack-Wired (v6.X.X) is PHP >= 8.0.2**
+**Minimum PHP requirement for BillingTrack-Wired (v6.X.X) is PHP >= 8.1**
 - Create a new installation/site. (see [How to Install BillingTrack](Installation.md))
 - Although it is theoretically possible to do so, do not attempt to upgrade an existing BillingTrack 5.x.x Site.
 - This is a new repository and existing cloners will not be able to pull the update.

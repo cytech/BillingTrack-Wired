@@ -10,6 +10,10 @@ Release Notes
 - adminlte to v4-dev-bs530
 - revamp skinning with bootstrap 5.3 color-modes
 - add condensed option to timesheet report
+- fix product cost to price in add product
+- fix custom fields error in add modules
+- modify client activity widget
+
 
 ### BillingTrack 6.0.6 (2023-01-12)
 - update Fullcalendar to v6.x

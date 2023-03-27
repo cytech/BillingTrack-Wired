@@ -12,6 +12,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - adminlte to v4-dev-bs530
 - revamp skinning with bootstrap 5.3 color-modes
 - add condensed option to timesheet report
+- fix product cost to price in add product
+- fix custom fields error in add modules
+- modify client activity widget
 
 ## 6.0.6
 - update Fullcalendar to v6.x
