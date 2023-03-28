@@ -41,6 +41,10 @@ class DocumentController extends Controller
                 $module_type = DOCUMENT_TYPE_INVOICE['module_type'];
                 $modulefullname = DOCUMENT_TYPE_INVOICE['modulefullname'];
                 break;
+            case 5:
+                $module_type = DOCUMENT_TYPE_PURCHASEORDER['module_type'];
+                $modulefullname = DOCUMENT_TYPE_PURCHASEORDER['modulefullname'];
+                break;
         }
 
         //$module_type == 1 ? $module_type = 'Quote' : $module_type = null;

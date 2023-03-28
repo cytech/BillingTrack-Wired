@@ -241,7 +241,7 @@ class ModuleColumnDefs
                     ->sortable(fn(Builder $query, string $direction) => $query->orderBy('created_at', $direction))
                     ->format(fn($value, $row, Column $column) => DateFormatter::format($row->created_at)),
 //                Column::make(trans('bt.due_date'), 'due_at')
-                Column::make(trans('bt.due_date'), 'action_date')
+                Column::make(trans('bt.due_date'), 'due_at')
 //                    ->sortable(fn(Builder $query, string $direction) => $query->orderBy('due_at', $direction))
 //                    ->format(fn($value, $row, Column $column) => DateFormatter::format($row->due_at)),
                     ->sortable(fn(Builder $query, string $direction) => $query->orderBy('action_date', $direction))

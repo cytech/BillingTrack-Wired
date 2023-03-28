@@ -47,6 +47,9 @@ class Document extends Model
                 return DOCUMENT_TYPE_WORKORDER['module_type'];
             case 3:
                 return DOCUMENT_TYPE_INVOICE['module_type'];
+            case 5:
+                return DOCUMENT_TYPE_PURCHASEORDER['module_type'];
+
         }
     }
 
@@ -138,6 +141,27 @@ class Document extends Model
         else {
             $relationship->where('client_visibility', 1);
         }
+        return $relationship;
+    }
+
+    public function vendor()
+    {
+        return $this->belongsTo('BT\Modules\Vendors\Models\Vendor', 'client_id');
+    }
+
+    public function vendorAttachments()
+    {
+        $relationship = $this->morphMany('BT\Modules\Attachments\Models\Attachment', 'attachable');
+
+        if ($this->status_text == 'paid')
+        {
+            $relationship->whereIn('vendor_visibility', [1, 2]);
+        }
+        else
+        {
+            $relationship->where('vendor_visibility', 1);
+        }
+
         return $relationship;
     }
 
@@ -404,6 +428,16 @@ class Document extends Model
         if ($clientId)
         {
             $query->where('client_id', $clientId);
+        }
+
+        return $query;
+    }
+
+    public function scopeVendorId($query, $vendorId = null)
+    {
+        if ($vendorId)
+        {
+            $query->where('client_id', $vendorId);
         }
 
         return $query;

@@ -3,7 +3,7 @@
 
         autosize(document.querySelectorAll('textarea'))
 
-        document.getElementById('btn-document-to-invoice').addEventListener('click', () => {
+        document.getElementById('btn-document-to-invoice')?.addEventListener('click', () => {
             loadModal('{{ route('documentToInvoice.create') }}', {
                 title: '@lang('bt.'.strtolower($document->moduletype()).'_to_invoice')',
                 document_id: {{ $document->id }},
@@ -11,7 +11,7 @@
             })
         });
 
-        document.getElementById('btn-document-to-workorder').addEventListener('click', () => {
+        document.getElementById('btn-document-to-workorder')?.addEventListener('click', () => {
             loadModal('{{ route('documentToWorkorder.create') }}', {
                 title: '@lang('bt.'.strtolower($document->moduletype()).'_to_workorder')',
                 document_id: {{ $document->id }},
@@ -83,7 +83,8 @@
                 axios.get('{{ route('documents.documentEdit.refreshEdit', [$document->id]) }}')
                     .then(response => {
                         setInnerHTML(document.getElementById('div-document-edit'), response.data)
-                        window.livewire.rescan();
+                        //window.livewire.rescan();
+                        window.location.reload()
                         Swal.close()
                     })
             }).catch(function (error) {

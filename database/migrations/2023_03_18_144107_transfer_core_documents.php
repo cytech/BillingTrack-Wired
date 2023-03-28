@@ -15,7 +15,7 @@ return new class extends Migration {
     {
         Schema::disableForeignKeyConstraints();
 
-        $coredoctypes = [DOCUMENT_TYPE_QUOTE, DOCUMENT_TYPE_WORKORDER, DOCUMENT_TYPE_INVOICE];
+        $coredoctypes = [DOCUMENT_TYPE_QUOTE, DOCUMENT_TYPE_WORKORDER, DOCUMENT_TYPE_INVOICE, DOCUMENT_TYPE_PURCHASEORDER];
 
         foreach ($coredoctypes as $coredoctype) {
             $modtype = '\\BT\Modules\\' . $coredoctype['module_type'] . 's\\Models\\' . $coredoctype['module_type'];
@@ -27,13 +27,13 @@ return new class extends Migration {
                 $document = new \BT\Modules\Documents\Models\Document();
                 $document->document_type = $coredoctype['document_type'];
                 $document->document_id = $doc->id;
-                $document->document_date = $doc->quote_date ?? $doc->workorder_date ?? $doc->invoice_date;
+                $document->document_date = $doc->quote_date ?? $doc->workorder_date ?? $doc->invoice_date ?? $doc->purchaseorder_date;
                 $document->workorder_id = $doc->workorder_id ?? 0;
                 $document->invoice_id = $doc->invoice_id ?? 0;
                 $document->user_id = $doc->user_id;
-                $document->client_id = $doc->client_id;
+                $document->client_id = $doc->client_id ?? $doc->vendor_id;
                 $document->group_id = $doc->group_id;
-                $document->document_status_id = $doc->quote_status_id ?? $doc->workorder_status_id ?? $doc->invoice_status_id;
+                $document->document_status_id = $doc->quote_status_id ?? $doc->workorder_status_id ?? $doc->invoice_status_id ?? $doc->purchaseorder_status_id;
                 $document->action_date = $doc->expires_at ?? $doc->due_at;
                 $document->number = $doc->number;
                 $document->footer = $doc->footer;
@@ -86,7 +86,9 @@ return new class extends Migration {
                     $documentitem->description = $docitem->description;
                     $documentitem->quantity = $docitem->quantity;
                     $documentitem->display_order = $docitem->display_order;
-                    $documentitem->price = $docitem->price;
+                    $documentitem->price = $docitem->price ?? $docitem->cost;
+                    $documentitem->rec_qty = $docitem->rec_qty ?? 0;
+                    $documentitem->rec_status_id = $docitem->rec_status_id ?? 0;
                     $documentitem->deleted_at = $docitem->deleted_at;
                     $documentitem->created_at = $docitem->created_at;
                     $documentitem->updated_at = $docitem->updated_at;
@@ -121,6 +123,23 @@ return new class extends Migration {
                 $invoice->document_status_id = 5;
             }
             $invoice->updateQuietly();
+        }
+        //move purchaseorder status_id to document statuses
+        $purchaseorders = \BT\Modules\Documents\Models\Document::where('document_type', 5)->get();
+
+        foreach ($purchaseorders as $purchaseorder){
+            if ($purchaseorder->document_status_id == 3){
+                $purchaseorder->document_status_id = 7;
+            }
+            if ($purchaseorder->document_status_id == 4){
+                $purchaseorder->document_status_id = 8;
+            }
+            if ($purchaseorder->document_status_id == 5){
+                $purchaseorder->document_status_id = 6;
+            } elseif ($purchaseorder->document_status_id == 6){
+                $purchaseorder->document_status_id = 5;
+            }
+            $purchaseorder->updateQuietly();
         }
 
         //update quote workorder_id and invoice_id refs to new documents

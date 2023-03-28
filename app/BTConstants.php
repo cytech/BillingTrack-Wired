@@ -13,8 +13,10 @@ if (!defined('APP_NAME')) {
     define('DOCUMENT_TYPE_INVOICE', ['document_type'  => 3,
                                      'modulefullname' => addslashes(\BT\Modules\Documents\Models\Document::class),
                                      'module_type'    => 'Invoice']);
-    define('DOCUMENT_TYPE_RECURRINGINVOICE', [4, addslashes(\BT\Modules\RecurringInvoices\Models\RecurringInvoice::class)]);
+    define('DOCUMENT_TYPE_RECURRINGINVOICE', ['document_type'  => 4,
+                                      'modulefullname' => addslashes(\BT\Modules\RecurringInvoices\Models\RecurringInvoice::class),
+                                      'module_type'    => 'RecurringInvoice']);
     define('DOCUMENT_TYPE_PURCHASEORDER', ['document_type'  => 5,
-                                           'modulefullname' => addslashes(\BT\Modules\Purchaseorders\Models\Purchaseorder::class),
+                                           'modulefullname' => addslashes(\BT\Modules\Documents\Models\Document::class),
                                            'module_type'    => 'Purchaseorder']);
 }

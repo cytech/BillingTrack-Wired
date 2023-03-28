@@ -17,9 +17,11 @@ class DocumentStatuses extends AbstractStatuses
         '0' => 'all_statuses',
         '1' => 'draft',
         '2' => 'sent',
-        '3' => 'approved', //not allowed invoice
-        '4' => 'rejected', //not allowed invoice
-        '5' => 'canceled',
-        '6' => 'paid' //invoice only
+        '3' => 'approved', //not allowed invoice, po
+        '4' => 'rejected', //not allowed invoice, po
+        '5' => 'canceled', //po was 6
+        '6' => 'paid', //invoice and  po was 5
+        '7' => 'received', //po was 3
+        '8' => 'partial', //po was 4
     ];
 }
