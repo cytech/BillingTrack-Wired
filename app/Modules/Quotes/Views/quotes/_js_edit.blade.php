@@ -81,7 +81,8 @@
                 axios.get('{{ route('quotes.quoteEdit.refreshEdit', [$quote->id]) }}')
                     .then(response => {
                         setInnerHTML(document.getElementById('div-quote-edit'), response.data)
-                        window.livewire.rescan();
+                        //window.livewire.rescan();
+                        window.location.reload()
                         Swal.close()
                     })
             }).catch(function (error) {

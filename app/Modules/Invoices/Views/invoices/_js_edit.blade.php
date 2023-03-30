@@ -67,7 +67,8 @@
                 axios.get('{{ route('invoices.invoiceEdit.refreshEdit', [$invoice->id]) }} ')
                     .then(response => {
                         setInnerHTML(document.getElementById('div-invoice-edit'), response.data)
-                        window.livewire.rescan();
+                        //window.livewire.rescan();
+                        window.location.reload()
                         Swal.close()
                     })
             }).catch(function (error) {
