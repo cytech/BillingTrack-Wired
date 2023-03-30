@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 6.1.1
+- fix duplicate item creation after module save
+
 ## 6.1.0
 - Upgrade to Laravel 10
 - update Laravel deprecated $dates to $casts
