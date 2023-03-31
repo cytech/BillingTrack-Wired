@@ -11,7 +11,8 @@
                         wire:click.prevent="addItems()">@lang('bt.submit')</button>
             </div>
         </div>
-        @if(class_basename($module) == 'Purchaseorder')
+{{--        @if(class_basename($module) == 'Purchaseorder')--}}
+        @if($module->moduletype() == 'Purchaseorder')
             <div class="modal-header pt-2 pb-1">
                 <label>
                     <input wire:model="pref_vendor" type="checkbox" checked name="pref_vendor"
@@ -57,7 +58,8 @@
                                 <td @if($resource->is_trackable) class="bg-secondary"
                                     title="@lang('bt.trackable')" @endif>{!!  \BT\Support\NumberFormatter::format($resource->numstock,null,2) ?? 0 !!}
                             @endif
-                            @if(class_basename($module) == 'Purchaseorder')
+{{--                            @if(class_basename($module) == 'Purchaseorder')--}}
+                            @if($module->moduletype() == 'Purchaseorder')
                                 <td>{!!  $resource->formatted_cost  !!}</td>
                             @else
                                 <td>{!!  $resource->formatted_price ?? $resource->formatted_billing_rate !!}</td>

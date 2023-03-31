@@ -110,7 +110,7 @@ class ItemsTable extends Component
             $add_item->resource_table = Str::snake($params['resource_type']) . 's';
             $add_item->resource_id = $res->id;
 
-            if ($params['resource_type'] == 'Product' && $this->module_type == 'Purchaseorder') {
+            if ($params['resource_type'] == 'Product' && $this->module->moduletype() == 'Purchaseorder') {
                 $add_item->price = $res->cost;
             }
 

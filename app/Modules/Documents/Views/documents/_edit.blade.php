@@ -57,7 +57,7 @@
                                 class="fa fa-check"></i> @lang('bt.'.strtolower($document->moduletype()).'_to_workorder')
                     </a>
                 @endif
-                @if($document->moduletype() != 'Invoice')
+                @if($document->moduletype() != 'Invoice' && $document->moduletype() != 'Purchaseorder')
                     <a class="dropdown-item" href="javascript:void(0)" id="btn-document-to-invoice"><i
                                 class="fa fa-check"></i> @lang('bt.'.strtolower($document->moduletype()).'_to_invoice')
                     </a>
@@ -96,10 +96,10 @@
             @include('layouts._alerts')
             <div id="form-status-placeholder"></div>
             <div class="row">
-                <div class="col-sm-6" id="col-from">
+                <div class="col-sm-8" id="col-from">
                     @include('documents._edit_from')
                 </div>
-                <div class="col-sm-6" id="col-to">
+                <div class="col-sm-4" id="col-to">
                     @include('documents._edit_to')
                 </div>
             </div>

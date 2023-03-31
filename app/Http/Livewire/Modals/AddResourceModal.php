@@ -21,9 +21,10 @@ class AddResourceModal extends Component
         $module_type = class_basename($this->module);
         $this->resource_type = $resource_type;
         if ($resource_type == 'Product') {
-            if ($module_type == 'Purchaseorder') {
+//            if ($module_type == 'Purchaseorder') {
+            if ($this->module->moduletype() == 'Purchaseorder') {
                 $this->pref_vendor = 1;
-                $this->resources = ('BT\\Modules\\' . $resource_type . 's\\Models\\' . $resource_type)::status('active')->where('vendor_id', $this->module->vendor_id)->orderby('name','ASC')->get();
+                $this->resources = ('BT\\Modules\\' . $resource_type . 's\\Models\\' . $resource_type)::status('active')->where('vendor_id', $this->module->client_id)->orderby('name','ASC')->get();
             }else{
                 $this->resources = ('BT\\Modules\\' . $resource_type . 's\\Models\\' . $resource_type)::status('active')->orderby('name','ASC')->get();
             }
@@ -37,7 +38,7 @@ class AddResourceModal extends Component
     public function updatedPrefVendor(){
         $this->pref_vendor ? !$this->pref_vendor : 1;
         if ($this->pref_vendor){
-            $this->resources = ('BT\\Modules\\' . $this->resource_type . 's\\Models\\' . $this->resource_type)::status('active')->where('vendor_id', $this->module->vendor_id)->orderby('name','ASC')->get();
+            $this->resources = ('BT\\Modules\\' . $this->resource_type . 's\\Models\\' . $this->resource_type)::status('active')->where('vendor_id', $this->module->client_id)->orderby('name','ASC')->get();
         }else {
             $this->resources = ('BT\\Modules\\' . $this->resource_type . 's\\Models\\' . $this->resource_type)::status('active')->orderby('name','ASC')->get();
         }

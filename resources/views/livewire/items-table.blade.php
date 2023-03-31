@@ -8,7 +8,8 @@
                             {{--                                     params 3 thru ...> mount(,,$modulefullname, $module_id = null, $resource_type)--}}
                             onclick="window.livewire.emit('showModal', 'modals.add-resource-modal', '{{  addslashes(get_class($module)) }}', {{$module->id}}, 'Product')">
                         <i class="fa fa-plus"></i> @lang('bt.add_product')</button>
-                    @if($module_type != 'Purchaseorder')
+{{--                    @if($module_type != 'Purchaseorder')--}}
+                    @if($module->moduletype() != 'Purchaseorder')
                     <button class="btn btn-primary btn-sm"
                             {{--                                     params 3 thru ...> mount(,,$modulefullname, $module_id = null, $resource_type)--}}
                             onclick="window.livewire.emit('showModal', 'modals.add-resource-modal', '{{  addslashes(get_class($module)) }}', {{$module->id}}, 'Employee')">
@@ -25,7 +26,7 @@
                         <th style="width: 20%;">@lang('bt.product')</th>
                         <th style="width: 25%;">@lang('bt.description')</th>
                         <th style="width: 10%;">@lang('bt.qty')</th>
-                        <th style="width: 10%;">@lang('bt.price')</th>
+                        <th style="width: 10%;">@if($module->moduletype() != 'Purchaseorder') @lang('bt.price') @else @lang('bt.product_cost') @endif</th>
                         <th style="width: 10%;">@lang('bt.tax_1')</th>
                         <th style="width: 10%;">@lang('bt.tax_2')</th>
                         <th style="width: 10%; text-align: right; padding-right: 25px;">@lang('bt.action')</th>
@@ -35,7 +36,8 @@
                     <tbody id="new-tbody">
                     <tr class="todo-list new-item" id="tr-new-item">
                         <td style="width: 20%;">
-                            @if($module_type == 'Purchaseorder')
+{{--                            @if($module_type == 'Purchaseorder')--}}
+                                @if($module->moduletype() == 'Purchaseorder')
                             <livewire:product-search
                                     {{--module base name, adds hidden fields with _id and _name--}}
                                     wire:onload="$emit('refreshSearch', ['searchTerm' => null, 'value' => null, 'description' => null, 'optionsValues' => null]);"
@@ -66,7 +68,8 @@
                                            name="save_item_as"
                                            id="save_item_as"
                                            tabindex="999">
-                                    @if($module_type == 'Purchaseorder')
+{{--                                    @if($module_type == 'Purchaseorder')--}}
+                                        @if($module->moduletype() == 'Purchaseorder')
                                         @lang('bt.save_item_as_product')
                                     @else
                                         @lang('bt.save_item_as_lookup')
@@ -113,7 +116,7 @@
                         <th style="width: 20%;">@lang('bt.product')</th>
                         <th style="width: 25%;">@lang('bt.description')</th>
                         <th style="width: 10%;">@lang('bt.qty')</th>
-                        <th style="width: 10%;">@lang('bt.price')</th>
+                        <th style="width: 10%;">@if($module->moduletype() != 'Purchaseorder') @lang('bt.price') @else @lang('bt.product_cost') @endif</th>
                         <th style="width: 10%;">@lang('bt.tax_1')</th>
                         <th style="width: 10%;">@lang('bt.tax_2')</th>
                         <th style="width: 10%; text-align: right; padding-right: 25px;">@lang('bt.total')</th>

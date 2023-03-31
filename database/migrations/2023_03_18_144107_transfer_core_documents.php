@@ -19,7 +19,7 @@ return new class extends Migration {
 
         foreach ($coredoctypes as $coredoctype) {
             $modtype = '\\BT\Modules\\' . $coredoctype['module_type'] . 's\\Models\\' . $coredoctype['module_type'];
-            $docs = $modtype::withTrashed()->with('amount', 'items.amount')->get();
+            $docs = $modtype::withTrashed()->with('amount', 'items.amount', 'custom')->get();
 //            $docs = $coredoctype[1]::class->withTrashed()->with('amount', 'items.amount')->get();
             //$docs = \BT\Modules\Quotes\Models\Quote::withTrashed()->with('amount', 'items.amount')->get();
 
@@ -64,14 +64,18 @@ return new class extends Migration {
                 $documentamount->discount = $doc->amount->discount;
                 $documentamount->tax = $doc->amount->tax;
                 $documentamount->total = $doc->amount->total;
-                $documentamount->paid = $doc->paid ?? 0;
-                $documentamount->balance = $doc->balance ?? 0;
+                $documentamount->paid = $doc->amount->paid ?? 0;
+                $documentamount->balance = $doc->amount->balance ?? 0;
                 $documentamount->deleted_at = $doc->amount->deleted_at;
                 $documentamount->created_at = $doc->amount->created_at;
                 $documentamount->updated_at = $doc->amount->updated_at;
 
                 $documentamount->saveQuietly();
 
+                $custidfield = strtolower($coredoctype['module_type']).'_id';
+
+                $doc->custom->$custidfield = $document->id;
+                $doc->custom->saveQuietly();
 
                 foreach ($doc->items as $docitem) {
                     $documentitem = new \BT\Modules\Documents\Models\DocumentItem();

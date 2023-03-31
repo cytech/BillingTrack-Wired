@@ -64,12 +64,12 @@ class DocumentAmount extends Model
     }
     public function getFormattedPaidAttribute()
     {
-        return CurrencyFormatter::format($this->attributes['paid'], $this->invoice->currency);
+        return CurrencyFormatter::format($this->attributes['paid'], $this->document->currency);
     }
 
     public function getFormattedBalanceAttribute()
     {
-        return CurrencyFormatter::format($this->attributes['balance'], $this->invoice->currency);
+        return CurrencyFormatter::format($this->attributes['balance'], $this->document->currency);
     }
 
     public function getFormattedNumericBalanceAttribute()
