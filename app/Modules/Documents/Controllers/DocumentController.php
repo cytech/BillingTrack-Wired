@@ -14,10 +14,13 @@ namespace BT\Modules\Documents\Controllers;
 use BT\Http\Controllers\Controller;
 use BT\Modules\CompanyProfiles\Models\CompanyProfile;
 use BT\Modules\Documents\Models\Document;
+use BT\Modules\Documents\Models\DocumentItem;
 use BT\Support\FileNames;
 use BT\Support\PDF\PDFFactory;
 use BT\Support\Statuses\DocumentStatuses;
+use BT\Support\Statuses\PurchaseorderItemStatuses;
 use BT\Traits\ReturnUrl;
+use Request;
 
 class DocumentController extends Controller
 {
@@ -81,5 +84,67 @@ class DocumentController extends Controller
         $pdf = PDFFactory::create();
 
         $pdf->download($document->html, FileNames::document($document));
+    }
+
+    public function receive()
+    {
+
+        $items = DocumentItem::where('document_id', request('purchaseorder_id'))->get();
+        return view('documents._modal_receive')
+            ->with('items', $items);
+    }
+
+    public function receiveItems(Request $request)
+    {
+        $items = DocumentItem::whereIn('id', $request->itemrec_ids)->get();
+
+        $rec_cnt = 0;
+        $rec_qty = 0;
+
+        // update received info
+        foreach ($items as $item) {
+            foreach ($request->itemrec_att as $att) {
+                if ($att['id'] == $item->id) {
+                    $qty = $item->rec_qty + $att['rec_qty'];
+                    $cost = $att['rec_cost'];
+                    $rec_qty = $att['rec_qty'];
+
+                    if ($qty == $item->quantity) {
+                        $status_id = PurchaseorderItemStatuses::getStatusId('received');
+                        $rec_cnt++;
+                    } elseif ($qty == 0) {
+                        $status_id = PurchaseorderItemStatuses::getStatusId('open');
+                    } elseif ($qty < $item->quantity) {
+                        $status_id = PurchaseorderItemStatuses::getStatusId('partial');
+                    } elseif ($qty > $item->quantity) {
+                        $status_id = PurchaseorderItemStatuses::getStatusId('extra');
+                    } else {
+                        $status_id = PurchaseorderItemStatuses::getStatusId('canceled');
+                    }
+                }
+            }
+
+            $item->rec_status_id = $status_id;
+            $item->rec_qty = $qty;
+            $item->cost = $cost;
+            $item->save();
+
+            //if update products is checked
+            if ($request->itemrec) {
+                //update product table quantities and cost for items
+                if ($item->resource_table == 'products' && $item->resource_id) {
+                    $item->product->increment('numstock', $rec_qty, ['cost' => $item->cost]);
+                }
+            }
+        }
+
+        // change PO status to received/partial
+        $purchaseorder = Purchaseorder::where('id', $items->first()->purchaseorder_id)->first();
+        if ($rec_cnt == $items->count()) {
+            $purchaseorder->purchaseorder_status_id = PurchaseorderStatuses::getStatusId('received');
+        } else {
+            $purchaseorder->purchaseorder_status_id = PurchaseorderStatuses::getStatusId('partial');
+        }
+        $purchaseorder->save();
     }
 }

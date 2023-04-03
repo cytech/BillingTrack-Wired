@@ -25,6 +25,8 @@ Route::middleware(['web', 'auth.admin'])->group(function () {
         Route::name('bulk.delete')->post('bulk/delete', [DocumentController::class, 'bulkDelete']);
         Route::name('bulk.status')->post('bulk/status', [DocumentController::class, 'bulkStatus']);
         Route::name('pdf')->get('{id}/pdf', [DocumentController::class, 'pdf']);
+        Route::name('receive')->post('receive', [DocumentController::class, 'receive']);
+        Route::name('receive_items')->post('receive_items', [DocumentController::class, 'receiveItems']);
 
         Route::name('edit')->get('{id}/edit', [DocumentEditController::class, 'edit']);
         Route::name('update')->post('{id}/edit', [DocumentEditController::class, 'update']);

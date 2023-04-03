@@ -67,10 +67,16 @@ class Document extends Model
         }
     }
 
-    public function invoice()
+    public static function invoices()
     {
 //        return $this->belongsTo('BT\Modules\Invoices\Models\Invoice');
-        return $this->document_type == DOCUMENT_TYPE_INVOICE['document_type'];
+        return self::where('document_type', DOCUMENT_TYPE_INVOICE['document_type']);
+    }
+
+    public static function quotes()
+    {
+//        return $this->belongsTo('BT\Modules\Invoices\Models\Invoice');
+        return self::where('document_type', DOCUMENT_TYPE_QUOTE['document_type']);
     }
 
     public function invoicetrashed()

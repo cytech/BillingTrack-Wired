@@ -273,7 +273,7 @@
 
         // purchase order receive items
         addEvent(document, 'click', '.receive-purchaseorder', (e) => {
-            axios.post('{{ route('purchaseorders.receive') }} ', {purchaseorder_id: e.target.dataset.purchaseorderId})
+            axios.post('{{ route('documents.receive') }} ', {purchaseorder_id: e.target.dataset.purchaseorderId})
                 .then(response => {
                     setInnerHTML(document.getElementById('modal-placeholder'), response.data)
                 })

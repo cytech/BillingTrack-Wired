@@ -14,6 +14,7 @@ namespace BT\Modules\Documents\Models;
 use Askedio\SoftCascade\Traits\SoftCascadeTrait;
 use BT\Support\CurrencyFormatter;
 use BT\Support\NumberFormatter;
+use BT\Support\Statuses\PurchaseorderItemStatuses;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -95,6 +96,13 @@ class DocumentItem extends Model
     public function getFormattedDescriptionAttribute()
     {
         return nl2br($this->attributes['description']);
+    }
+
+    public function getStatusTextAttribute()
+    {
+        $statuses = PurchaseorderItemStatuses::statuses();
+
+        return $statuses[$this->attributes['rec_status_id']];
     }
 
     /*

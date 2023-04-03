@@ -41,7 +41,7 @@
                 <button class="btn btn-sm"
                         type="button"
                         {{--                   params 3 thru ... mount(,,$modulefullname, $moduleop, $resource_id = null, $module_id = null, $readonly = null)--}}
-                        onclick="window.livewire.emit('showModal', 'modals.create-module-modal',  'BT\\Modules\\Quotes\\Models\\Quote', 'create' )"
+                        onclick="window.livewire.emit('showModal', 'modals.create-module-modal',  'BT\\Modules\\Documents\\Models\\Document', 'Quote', 'create' )"
                 ><i class="fa fa-plus"></i> @lang('bt.create_quote')
                 </button>
             </div>
@@ -55,7 +55,7 @@
                             <p>@lang('bt.draft_quotes')</p>
                         </div>
                         <div class="small-box-faicon"><i class="fa fa-pencil-alt"></i></div>
-                        <a class="small-box-footer" href="{{ route('quotes.index') }}?status=draft">
+                        <a class="small-box-footer" href="{{ route('documents.index', ['status' => 'draft', 'module_type' => DOCUMENT_TYPE_QUOTE['document_type']]) }}">
                             @lang('bt.view_draft_quotes') <i class="fa fa-arrow-circle-right"></i>
                         </a>
                     </div>
@@ -67,7 +67,7 @@
                             <p>@lang('bt.sent_quotes')</p>
                         </div>
                         <div class="small-box-faicon"><i class="fa fa-share-square"></i></div>
-                        <a class="small-box-footer" href="{{ route('quotes.index') }}?status=sent">
+                        <a class="small-box-footer" href="{{ route('documents.index', ['status' => 'sent', 'module_type' => DOCUMENT_TYPE_QUOTE['document_type']]) }}">
                             @lang('bt.view_sent_quotes') <i class="fa fa-arrow-circle-right"></i>
                         </a>
                     </div>
@@ -79,7 +79,7 @@
                             <p>@lang('bt.rejected_quotes')</p>
                         </div>
                         <div class="small-box-faicon"><i class="fa fa-thumbs-down"></i></div>
-                        <a class="small-box-footer" href="{{ route('quotes.index') }}?status=rejected">
+                        <a class="small-box-footer" href="{{ route('documents.index', ['status' => 'rejected', 'module_type' => DOCUMENT_TYPE_QUOTE['document_type']]) }}">
                             @lang('bt.view_rejected_quotes') <i class="fa fa-arrow-circle-right"></i>
                         </a>
                     </div>
@@ -91,7 +91,7 @@
                             <p>@lang('bt.approved_quotes')</p>
                         </div>
                         <div class="small-box-faicon"><i class="fa fa-thumbs-up"></i></div>
-                        <a class="small-box-footer" href="{{ route('quotes.index') }}?status=approved">
+                        <a class="small-box-footer" href="{{ route('documents.index', ['status' => 'approved', 'module_type' => DOCUMENT_TYPE_QUOTE['document_type']]) }}">
                             @lang('bt.view_approved_quotes') <i class="fa fa-arrow-circle-right"></i>
                         </a>
                     </div>
