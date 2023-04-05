@@ -2,7 +2,7 @@
 
 namespace BT\Widgets\Dashboard\InvoiceSummary\Composers;
 
-use BT\Modules\Invoices\Models\InvoiceAmount;
+use BT\Modules\Documents\Models\DocumentAmount;
 use BT\Modules\Payments\Models\Payment;
 use BT\Support\CurrencyFormatter;
 use Illuminate\Support\Facades\DB;
@@ -20,7 +20,7 @@ class InvoiceSummaryWidgetComposer
 
     private function getInvoicesTotalDraft()
     {
-        return CurrencyFormatter::format(InvoiceAmount::join('invoices', 'invoices.id', '=', 'invoice_amounts.invoice_id')
+        return CurrencyFormatter::format(DocumentAmount::join('documents', 'documents.id', '=', 'document_amounts.document_id')
             ->whereHas('invoice', function ($q)
             {
                 $q->draft();
@@ -41,7 +41,7 @@ class InvoiceSummaryWidgetComposer
 
     private function getInvoicesTotalSent()
     {
-        return CurrencyFormatter::format(InvoiceAmount::join('invoices', 'invoices.id', '=', 'invoice_amounts.invoice_id')
+        return CurrencyFormatter::format(DocumentAmount::join('documents', 'documents.id', '=', 'document_amounts.document_id')
             ->whereHas('invoice', function ($q)
             {
                 $q->sent();
@@ -62,7 +62,7 @@ class InvoiceSummaryWidgetComposer
 
     private function getInvoicesTotalPaid()
     {
-        $payments = Payment::join('invoices', 'invoices.id', '=', 'payments.invoice_id');
+        $payments = Payment::join('documents', 'documents.id', '=', 'payments.invoice_id');
 
         switch (config('bt.widgetInvoiceSummaryDashboardTotals'))
         {
@@ -82,7 +82,7 @@ class InvoiceSummaryWidgetComposer
 
     private function getInvoicesTotalOverdue()
     {
-        return CurrencyFormatter::format(InvoiceAmount::join('invoices', 'invoices.id', '=', 'invoice_amounts.invoice_id')
+        return CurrencyFormatter::format(DocumentAmount::join('documents', 'documents.id', '=', 'document_amounts.document_id')
             ->whereHas('invoice', function ($q)
             {
                 $q->overdue();

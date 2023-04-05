@@ -280,7 +280,8 @@
         })
         // email quote
         addEvent(document, 'click', '.email-quote', (e) => {
-            axios.post('{{ route('quoteMail.create') }} ', {
+            {{--axios.post('{{ route('quoteMail.create') }} ', {--}}
+            axios.post('{{ route('documentMail.create') }} ', {
                 quote_id: e.target.dataset.quoteId,
                 redirectTo: e.target.dataset.redirectTo
             }).then(response => {
@@ -292,7 +293,8 @@
 
         //email invoice
         addEvent(document, 'click', '.email-invoice', (e) => {
-            axios.post('{{ route('invoiceMail.create') }} ', {
+            {{--axios.post('{{ route('invoiceMail.create') }} ', {--}}
+            axios.post('{{ route('documentMail.create') }} ', {
                 invoice_id: e.target.dataset.invoiceId,
                 redirectTo: e.target.dataset.redirectTo
             }).then(response => {
@@ -303,7 +305,8 @@
         })
         //email purchaseorder
         addEvent(document, 'click', '.email-purchaseorder', (e) => {
-            axios.post('{{ route('purchaseorderMail.create') }} ', {
+            {{--axios.post('{{ route('purchaseorderMail.create') }} ', {--}}
+            axios.post('{{ route('documentMail.create') }} ', {
                 purchaseorder_id: e.target.dataset.purchaseorderId,
                 redirectTo: e.target.dataset.redirectTo
             }).then(response => {

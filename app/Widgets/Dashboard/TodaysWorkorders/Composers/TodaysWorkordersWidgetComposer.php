@@ -3,7 +3,7 @@
 namespace BT\Widgets\Dashboard\TodaysWorkorders\Composers;
 
 use Carbon\Carbon;
-use BT\Modules\Workorders\Models\Workorder;
+use BT\Modules\Documents\Models\Workorder;
 
 class TodaysWorkordersWidgetComposer
 {
@@ -12,7 +12,7 @@ class TodaysWorkordersWidgetComposer
         $today = new Carbon();
 
         $todaysWorkorders = Workorder::where( 'job_date', '=', $today->format('Y-m-d'))
-            ->where('workorder_status_id', 3)->get();
+            ->where('document_status_id', 3)->get();
 
         $view->with('todaysWorkorders', $todaysWorkorders);
     }

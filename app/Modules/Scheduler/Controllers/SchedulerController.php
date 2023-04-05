@@ -11,7 +11,8 @@
 namespace BT\Modules\Scheduler\Controllers;
 
 use BT\Http\Controllers\Controller;
-use BT\Modules\Purchaseorders\Models\Purchaseorder;
+//use BT\Modules\Purchaseorders\Models\Purchaseorder;
+use BT\Modules\Documents\Models\Purchaseorder;
 use BT\Modules\Scheduler\Requests\ReplaceRequest;
 use BT\Modules\Employees\Models\Employee;
 use BT\Modules\Products\Models\Product;
@@ -20,7 +21,8 @@ use BT\Modules\Scheduler\Models\ScheduleOccurrence;
 use BT\Modules\Scheduler\Models\ScheduleResource;
 use BT\Modules\Scheduler\Models\Category;
 use BT\Modules\Settings\Models\Setting;
-use BT\Modules\Workorders\Models\WorkorderItem;
+//use BT\Modules\Workorders\Models\WorkorderItem;
+use BT\Modules\Documents\Models\DocumentItem;
 use Carbon\Carbon;
 use DB;
 use Illuminate\Http\Request;
@@ -29,9 +31,12 @@ use BT\Modules\Scheduler\Requests\EventRequest;
 
 //for coreevnts
 use BT\Modules\Scheduler\Support\CalendarEventPresenter;
-use BT\Modules\Quotes\Models\Quote;
-use BT\Modules\Workorders\Models\Workorder;
-use BT\Modules\Invoices\Models\Invoice;
+//use BT\Modules\Quotes\Models\Quote;
+use BT\Modules\Documents\Models\Quote;
+//use BT\Modules\Workorders\Models\Workorder;
+use BT\Modules\Documents\Models\Workorder;
+//use BT\Modules\Invoices\Models\Invoice;
+use BT\Modules\Documents\Models\Invoice;
 use BT\Modules\Payments\Models\Payment;
 use BT\Modules\Expenses\Models\Expense;
 use BT\Modules\TimeTracking\Models\TimeTrackingProject;
@@ -77,17 +82,17 @@ class SchedulerController extends Controller
             ->orderBy('reminder_date', 'asc')
             ->get();
 
-        $data['thisquotes'] = Quote::approved()->whereBetween('quote_date', [$thismonthstart, $thismonthend])->count();
-        $data['lastquotes'] = Quote::approved()->whereBetween('quote_date', [$lastmonthstart, $lastmonthend])->count();
-        $data['nextquotes'] = Quote::approved()->whereBetween('quote_date', [$nextmonthstart, $nextmonthend])->count();
+        $data['thisquotes'] = Quote::approved()->whereBetween('document_date', [$thismonthstart, $thismonthend])->count();
+        $data['lastquotes'] = Quote::approved()->whereBetween('document_date', [$lastmonthstart, $lastmonthend])->count();
+        $data['nextquotes'] = Quote::approved()->whereBetween('document_date', [$nextmonthstart, $nextmonthend])->count();
 
         $data['thisworkorders'] = Workorder::approved()->whereBetween('job_date', [$thismonthstart, $thismonthend])->count();
         $data['lastworkorders'] = Workorder::approved()->whereBetween('job_date', [$lastmonthstart, $lastmonthend])->count();
         $data['nextworkorders'] = Workorder::approved()->whereBetween('job_date', [$nextmonthstart, $nextmonthend])->count();
 
-        $data['thisinvoices'] = Invoice::sent()->whereBetween('invoice_date', [$thismonthstart, $thismonthend])->count();
-        $data['lastinvoices'] = Invoice::sent()->whereBetween('invoice_date', [$lastmonthstart, $lastmonthend])->count();
-        $data['nextinvoices'] = Invoice::sent()->whereBetween('invoice_date', [$nextmonthstart, $nextmonthend])->count();
+        $data['thisinvoices'] = Invoice::sent()->whereBetween('document_date', [$thismonthstart, $thismonthend])->count();
+        $data['lastinvoices'] = Invoice::sent()->whereBetween('document_date', [$lastmonthstart, $lastmonthend])->count();
+        $data['nextinvoices'] = Invoice::sent()->whereBetween('document_date', [$nextmonthstart, $nextmonthend])->count();
 
         $data['thispayments'] = Payment::whereBetween('paid_at', [$thismonthstart, $thismonthend])->count();
         $data['lastpayments'] = Payment::whereBetween('paid_at', [$lastmonthstart, $lastmonthend])->count();
@@ -130,14 +135,14 @@ class SchedulerController extends Controller
                 Workorder::where(function ($query) {
                     $query->sentorapproved();
                 })
-                    ->with('client', 'workorderItems.employees') :
+                    ->with('client', 'documentItems.employees') :
                 Workorder::where(function ($query) {
                     $query->notinvoiced();
                 })
                     ->where(function ($query) {
                         $query->sentorapproved();
                     })
-                    ->with('client', 'workorderItems.employees'),
+                    ->with('client', 'documentItems.employees'),
             'invoice'       => Invoice::sent()->with('client'),
             'payment'       => Payment::with(['invoice', 'paymentMethod']),
             'expense'       => Expense::status('not_billed')->with(['category']),
@@ -191,11 +196,11 @@ class SchedulerController extends Controller
         $companyProfiles = CompanyProfile::getList();
 
 
-        $scheduled_employees = Workorder::with(['client', 'workorderItems.employees', 'workorderItems' => function ($q) {
+        $scheduled_employees = Workorder::with(['client', 'documentItems.employees', 'documentItems' => function ($q) {
             $q->where('resource_table', 'employees');
         }])->whereBetween('job_date', [$mySdate, $myEdate])->approved()->get();
 
-        $scheduled_products = Workorder::with(['client', 'workorderItems' => function ($q) {
+        $scheduled_products = Workorder::with(['client', 'documentItems' => function ($q) {
             $q->where('resource_table', 'products');
         }])->whereBetween('job_date', [$mySdate, $myEdate])->approved()->get();
 
@@ -270,7 +275,7 @@ class SchedulerController extends Controller
     {
         $today = new Carbon();
         $employees = Employee::where('schedule', 1)->where('active', 1)->pluck('id');
-        $empresources = WorkorderItem::whereHas('workorder', function ($q) use ($today) {
+        $empresources = DocumentItem::whereHas('workorder', function ($q) use ($today) {
             $q->whereDate('job_date', '>=', $today->subDay(1))->where('workorder_status_id', 3)->where('invoice_id', 0);
         })->with('workorder')->where('resource_table', 'employees')->whereNotIn('resource_id', $employees)->get();
 
@@ -296,7 +301,7 @@ class SchedulerController extends Controller
 
     public function setReplaceEmployee(ReplaceRequest $request)
     {
-        $item = WorkorderItem::find($request->id);
+        $item = DocumentItem::find($request->id);
         $item->resource_id = $request->resource_id;
         $item->name = $request->name;
         $item->description = substr_replace($item->description, $request->resource_id, strpos($item->description, "-") + 1);
@@ -312,7 +317,7 @@ class SchedulerController extends Controller
             $q->whereDate('start_date', '=', $date);
         })->orderBy('value')->get('resource_id');
 
-        $employees_scheduled = WorkorderItem::whereHas('workorder', function ($q) use ($date) {
+        $employees_scheduled = DocumentItem::whereHas('document', function ($q) use ($date) {
             $q->whereDate('job_date', '=', $date)->approved();
         })->where('resource_table', 'employees')->orderBy('name')->get('resource_id');
 
@@ -325,7 +330,7 @@ class SchedulerController extends Controller
             ->whereNotIn('id', $employees_scheduled)
             ->orderBy('short_name')->get(['id', 'short_name', 'driver']);
 
-        $resources_scheduled = WorkorderItem::whereHas('workorder', function ($q) use ($date) {
+        $resources_scheduled = DocumentItem::whereHas('document', function ($q) use ($date) {
             $q->whereDate('job_date', '=', $date)->approved();
         })->where('resource_table', 'products')->orderBy('name')->get(['resource_id', 'name', 'quantity']);
 

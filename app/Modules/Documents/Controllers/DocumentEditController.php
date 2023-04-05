@@ -39,7 +39,8 @@ class DocumentEditController extends Controller
             ->with('statuses', DocumentStatuses::listsType($document->document_type))
             ->with('currencies', Currency::getList())
             ->with('taxRates', TaxRate::getList())
-            ->with('customFields', CustomField::forTable(strtolower($document->moduletype()).'s')->get())
+//            ->with('customFields', CustomField::forTable(strtolower($document->moduletype()).'s')->get())
+            ->with('customFields', CustomField::forTable($document->view_directory_name)->get())
             ->with('returnUrl', $this->getReturnUrl())
             ->with('templates', DocumentTemplates::lists())
             ->with('itemCount', count($document->documentItems));
@@ -91,7 +92,8 @@ class DocumentEditController extends Controller
             ->with('statuses', DocumentStatuses::listsType($document->document_type))
             ->with('currencies', Currency::getList())
             ->with('taxRates', TaxRate::getList())
-            ->with('customFields',  CustomField::forTable(strtolower($document->moduletype()).'s')->get())
+//            ->with('customFields',  CustomField::forTable(strtolower($document->moduletype()).'s')->get())
+            ->with('customFields', CustomField::forTable($document->view_directory_name)->get())
             ->with('returnUrl', $this->getReturnUrl())
             ->with('templates', DocumentTemplates::lists())
             ->with('itemCount', count($document->documentItems));

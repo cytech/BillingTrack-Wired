@@ -2,9 +2,9 @@
 
 namespace BT\Widgets\Dashboard\WorkorderSummary\Composers;
 
-use Illuminate\Support\Facades\DB;
-use BT\Modules\Workorders\Models\WorkorderAmount;
+use BT\Modules\Documents\Models\DocumentAmount;
 use BT\Support\CurrencyFormatter;
+use Illuminate\Support\Facades\DB;
 
 class WorkorderSummaryWidgetComposer
 {
@@ -19,7 +19,7 @@ class WorkorderSummaryWidgetComposer
 
     private function getWorkorderTotalDraft()
     {
-        return CurrencyFormatter::format(WorkorderAmount::join('workorders', 'workorders.id', '=', 'workorder_amounts.workorder_id')
+        return CurrencyFormatter::format(DocumentAmount::join('documents', 'documents.id', '=', 'document_amounts.document_id')
             ->whereHas('workorder', function ($q) {
                 $q->draft();
                 $q->where('invoice_id', 0);
@@ -39,7 +39,7 @@ class WorkorderSummaryWidgetComposer
 
     private function getWorkorderTotalSent()
     {
-        return CurrencyFormatter::format(WorkorderAmount::join('workorders', 'workorders.id', '=', 'workorder_amounts.workorder_id')
+        return CurrencyFormatter::format(DocumentAmount::join('documents', 'documents.id', '=', 'document_amounts.document_id')
             ->whereHas('workorder', function ($q) {
                 $q->sent();
                 $q->where('invoice_id', 0);
@@ -59,7 +59,7 @@ class WorkorderSummaryWidgetComposer
 
     private function getWorkorderTotalApproved()
     {
-        return CurrencyFormatter::format(WorkorderAmount::join('workorders', 'workorders.id', '=', 'workorder_amounts.workorder_id')
+        return CurrencyFormatter::format(DocumentAmount::join('documents', 'documents.id', '=', 'document_amounts.document_id')
             ->whereHas('workorder', function ($q) {
                 $q->approved();
                 $q->where('invoice_id', 0);
@@ -79,7 +79,7 @@ class WorkorderSummaryWidgetComposer
 
     private function getWorkorderTotalRejected()
     {
-        return CurrencyFormatter::format(WorkorderAmount::join('workorders', 'workorders.id', '=', 'workorder_amounts.workorder_id')
+        return CurrencyFormatter::format(DocumentAmount::join('documents', 'documents.id', '=', 'document_amounts.document_id')
             ->whereHas('workorder', function ($q) {
                 $q->rejected();
                 $q->where('invoice_id', 0);

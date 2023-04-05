@@ -9,15 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace BT\Modules\Documents\Models;
+namespace BT\Support\SixtoSeven\Models;
 
 use BT\Support\CurrencyFormatter;
 use BT\Support\NumberFormatter;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class DocumentAmount extends Model
+class InvoiceAmount extends Model
 {
     use SoftDeletes;
 
@@ -29,7 +28,7 @@ class DocumentAmount extends Model
      */
     protected $guarded = ['id'];
 
-    protected $appends = ['formatted_total'];
+    protected $appends = ['formatted_numeric_balance', 'formatted_total', 'formatted_balance'];
 
     /*
     |--------------------------------------------------------------------------
@@ -37,29 +36,9 @@ class DocumentAmount extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function document(): BelongsTo
+    public function invoice()
     {
-        return $this->belongsTo(Document::class);
-    }
-
-    public function quote(): BelongsTo
-    {
-        return $this->belongsTo(Quote::class, 'document_id');
-    }
-
-    public function workorder(): BelongsTo
-    {
-        return $this->belongsTo(Workorder::class, 'document_id');
-    }
-
-    public function invoice(): BelongsTo
-    {
-        return $this->belongsTo(Invoice::class, 'document_id');
-    }
-
-    public function purchaseorder(): BelongsTo
-    {
-        return $this->belongsTo(Purchaseorder::class, 'document_id');
+        return $this->belongsTo(Invoice::class);
     }
 
     /*
@@ -70,26 +49,27 @@ class DocumentAmount extends Model
 
     public function getFormattedSubtotalAttribute()
     {
-        return CurrencyFormatter::format($this->attributes['subtotal'], $this->document->currency);
+        return CurrencyFormatter::format($this->attributes['subtotal'], $this->invoice->currency);
     }
 
     public function getFormattedTaxAttribute()
     {
-        return CurrencyFormatter::format($this->attributes['tax'], $this->document->currency);
+        return CurrencyFormatter::format($this->attributes['tax'], $this->invoice->currency);
     }
 
     public function getFormattedTotalAttribute()
     {
-        return CurrencyFormatter::format($this->attributes['total'], $this->document->currency);
+        return CurrencyFormatter::format($this->attributes['total'], $this->invoice->currency);
     }
+
     public function getFormattedPaidAttribute()
     {
-        return CurrencyFormatter::format($this->attributes['paid'], $this->document->currency);
+        return CurrencyFormatter::format($this->attributes['paid'], $this->invoice->currency);
     }
 
     public function getFormattedBalanceAttribute()
     {
-        return CurrencyFormatter::format($this->attributes['balance'], $this->document->currency);
+        return CurrencyFormatter::format($this->attributes['balance'], $this->invoice->currency);
     }
 
     public function getFormattedNumericBalanceAttribute()
@@ -99,7 +79,7 @@ class DocumentAmount extends Model
 
     public function getFormattedDiscountAttribute()
     {
-        return CurrencyFormatter::format($this->attributes['discount'], $this->document->currency);
+        return CurrencyFormatter::format($this->attributes['discount'], $this->invoice->currency);
     }
 
     /**
@@ -108,6 +88,6 @@ class DocumentAmount extends Model
      */
     public function getFormattedTotalWithoutConversionAttribute()
     {
-        return CurrencyFormatter::format($this->attributes['total'] / $this->document->exchange_rate);
+        return CurrencyFormatter::format($this->attributes['total'] / $this->invoice->exchange_rate);
     }
 }

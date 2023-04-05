@@ -29,14 +29,14 @@
                 itemrec = 1;
             }
 
-            axios.post('{{ route('purchaseorders.receive_items') }}', {
+            axios.post('{{ route('documents.receive_items') }}', {
                 user_id: document.getElementById('user_id').value,
                 itemrec: itemrec,
                 itemrec_ids: itemrec_ids,
                 itemrec_att: itemrec_att,
             }).then(function (response) {
                 setTimeout(function () { //give notify a chance to display before redirect
-                    window.location = '{!! url('purchaseorders') !!}';
+                    window.location = '{!! url('documents?status=all_statuses&module_type=5') !!}';
                 }, 2000);
                 notify('@lang('bt.items_successfully_received')', 'success');
             }).catch(function (error) {

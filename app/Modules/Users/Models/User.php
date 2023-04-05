@@ -13,6 +13,8 @@ namespace BT\Modules\Users\Models;
 
 use Askedio\SoftCascade\Traits\SoftCascadeTrait;
 
+use BT\Modules\Documents\Models\Invoice;
+use BT\Modules\Documents\Models\Quote;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Traits\HasRoles;
@@ -63,12 +65,14 @@ class User extends Authenticatable
 
     public function invoices()
     {
-        return $this->hasMany('BT\Modules\Invoices\Models\Invoice');
+//        return $this->hasMany('BT\Modules\Invoices\Models\Invoice');
+        return $this->hasMany(Invoice::class);
     }
 
     public function quotes()
     {
-        return $this->hasMany('BT\Modules\Quotes\Models\Quote');
+//        return $this->hasMany('BT\Modules\Quotes\Models\Quote');
+        return $this->hasMany(Quote::class);
     }
 
     /*

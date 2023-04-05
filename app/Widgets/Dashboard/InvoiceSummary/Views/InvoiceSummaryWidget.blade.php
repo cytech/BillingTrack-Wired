@@ -42,7 +42,7 @@
                 <button class="btn btn-sm"
                         type="button"
                         {{--                   params 3 thru ... mount(,,$modulefullname, $moduleop, $resource_id = null, $module_id = null, $readonly = null)--}}
-                        onclick="window.livewire.emit('showModal', 'modals.create-module-modal',  'BT\\Modules\\Invoices\\Models\\Invoice', 'create' )"
+                        onclick="window.livewire.emit('showModal', 'modals.create-module-modal',  'BT\\Modules\\Documents\\Models\\Document', 'Invoice', 'create' )"
                 ><i class="fa fa-plus"></i> @lang('bt.create_invoice')
                 </button>
             </div>
@@ -55,10 +55,8 @@
                             <h4 class="text-bold">{{ $invoicesTotalDraft }}</h4>
                             <p>@lang('bt.draft_invoices')</p>
                         </div>
-                        <div class="small-box-faicon">
-                            <i class="fa fa-pencil-alt"></i>
-                        </div>
-                        <a href="{{ route('invoices.index') }}?status=draft" class="small-box-footer">
+                        <div class="small-box-faicon"><i class="fa fa-pencil-alt"></i></div>
+                        <a class="small-box-footer" href="{{ route('documents.index', ['status' => 'draft', 'module_type' => DOCUMENT_TYPE_INVOICE['document_type']]) }}">
                             @lang('bt.view_draft_invoices') <i class="fa fa-arrow-circle-right"></i>
                         </a>
                     </div>
@@ -69,10 +67,8 @@
                             <h4 class="text-bold">{{ $invoicesTotalSent }}</h4>
                             <p>@lang('bt.sent_invoices')</p>
                         </div>
-                        <div class="small-box-faicon">
-                            <i class="fa fa-share-square"></i>
-                        </div>
-                        <a class="small-box-footer" href="{{ route('invoices.index') }}?status=sent">
+                        <div class="small-box-faicon"><i class="fa fa-share-square"></i></div>
+                        <a class="small-box-footer" href="{{ route('documents.index', ['status' => 'sent', 'module_type' => DOCUMENT_TYPE_INVOICE['document_type']]) }}">
                             @lang('bt.view_sent_invoices') <i class="fa fa-arrow-circle-right"></i>
                         </a>
                     </div>
@@ -84,7 +80,7 @@
                             <p>@lang('bt.overdue_invoices')</p>
                         </div>
                         <div class="small-box-faicon"><i class="fa fa-exclamation"></i></div>
-                        <a class="small-box-footer" href="{{ route('invoices.index') }}?status=overdue">
+                        <a class="small-box-footer" href="{{ route('documents.index', ['status' => 'overdue', 'module_type' => DOCUMENT_TYPE_INVOICE['document_type']]) }}">
                             @lang('bt.view_overdue_invoices') <i class="fa fa-arrow-circle-right"></i>
                         </a>
                     </div>

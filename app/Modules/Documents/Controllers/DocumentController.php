@@ -15,12 +15,13 @@ use BT\Http\Controllers\Controller;
 use BT\Modules\CompanyProfiles\Models\CompanyProfile;
 use BT\Modules\Documents\Models\Document;
 use BT\Modules\Documents\Models\DocumentItem;
+use BT\Modules\Documents\Models\Purchaseorder;
 use BT\Support\FileNames;
 use BT\Support\PDF\PDFFactory;
 use BT\Support\Statuses\DocumentStatuses;
 use BT\Support\Statuses\PurchaseorderItemStatuses;
 use BT\Traits\ReturnUrl;
-use Request;
+use Illuminate\Http\Request;
 
 class DocumentController extends Controller
 {
@@ -126,24 +127,24 @@ class DocumentController extends Controller
 
             $item->rec_status_id = $status_id;
             $item->rec_qty = $qty;
-            $item->cost = $cost;
+            $item->price = $cost;
             $item->save();
 
             //if update products is checked
             if ($request->itemrec) {
                 //update product table quantities and cost for items
                 if ($item->resource_table == 'products' && $item->resource_id) {
-                    $item->product->increment('numstock', $rec_qty, ['cost' => $item->cost]);
+                    $item->product->increment('numstock', $rec_qty, ['cost' => $item->price]);
                 }
             }
         }
 
         // change PO status to received/partial
-        $purchaseorder = Purchaseorder::where('id', $items->first()->purchaseorder_id)->first();
+        $purchaseorder = Purchaseorder::where('id', $items->first()->document_id)->first();
         if ($rec_cnt == $items->count()) {
-            $purchaseorder->purchaseorder_status_id = PurchaseorderStatuses::getStatusId('received');
+            $purchaseorder->document_status_id = DocumentStatuses::getStatusId('received');
         } else {
-            $purchaseorder->purchaseorder_status_id = PurchaseorderStatuses::getStatusId('partial');
+            $purchaseorder->document_status_id = DocumentStatuses::getStatusId('partial');
         }
         $purchaseorder->save();
     }

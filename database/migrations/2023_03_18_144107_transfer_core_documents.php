@@ -1,11 +1,13 @@
 <?php
 
+use BT\Modules\Payments\Models\Payment;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use BT\Modules\Quotes\Models\Quote;
-use BT\Modules\Workorders\Models\Workorder;
-use BT\Modules\Invoices\Models\Invoice;
+use BT\Modules\Documents\Models\Quote;
+use BT\Modules\Documents\Models\Workorder;
+use BT\Modules\Documents\Models\Invoice;
+use BT\Modules\Documents\Models\Purchaseorder;
 
 return new class extends Migration {
     /**
@@ -18,14 +20,15 @@ return new class extends Migration {
         $coredoctypes = [DOCUMENT_TYPE_QUOTE, DOCUMENT_TYPE_WORKORDER, DOCUMENT_TYPE_INVOICE, DOCUMENT_TYPE_PURCHASEORDER];
 
         foreach ($coredoctypes as $coredoctype) {
-            $modtype = '\\BT\Modules\\' . $coredoctype['module_type'] . 's\\Models\\' . $coredoctype['module_type'];
+            $modtype = '\\BT\Support\\SixtoSeven\\Models\\' . $coredoctype['module_type'];
             $docs = $modtype::withTrashed()->with('amount', 'items.amount', 'custom')->get();
 //            $docs = $coredoctype[1]::class->withTrashed()->with('amount', 'items.amount')->get();
             //$docs = \BT\Modules\Quotes\Models\Quote::withTrashed()->with('amount', 'items.amount')->get();
 
             foreach ($docs as $doc) {
                 $document = new \BT\Modules\Documents\Models\Document();
-                $document->document_type = $coredoctype['document_type'];
+//                $document->document_type = $coredoctype['document_type'];
+                $document->document_type = $coredoctype['modulefullname'];
                 $document->document_id = $doc->id;
                 $document->document_date = $doc->quote_date ?? $doc->workorder_date ?? $doc->invoice_date ?? $doc->purchaseorder_date;
                 $document->workorder_id = $doc->workorder_id ?? 0;
@@ -74,8 +77,10 @@ return new class extends Migration {
 
                 $custidfield = strtolower($coredoctype['module_type']).'_id';
 
-                $doc->custom->$custidfield = $document->id;
-                $doc->custom->saveQuietly();
+                if ($doc->custom) {
+                    $doc->custom->$custidfield = $document->id;
+                    $doc->custom->saveQuietly();
+                }
 
                 foreach ($doc->items as $docitem) {
                     $documentitem = new \BT\Modules\Documents\Models\DocumentItem();
@@ -117,7 +122,7 @@ return new class extends Migration {
             }
         }
         //move invoice status_id to document statuses
-        $invoices = \BT\Modules\Documents\Models\Document::where('document_type', 3)->get();
+        $invoices = Invoice::get();
 
         foreach ($invoices as $invoice){
             if ($invoice->document_status_id == 3){
@@ -129,7 +134,7 @@ return new class extends Migration {
             $invoice->updateQuietly();
         }
         //move purchaseorder status_id to document statuses
-        $purchaseorders = \BT\Modules\Documents\Models\Document::where('document_type', 5)->get();
+        $purchaseorders = Purchaseorder::get();
 
         foreach ($purchaseorders as $purchaseorder){
             if ($purchaseorder->document_status_id == 3){
@@ -147,16 +152,16 @@ return new class extends Migration {
         }
 
         //update quote workorder_id and invoice_id refs to new documents
-        $quotes = \BT\Modules\Documents\Models\Document::where('document_type', 1)->get();
+        $quotes = Quote::get();
 
         foreach ($quotes as $quote){
             if ($quote->workorder_id > 0 || $quote->invoice_id > 0) {
                 if ($quote->workorder_id > 0) {
-                    $quotedoc = \BT\Modules\Documents\Models\Document::where('document_type', 2)->where('document_id', $quote->workorder_id)->first();
+                    $quotedoc = Workorder::where('document_id', $quote->workorder_id)->first();
                     $quote->workorder_id = $quotedoc->id;
                 }
                 if ($quote->invoice_id > 0) {
-                    $invoicedoc = \BT\Modules\Documents\Models\Document::where('document_type', 3)->where('document_id', $quote->invoice_id)->first();
+                    $invoicedoc = Invoice::where('document_id', $quote->invoice_id)->first();
                     $quote->invoice_id = $invoicedoc->id;
                 }
                 $quote->updateQuietly();
@@ -164,15 +169,31 @@ return new class extends Migration {
         }
 
         //update workorder  invoice_id refs to new documents
-        $workorders = \BT\Modules\Documents\Models\Document::where('document_type',2)->get();
+        $workorders = Workorder::get();
 
         foreach ($workorders as $workorder){
                 if ($workorder->invoice_id > 0) {
-                    $invoicedoc = \BT\Modules\Documents\Models\Document::where('document_type', 3)->where('document_id', $workorder->invoice_id)->first();
+                    $invoicedoc = Invoice::where('document_id', $workorder->invoice_id)->first();
                     $workorder->invoice_id = $invoicedoc->id;
                     $workorder->updateQuietly();
                 }
         }
+
+        //update payment invoice_id to new documents
+        $payments = Payment::get();
+
+        foreach ($payments as $payment){
+            if ($payment->invoice_id > 0) {
+                $invoicedoc = Invoice::where('document_id', $payment->invoice_id)->first();
+                $payment->invoice_id = $invoicedoc->id;
+                $payment->updateQuietly();
+            }
+        }
+
+        //remove temporary column
+        Schema::table('documents', function (Blueprint $table) {
+            $table->dropColumn('document_id');
+        });
 
         Schema::enableForeignKeyConstraints();
 

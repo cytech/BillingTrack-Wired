@@ -32,16 +32,16 @@ class CalendarEventPresenter
                 $data->end = $entity->job_date->copy()->modify($entity->end_time);
                 $data->category_id =  5;
                 $data->will_call = $entity->will_call;
-                foreach ($entity->workorderItems as $workorderItem){
-                    if ($workorderItem->resource_table == 'employees' && $workorderItem->employees->isNotEmpty()) {
-                        foreach ($workorderItem->employees as $employee) {
+                foreach ($entity->documentItems as $documentItem){
+                    if ($documentItem->resource_table == 'employees' && $documentItem->employees->isNotEmpty()) {
+                        foreach ($documentItem->employees as $employee) {
                             if ($employee->driver == 1) {
-                                $workorderItem->name = '<span style="color:blue">' . $employee->short_name . '</span>';
+                                $documentItem->name = '<span style="color:blue">' . $employee->short_name . '</span>';
                             }
                         }
                     }
                 }
-                $data->resources = $entity->workorderItems;
+                $data->resources = $entity->documentItems;
                 break;
             case 'invoice':
                 $data->id = ucfirst($type) . ': ' . $entity->number;

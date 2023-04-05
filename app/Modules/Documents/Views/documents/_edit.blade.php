@@ -1,6 +1,6 @@
 @include('documents._js_edit')
 <section class="app-content-header">
-    <h3 class="float-start px-3">@lang('bt.'. strtolower($document->moduletype())) #{{ $document->number }}</h3>
+    <h3 class="float-start px-3">@lang('bt.'. $document->lower_case_baseclass) #{{ $document->number }}</h3>
     @if ($document->viewed)
         <span style="margin-start: 10px;" class="badge bg-success">@lang('bt.viewed')</span>
     @else
@@ -51,15 +51,15 @@
                 <a class="dropdown-item" href="#" id="btn-copy-document"
                    {{--                   params 3 thru ... mount(,,$modulefullname, $moduleop, $resource_id = null, $module_id = null, $readonly = null)--}}
                    onclick="window.livewire.emit('showModal', 'modals.create-module-modal', '{{  addslashes(get_class($document)) }}', '{{$document->moduletype()}}', 'copy', {{ $document->client->id }}, {{ $document->id }})">
-                    <i class="fa fa-copy"></i> @lang('bt.copy_'.strtolower($document->moduletype()))</a>
+                    <i class="fa fa-copy"></i> @lang('bt.copy_'.$document->lower_case_baseclass)</a>
                 @if($document->moduletype() == 'Quote')
                     <a class="dropdown-item" href="javascript:void(0)" id="btn-document-to-workorder"><i
-                                class="fa fa-check"></i> @lang('bt.'.strtolower($document->moduletype()).'_to_workorder')
+                                class="fa fa-check"></i> @lang('bt.'.$document->lower_case_baseclass.'_to_workorder')
                     </a>
                 @endif
                 @if($document->moduletype() != 'Invoice' && $document->moduletype() != 'Purchaseorder')
                     <a class="dropdown-item" href="javascript:void(0)" id="btn-document-to-invoice"><i
-                                class="fa fa-check"></i> @lang('bt.'.strtolower($document->moduletype()).'_to_invoice')
+                                class="fa fa-check"></i> @lang('bt.'.$document->lower_case_baseclass.'_to_invoice')
                     </a>
                 @endif
                 {{--                <a class="dropdown-item" href="{{ route('clientCenter.public.document.show', [$document->url_key]) }}"--}}
@@ -115,6 +115,41 @@
                     </div>
                 </div>
             </div>
+            @if($document->moduletype() == 'Workorder')
+                <div class="row g-3 mb-3 align-items-center">
+                    <div class="col-sm-1 text-end fw-bold">
+                        <label class="col-form-label">@lang('bt.job_date')</label>
+                    </div>
+                    <div class="col-sm-2">
+                        <x-fp_common
+                                id="job_date"
+                                class="form-control form-control-sm"
+                                value="{{$document->job_date}}"></x-fp_common>
+                    </div>
+                    <div class="col-sm-1 text-end fw-bold">
+                        <label for="start_time" class="col-form-label">@lang('bt.start_time')</label>
+                    </div>
+                    <div class="col-sm-2">
+                        <x-fp_time
+                                id="start_time"
+                                class="form-control form-control-sm"
+                                value="{{$document->start_time}}"></x-fp_time>
+                    </div>
+                    <div class="col-sm-1 text-end fw-bold">
+                        <label for="end_time" class="col-form-label">@lang('bt.end_time')</label>
+                    </div>
+                    <div class="col-sm-2">
+                        <x-fp_time
+                                id="end_time"
+                                class="form-control form-control-sm"
+                                value="{{$document->end_time}}"></x-fp_time>
+                    </div>
+                    <div class="col-sm-2 ms-5 form-check form-switch form-switch-md">
+                        {!! Form::checkbox('will_call', 1, $document->will_call, ['id' => 'will_call', 'class' => 'form-check-input']) !!}
+                        <label class="form-check-label fw-bold ps-3 pt-1" for="will_call">@lang('bt.will_call')</label>
+                    </div>
+                </div>
+            @endif
             <livewire:items-table :module="$document"/>
             <div class="row">
                 <div class="col-lg-12">
@@ -184,7 +219,7 @@
                 </div>
                 <div class="card-body">
                     <div class="mb-3">
-                        <label>@lang('bt.'.strtolower($document->moduletype())) #</label>
+                        <label>@lang('bt.'.$document->lower_case_baseclass) #</label>
                         {!! Form::text('number', $document->number, ['id' => 'number', 'class' =>
                         'form-control
                         form-control-sm']) !!}

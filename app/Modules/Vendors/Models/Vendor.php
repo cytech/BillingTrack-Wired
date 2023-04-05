@@ -114,7 +114,8 @@ class Vendor extends Model
 
     public function purchaseorders()
     {
-        return $this->hasMany('BT\Modules\Purchaseorders\Models\Purchaseorder');
+//        return $this->hasMany('BT\Modules\Purchaseorders\Models\Purchaseorder');
+        return $this->hasMany(\BT\Modules\Documents\Models\Purchaseorder::class);
     }
 
     /*

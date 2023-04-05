@@ -24,12 +24,25 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+use Parental\HasChildren;
 
 class Document extends Model
 {
+    use HasChildren;
+
     use SoftDeletes;
 
     use SoftCascadeTrait;
+
+    protected $childColumn = 'document_type';
+
+//    protected $childTypes = [
+//        '1' => Quote::class,
+//        '2' => Workorder::class,
+//        '3' => Invoice::class,
+//        '5' => Purchaseorder::class,
+//    ];
 
     protected $softCascade = ['documentItems', 'custom', 'amount', 'activities', 'attachments', 'mailQueue', 'notes'];
 
@@ -40,62 +53,76 @@ class Document extends Model
     protected $appends = ['formatted_document_date', 'formatted_action_date','status_text', 'formatted_summary'];
 
     public function moduletype(){
-        switch ($this->document_type) {
-            case 1:
-                return DOCUMENT_TYPE_QUOTE['module_type'];
-            case 2:
-                return DOCUMENT_TYPE_WORKORDER['module_type'];
-            case 3:
-                return DOCUMENT_TYPE_INVOICE['module_type'];
-            case 5:
-                return DOCUMENT_TYPE_PURCHASEORDER['module_type'];
-
-        }
+        return Str::afterLast($this->document_type, '\\');
+//        switch ($this->document_type) {
+//            case 1:
+//                return DOCUMENT_TYPE_QUOTE['module_type'];
+//            case 2:
+//                return DOCUMENT_TYPE_WORKORDER['module_type'];
+//            case 3:
+//                return DOCUMENT_TYPE_INVOICE['module_type'];
+//            case 5:
+//                return DOCUMENT_TYPE_PURCHASEORDER['module_type'];
+//
+//        }
+    }
+    public function getViewDirectoryNameAttribute(){
+        return strtolower(class_basename($this)) . 's';
     }
 
     public function convertedtoinvoice(){
         if ($this->invoice_id){
 //            return $this->withTrashed()->where('document_type',  DOCUMENT_TYPE_INVOICE['document_type'])->where('document_id', $this->invoice_id)->first();
-            return $this->withTrashed()->find($this->invoice_id);
+            return Invoice::withTrashed()->find($this->invoice_id);
         }
     }
 
     public function convertedtoworkorder(){
         if ($this->workorder_id){
 //            return $this->withTrashed()->where('document_type',  DOCUMENT_TYPE_WORKORDER['document_type'])->where('id', $this->workorder_id)->first();
-            return $this->withTrashed()->find($this->workorder_id);
+            return Workorder::withTrashed()->find($this->workorder_id);
         }
     }
 
-    public static function invoices()
-    {
-//        return $this->belongsTo('BT\Modules\Invoices\Models\Invoice');
-        return self::where('document_type', DOCUMENT_TYPE_INVOICE['document_type']);
+    public function getLowerCaseBaseclassAttribute(){
+        return strtolower(class_basename($this->document_type));
     }
 
-    public static function quotes()
+    public function invoice()
     {
-//        return $this->belongsTo('BT\Modules\Invoices\Models\Invoice');
-        return self::where('document_type', DOCUMENT_TYPE_QUOTE['document_type']);
+        return $this->belongsTo(Invoice::class);
+        //return self::where('document_type', DOCUMENT_TYPE_INVOICE['document_type']);
     }
 
+//    public static function invoices()
+//    {
+////        return $this->belongsTo('BT\Modules\Invoices\Models\Invoice');
+//        return self::where('document_type', DOCUMENT_TYPE_INVOICE['document_type']);
+//    }
+//
+//    public static function quotes()
+//    {
+////        return $this->belongsTo('BT\Modules\Invoices\Models\Invoice');
+//        return self::where('document_type', DOCUMENT_TYPE_QUOTE['document_type']);
+//    }
+//
     public function invoicetrashed()
     {
-//        return $this->belongsTo('BT\Modules\Invoices\Models\Invoice', 'invoice_id', 'id')->onlyTrashed();
-        return $this->document_type == DOCUMENT_TYPE_INVOICE['document_type'] &&  $this->deleted_at != null;
+        return $this->belongsTo(Invoice::class, 'invoice_id', 'id')->onlyTrashed();
+//        return $this->document_type == DOCUMENT_TYPE_INVOICE['document_type'] &&  $this->deleted_at != null;
     }
-
-    public function workorder()
-    {
-//        return $this->belongsTo('BT\Modules\Invoices\Models\Invoice');
-        return $this->document_type == DOCUMENT_TYPE_WORKORDER['document_type'];
-    }
-
-    public function workordertrashed()
-    {
-//        return $this->belongsTo('BT\Modules\Invoices\Models\Invoice', 'invoice_id', 'id')->onlyTrashed();
-        return $this->document_type == DOCUMENT_TYPE_WORKORDER['document_type'] &&  $this->deleted_at != null;
-    }
+//
+//    public function workorder()
+//    {
+////        return $this->belongsTo('BT\Modules\Invoices\Models\Invoice');
+//        return $this->document_type == DOCUMENT_TYPE_WORKORDER['document_type'];
+//    }
+//
+//    public function workordertrashed()
+//    {
+////        return $this->belongsTo('BT\Modules\Invoices\Models\Invoice', 'invoice_id', 'id')->onlyTrashed();
+//        return $this->document_type == DOCUMENT_TYPE_WORKORDER['document_type'] &&  $this->deleted_at != null;
+//    }
 
     /*
     |--------------------------------------------------------------------------
@@ -150,26 +177,6 @@ class Document extends Model
         return $relationship;
     }
 
-    public function vendor()
-    {
-        return $this->belongsTo('BT\Modules\Vendors\Models\Vendor', 'client_id');
-    }
-
-    public function vendorAttachments()
-    {
-        $relationship = $this->morphMany('BT\Modules\Attachments\Models\Attachment', 'attachable');
-
-        if ($this->status_text == 'paid')
-        {
-            $relationship->whereIn('vendor_visibility', [1, 2]);
-        }
-        else
-        {
-            $relationship->where('vendor_visibility', 1);
-        }
-
-        return $relationship;
-    }
 
     public function companyProfile()
     {
@@ -188,11 +195,6 @@ class Document extends Model
         return $this->hasOne('BT\Modules\CustomFields\Models\\'.$customclass, strtolower($this->moduletype()) . '_id');
     }
 
-    public function expense()
-    {
-        return $this->hasOne('BT\Modules\Expenses\Models\Expense');
-    }
-
     public function group()
     {
         return $this->hasOne('BT\Modules\Groups\Models\Group');
@@ -208,16 +210,6 @@ class Document extends Model
         return $this->morphMany('BT\Modules\Notes\Models\Note', 'notable');
     }
 
-    public function payments()
-    {
-        return $this->hasMany('BT\Modules\Payments\Models\Payment');
-    }
-
-    public function transactions()
-    {
-        return $this->hasMany('BT\Modules\Merchant\Models\InvoiceTransaction');
-    }
-
     public function user()
     {
         return $this->belongsTo('BT\Modules\Users\Models\User');
@@ -231,7 +223,7 @@ class Document extends Model
 
     public function getAttachmentPathAttribute()
     {
-        return attachment_path('documents/' . $this->id);
+        return attachment_path($this->view_directory_name . '/' . $this->id);
     }
 
     public function getAttachmentPermissionOptionsAttribute()
@@ -245,7 +237,7 @@ class Document extends Model
 
     public function getFormattedCreatedAtAttribute()
     {
-        return $this->formatted_document_date;
+        return DateFormatter::format($this->attributes['created_at']);
     }
 
     public function getFormattedDocumentDateAttribute()
@@ -253,42 +245,13 @@ class Document extends Model
         return DateFormatter::format($this->attributes['document_date']);
     }
 
-    public function getFormattedUpdatedAtAttribute()
-    {
-        return DateFormatter::format($this->attributes['updated_at']);
-    }
 
     public function getFormattedActionDateAttribute()
     {
         return DateFormatter::format($this->attributes['action_date']);
     }
 
-    public function getFormattedJobDateAttribute()
-    {
-        return DateFormatter::format($this->attributes['job_date']);
 
-    }
-
-    public function getFormattedStartTimeAttribute()
-    {
-        return DateFormatter::formattime($this->attributes['start_time']);
-
-    }
-
-    public function getFormattedEndTimeAttribute()
-    {
-        return DateFormatter::formattime($this->attributes['end_time']);
-
-    }
-
-    public function getFormattedJobLengthAttribute()
-    {
-        $datetime1 = new \DateTime($this->attributes['start_time']);
-        $datetime2 = new \DateTime($this->attributes['end_time']);
-        $interval = $datetime1->diff($datetime2);
-        return $interval->h+$interval->i/60;//return decimal hours
-
-    }
     public function getFormattedTermsAttribute()
     {
         return nl2br($this->attributes['terms']);
@@ -311,17 +274,8 @@ class Document extends Model
         return FileNames::document($this);
     }
 
-    public function getIsOverdueAttribute()
-    {
-        // Only invoices in Sent status, with a balance qualify to be overdue
-        if ($this->attributes['action_date'] < date('Y-m-d')
-            and $this->attributes['document_status_id'] == DocumentStatuses::getStatusId('sent')
-            and $this->amount->balance <> 0)
-            return 1;
 
-        return 0;
-    }
-    public function getPublicUrlAttribute()
+  /*  public function getPublicUrlAttribute()
     {
         return route('clientCenter.public.document.show', [$this->url_key]);
     }
@@ -334,7 +288,7 @@ class Document extends Model
         }
 
         return true;
-    }
+    }*/
 
     public function getHtmlAttribute()
     {
@@ -346,10 +300,10 @@ class Document extends Model
         return NumberFormatter::format($this->attributes['discount']);
     }
 
-    public function getIsPayableAttribute()
+/*    public function getIsPayableAttribute()
     {
         return $this->status_text <> 'canceled' and $this->amount->balance > 0;
-    }
+    }*/
 
     public function  getFormattedSummaryAttribute(){
         return mb_strimwidth((string)$this->attributes['summary'],0,50,'...');
@@ -439,15 +393,6 @@ class Document extends Model
         return $query;
     }
 
-    public function scopeVendorId($query, $vendorId = null)
-    {
-        if ($vendorId)
-        {
-            $query->where('client_id', $vendorId);
-        }
-
-        return $query;
-    }
 
     public function scopeCompanyProfileId($query, $companyProfileId)
     {

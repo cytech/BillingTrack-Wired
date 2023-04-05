@@ -63,19 +63,19 @@ class ClientController extends Controller
         $client = Client::getSelect()->find($clientId);
 
         $invoices = $client->invoices()
-            ->with(['client', 'activities', 'amount.invoice.currency'])
+            ->with(['client', 'activities', 'amount.document.currency'])
             ->orderBy('created_at', 'desc')
             ->orderBy('id', 'desc')
             ->take(config('bt.resultsPerPage'))->get();
 
         $quotes = $client->quotes()
-            ->with(['client', 'activities', 'amount.quote.currency'])
+            ->with(['client', 'activities', 'amount.document.currency'])
             ->orderBy('created_at', 'desc')
             ->orderBy('id', 'desc')
             ->take(config('bt.resultsPerPage'))->get();
 
         $workorders = $client->workorders()
-            ->with(['client', 'activities', 'amount.workorder.currency'])
+            ->with(['client', 'activities', 'amount.document.currency'])
             ->orderBy('created_at', 'desc')
             ->orderBy('id', 'desc')
             ->take(config('bt.resultsPerPage'))->get();

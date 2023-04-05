@@ -17,6 +17,7 @@ use BT\Modules\CompanyProfiles\Requests\CompanyProfileStoreRequest;
 use BT\Modules\CompanyProfiles\Requests\CompanyProfileUpdateRequest;
 use BT\Modules\Currencies\Models\Currency;
 use BT\Modules\CustomFields\Models\CustomField;
+use BT\Modules\Documents\Support\DocumentTemplates;
 use BT\Modules\Invoices\Support\InvoiceTemplates;
 use BT\Modules\Purchaseorders\Support\PurchaseorderTemplates;
 use BT\Modules\Quotes\Support\QuoteTemplates;
@@ -40,10 +41,14 @@ class CompanyProfileController extends Controller
     {
         return view('company_profiles.form')
             ->with('editMode', false)
-            ->with('invoiceTemplates', InvoiceTemplates::lists())
-            ->with('quoteTemplates', QuoteTemplates::lists())
-            ->with('workorderTemplates', WorkorderTemplates::lists())
-            ->with('purchaseorderTemplates', PurchaseorderTemplates::lists())
+//            ->with('invoiceTemplates', InvoiceTemplates::lists())
+//            ->with('quoteTemplates', QuoteTemplates::lists())
+//            ->with('workorderTemplates', WorkorderTemplates::lists())
+//            ->with('purchaseorderTemplates', PurchaseorderTemplates::lists())
+            ->with('invoiceTemplates', DocumentTemplates::lists())
+            ->with('quoteTemplates', DocumentTemplates::lists())
+            ->with('workorderTemplates', DocumentTemplates::lists())
+            ->with('purchaseorderTemplates', DocumentTemplates::lists())
             ->with('currencies', Currency::getList())
             ->with('languages', Languages::listLanguages())
             ->with('customFields', CustomField::forTable('company_profiles')->get());
@@ -76,10 +81,14 @@ class CompanyProfileController extends Controller
             ->with('editMode', true)
             ->with('companyProfile', $companyProfile)
             ->with('companyProfileInUse', CompanyProfile::inUse($id))
-            ->with('invoiceTemplates', InvoiceTemplates::lists())
-            ->with('quoteTemplates', QuoteTemplates::lists())
-            ->with('workorderTemplates', WorkorderTemplates::lists())
-            ->with('purchaseorderTemplates', PurchaseorderTemplates::lists())
+//            ->with('invoiceTemplates', InvoiceTemplates::lists())
+//            ->with('quoteTemplates', QuoteTemplates::lists())
+//            ->with('workorderTemplates', WorkorderTemplates::lists())
+//            ->with('purchaseorderTemplates', PurchaseorderTemplates::lists())
+            ->with('invoiceTemplates', DocumentTemplates::lists())
+            ->with('quoteTemplates', DocumentTemplates::lists())
+            ->with('workorderTemplates', DocumentTemplates::lists())
+            ->with('purchaseorderTemplates', DocumentTemplates::lists())
             ->with('currencies', Currency::getList())
             ->with('languages', Languages::listLanguages())
             ->with('customFields', CustomField::forTable('company_profiles')->get());

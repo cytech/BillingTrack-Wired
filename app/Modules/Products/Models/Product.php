@@ -11,6 +11,7 @@
 
 namespace BT\Modules\Products\Models;
 
+use BT\Modules\Documents\Models\Purchaseorder;
 use BT\Support\CurrencyFormatter;
 use BT\Support\NumberFormatter;
 use Illuminate\Database\Eloquent\Model;
@@ -37,7 +38,8 @@ class Product extends Model
 
     public function purchaseorders()
     {
-        return $this->hasMany('BT\Modules\Purchaseorders\Models\Purchaseorder');
+//        return $this->hasMany('BT\Modules\Purchaseorders\Models\Purchaseorder');
+        return $this->hasMany(Purchaseorder::class);
     }
 
     public function inventorytype()
@@ -45,23 +47,23 @@ class Product extends Model
         return $this->belongsTo('BT\Modules\Products\Models\InventoryType');
     }
 
-    public function quoteitem()
-    {
-        return $this->belongsTo('BT\Modules\Quotes\Models\QuoteItem','resource_id', 'id')
-            ->where('resource_table','=','products');
-    }
-
-    public function workorderitem()
-    {
-        return $this->belongsTo('BT\Modules\Workorders\Models\WorkorderItem','resource_id', 'id')
-            ->where('resource_table','=','products');
-    }
-
-    public function invoiceitem()
-    {
-        return $this->belongsTo('BT\Modules\Invoices\Models\InvoiceItem','resource_id', 'id')
-            ->where('resource_table','=','products');
-    }
+//    public function quoteitem()
+//    {
+//        return $this->belongsTo('BT\Modules\Quotes\Models\QuoteItem','resource_id', 'id')
+//            ->where('resource_table','=','products');
+//    }
+//
+//    public function workorderitem()
+//    {
+//        return $this->belongsTo('BT\Modules\Workorders\Models\WorkorderItem','resource_id', 'id')
+//            ->where('resource_table','=','products');
+//    }
+//
+//    public function invoiceitem()
+//    {
+//        return $this->belongsTo('BT\Modules\Invoices\Models\InvoiceItem','resource_id', 'id')
+//            ->where('resource_table','=','products');
+//    }
 
     public function recurringinvoiceitem()
     {

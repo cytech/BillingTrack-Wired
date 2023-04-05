@@ -12,6 +12,9 @@
 namespace BT\Modules\Clients\Models;
 
 use Askedio\SoftCascade\Traits\SoftCascadeTrait;
+use BT\Modules\Documents\Models\Invoice;
+use BT\Modules\Documents\Models\Quote;
+use BT\Modules\Documents\Models\Workorder;
 use BT\Support\CurrencyFormatter;
 use BT\Support\DateFormatter;
 use BT\Support\Statuses\InvoiceStatuses;
@@ -115,7 +118,8 @@ class Client extends Model
 
     public function invoices()
     {
-        return $this->hasMany('BT\Modules\Invoices\Models\Invoice');
+//        return $this->hasMany('BT\Modules\Invoices\Models\Invoice');
+        return $this->hasMany(Invoice::class);
     }
 
     public function payments()
@@ -145,12 +149,14 @@ class Client extends Model
 
     public function quotes()
     {
-        return $this->hasMany('BT\Modules\Quotes\Models\Quote');
+//        return $this->hasMany('BT\Modules\Quotes\Models\Quote');
+        return $this->hasMany(Quote::class);
     }
 
     public function workorders()
     {
-        return $this->hasMany('BT\Modules\Workorders\Models\Workorder');
+//        return $this->hasMany('BT\Modules\Workorders\Models\Workorder');
+        return $this->hasMany(Workorder::class);
     }
 
     public function recurringInvoices()

@@ -1,4 +1,4 @@
-@include('purchaseorders._js_receive')
+@include('documents._js_receive')
 <div class="modal fade" id="receive-purchaseorder">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -31,9 +31,9 @@
                                     </td>
                                     <td>{!! $item->name !!}</td>
                                     <td>{!! $item->quantity !!}</td>
-                                    <td>{!! $item->cost !!}</td>
+                                    <td>{!! $item->price !!}</td>
                                     <td>{!! Form::text('rec_qty', $item->quantity - $item->rec_qty, ['id' => 'rec_qty', 'class' => 'form-control']) !!}</td>
-                                    <td>{!! Form::text('rec_cost', $item->cost, ['id' => 'rec_cost', 'class' => 'form-control']) !!}</td>
+                                    <td>{!! Form::text('rec_cost', $item->price, ['id' => 'rec_cost', 'class' => 'form-control']) !!}</td>
                                 </tr>
                             @endforeach
                             </tbody>

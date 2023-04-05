@@ -101,8 +101,8 @@ class ModuleTable extends DataTableComponent
                 $this->keyedStatuses = collect(('BT\\Support\\Statuses\\DocumentStatuses')::lists())->except(4, 6);
             }
 //            $this->module_fullname = 'BT\\Modules\\' . $this->module_type . 's\\Models\\' . $this->module_type;
-//            $this->module_fullname = 'BT\\Modules\\Documents\\Models\\' . $this->module_type;
-            $this->module_fullname = 'BT\\Modules\\Documents\\Models\\Document';
+            $this->module_fullname = 'BT\\Modules\\Documents\\Models\\' . $this->module_type;
+//            $this->module_fullname = 'BT\\Modules\\Documents\\Models\\Document';
         }
     }
 
@@ -293,7 +293,8 @@ class ModuleTable extends DataTableComponent
             if ($this->reqstatus) $this->setFilter(snake_case(__('bt.status')), $this->reqstatus);
             return $this->module_fullname::
 //            select(lcfirst($this->module_type) . 's.*')
-            select('documents.*')->where('document_type', constant('DOCUMENT_TYPE_'.strtoupper($this->module_type))['document_type'])
+//            select('documents.*')->where('document_type', constant('DOCUMENT_TYPE_'.strtoupper($this->module_type))['document_type'])
+            select('documents.*')->where('document_type', constant('DOCUMENT_TYPE_'.strtoupper($this->module_type))['modulefullname'])
                 ->clientId($this->clientid)
                 ->companyProfileId(request('company_profile'));
         }

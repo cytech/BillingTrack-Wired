@@ -138,7 +138,7 @@
                                                     <tbody>
                                                     @foreach($scheduledemp as $emp)
                                                         @if($emp->job_date->format('Y-m-d') == $date)
-                                                            @foreach($emp->workorderItems->sortBy('name') as $woitem)
+                                                            @foreach($emp->documentItems->sortBy('name') as $woitem)
                                                                 <tr>
                                                                     @foreach ($woitem->employees as $woemp)
                                                                         @if($woemp->driver)
@@ -149,7 +149,7 @@
                                                                     @endforeach
                                                                     <td> {{ $emp->formatted_start_time }}</td>
                                                                     <td> {{ $emp->formatted_end_time }}</td>
-                                                                    <td><a href="{!! url('/workorders') . '/' . $emp->id . '/edit' !!}">
+                                                                    <td><a href="{!! url('/documents') . '/' . $emp->id . '/edit' !!}">
                                                                         <span class="badge text-bg-success">{{ mb_strimwidth($emp->client->name,0,15,'...') }}</span></a>
                                                                     </td>
                                                                 </tr>
@@ -186,12 +186,12 @@
                                                     <tbody>
                                                     @foreach($scheduledprod as $prod)
                                                         @if($prod->job_date->format('Y-m-d') == $date)
-                                                            @foreach($prod->workorderItems as $woitem)
+                                                            @foreach($prod->documentItems as $woitem)
                                                                 <tr>
                                                                     <td> {{ $woitem->name }}</td>
                                                                     <td> {{ $prod->formatted_start_time }}</td>
                                                                     <td> {{ $prod->formatted_end_time }}</td>
-                                                                    <td><a href="{!! url('/workorders') . '/' . $prod->id . '/edit' !!}">
+                                                                    <td><a href="{!! url('/documents') . '/' . $prod->id . '/edit' !!}">
                                                                             <span class="badge text-bg-success">{{ mb_strimwidth($prod->client->name,0,15,'...') }}</span></a>
                                                                     </td>
                                                                 </tr>

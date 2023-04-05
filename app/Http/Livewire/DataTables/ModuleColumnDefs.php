@@ -3,7 +3,8 @@
 namespace BT\Http\Livewire\DataTables;
 
 use BT\Modules\Clients\Models\Client;
-use BT\Modules\Invoices\Models\Invoice;
+//use BT\Modules\Invoices\Models\Invoice;
+use BT\Modules\Documents\Models\Invoice;
 use BT\Modules\PaymentMethods\Models\PaymentMethod;
 use BT\Modules\Scheduler\Models\Category;
 use BT\Modules\Vendors\Models\Vendor;
@@ -59,9 +60,9 @@ class ModuleColumnDefs
                         ->format(function ($value, $row, Column $column) {
                             $ret = '';
                             if ($row->invoice_id)
-                                $ret .= '<a href="' . route('documents.edit', [$row->convertedtoinvoice()->id]) . '">' . trans('bt.invoice') . '</a>';
+                                $ret .= '<a href="' . route('documents.edit', [$row->invoice_id]) . '">' . trans('bt.invoice') . '</a>';
                             elseif ($row->workorder_id)
-                                $ret .= '<a href="' . route('documents.edit', [$row->convertedtoworkorder()->id]) . '">' . trans('bt.workorder') . '</a>';
+                                $ret .= '<a href="' . route('documents.edit', [$row->workorder_id]) . '">' . trans('bt.workorder') . '</a>';
                             else
                                 $ret .= trans('bt.no');
                             return $ret;
@@ -166,10 +167,10 @@ class ModuleColumnDefs
                     ->format(fn($value, $row, Column $column) => DateFormatter::format($row->paid_at)),
                 Column::make(trans('bt.invoice'), 'invoice.number')
                     ->sortable(fn(Builder $query, string $direction) => $query->orderBy(Invoice::select('number')->whereColumn('invoice_id', 'id'), $direction))
-                    ->format(fn($value, $row, Column $column) => '<a href="/invoices/' . $row->invoice_id . '/edit">' . $value . '</a>')
+                    ->format(fn($value, $row, Column $column) => '<a href="/documents/' . $row->invoice_id . '/edit">' . $value . '</a>')
                     ->html(),
-                Column::make(trans('bt.invoice_date'), 'invoice.invoice_date')
-                    ->sortable(fn(Builder $query, string $direction) => $query->orderBy(Invoice::select('invoice_date')->whereColumn('invoice_id', 'id'), $direction))
+                Column::make(trans('bt.invoice_date'), 'invoice.document_date')
+                    ->sortable(fn(Builder $query, string $direction) => $query->orderBy(Invoice::select('document_date')->whereColumn('invoice_id', 'id'), $direction))
                     ->format(fn($value, $row, Column $column) => DateFormatter::format($row->paid_at)),
                 Column::make(__('bt.client'), 'client.name')
                     ->searchable()

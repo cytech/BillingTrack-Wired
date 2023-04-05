@@ -14,6 +14,7 @@ namespace BT\Modules\Settings\Controllers;
 use BT\Http\Controllers\Controller;
 use BT\Modules\CompanyProfiles\Models\CompanyProfile;
 use BT\Modules\Currencies\Models\Currency;
+use BT\Modules\Documents\Support\DocumentTemplates;
 use BT\Modules\Groups\Models\Group;
 use BT\Modules\Invoices\Support\InvoiceTemplates;
 use BT\Modules\MailQueue\Support\MailSettings;
@@ -53,10 +54,14 @@ class SettingController extends Controller
             ->with([
                 'languages'                     => Languages::listLanguages(),
                 'dateFormats'                   => DateFormatter::dropdownArray(),
-                'invoiceTemplates'              => InvoiceTemplates::lists(),
-                'purchaseorderTemplates'        => PurchaseorderTemplates::lists(),
-                'workorderTemplates'            => WorkorderTemplates::lists(),
-                'quoteTemplates'                => QuoteTemplates::lists(),
+//                'invoiceTemplates'              => InvoiceTemplates::lists(),
+//                'purchaseorderTemplates'        => PurchaseorderTemplates::lists(),
+//                'workorderTemplates'            => WorkorderTemplates::lists(),
+//                'quoteTemplates'                => QuoteTemplates::lists(),
+                'invoiceTemplates'              => DocumentTemplates::lists(),
+                'purchaseorderTemplates'        => DocumentTemplates::lists(),
+                'workorderTemplates'            => DocumentTemplates::lists(),
+                'quoteTemplates'                => DocumentTemplates::lists(),
                 'groups'                        => Group::getList(),
                 'taxRates'                      => TaxRate::getList(),
                 'paymentMethods'                => PaymentMethod::getList(),

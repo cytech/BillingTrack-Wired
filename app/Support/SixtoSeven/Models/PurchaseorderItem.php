@@ -9,18 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace BT\Modules\Documents\Models;
+namespace BT\Support\SixtoSeven\Models;
 
 use Askedio\SoftCascade\Traits\SoftCascadeTrait;
 use BT\Support\CurrencyFormatter;
 use BT\Support\NumberFormatter;
 use BT\Support\Statuses\PurchaseorderItemStatuses;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class DocumentItem extends Model
+class PurchaseorderItem extends Model
 {
     use SoftDeletes;
 
@@ -32,7 +30,7 @@ class DocumentItem extends Model
 
     protected $casts = ['deleted_at' => 'datetime'];
 
-    protected $guarded = ['id'];
+    protected $guarded = ['id', 'item_id'];
 
     /*
     |--------------------------------------------------------------------------
@@ -40,14 +38,14 @@ class DocumentItem extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function amount(): HasOne
+    public function amount()
     {
-        return $this->hasOne(DocumentItemAmount::class, 'item_id');
+        return $this->hasOne(PurchaseorderItemAmount::class, 'item_id');
     }
 
-    public function document(): BelongsTo
+    public function purchaseorder()
     {
-        return $this->belongsTo(Document::class);
+        return $this->belongsTo(Purchaseorder::class);
     }
 
     public function taxRate()
@@ -60,22 +58,10 @@ class DocumentItem extends Model
         return $this->belongsTo('BT\Modules\TaxRates\Models\TaxRate', 'tax_rate_2_id');
     }
 
-    public function products()
-    {
-        return $this->hasMany('BT\Modules\Products\Models\Product', 'resource_id')
-            ->where('resource_table','=','products');
-    }
-
     public function product()
     {
         return $this->belongsTo('BT\Modules\Products\Models\Product',
             'resource_id', 'id');
-    }
-
-    public function employees()
-    {
-        return $this->hasMany('BT\Modules\Employees\Models\Employee', 'id','resource_id');
-            //->where('resource_table','=','employees');
     }
 
     /*
@@ -96,7 +82,17 @@ class DocumentItem extends Model
 
     public function getFormattedPriceAttribute()
     {
-        return CurrencyFormatter::format($this->attributes['price'], $this->document->currency);
+        return CurrencyFormatter::format($this->attributes['price'], $this->purchaseorder->currency);
+    }
+
+    public function getFormattedNumericCostAttribute()
+    {
+        return NumberFormatter::format($this->attributes['cost']);
+    }
+
+    public function getFormattedCostAttribute()
+    {
+        return CurrencyFormatter::format($this->attributes['cost'], $this->purchaseorder->currency);
     }
 
     public function getFormattedDescriptionAttribute()
@@ -116,6 +112,7 @@ class DocumentItem extends Model
     | Scopes
     |--------------------------------------------------------------------------
     */
+
     public function scopeOpen($query)
     {
         return $query->where('rec_status_id', '=', PurchaseorderItemStatuses::getStatusId('open'));
@@ -123,31 +120,56 @@ class DocumentItem extends Model
 
     public function scopeReceived($query)
     {
-        return $query->where('rec_status_id', '=', PurchaseorderItemStatuses::getStatusId('received'));
+        return $query->where('purchaseorder_status_id', '=', PurchaseorderItemStatuses::getStatusId('received'));
     }
 
     public function scopePartial($query)
     {
-        return $query->where('rec_status_id', '=', PurchaseorderItemStatuses::getStatusId('partial'));
+        return $query->where('purchaseorder_status_id', '=', PurchaseorderItemStatuses::getStatusId('partial'));
     }
 
     public function scopeCanceled($query)
     {
-        return $query->where('rec_status_id', '=', PurchaseorderItemStatuses::getStatusId('canceled'));
+        return $query->where('purchaseorder_status_id', '=', PurchaseorderItemStatuses::getStatusId('canceled'));
     }
 
     public function scopeExtra($query)
     {
-        return $query->where('rec_status_id', '=', PurchaseorderItemStatuses::getStatusId('extra'));
+        return $query->where('purchaseorder_status_id', '=', PurchaseorderItemStatuses::getStatusId('extra'));
     }
+
+    public function scopeStatus($query, $status = null)
+    {
+        switch ($status)
+        {
+            case 'open':
+                $query->draft();
+                break;
+            case 'received':
+                $query->sent();
+                break;
+            case 'partial':
+                $query->received();
+                break;
+            case 'canceled':
+                $query->viewed();
+                break;
+            case 'extra':
+                $query->paid();
+                break;
+        }
+
+        return $query;
+    }
+
     public function scopeByDateRange($query, $from, $to)
     {
-        return $query->whereIn('document_id', function ($query) use ($from, $to)
+        return $query->whereIn('purchaseorder_id', function ($query) use ($from, $to)
         {
             $query->select('id')
-                ->from('documents')
-                ->where('document_date', '>=', $from)
-                ->where('document_date', '<=', $to);
+                ->from('purchaseorders')
+                ->where('purchaseorder_date', '>=', $from)
+                ->where('purchaseorder_date', '<=', $to);
         });
     }
 }

@@ -9,18 +9,15 @@
  * file that was distributed with this source code.
  */
 
-namespace BT\Modules\Documents\Models;
+namespace BT\Support\SixtoSeven\Models;
 
 use Askedio\SoftCascade\Traits\SoftCascadeTrait;
 use BT\Support\CurrencyFormatter;
 use BT\Support\NumberFormatter;
-use BT\Support\Statuses\PurchaseorderItemStatuses;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class DocumentItem extends Model
+class InvoiceItem extends Model
 {
     use SoftDeletes;
 
@@ -32,7 +29,7 @@ class DocumentItem extends Model
 
     protected $casts = ['deleted_at' => 'datetime'];
 
-    protected $guarded = ['id'];
+    protected $guarded = ['id', 'item_id'];
 
     /*
     |--------------------------------------------------------------------------
@@ -40,14 +37,14 @@ class DocumentItem extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function amount(): HasOne
+    public function amount()
     {
-        return $this->hasOne(DocumentItemAmount::class, 'item_id');
+        return $this->hasOne(InvoiceItemAmount::class, 'item_id');
     }
 
-    public function document(): BelongsTo
+    public function invoice()
     {
-        return $this->belongsTo(Document::class);
+        return $this->belongsTo(Invoice::class);
     }
 
     public function taxRate()
@@ -60,22 +57,16 @@ class DocumentItem extends Model
         return $this->belongsTo('BT\Modules\TaxRates\Models\TaxRate', 'tax_rate_2_id');
     }
 
-    public function products()
-    {
-        return $this->hasMany('BT\Modules\Products\Models\Product', 'resource_id')
-            ->where('resource_table','=','products');
-    }
-
     public function product()
     {
         return $this->belongsTo('BT\Modules\Products\Models\Product',
             'resource_id', 'id');
     }
 
-    public function employees()
+    public function employee()
     {
-        return $this->hasMany('BT\Modules\Employees\Models\Employee', 'id','resource_id');
-            //->where('resource_table','=','employees');
+        return $this->belongsTo('BT\Modules\Employees\Models\Employee',
+            'resource_id', 'id');
     }
 
     /*
@@ -96,7 +87,7 @@ class DocumentItem extends Model
 
     public function getFormattedPriceAttribute()
     {
-        return CurrencyFormatter::format($this->attributes['price'], $this->document->currency);
+        return CurrencyFormatter::format($this->attributes['price'], $this->invoice->currency);
     }
 
     public function getFormattedDescriptionAttribute()
@@ -104,50 +95,20 @@ class DocumentItem extends Model
         return nl2br($this->attributes['description']);
     }
 
-    public function getStatusTextAttribute()
-    {
-        $statuses = PurchaseorderItemStatuses::statuses();
-
-        return $statuses[$this->attributes['rec_status_id']];
-    }
-
     /*
     |--------------------------------------------------------------------------
     | Scopes
     |--------------------------------------------------------------------------
     */
-    public function scopeOpen($query)
-    {
-        return $query->where('rec_status_id', '=', PurchaseorderItemStatuses::getStatusId('open'));
-    }
 
-    public function scopeReceived($query)
-    {
-        return $query->where('rec_status_id', '=', PurchaseorderItemStatuses::getStatusId('received'));
-    }
-
-    public function scopePartial($query)
-    {
-        return $query->where('rec_status_id', '=', PurchaseorderItemStatuses::getStatusId('partial'));
-    }
-
-    public function scopeCanceled($query)
-    {
-        return $query->where('rec_status_id', '=', PurchaseorderItemStatuses::getStatusId('canceled'));
-    }
-
-    public function scopeExtra($query)
-    {
-        return $query->where('rec_status_id', '=', PurchaseorderItemStatuses::getStatusId('extra'));
-    }
     public function scopeByDateRange($query, $from, $to)
     {
-        return $query->whereIn('document_id', function ($query) use ($from, $to)
+        return $query->whereIn('invoice_id', function ($query) use ($from, $to)
         {
             $query->select('id')
-                ->from('documents')
-                ->where('document_date', '>=', $from)
-                ->where('document_date', '<=', $to);
+                ->from('invoices')
+                ->where('invoice_date', '>=', $from)
+                ->where('invoice_date', '<=', $to);
         });
     }
 }

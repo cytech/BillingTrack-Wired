@@ -25,7 +25,7 @@ class CreateDocumentsTable extends Migration
         Schema::create($this->tableName, function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->unsignedInteger('document_type')->default('1');
+            $table->string('document_type')->nullable()->default(null);
             $table->unsignedInteger('document_id');
             $table->date('document_date');
             $table->unsignedInteger('workorder_id')->default('0');

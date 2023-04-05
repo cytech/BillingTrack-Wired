@@ -40,6 +40,8 @@ class TrashTable extends DataTableComponent
             $this->module_fullname = 'BT\\Modules\\TimeTracking\\Models\\TimeTrackingProject';
         } elseif ($this->module_type == 'Schedule') {
             $this->module_fullname = 'BT\\Modules\\Scheduler\\Models\\Schedule';
+        } elseif (in_array($this->module_type, ['Invoice', 'Quote', 'Workorder', 'Purchaseorder'])){
+            $this->module_fullname = 'BT\\Modules\\Documents\\Models\\' . $this->module_type;
         } else {
             $this->module_fullname = 'BT\\Modules\\' . $this->module_type . 's\\Models\\' . $this->module_type;
         }
@@ -47,7 +49,11 @@ class TrashTable extends DataTableComponent
 
     public function columns(): array
     {
-        $status_model = 'BT\\Support\\Statuses\\' . $this->module_type . 'Statuses';
+        if (in_array($this->module_type, ['Invoice', 'Quote', 'Workorder', 'Purchaseorder'])){
+            $status_model = 'BT\\Support\\Statuses\\DocumentStatuses';
+        } else {
+            $status_model = 'BT\\Support\\Statuses\\' . $this->module_type . 'Statuses';
+        }
         $statuses = class_exists($status_model) ? $status_model::listsAllFlat() + ['overdue' => trans('bt.overdue')] : null;
 
         return TrashColumnDefs::columndefs($statuses, $this->module_type);
@@ -100,7 +106,7 @@ class TrashTable extends DataTableComponent
     public function builder(): Builder
     {
         if ($this->module_type == 'Purchaseorder') {
-            return $this->module_fullname::has('vendor')->with('vendor')->onlyTrashed()->select('purchaseorders.*');
+            return $this->module_fullname::has('vendor')->with('vendor')->onlyTrashed()->select('documents.*');
         } elseif ($this->module_type == 'Client') {
             return $this->module_fullname::getSelect()->onlyTrashed();
         } elseif ($this->module_type == 'Expense') {
@@ -116,7 +122,8 @@ class TrashTable extends DataTableComponent
                 ->select('recurring_invoices.*', 'recurring_invoices.id as number')
                 ->onlyTrashed();
         } else {
-            return $this->module_fullname::has('client')->with('client')->onlyTrashed()->select(lcfirst($this->module_type) . 's.*');
+//            return $this->module_fullname::has('client')->with('client')->onlyTrashed()->select(lcfirst($this->module_type) . 's.*');
+            return $this->module_fullname::has('client')->with('client')->onlyTrashed()->select('documents.*');
         }
     }
 }

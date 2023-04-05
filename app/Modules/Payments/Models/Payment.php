@@ -12,6 +12,7 @@
 namespace BT\Modules\Payments\Models;
 
 use Askedio\SoftCascade\Traits\SoftCascadeTrait;
+use BT\Modules\Documents\Models\Invoice;
 use Carbon\Carbon;
 use BT\Support\CurrencyFormatter;
 use BT\Support\DateFormatter;
@@ -58,7 +59,7 @@ class Payment extends Model
 
     public function invoice()
     {
-        return $this->belongsTo('BT\Modules\Invoices\Models\Invoice');
+        return $this->belongsTo(Invoice::class);
     }
 
     public function mailQueue()
