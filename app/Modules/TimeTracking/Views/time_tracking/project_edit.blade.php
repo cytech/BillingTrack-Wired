@@ -273,7 +273,7 @@
                                         <td style="color:red">Invoice #{{$task->invoice_id}} Trashed</td>
                                     @else
                                         <td>
-                                            <a href="{{ route('invoices.edit', [$task->invoice_id]) }}">{{ $task->invoice->number }}</a>
+                                            <a href="{{ route('documents.edit', [$task->invoice_id]) }}">{{ $task->invoice->number }}</a>
                                         </td>
                                     @endif
                                 </tr>

@@ -29,7 +29,7 @@ class DocumentAmount extends Model
      */
     protected $guarded = ['id'];
 
-    protected $appends = ['formatted_total'];
+//    protected $appends = ['formatted_total'];
 
     /*
     |--------------------------------------------------------------------------
@@ -106,8 +106,8 @@ class DocumentAmount extends Model
      * Retrieve the formatted total prior to conversion.
      * @return string
      */
-    public function getFormattedTotalWithoutConversionAttribute()
-    {
-        return CurrencyFormatter::format($this->attributes['total'] / $this->document->exchange_rate);
-    }
+//    public function getFormattedTotalWithoutConversionAttribute()
+//    {
+//        return CurrencyFormatter::format($this->attributes['total'] / $this->document->exchange_rate);
+//    }
 }

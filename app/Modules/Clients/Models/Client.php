@@ -17,7 +17,8 @@ use BT\Modules\Documents\Models\Quote;
 use BT\Modules\Documents\Models\Workorder;
 use BT\Support\CurrencyFormatter;
 use BT\Support\DateFormatter;
-use BT\Support\Statuses\InvoiceStatuses;
+//use BT\Support\Statuses\InvoiceStatuses;
+use BT\Support\Statuses\DocumentStatuses;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
@@ -316,12 +317,13 @@ class Client extends Model
 
     private function getBalanceSql()
     {
-        return DB::table('invoice_amounts')->select(DB::raw('sum(balance)'))->whereIn('invoice_id', function ($q)
+        return DB::table('document_amounts')->select(DB::raw('sum(balance)'))->whereIn('document_id', function ($q)
         {
             $q->select('id')
-                ->from('invoices')
-                ->where('invoices.client_id', '=', DB::raw(DB::getTablePrefix() . 'clients.id'))
-                ->where('invoices.invoice_status_id', '<>', DB::raw(InvoiceStatuses::getStatusId('canceled')))
+                ->from('documents')
+//                ->where('document_type', DOCUMENT_TYPE_INVOICE['modulefullname'])
+                ->where('documents.client_id', '=', DB::raw(DB::getTablePrefix() . 'clients.id'))
+                ->where('documents.document_status_id', '<>', DB::raw(DocumentStatuses::getStatusId('canceled')))
                 ->whereNull('deleted_at');
         })->toSql();
     }

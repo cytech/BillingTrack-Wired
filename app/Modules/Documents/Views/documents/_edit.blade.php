@@ -8,31 +8,31 @@
     @endif
 
     @if ($document->invoice_id)
-        @if ($document->convertedtoinvoice()->deleted_at != null)
+            @if ($document->invoice->trashed())
             <span class="badge bg-danger"
-                  title="Trashed">@lang('bt.converted_to_invoice') {{ $document->convertedtoinvoice()->number }}</span>
+                  title="Trashed">@lang('bt.converted_to_invoice') {{ $document->invoice->number }}</span>
 
-        @elseif($document->convertedtoinvoice()->status_text == 'canceled')
+        @elseif($document->invoice->status_text == 'canceled')
             <span class="badge badge-canceled" title="@lang('bt.canceled')"><a
-                        href="{{ route('documents.edit', [$document->convertedtoinvoice()->id]) }}"
-                        style="color: inherit;">@lang('bt.converted_to_invoice') {{ $document->convertedtoinvoice()->number }}</a></span>
+                        href="{{ route('documents.edit', [$document->invoice->id]) }}"
+                        style="color: inherit;">@lang('bt.converted_to_invoice') {{ $document->invoice->number }}</a></span>
         @else
-            <span class="badge bg-info"><a href="{{ route('documents.edit', [$document->convertedtoinvoice()->id]) }}"
-                                           style="color: inherit;">@lang('bt.converted_to_invoice') {{ $document->convertedtoinvoice()->number }}</a></span>
+            <span class="badge bg-info"><a href="{{ route('documents.edit', [$document->invoice->id]) }}"
+                                           style="color: inherit;">@lang('bt.converted_to_invoice') {{ $document->invoice->number }}</a></span>
         @endif
     @endif
 
     @if ($document->workorder_id)
-        @if ($document->convertedtoworkorder()->deleted_at != null)
+        @if ($document->workorder->trashed())
             <span class="badge bg-danger"
-                  title="Trashed">@lang('bt.converted_to_workorder') {{ $document->convertedtoworkorder()->number }}</span>
-        @elseif($document->convertedtoworkorder()->status_text == 'canceled')
+                  title="Trashed">@lang('bt.converted_to_workorder') {{ $document->workorder->number }}</span>
+        @elseif($document->workorder->status_text == 'canceled')
             <span class="badge badge-canceled" title="@lang('bt.canceled')"><a
-                        href="{{ route('documents.edit', [$document->convertedtoworkorder()->id]) }}"
-                        style="color: inherit;">@lang('bt.converted_to_workorder') {{ $document->convertedtoworkorder()->number }}</a></span>
+                        href="{{ route('documents.edit', [$document->workorder->id]) }}"
+                        style="color: inherit;">@lang('bt.converted_to_workorder') {{ $document->workorder->number }}</a></span>
         @else
-            <span class="badge bg-info"><a href="{{ route('documents.edit', [$document->convertedtoworkorder()->id]) }}"
-                                           style="color: inherit;">@lang('bt.converted_to_workorder') {{ $document->convertedtoworkorder()->number }}</a></span>
+            <span class="badge bg-info"><a href="{{ route('documents.edit', [$document->workorder->id]) }}"
+                                           style="color: inherit;">@lang('bt.converted_to_workorder') {{ $document->workorder->number }}</a></span>
         @endif
     @endif
     <div class="float-end">
@@ -62,10 +62,13 @@
                                 class="fa fa-check"></i> @lang('bt.'.$document->lower_case_baseclass.'_to_invoice')
                     </a>
                 @endif
-                {{--                <a class="dropdown-item" href="{{ route('clientCenter.public.document.show', [$document->url_key]) }}"--}}
-                {{--                   target="_blank"><i--}}
-                {{--                            class="fa fa-globe"></i> @lang('bt.public')</a>--}}
-                <div class="dropdown-divider"></div>
+                @if($document->moduletype() != 'Purchaseorder')
+                    <a class="dropdown-item"
+                       href="{{ route('clientCenter.public.' . $document->lower_case_baseclass .'.show', [$document->url_key]) }}"
+                       target="_blank"><i
+                                class="fa fa-globe"></i> @lang('bt.public')</a>
+                    <div class="dropdown-divider"></div>
+                @endif
                 <a class="dropdown-item" href="#"
                    onclick="swalConfirm('@lang('bt.trash_record_warning')', '', '{{ route('documents.delete', [$document->id]) }}');"><i
                             class="fa fa-trash-alt text-danger"></i> @lang('bt.trash')</a>
@@ -232,7 +235,11 @@
                                 value="{{$document->document_date}}"></x-fp_common>
                     </div>
                     <div class="mb-3">
-                        <label>@lang('bt.expires')</label>
+                        @if($document->moduletype() == 'Invoice' || $document->moduletype() == 'Purchaseorder')
+                            <label>@lang('bt.due_date')</label>
+                        @else
+                            <label>@lang('bt.expires')</label>
+                        @endif
                         <x-fp_common
                                 id="action_date"
                                 class="form-control form-control-sm"

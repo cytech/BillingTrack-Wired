@@ -1,6 +1,8 @@
 <?php
 
+use BT\Modules\Expenses\Models\Expense;
 use BT\Modules\Payments\Models\Payment;
+use BT\Modules\TimeTracking\Models\TimeTrackingTask;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -187,6 +189,28 @@ return new class extends Migration {
                 $invoicedoc = Invoice::where('document_id', $payment->invoice_id)->first();
                 $payment->invoice_id = $invoicedoc->id;
                 $payment->updateQuietly();
+            }
+        }
+
+        //update timetrackingtasks invoice_id to new documents
+        $timetrackingtasks = TimeTrackingTask::get();
+
+        foreach ($timetrackingtasks as $timetrackingtask){
+            if ($timetrackingtask->invoice_id > 0) {
+                $invoicedoc = Invoice::where('document_id', $timetrackingtask->invoice_id)->first();
+                $timetrackingtask->invoice_id = $invoicedoc->id;
+                $timetrackingtask->updateQuietly();
+            }
+        }
+
+        //update expenses invoice_id to new documents
+        $expenses = Expense::get();
+
+        foreach ($expenses as $expense){
+            if ($expense->invoice_id > 0) {
+                $invoicedoc = Invoice::where('document_id', $expense->invoice_id)->first();
+                $expense->invoice_id = $invoicedoc->id;
+                $expense->updateQuietly();
             }
         }
 

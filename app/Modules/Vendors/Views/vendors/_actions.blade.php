@@ -10,7 +10,7 @@
         <a class="dropdown-item" href="#" id="btn-create-purchaseorder"
            {{--                   params 3 thru ... mount(,,$modulefullname, $moduleop, $resource_id = null, $module_id = null, $readonly = null)--}}
            onclick="window.livewire.emit('showModal', 'modals.create-module-modal',
-                   '{{ addslashes(get_class($model->purchaseorders()->getRelated())) }}', 'create', {{ $model->id }}, null, true)">
+                   '{{ addslashes(get_class($model->purchaseorders()->getRelated())) }}', 'Purchaseorder', 'create', {{ $model->id }}, null, true)">
             <i class="far fa-file-alt"></i> @lang('bt.create_purchaseorder')</a>
     </div>
 </div>

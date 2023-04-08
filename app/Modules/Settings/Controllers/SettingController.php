@@ -32,10 +32,11 @@ use BT\Support\Languages;
 use BT\Support\PDF\PDFFactory;
 use BT\Support\ProfileImage\ProfileImageFactory;
 use BT\Support\Skins;
-use BT\Support\Statuses\InvoiceStatuses;
-use BT\Support\Statuses\PurchaseorderStatuses;
-use BT\Support\Statuses\QuoteStatuses;
-use BT\Support\Statuses\WorkorderStatuses;
+//use BT\Support\Statuses\InvoiceStatuses;
+//use BT\Support\Statuses\PurchaseorderStatuses;
+//use BT\Support\Statuses\QuoteStatuses;
+//use BT\Support\Statuses\WorkorderStatuses;
+use BT\Support\Statuses\DocumentStatuses;
 use BT\Support\UpdateChecker;
 use Illuminate\Support\Facades\Crypt;
 
@@ -90,10 +91,14 @@ class SettingController extends Controller
                 'roundTaxDecimalOptions'        => ['2' => '2', '3' => '3', '4' => '4'],
                 'companyProfiles'               => CompanyProfile::getList(),
                 'merchantDrivers'               => MerchantFactory::getDrivers(),
-                'invoiceStatuses'               => InvoiceStatuses::listsAllFlat() + ['overdue' => trans('bt.overdue')],
-                'purchaseorderStatuses'         => PurchaseorderStatuses::listsAllFlat() + ['overdue' => trans('bt.overdue')],
-                'workorderStatuses'             => WorkorderStatuses::listsAllFlat(),
-                'quoteStatuses'                 => QuoteStatuses::listsAllFlat(),
+//                'invoiceStatuses'               => InvoiceStatuses::listsAllFlat() + ['overdue' => trans('bt.overdue')],
+//                'purchaseorderStatuses'         => PurchaseorderStatuses::listsAllFlat() + ['overdue' => trans('bt.overdue')],
+//                'workorderStatuses'             => WorkorderStatuses::listsAllFlat(),
+//                'quoteStatuses'                 => QuoteStatuses::listsAllFlat(),
+                'invoiceStatuses'               => DocumentStatuses::listsAllFlat() + ['overdue' => trans('bt.overdue')],
+                'purchaseorderStatuses'         => DocumentStatuses::listsAllFlat() + ['overdue' => trans('bt.overdue')],
+                'workorderStatuses'             => DocumentStatuses::listsAllFlat(),
+                'quoteStatuses'                 => DocumentStatuses::listsAllFlat(),
                 'invoiceWhenDraftOptions'       => [0 => trans('bt.keep_invoice_date_as_is'), 1 => trans('bt.change_invoice_date_to_todays_date')],
                 'purchaseorderWhenDraftOptions' => [0 => trans('bt.keep_purchaseorder_date_as_is'), 1 => trans('bt.change_purchaseorder_date_to_todays_date')],
                 'workorderWhenDraftOptions'     => [0 => trans('bt.keep_workorder_date_as_is'), 1 => trans('bt.change_workorder_date_to_todays_date')],

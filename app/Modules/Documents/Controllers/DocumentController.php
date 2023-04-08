@@ -35,19 +35,19 @@ class DocumentController extends Controller
         switch ($module){
             case 1:
                 $module_type = DOCUMENT_TYPE_QUOTE['module_type'];
-                $modulefullname = DOCUMENT_TYPE_QUOTE['modulefullname'];
+                $modulefullname = addslashes(DOCUMENT_TYPE_QUOTE['modulefullname']);
                 break;
             case 2:
                 $module_type = DOCUMENT_TYPE_WORKORDER['module_type'];
-                $modulefullname = DOCUMENT_TYPE_WORKORDER['modulefullname'];
+                $modulefullname = addslashes(DOCUMENT_TYPE_WORKORDER['modulefullname']);
                 break;
             case 3:
                 $module_type = DOCUMENT_TYPE_INVOICE['module_type'];
-                $modulefullname = DOCUMENT_TYPE_INVOICE['modulefullname'];
+                $modulefullname =addslashes( DOCUMENT_TYPE_INVOICE['modulefullname']);
                 break;
             case 5:
                 $module_type = DOCUMENT_TYPE_PURCHASEORDER['module_type'];
-                $modulefullname = DOCUMENT_TYPE_PURCHASEORDER['modulefullname'];
+                $modulefullname = addslashes(DOCUMENT_TYPE_PURCHASEORDER['modulefullname']);
                 break;
         }
 

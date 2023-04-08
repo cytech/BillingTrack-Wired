@@ -22,8 +22,13 @@ class ModuleTable extends DataTableComponent
         //$this->setFilterLayoutSlideDown();
         $this->setFilterLayoutPopover();
         if ($this->clientid) {
-            $clientname = Client::find($this->clientid);
-            $this->setSearch($clientname->name);
+            if ($this->module_type == 'Purchaseorder'){
+                $clientname = Vendor::find($this->clientid);
+                $this->setSearch($clientname->name);
+            }else {
+                $clientname = Client::find($this->clientid);
+                $this->setSearch($clientname->name);
+            }
         }
         if (request('vendor')) {
             $vendorname = Vendor::find(request('vendor'));

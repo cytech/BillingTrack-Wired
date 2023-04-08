@@ -62,7 +62,11 @@ class DocumentObserver
 
         if (!$document->action_date)
         {
-            $document->action_date = DateFormatter::incrementDateByDays($document->document_date->format('Y-m-d'), config('bt.documentsExpireAfter', 10));
+            if ($document->moduletype() == 'Invoice' || $document->moduletype() == 'Purchaseorder') {
+                $document->action_date = DateFormatter::incrementDateByDays($document->document_date->format('Y-m-d'), config('bt.'.$document->lower_case_baseclass.'sDueAfter', 10));
+            } else{
+                $document->action_date = DateFormatter::incrementDateByDays($document->document_date->format('Y-m-d'), config('bt.'.$document->lower_case_baseclass.'sExpireAfter', 10));
+            }
         }
 
         if (!$document->company_profile_id)
@@ -72,7 +76,7 @@ class DocumentObserver
 
         if (!$document->group_id)
         {
-            $document->group_id = config('bt.documentGroup');
+            $document->group_id = config('bt.'.$document->lower_case_baseclass.'Group');
         }
 
         if (!$document->number)
@@ -82,12 +86,12 @@ class DocumentObserver
 
         if (!isset($document->terms))
         {
-            $document->terms = config('bt.documentTerms');
+            $document->terms = config('bt.'.$document->lower_case_baseclass.'Terms');
         }
 
         if (!isset($document->footer))
         {
-            $document->footer = config('bt.documentFooter');
+            $document->footer = config('bt.'.$document->lower_case_baseclass.'Footer');
         }
 
         if (!$document->document_status_id)
@@ -102,7 +106,8 @@ class DocumentObserver
 
         if (!$document->template)
         {
-            $document->template = $document->companyProfile->document_template;
+            $template = $document->lower_case_baseclass . '_template';
+            $document->template = $document->companyProfile->$template;
         }
 
         if ($document->currency_code == config('bt.baseCurrency'))

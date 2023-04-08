@@ -13,11 +13,11 @@ namespace BT\Modules\ClientCenter\Controllers;
 
 use BT\Events\InvoiceViewed;
 use BT\Http\Controllers\Controller;
-use BT\Modules\Invoices\Models\Invoice;
+use BT\Modules\Documents\Models\Invoice;
 use BT\Modules\Merchant\Support\MerchantFactory;
 use BT\Support\FileNames;
 use BT\Support\PDF\PDFFactory;
-use BT\Support\Statuses\InvoiceStatuses;
+use BT\Support\Statuses\DocumentStatuses;
 
 class ClientCenterPublicInvoiceController extends Controller
 {
@@ -31,7 +31,7 @@ class ClientCenterPublicInvoiceController extends Controller
 
         return view('client_center.invoices.public')
             ->with('invoice', $invoice)
-            ->with('statuses', InvoiceStatuses::statuses())
+            ->with('statuses', DocumentStatuses::statuses())
             ->with('urlKey', $urlKey)
             ->with('merchantDrivers', MerchantFactory::getDrivers(true))
             ->with('attachments', $invoice->clientAttachments);

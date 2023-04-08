@@ -61,7 +61,13 @@ class ItemsTable extends Component
                                'tax_rate_id'                          => config('bt.itemTaxRate'),
                                'tax_rate_2_id'                        => config('bt.itemTax2Rate')];
         $this->new_item = new $this->moduleitem_fullname($this->new_item_cfg);
-        $module_id_type = $this->module_id_type = Str::snake($this->module_type) . '_id';
+        if ($this->module_type == 'RecurringInvoice'){
+            $module_id_type = $this->module_id_type = 'recurring_invoice_id';
+        } else{
+            $module_id_type = $this->module_id_type = 'document_id';
+        }
+
+//        $module_id_type = $this->module_id_type = Str::snake($this->module_type) . '_id';
         $this->new_item->$module_id_type = $this->module->id;
         $this->module_items = $this->module->items;
         $this->taxRates = TaxRate::getList();
@@ -97,7 +103,13 @@ class ItemsTable extends Component
 
         foreach ($params['resources'] as $val) {
             $add_item = new $this->moduleitem_fullname($this->new_item_cfg);
-            $module_id_type = $this->module_id_type = Str::snake($this->module_type) . '_id';
+            if ($this->module_type == 'RecurringInvoice'){
+                $module_id_type = $this->module_id_type = 'recurring_invoice_id';
+            } else{
+                $module_id_type = $this->module_id_type = 'document_id';
+            }
+
+//        $module_id_type = $this->module_id_type = Str::snake($this->module_type) . '_id';
             $add_item->$module_id_type = $this->module->id;
 
             $res = $search_mod_fullname::where('id', '=', $val)->firstOrFail();

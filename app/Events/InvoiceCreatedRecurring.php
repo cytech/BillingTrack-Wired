@@ -2,7 +2,7 @@
 
 namespace BT\Events;
 
-use BT\Modules\Invoices\Models\Invoice;
+use BT\Modules\Documents\Models\Invoice;
 use BT\Modules\RecurringInvoices\Models\RecurringInvoice;
 use Illuminate\Queue\SerializesModels;
 

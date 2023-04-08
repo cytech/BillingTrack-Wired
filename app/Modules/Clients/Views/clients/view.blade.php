@@ -27,15 +27,15 @@
                 <div class="btn-group float-end">
                     <a class="btn btn-secondary rounded me-1" href="#" id="btn-create-quote"
                        {{--                   params 3 thru ... mount(,,$modulefullname, $moduleop, $resource_id = null, $module_id = null, $readonly = null)--}}
-                       onclick="window.livewire.emit('showModal', 'modals.create-module-modal', '{{ addslashes(get_class($client->quotes()->getRelated())) }}', 'create', {{ $client->id }}, null, true)">
+                       onclick="window.livewire.emit('showModal', 'modals.create-module-modal', '{{ addslashes(get_class($client->quotes()->getRelated())) }}', 'Quote', 'create', {{ $client->id }}, null, true)">
                         @lang('bt.create_quote')</a>
                     <a class="btn btn-secondary rounded me-1" href="#" id="btn-create-workorder"
                        {{--                   params 3 thru ... mount(,,$modulefullname, $moduleop, $resource_id = null, $module_id = null, $readonly = null)--}}
-                       onclick="window.livewire.emit('showModal', 'modals.create-module-modal', '{{ addslashes(get_class($client->workorders()->getRelated())) }}', 'create', {{ $client->id }}, null, true)">
+                       onclick="window.livewire.emit('showModal', 'modals.create-module-modal', '{{ addslashes(get_class($client->workorders()->getRelated())) }}', 'Workorder', 'create', {{ $client->id }}, null, true)">
                         @lang('bt.create_workorder')</a>
                     <a class="btn btn-secondary rounded me-1" href="#" id="btn-create-invoice"
                        {{--                   params 3 thru ... mount(,,$modulefullname, $moduleop, $resource_id = null, $module_id = null, $readonly = null)--}}
-                       onclick="window.livewire.emit('showModal', 'modals.create-module-modal', '{{ addslashes(get_class($client->invoices()->getRelated())) }}', 'create', {{ $client->id }}, null, true)">
+                       onclick="window.livewire.emit('showModal', 'modals.create-module-modal', '{{ addslashes(get_class($client->invoices()->getRelated())) }}', 'Invoice', 'create', {{ $client->id }}, null, true)">
                         @lang('bt.create_invoice')</a>
                     <a href="{{ $returnUrl }}" class="btn btn-secondary rounded me-1"><i class="fa fa-backward"></i> @lang('bt.back')
                     </a>

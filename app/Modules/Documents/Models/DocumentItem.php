@@ -50,6 +50,27 @@ class DocumentItem extends Model
         return $this->belongsTo(Document::class);
     }
 
+    public function quote(): BelongsTo
+    {
+        return $this->belongsTo(Document::class, 'document_id');
+    }
+
+    public function workorder(): BelongsTo
+    {
+        return $this->belongsTo(Workorder::class, 'document_id');
+    }
+
+    public function invoice(): BelongsTo
+    {
+        return $this->belongsTo(Invoice::class, 'document_id');
+    }
+
+    public function purchaseorder(): BelongsTo
+    {
+        return $this->belongsTo(Purchaseorder::class, 'document_id');
+    }
+
+
     public function taxRate()
     {
         return $this->belongsTo('BT\Modules\TaxRates\Models\TaxRate');

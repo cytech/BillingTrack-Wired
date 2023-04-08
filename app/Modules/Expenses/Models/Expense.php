@@ -13,6 +13,7 @@ namespace BT\Modules\Expenses\Models;
 
 use Askedio\SoftCascade\Traits\SoftCascadeTrait;
 use BT\Events\CheckAttachment;
+use BT\Modules\Documents\Models\Invoice;
 use BT\Support\CurrencyFormatter;
 use BT\Support\DateFormatter;
 use BT\Support\NumberFormatter;
@@ -68,7 +69,7 @@ class Expense extends Model
 
     public function invoice()
     {
-        return $this->belongsTo('BT\Modules\Invoices\Models\Invoice');
+        return $this->belongsTo(Invoice::class);
     }
 
     public function vendor()

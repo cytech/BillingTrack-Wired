@@ -2,7 +2,7 @@
 
 namespace BT\Events;
 
-use BT\Modules\Quotes\Models\Quote;
+use BT\Modules\Documents\Models\Quote;
 use Illuminate\Queue\SerializesModels;
 
 class QuoteEmailed extends Event

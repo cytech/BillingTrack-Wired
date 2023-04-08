@@ -12,6 +12,7 @@
 namespace BT\Modules\Documents\Models;
 
 use Askedio\SoftCascade\Traits\SoftCascadeTrait;
+use BT\Observers\DocumentObserver;
 use BT\Support\CurrencyFormatter;
 use BT\Support\DateFormatter;
 use BT\Support\FileNames;
@@ -19,12 +20,12 @@ use BT\Support\HTML;
 use BT\Support\NumberFormatter;
 use BT\Support\Statuses\DocumentStatuses;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 use Parental\HasChildren;
 
 class Document extends Model
@@ -35,95 +36,38 @@ class Document extends Model
 
     use SoftCascadeTrait;
 
+    protected static function boot()
+    {
+        // allow parental children to access DocumentObserver
+        // you MUST call the parent boot method
+        // in this case the \Illuminate\Database\Eloquent\Model
+        parent::boot();
+
+        // using static::observe(...) instead of Config::observe(...)
+        // this way the child classes auto-register the observer to their own class
+        static::observe(DocumentObserver::class);
+    }
+
     protected $childColumn = 'document_type';
 
-//    protected $childTypes = [
-//        '1' => Quote::class,
-//        '2' => Workorder::class,
-//        '3' => Invoice::class,
-//        '5' => Purchaseorder::class,
-//    ];
+    // todo remove unnecessary?
+    //    protected $appends = ['formatted_document_date', 'formatted_action_date','status_text', 'formatted_summary'];
 
-    protected $softCascade = ['documentItems', 'custom', 'amount', 'activities', 'attachments', 'mailQueue', 'notes'];
+    protected $casts = ['action_date' => 'datetime', 'document_date' => 'datetime', 'job_date' => 'datetime', 'deleted_at' => 'datetime'];
 
     protected $guarded = ['id'];
 
-    protected $casts = ['action_date' => 'datetime', 'document_date' => 'datetime', 'deleted_at' => 'datetime'];
+    protected $softCascade = ['documentItems', 'custom', 'amount', 'activities', 'attachments', 'mailQueue', 'notes'];
 
-    protected $appends = ['formatted_document_date', 'formatted_action_date','status_text', 'formatted_summary'];
+//    public function moduletype()
+//    {
+//        return class_basename($this);
+//    }
 
-    public function moduletype(){
-        return Str::afterLast($this->document_type, '\\');
-//        switch ($this->document_type) {
-//            case 1:
-//                return DOCUMENT_TYPE_QUOTE['module_type'];
-//            case 2:
-//                return DOCUMENT_TYPE_WORKORDER['module_type'];
-//            case 3:
-//                return DOCUMENT_TYPE_INVOICE['module_type'];
-//            case 5:
-//                return DOCUMENT_TYPE_PURCHASEORDER['module_type'];
-//
-//        }
-    }
-    public function getViewDirectoryNameAttribute(){
-        return strtolower(class_basename($this)) . 's';
-    }
-
-    public function convertedtoinvoice(){
-        if ($this->invoice_id){
-//            return $this->withTrashed()->where('document_type',  DOCUMENT_TYPE_INVOICE['document_type'])->where('document_id', $this->invoice_id)->first();
-            return Invoice::withTrashed()->find($this->invoice_id);
-        }
-    }
-
-    public function convertedtoworkorder(){
-        if ($this->workorder_id){
-//            return $this->withTrashed()->where('document_type',  DOCUMENT_TYPE_WORKORDER['document_type'])->where('id', $this->workorder_id)->first();
-            return Workorder::withTrashed()->find($this->workorder_id);
-        }
-    }
-
-    public function getLowerCaseBaseclassAttribute(){
-        return strtolower(class_basename($this->document_type));
-    }
-
-    public function invoice()
+    public function moduleType(): Attribute
     {
-        return $this->belongsTo(Invoice::class);
-        //return self::where('document_type', DOCUMENT_TYPE_INVOICE['document_type']);
+        return new Attribute(get: fn() => class_basename($this));
     }
-
-//    public static function invoices()
-//    {
-////        return $this->belongsTo('BT\Modules\Invoices\Models\Invoice');
-//        return self::where('document_type', DOCUMENT_TYPE_INVOICE['document_type']);
-//    }
-//
-//    public static function quotes()
-//    {
-////        return $this->belongsTo('BT\Modules\Invoices\Models\Invoice');
-//        return self::where('document_type', DOCUMENT_TYPE_QUOTE['document_type']);
-//    }
-//
-    public function invoicetrashed()
-    {
-        return $this->belongsTo(Invoice::class, 'invoice_id', 'id')->onlyTrashed();
-//        return $this->document_type == DOCUMENT_TYPE_INVOICE['document_type'] &&  $this->deleted_at != null;
-    }
-//
-//    public function workorder()
-//    {
-////        return $this->belongsTo('BT\Modules\Invoices\Models\Invoice');
-//        return $this->document_type == DOCUMENT_TYPE_WORKORDER['document_type'];
-//    }
-//
-//    public function workordertrashed()
-//    {
-////        return $this->belongsTo('BT\Modules\Invoices\Models\Invoice', 'invoice_id', 'id')->onlyTrashed();
-//        return $this->document_type == DOCUMENT_TYPE_WORKORDER['document_type'] &&  $this->deleted_at != null;
-//    }
-
     /*
     |--------------------------------------------------------------------------
     | Relationships
@@ -167,11 +111,9 @@ class Document extends Model
     {
         $relationship = $this->morphMany('BT\Modules\Attachments\Models\Attachment', 'attachable');
 
-        if ($this->status_text == 'paid')
-        {
+        if ($this->status_text == 'paid') {
             $relationship->whereIn('client_visibility', [1, 2]);
-        }
-        else {
+        } else {
             $relationship->where('client_visibility', 1);
         }
         return $relationship;
@@ -190,9 +132,8 @@ class Document extends Model
 
     public function custom()
     {
-//        return $this->hasOne('BT\Modules\CustomFields\Models\DocumentCustom');
         $customclass = $this->moduletype() . 'Custom';
-        return $this->hasOne('BT\Modules\CustomFields\Models\\'.$customclass, strtolower($this->moduletype()) . '_id');
+        return $this->hasOne('BT\Modules\CustomFields\Models\\' . $customclass, strtolower($this->moduletype()) . '_id');
     }
 
     public function group()
@@ -221,92 +162,98 @@ class Document extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function getAttachmentPathAttribute()
+    public function viewDirectoryName(): Attribute
     {
-        return attachment_path($this->view_directory_name . '/' . $this->id);
+        return new Attribute(get: fn() => strtolower(class_basename($this)) . 's');
     }
 
-    public function getAttachmentPermissionOptionsAttribute()
+    public function attachmentPath(): Attribute
     {
-        return [
+        return new Attribute(get: fn() => attachment_path($this->view_directory_name . '/' . $this->id));
+    }
+
+    public function attachmentPermissionOptions(): Attribute
+    {
+        return new Attribute(get: fn() => [
             '0' => trans('bt.not_visible'),
             '1' => trans('bt.visible'),
             '2' => trans('bt.visible_after_payment'),
-        ];
+        ]);
     }
 
-    public function getFormattedCreatedAtAttribute()
+    public function formattedCreatedAt(): Attribute
     {
-        return DateFormatter::format($this->attributes['created_at']);
+        return new Attribute(get: fn() => DateFormatter::format($this->created_at));
     }
 
-    public function getFormattedDocumentDateAttribute()
+    public function formattedDocumentDate(): Attribute
     {
-        return DateFormatter::format($this->attributes['document_date']);
+        return new Attribute(get: fn() => DateFormatter::format($this->document_date));
     }
 
-
-    public function getFormattedActionDateAttribute()
+    public function formattedActionDate(): Attribute
     {
-        return DateFormatter::format($this->attributes['action_date']);
+        return new Attribute(get: fn() => DateFormatter::format($this->action_date));
     }
 
-
-    public function getFormattedTermsAttribute()
+    public function formattedTerms(): Attribute
     {
-        return nl2br($this->attributes['terms']);
+        return new Attribute(get: fn() => nl2br($this->terms));
     }
 
-    public function getFormattedFooterAttribute()
+    public function formattedFooter(): Attribute
     {
-        return nl2br($this->attributes['footer']);
+        return new Attribute(get: fn() => nl2br($this->footer));
     }
 
-    public function getStatusTextAttribute()
+    public function lowerCaseBaseclass(): Attribute
+    {
+        return new Attribute(get: fn() => strtolower(class_basename($this)));
+    }
+
+    public function statusText(): Attribute
     {
         $statuses = DocumentStatuses::statuses();
-
-        return $statuses[$this->attributes['document_status_id']];
+        return new Attribute(get: fn() => $statuses[$this->document_status_id]);
     }
 
-    public function getPdfFilenameAttribute()
+    public function pdfFilename(): Attribute
     {
-        return FileNames::document($this);
+        return new Attribute(get: fn() => FileNames::document($this));
     }
 
-
-  /*  public function getPublicUrlAttribute()
+    public function publicUrl(): Attribute
     {
-        return route('clientCenter.public.document.show', [$this->url_key]);
+        return new Attribute(get: fn() => route('clientCenter.public.document.show', [$this->url_key]));
     }
 
-    public function getIsForeignCurrencyAttribute()
-    {
-        if ($this->attributes['currency_code'] == config('bt.baseCurrency'))
-        {
-            return false;
-        }
+//    public function isForeignCurrency(): Attribute
+//    {
+//        if ($this->currency_code == config('bt.baseCurrency'))
+//        {
+//            return new Attribute(get: fn() => False);
+//        }
+//        return new Attribute(get: fn() => True);
+//    }
 
-        return true;
-    }*/
-
-    public function getHtmlAttribute()
+    public function html(): Attribute
     {
-        return HTML::document($this);
+        return new Attribute(get: fn() => HTML::document($this));
     }
 
-    public function getFormattedNumericDiscountAttribute()
+    public function formattedNumericDiscount(): Attribute
     {
-        return NumberFormatter::format($this->attributes['discount']);
+        return new Attribute(get: fn() => NumberFormatter::format($this->discount));
     }
 
-/*    public function getIsPayableAttribute()
-    {
-        return $this->status_text <> 'canceled' and $this->amount->balance > 0;
-    }*/
+//    public function isPayable(): Attribute
+//    {
+//        return new Attribute(get: fn() => $this->status_text <> 'canceled' and $this->amount->balance > 0);
+//    }
 
-    public function  getFormattedSummaryAttribute(){
-        return mb_strimwidth((string)$this->attributes['summary'],0,50,'...');
+    public function formattedSummary(): Attribute
+    {
+        return new Attribute(get: fn() => mb_strimwidth((string)$this->summary, 0, 50, '...'));
     }
 
     /**
@@ -314,55 +261,45 @@ class Document extends Model
      *
      * @return array
      */
-    public function getSummarizedTaxesAttribute()
+    public function summarizedTaxes(): Attribute
     {
         $taxes = [];
 
-        foreach ($this->items as $item)
-        {
-            if ($item->taxRate)
-            {
+        foreach ($this->items as $item) {
+            if ($item->taxRate) {
                 $key = $item->taxRate->name;
 
-                if (!isset($taxes[$key]))
-                {
-                    $taxes[$key]              = new \stdClass();
-                    $taxes[$key]->name        = $item->taxRate->name;
-                    $taxes[$key]->percent     = $item->taxRate->formatted_percent;
-                    $taxes[$key]->total       = $item->amount->tax_1;
+                if (!isset($taxes[$key])) {
+                    $taxes[$key] = new \stdClass();
+                    $taxes[$key]->name = $item->taxRate->name;
+                    $taxes[$key]->percent = $item->taxRate->formatted_percent;
+                    $taxes[$key]->total = $item->amount->tax_1;
                     $taxes[$key]->raw_percent = $item->taxRate->percent;
-                }
-                else
-                {
+                } else {
                     $taxes[$key]->total += $item->amount->tax_1;
                 }
             }
 
-            if ($item->taxRate2)
-            {
+            if ($item->taxRate2) {
                 $key = $item->taxRate2->name;
 
-                if (!isset($taxes[$key]))
-                {
-                    $taxes[$key]              = new \stdClass();
-                    $taxes[$key]->name        = $item->taxRate2->name;
-                    $taxes[$key]->percent     = $item->taxRate2->formatted_percent;
-                    $taxes[$key]->total       = $item->amount->tax_2;
+                if (!isset($taxes[$key])) {
+                    $taxes[$key] = new \stdClass();
+                    $taxes[$key]->name = $item->taxRate2->name;
+                    $taxes[$key]->percent = $item->taxRate2->formatted_percent;
+                    $taxes[$key]->total = $item->amount->tax_2;
                     $taxes[$key]->raw_percent = $item->taxRate2->percent;
-                }
-                else
-                {
+                } else {
                     $taxes[$key]->total += $item->amount->tax_2;
                 }
             }
         }
 
-        foreach ($taxes as $key => $tax)
-        {
+        foreach ($taxes as $key => $tax) {
             $taxes[$key]->total = CurrencyFormatter::format($tax->total, $this->currency);
         }
 
-        return $taxes;
+        return new Attribute(get: fn() => $taxes);
     }
 
     /*
@@ -372,7 +309,7 @@ class Document extends Model
     */
 
     // not invoiced is where workorder->invoice_id = 0,
-    // or where invoice()->invoice_status_id = 1 or 4 ('draft' or 'canceled')
+    // or where invoice()->invoice_status_id = 1 or 5 ('draft' or 'canceled')
     // or invoice is trashed
     public function scopeNotinvoiced($query)
     {
@@ -380,13 +317,14 @@ class Document extends Model
             ->orWhereHas('invoice', function ($query) {
                 $query->whereIn('document_status_id', [1, 5]);
             })
-            ->orWhereHas('invoicetrashed');
+            ->orWhereHas('invoice', function ($query) {
+                $query->whereNotNull('deleted_at');
+            });
     }
 
     public function scopeClientId($query, $clientId = null)
     {
-        if ($clientId)
-        {
+        if ($clientId) {
             $query->where('client_id', $clientId);
         }
 
@@ -396,8 +334,7 @@ class Document extends Model
 
     public function scopeCompanyProfileId($query, $companyProfileId)
     {
-        if ($companyProfileId)
-        {
+        if ($companyProfileId) {
             $query->where('company_profile_id', $companyProfileId);
         }
 
@@ -422,7 +359,7 @@ class Document extends Model
     public function scopeSentOrApproved($query)
     {
         return $query->where('document_status_id', '=', DocumentStatuses::getStatusId('sent'))
-                     ->orWhere('document_status_id', '=', DocumentStatuses::getStatusId('approved'));
+            ->orWhere('document_status_id', '=', DocumentStatuses::getStatusId('approved'));
     }
 
     public function scopeRejected($query)
@@ -444,17 +381,16 @@ class Document extends Model
     {
         $statusCodes = [];
 
-        foreach ($statuses as $status)
-        {
+        foreach ($statuses as $status) {
             $statusCodes[] = DocumentStatuses::getStatusId($status);
         }
 
         return $query->whereIn('document_status_id', $statusCodes);
     }
+
     public function scopeStatus($query, $status = null)
     {
-        switch ($status)
-        {
+        switch ($status) {
             case 'draft':
                 $query->draft();
                 break;
@@ -490,7 +426,7 @@ class Document extends Model
         return $query
             ->where('document_status_id', '=', DocumentStatuses::getStatusId('sent'))
             ->where('action_date', '<', date('Y-m-d'))
-            ->whereHas('amount', function ($q){
+            ->whereHas('amount', function ($q) {
                 $q->where('balance', '<>', 0);
             });
     }
@@ -515,16 +451,14 @@ class Document extends Model
 
     public function scopeKeywords($query, $keywords)
     {
-        if ($keywords)
-        {
+        if ($keywords) {
             $keywords = strtolower($keywords);
 
             $query->where(DB::raw('lower(number)'), 'like', '%' . $keywords . '%')
                 ->orWhere('documents.document_date', 'like', '%' . $keywords . '%')
                 ->orWhere('action_date', 'like', '%' . $keywords . '%')
                 ->orWhere('summary', 'like', '%' . $keywords . '%')
-                ->orWhereIn('client_id', function ($query) use ($keywords)
-                {
+                ->orWhereIn('client_id', function ($query) use ($keywords) {
                     $query->select('id')->from('clients')->where(DB::raw("CONCAT_WS('^',LOWER(name),LOWER(unique_name))"), 'like', '%' . $keywords . '%');
                 });
         }

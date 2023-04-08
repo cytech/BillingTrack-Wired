@@ -11,13 +11,16 @@
 
 namespace BT\Modules\TimeTracking\Controllers;
 
+use BT\Events\DocumentModified;
+use BT\Modules\Documents\Models\DocumentItem;
+use BT\Modules\Documents\Models\Invoice;
 use BT\Modules\TimeTracking\Models\TimeTrackingProject;
 use BT\Modules\TimeTracking\Models\TimeTrackingTask;
-use BT\Events\InvoiceModified;
+//use BT\Events\InvoiceModified;
 use BT\Http\Controllers\Controller;
 use BT\Modules\Groups\Models\Group;
-use BT\Modules\Invoices\Models\Invoice;
-use BT\Modules\Invoices\Models\InvoiceItem;
+//use BT\Modules\Invoices\Models\Invoice;
+//use BT\Modules\Invoices\Models\InvoiceItem;
 
 class TaskBillController extends Controller
 {
@@ -62,8 +65,8 @@ class TaskBillController extends Controller
         }
 
         foreach ($tasks as $task) {
-            InvoiceItem::create([
-                'invoice_id'    => $invoice->id,
+            DocumentItem::create([
+                'document_id'    => $invoice->id,
                 'name'          => trans('bt.hourly_charge'),
                 'description'   => $task->name,
                 'quantity'      => $task->hours,
@@ -77,8 +80,8 @@ class TaskBillController extends Controller
             $task->save();
         }
 
-        event(new InvoiceModified($invoice));
+        event(new DocumentModified($invoice));
 
-        return route('invoices.edit', [$invoice->id]);
+        return route('documents.edit', [$invoice->id]);
     }
 }

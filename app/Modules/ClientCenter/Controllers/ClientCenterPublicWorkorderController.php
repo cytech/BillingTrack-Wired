@@ -15,10 +15,10 @@ use BT\Events\WorkorderApproved;
 use BT\Events\WorkorderRejected;
 use BT\Events\WorkorderViewed;
 use BT\Http\Controllers\Controller;
-use BT\Modules\Workorders\Models\Workorder;
+use BT\Modules\Documents\Models\Workorder;
 use BT\Support\FileNames;
 use BT\Support\PDF\PDFFactory;
-use BT\Support\Statuses\WorkorderStatuses;
+use BT\Support\Statuses\DocumentStatuses;
 
 class ClientCenterPublicWorkorderController extends Controller
 {
@@ -32,7 +32,7 @@ class ClientCenterPublicWorkorderController extends Controller
 
         return view('client_center.workorders.public')
             ->with('workorder', $workorder)
-            ->with('statuses', WorkorderStatuses::statuses())
+            ->with('statuses', DocumentStatuses::statuses())
             ->with('urlKey', $urlKey)
             ->with('attachments', $workorder->clientAttachments);
     }
@@ -61,7 +61,7 @@ class ClientCenterPublicWorkorderController extends Controller
     {
         $workorder = Workorder::where('url_key', $urlKey)->first();
 
-        $workorder->workorder_status_id = WorkorderStatuses::getStatusId('approved');
+        $workorder->document_status_id = DocumentStatuses::getStatusId('approved');
 
         $workorder->save();
 
@@ -74,7 +74,7 @@ class ClientCenterPublicWorkorderController extends Controller
     {
         $workorder = Workorder::where('url_key', $urlKey)->first();
 
-        $workorder->workorder_status_id = WorkorderStatuses::getStatusId('rejected');
+        $workorder->document_status_id = DocumentStatuses::getStatusId('rejected');
 
         $workorder->save();
 

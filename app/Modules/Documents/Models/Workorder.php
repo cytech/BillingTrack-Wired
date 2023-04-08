@@ -12,39 +12,39 @@
 namespace BT\Modules\Documents\Models;
 
 use BT\Support\DateFormatter;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Parental\HasParent;
 
 class Workorder extends Document
 {
     use HasParent;
 
-    protected $casts = ['job_date' => 'datetime'];
-
-    public function getFormattedJobDateAttribute()
+    public function invoice()
     {
-        return DateFormatter::format($this->attributes['job_date']);
-
+        return $this->hasOne(Invoice::class, 'id', 'invoice_id')->withTrashed();
     }
 
-    public function getFormattedStartTimeAttribute()
+    public function formattedJobDate(): Attribute
     {
-        return DateFormatter::formattime($this->attributes['start_time']);
-
+        return new Attribute(get: fn() => DateFormatter::format($this->job_date));
     }
 
-    public function getFormattedEndTimeAttribute()
+    public function formattedStartTime(): Attribute
     {
-        return DateFormatter::formattime($this->attributes['end_time']);
-
+        return new Attribute(get: fn() => DateFormatter::formattime($this->start_time));
     }
 
-    public function getFormattedJobLengthAttribute()
+    public function formattedEndTime(): Attribute
     {
-        $datetime1 = new \DateTime($this->attributes['start_time']);
-        $datetime2 = new \DateTime($this->attributes['end_time']);
+        return new Attribute(get: fn() => DateFormatter::formattime($this->end_time));
+    }
+
+    public function formattedJobLength(): Attribute
+    {
+        $datetime1 = new \DateTime($this->start_time);
+        $datetime2 = new \DateTime($this->end_time);
         $interval = $datetime1->diff($datetime2);
-        return $interval->h+$interval->i/60;//return decimal hours
-
+        return new Attribute(get: fn() => $interval->h + $interval->i / 60);//return decimal hours
     }
 
 }

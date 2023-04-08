@@ -12,10 +12,13 @@
 namespace BT\Modules\Vendors\Models;
 
 use Askedio\SoftCascade\Traits\SoftCascadeTrait;
+use BT\Modules\Documents\Models\Document;
+use BT\Modules\Documents\Models\Purchaseorder;
 use BT\Modules\Expenses\Models\Expense;
-use BT\Modules\Purchaseorders\Models\Purchaseorder;
+//use BT\Modules\Purchaseorders\Models\Purchaseorder;
 use BT\Support\CurrencyFormatter;
-use BT\Support\Statuses\PurchaseorderStatuses;
+//use BT\Support\Statuses\PurchaseorderStatuses;
+use BT\Support\Statuses\DocumentStatuses;
 use Illuminate\Database\Eloquent\Model;
 use DB;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -57,7 +60,11 @@ class Vendor extends Model
 
     public static function inUse($id)
     {
-        if (Purchaseorder::where('vendor_id', $id)->count())
+//        if (Purchaseorder::where('vendor_id', $id)->count())
+//        {
+//            return true;
+//        }
+        if (Purchaseorder::where('client_id', $id)->count())
         {
             return true;
         }
@@ -115,7 +122,7 @@ class Vendor extends Model
     public function purchaseorders()
     {
 //        return $this->hasMany('BT\Modules\Purchaseorders\Models\Purchaseorder');
-        return $this->hasMany(\BT\Modules\Documents\Models\Purchaseorder::class);
+        return $this->hasMany(Purchaseorder::class, 'client_id');
     }
 
     /*
@@ -231,16 +238,30 @@ class Vendor extends Model
     |--------------------------------------------------------------------------
     */
 
+//    private function getBalanceSql()
+//    {
+//        return DB::table('purchaseorder_amounts')->select(DB::raw('sum(balance)'))->whereIn('purchaseorder_id', function ($q)
+//        {
+//            $q->select('id')
+//                ->from('purchaseorders')
+//                ->where('purchaseorders.vendor_id', '=', DB::raw(DB::getTablePrefix() . 'purchaseorders.id'))
+//                ->where('purchaseorders.purchaseorder_status_id', '<>', DB::raw(PurchaseorderStatuses::getStatusId('canceled')));
+//        })->toSql();
+//    }
+
     private function getBalanceSql()
     {
-        return DB::table('purchaseorder_amounts')->select(DB::raw('sum(balance)'))->whereIn('purchaseorder_id', function ($q)
+        return DB::table('document_amounts')->select(DB::raw('sum(balance)'))->whereIn('document_id', function ($q)
         {
             $q->select('id')
-                ->from('purchaseorders')
-                ->where('purchaseorders.vendor_id', '=', DB::raw(DB::getTablePrefix() . 'purchaseorders.id'))
-                ->where('purchaseorders.purchaseorder_status_id', '<>', DB::raw(PurchaseorderStatuses::getStatusId('canceled')));
+                ->from('documents')
+//                ->where('document_type', DOCUMENT_TYPE_INVOICE['modulefullname'])
+                ->where('documents.client_id', '=', DB::raw(DB::getTablePrefix() . 'vendors.id'))
+                ->where('documents.document_status_id', '<>', DB::raw(DocumentStatuses::getStatusId('canceled')))
+                ->whereNull('deleted_at');
         })->toSql();
     }
+
 //
 //    private function getPaidSql()
 //    {
@@ -250,14 +271,21 @@ class Vendor extends Model
 //        })->toSql();
 //    }
 //
+//    private function getTotalSql()
+//    {
+//        return DB::table('purchaseorder_amounts')->select(DB::raw('sum(total)'))->whereIn('purchaseorder_id', function ($q)
+//        {
+//            $q->select('id')->from('purchaseorders')->where('purchaseorders.vendor_id', '=', DB::raw(DB::getTablePrefix() . 'vendors.id'));
+//        })->toSql();
+//    }
+
     private function getTotalSql()
     {
-        return DB::table('purchaseorder_amounts')->select(DB::raw('sum(total)'))->whereIn('purchaseorder_id', function ($q)
+        return DB::table('document_amounts')->select(DB::raw('sum(total)'))->whereIn('document_id', function ($q)
         {
-            $q->select('id')->from('purchaseorders')->where('purchaseorders.vendor_id', '=', DB::raw(DB::getTablePrefix() . 'vendors.id'));
+            $q->select('id')->from('documents')->where('documents.client_id', '=', DB::raw(DB::getTablePrefix() . 'vendors.id'));
         })->toSql();
     }
-
 
     /*
     |--------------------------------------------------------------------------
@@ -265,11 +293,20 @@ class Vendor extends Model
     |--------------------------------------------------------------------------
     */
 
+//    public static function getList()
+//    {
+//        return self::whereIn('id', function ($query)
+//        {
+//            $query->select('vendor_id')->distinct()->from('expenses');
+//        })->orderBy('name')
+//            ->pluck('name', 'id')
+//            ->all();
+//    }
     public static function getList()
     {
         return self::whereIn('id', function ($query)
         {
-            $query->select('vendor_id')->distinct()->from('expenses');
+            $query->select('client_id')->distinct()->from('expenses');
         })->orderBy('name')
             ->pluck('name', 'id')
             ->all();

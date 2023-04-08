@@ -15,10 +15,10 @@ use BT\Events\QuoteApproved;
 use BT\Events\QuoteRejected;
 use BT\Events\QuoteViewed;
 use BT\Http\Controllers\Controller;
-use BT\Modules\Quotes\Models\Quote;
+use BT\Modules\Documents\Models\Quote;
 use BT\Support\FileNames;
 use BT\Support\PDF\PDFFactory;
-use BT\Support\Statuses\QuoteStatuses;
+use BT\Support\Statuses\DocumentStatuses;
 
 class ClientCenterPublicQuoteController extends Controller
 {
@@ -32,7 +32,7 @@ class ClientCenterPublicQuoteController extends Controller
 
         return view('client_center.quotes.public')
             ->with('quote', $quote)
-            ->with('statuses', QuoteStatuses::statuses())
+            ->with('statuses', DocumentStatuses::statuses())
             ->with('urlKey', $urlKey)
             ->with('attachments', $quote->clientAttachments);
     }
@@ -61,7 +61,7 @@ class ClientCenterPublicQuoteController extends Controller
     {
         $quote = Quote::where('url_key', $urlKey)->first();
 
-        $quote->quote_status_id = QuoteStatuses::getStatusId('approved');
+        $quote->document_status_id = DocumentStatuses::getStatusId('approved');
 
         $quote->save();
 
@@ -74,7 +74,7 @@ class ClientCenterPublicQuoteController extends Controller
     {
         $quote = Quote::where('url_key', $urlKey)->first();
 
-        $quote->quote_status_id = QuoteStatuses::getStatusId('rejected');
+        $quote->document_status_id = DocumentStatuses::getStatusId('rejected');
 
         $quote->save();
 

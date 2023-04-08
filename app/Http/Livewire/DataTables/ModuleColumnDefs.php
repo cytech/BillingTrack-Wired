@@ -60,9 +60,17 @@ class ModuleColumnDefs
                         ->format(function ($value, $row, Column $column) {
                             $ret = '';
                             if ($row->invoice_id)
-                                $ret .= '<a href="' . route('documents.edit', [$row->invoice_id]) . '">' . trans('bt.invoice') . '</a>';
+                                if ($row->invoice->trashed()){
+                                    $ret .= ' <span class="badge bg-danger" title="Trashed">' . trans('bt.invoice') ;
+                                }else {
+                                    $ret .= '<a href="' . route('documents.edit', [$row->invoice_id]) . '">' . trans('bt.invoice') . '</a>';
+                                }
                             elseif ($row->workorder_id)
-                                $ret .= '<a href="' . route('documents.edit', [$row->workorder_id]) . '">' . trans('bt.workorder') . '</a>';
+                                if ($row->workorder->trashed()){
+                                    $ret .= ' <span class="badge bg-danger" title="Trashed">' . trans('bt.workorder') ;
+                                }else {
+                                    $ret .= '<a href="' . route('documents.edit', [$row->workorder_id]) . '">' . trans('bt.workorder') . '</a>';
+                                }
                             else
                                 $ret .= trans('bt.no');
                             return $ret;
@@ -212,7 +220,7 @@ class ModuleColumnDefs
                         $ret = $row->formatted_amount;
                         if ($row->is_billable)
                             if ($row->has_been_billed)
-                                $ret .= '<br><a href="' . route('invoices.edit', [$row->invoice_id]) . '"><span class="badge bg-success">' . trans('bt.billed') . '</span></a>';
+                                $ret .= '<br><a href="' . route('documents.edit', [$row->invoice_id]) . '"><span class="badge bg-success">' . trans('bt.billed') . '</span></a>';
                             else
                                 $ret .= '<br><span class="badge bg-danger">' . trans('bt.not_billed') . '</span>';
                         else

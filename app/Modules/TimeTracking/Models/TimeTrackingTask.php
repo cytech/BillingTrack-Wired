@@ -12,6 +12,7 @@
 namespace BT\Modules\TimeTracking\Models;
 
 use Askedio\SoftCascade\Traits\SoftCascadeTrait;
+use BT\Modules\Documents\Models\Invoice;
 use BT\Support\NumberFormatter;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -39,22 +40,22 @@ class TimeTrackingTask extends Model
 
     public function activeTimer()
     {
-        return $this->hasOne('BT\Modules\TimeTracking\Models\TimeTrackingTimer')->where('time_tracking_timers.end_at', null);
+        return $this->hasOne(TimeTrackingTimer::class)->where('time_tracking_timers.end_at', null);
     }
 
     public function invoice()
     {
-        return $this->belongsTo('BT\Modules\Invoices\Models\Invoice');
+        return $this->belongsTo(Invoice::class);
     }
 
     public function project()
     {
-        return $this->belongsTo('BT\Modules\TimeTracking\Models\TimeTrackingProject', 'time_tracking_project_id');
+        return $this->belongsTo(TimeTrackingProject::class, 'time_tracking_project_id');
     }
 
     public function timers()
     {
-        return $this->hasMany('BT\Modules\TimeTracking\Models\TimeTrackingTimer');
+        return $this->hasMany(TimeTrackingTimer::class);
     }
 
     /*

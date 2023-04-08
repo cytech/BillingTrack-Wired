@@ -133,10 +133,13 @@
                             </div>
                             <div id="tab-purchaseorders" class="tab-pane">
                                 <div class="card">
-                                    @include('purchaseorders._table')
-                                    <div class="card-footer"><p class="text-center"><strong><a
-                                                        href="{{ route('purchaseorders.index') }}?vendor={{ $vendor->id }}">@lang('bt.view_all')</a></strong>
-                                        </p></div>
+{{--                                    @include('purchaseorders._table')--}}
+{{--                                    <div class="card-footer"><p class="text-center"><strong><a--}}
+{{--                                                        href="{{ route('purchaseorders.index') }}?vendor={{ $vendor->id }}">@lang('bt.view_all')</a></strong>--}}
+{{--                                        </p></div>--}}
+                                    <div class="card-body">
+                                        <livewire:data-tables.module-table :module_type="'Purchaseorder'" :clientid="$vendor->id"/>
+                                    </div>
                                 </div>
                             </div>
                             <div class="tab-pane" id="tab-attachments">

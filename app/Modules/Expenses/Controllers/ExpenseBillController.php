@@ -11,11 +11,13 @@
 
 namespace BT\Modules\Expenses\Controllers;
 
-use BT\Events\InvoiceModified;
+use BT\Events\DocumentModified;
+//use BT\Events\InvoiceModified;
 use BT\Http\Controllers\Controller;
+use BT\Modules\Documents\Models\DocumentItem;
 use BT\Modules\Expenses\Models\Expense;
 use BT\Modules\Expenses\Requests\ExpenseBillRequest;
-use BT\Modules\Invoices\Models\InvoiceItem;
+//use BT\Modules\Invoices\Models\InvoiceItem;
 
 class ExpenseBillController extends Controller
 {
@@ -50,15 +52,15 @@ class ExpenseBillController extends Controller
 
         if (request('add_line_item')) {
             $item = [
-                'invoice_id'  => request('invoice_id'),
+                'document_id'  => request('invoice_id'),
                 'name'        => request('item_name'),
                 'description' => request('item_description'),
                 'quantity'    => 1,
                 'price'       => $expense->amount,
             ];
 
-            InvoiceItem::create($item);
-            event(new InvoiceModified($expense->invoice));
+            DocumentItem::create($item);
+            event(new DocumentModified($expense->invoice));
 
         }
     }

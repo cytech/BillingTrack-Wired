@@ -17,4 +17,13 @@ class Quote extends Document
 {
     use HasParent;
 
+    public function invoice()
+    {
+        return $this->hasOne(Invoice::class, 'id', 'invoice_id')->withTrashed();
+    }
+
+    public function workorder()
+    {
+        return $this->hasOne(Workorder::class, 'id', 'workorder_id')->withTrashed();
+    }
 }

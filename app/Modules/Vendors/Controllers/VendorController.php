@@ -75,11 +75,7 @@ class VendorController extends Controller
     {
         $vendor = Vendor::getSelect()->find($vendorId);
 
-        $purchaseorders = $vendor->purchaseorders()
-            ->with(['vendor', 'activities', 'amount.purchaseorder.currency'])
-            ->orderBy('created_at', 'desc')
-            ->orderBy('id', 'desc')
-            ->take(config('bt.resultsPerPage'))->get();
+        $purchaseorders = $vendor->purchaseorders()->with(['vendor', 'activities', 'amount.purchaseorder.currency'])->orderBy('created_at', 'desc')->orderBy('id', 'desc')->take(config('bt.resultsPerPage'))->get();
 
 
         return view('vendors.view')

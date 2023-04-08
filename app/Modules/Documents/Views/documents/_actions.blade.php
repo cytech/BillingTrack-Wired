@@ -16,12 +16,14 @@
                data-redirect-to="{{ request()->fullUrl() }}"><i
                         class="fa fa-envelope"></i> @lang('bt.email')</a>
         @endif
-{{--        <a class="dropdown-item" href="{{ route('clientCenter.public.document.show', [$model->url_key]) }}"--}}
-{{--           target="_blank" id="btn-public-document"><i--}}
-{{--                    class="fa fa-globe"></i> @lang('bt.public')</a>--}}
-        <div class="dropdown-divider"></div>
-        <a class="dropdown-item" href="#"
-           onclick="swalConfirm('@lang('bt.trash_record_warning')', '', '{{ route('documents.delete', [$model->id]) }}');"><i
-                    class="fa fa-trash-alt text-danger"></i> @lang('bt.trash')</a>
-    </div>
+@if($model->moduletype() != 'Purchaseorder')
+<a class="dropdown-item" href="{{ route('clientCenter.public.' . $model->lower_case_baseclass .'.show', [$model->url_key]) }}"
+   target="_blank" id="btn-public-document"><i
+            class="fa fa-globe"></i> @lang('bt.public')</a>
+<div class="dropdown-divider"></div>
+        @endif
+<a class="dropdown-item" href="#"
+   onclick="swalConfirm('@lang('bt.trash_record_warning')', '', '{{ route('documents.delete', [$model->id]) }}');"><i
+            class="fa fa-trash-alt text-danger"></i> @lang('bt.trash')</a>
+</div>
 </div>

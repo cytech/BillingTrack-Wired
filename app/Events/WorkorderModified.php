@@ -2,7 +2,7 @@
 
 namespace BT\Events;
 
-use BT\Modules\Workorders\Models\Workorder;
+use BT\Modules\Documents\Models\Workorder;
 
 use Illuminate\Queue\SerializesModels;
 

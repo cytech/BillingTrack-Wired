@@ -2,7 +2,7 @@
 
 namespace BT\Events;
 
-use BT\Modules\Purchaseorders\Models\Purchaseorder;
+use BT\Modules\Documents\Models\Purchaseorder;
 use Illuminate\Queue\SerializesModels;
 
 class PurchaseorderModified extends Event

@@ -173,15 +173,16 @@ class CreateModuleModal extends Component
                 $swaldata['text'] = $swaldatatext;
             }
             switch ($this->moduletype) {
-                case 'Purchaseorder':
-                    $createfields = [
-                        'purchaseorder_date' => $this->module_date,
-                        'user_id'            => $this->user_id,
-                        'vendor_id'          => $this->resource_id,
-                        'group_id'           => $this->group_id,
-                        'company_profile_id' => $this->company_profile_id
-                    ];
-                    break;
+//                case 'Purchaseorder':
+//                    $createfields = [
+//                        'purchaseorder_date' => $this->module_date,
+//                        'user_id'            => $this->user_id,
+//                        'vendor_id'          => $this->resource_id,
+//                        'group_id'           => $this->group_id,
+//                        'company_profile_id' => $this->company_profile_id
+//                    ];
+//                    $modulemodeventfullname = 'BT\\Events\\DocumentModified';
+//                    break;
                 case 'RecurringInvoice':
                     $createfields = [
                         'user_id'             => $this->user_id,
@@ -193,10 +194,11 @@ class CreateModuleModal extends Component
                         'recurring_frequency' => $this->recurring_frequency,
                         'recurring_period'    => $this->recurring_period,
                     ];
+                    $modulemodeventfullname = 'BT\\Events\\RecurringInvoiceModified';
                     break;
                 default: //Quote, Workorder, Invoice, Document
                     $createfields = [
-                        'document_type' => constant('DOCUMENT_TYPE_'.strtoupper($this->moduletype))['document_type'],
+//                        'document_type' => constant('DOCUMENT_TYPE_'.strtoupper($this->moduletype))['document_type'],
 //                        lcfirst($this->moduletype) . '_date' => $this->module_date,
                         'document_date' => $this->module_date,
                         'user_id'                            => $this->user_id,
@@ -204,6 +206,8 @@ class CreateModuleModal extends Component
                         'group_id'                           => $this->group_id,
                         'company_profile_id'                 => $this->company_profile_id
                     ];
+                    $modulemodeventfullname = 'BT\\Events\\DocumentModified';
+
             }
 
             $this->validate();
@@ -227,10 +231,11 @@ class CreateModuleModal extends Component
                     'resource_id'                                  => $this->lineitem->id,
                     'display_order'                                => 1,
                 ]);
-                $modulemodeventfullname = 'BT\\Events\\' . $this->moduletype . 'Modified';
-                event(new $modulemodeventfullname($module));
-            }
 
+            }
+//            $modulemodeventfullname = 'BT\\Events\\' . $this->moduletype . 'Modified';
+//            $modulemodeventfullname = 'BT\\Events\\DocumentModified';
+            event(new $modulemodeventfullname($module));
             // Close Modal After Logic
             $this->emit('hideModal');
 
@@ -262,7 +267,8 @@ class CreateModuleModal extends Component
         switch ($this->moduletype) {
             case 'Purchaseorder':
                 $fromModule = $this->modulefullname::find($this->module_id);
-                $modulemodeventfullname = 'BT\\Events\\' . $this->moduletype . 'Modified';
+//                $modulemodeventfullname = 'BT\\Events\\' . $this->moduletype . 'Modified';
+                $modulemodeventfullname = 'BT\\Events\\DocumentModified';
                 $createfields = [
                     lcfirst($this->moduletype) . '_date' => $this->module_date,
                     'user_id'                            => $this->user_id,

@@ -42,7 +42,7 @@
                 <button class="btn btn-sm"
                         type="button"
                         {{--                   params 3 thru ... mount(,,$modulefullname, $moduleop, $resource_id = null, $module_id = null, $readonly = null)--}}
-                        onclick="window.livewire.emit('showModal', 'modals.create-module-modal',  'BT\\Modules\\Documents\\Models\\Document', 'Invoice', 'create' )"
+                        onclick="window.livewire.emit('showModal', 'modals.create-module-modal',  'BT\\Modules\\Documents\\Models\\Invoice', 'Invoice', 'create' )"
                 ><i class="fa fa-plus"></i> @lang('bt.create_invoice')
                 </button>
             </div>

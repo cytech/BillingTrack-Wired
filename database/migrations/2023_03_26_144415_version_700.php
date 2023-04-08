@@ -36,6 +36,30 @@ return new class extends Migration
                 ->onUpdate('restrict');
         });
 
+        Schema::table('purchaseorders_custom', function (Blueprint $table) {
+            $table->dropForeign('purchaseorders_custom_purchaseorder_id');
+            $table->foreign('purchaseorder_id', 'purchaseorders_custom_purchaseorder_id')
+                ->references('id')->on('documents')
+                ->onDelete('cascade')
+                ->onUpdate('restrict');
+        });
+
+        Schema::table('expenses', function (Blueprint $table) {
+            $table->dropForeign('fk_expenses_invoices1_idx');
+            $table->foreign('invoice_id', 'fk_expenses_invoices1_idx')
+                ->references('id')->on('documents')
+                ->onDelete('cascade')
+                ->onUpdate('restrict');
+        });
+
+        Schema::table('time_tracking_tasks', function (Blueprint $table) {
+            $table->dropForeign('time_tracking_tasks_invoice_id_index');
+            $table->foreign('invoice_id', 'time_tracking_tasks_invoice_id_index')
+                ->references('id')->on('documents')
+                ->onDelete('cascade')
+                ->onUpdate('restrict');
+        });
+
         Setting::saveByKey('version', '7.0.0');
 
     }
