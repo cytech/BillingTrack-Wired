@@ -42,4 +42,10 @@ class Invoice extends Document
 
         return 0;
     }
+
+    //scopes
+    public function scopePaid($query)
+    {
+        return $query->where('document_status_id', '=', DocumentStatuses::getStatusId('paid'));
+    }
 }

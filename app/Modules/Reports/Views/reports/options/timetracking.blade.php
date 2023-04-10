@@ -66,7 +66,7 @@
                 </div>
                 <div class="row mb-3">
                     <div class="col-md-3">
-                        <label class="form-label fw-bold">@lang('bt.date_range'):</label>
+                        <label class="form-label fw-bold">@lang('bt.date_range') (@lang('bt.due_date')):</label>
                         {!! Form::hidden('from_date', null, ['id' => 'from_date']) !!}
                         {!! Form::hidden('to_date', null, ['id' => 'to_date']) !!}
                         <div class="input-group">

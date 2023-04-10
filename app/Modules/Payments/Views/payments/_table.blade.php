@@ -15,7 +15,7 @@
     @foreach ($payments as $payment)
         <tr>
             <td>{{ $payment->formatted_paid_at }}</td>
-            <td><a href="{{ route('invoices.edit', [$payment->invoice_id]) }}">{{ $payment->invoice->number }}</a></td>
+            <td><a href="{{ route('documents.edit', [$payment->invoice_id]) }}">{{ $payment->invoice->number }}</a></td>
             <td>{{ $payment->invoice->formatted_created_at }}</td>
             <td>{{ $payment->invoice->summary }}</td>
             <td>{{ $payment->formatted_amount }}</td>
@@ -29,7 +29,7 @@
                     <div class="dropdown-menu dropdown-menu-end" role="menu">
                         <a class="dropdown-item" href="{{ route('payments.edit', [$payment->id]) }}"><i
                                     class="fa fa-edit"></i> @lang('bt.edit')</a>
-                        <a class="dropdown-item" href="{{ route('invoices.pdf', [$payment->invoice->id]) }}"
+                        <a class="dropdown-item" href="{{ route('documents.pdf', [$payment->invoice->id]) }}"
                            target="_blank" id="btn-pdf-invoice"><i class="fa fa-print"></i> @lang('bt.invoice')</a>
                         @if (config('bt.mailConfigured'))
                             <a href="javascript:void(0)" class="email-payment-receipt dropdown-item"

@@ -43,9 +43,9 @@ class ClientStatementReport
         $invoices = $client->invoices()
             ->with('items', 'client.currency', 'amount.invoice.currency')
             ->notCanceled()
-            ->where('invoice_date', '>=', $fromDate)
-            ->where('invoice_date', '<=', $toDate)
-            ->orderBy('invoice_date');
+            ->where('document_date', '>=', $fromDate)
+            ->where('document_date', '<=', $toDate)
+            ->orderBy('document_date');
 
         if ($companyProfileId)
         {
@@ -73,7 +73,7 @@ class ClientStatementReport
         foreach ($invoices as $invoice)
         {
             $results['records'][] = [
-                'formatted_invoice_date' => $invoice->formatted_invoice_date,
+                'formatted_document_date' => $invoice->formatted_document_date,
                 'number'                 => $invoice->number,
                 'summary'                => $invoice->summary,
                 'subtotal'               => $invoice->amount->subtotal,

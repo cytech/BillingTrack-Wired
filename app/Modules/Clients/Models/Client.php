@@ -17,7 +17,6 @@ use BT\Modules\Documents\Models\Quote;
 use BT\Modules\Documents\Models\Workorder;
 use BT\Support\CurrencyFormatter;
 use BT\Support\DateFormatter;
-//use BT\Support\Statuses\InvoiceStatuses;
 use BT\Support\Statuses\DocumentStatuses;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -29,8 +28,8 @@ class Client extends Model
     use SoftDeletes;
     use SoftCascadeTrait;
 
-    protected $softCascade = ['contacts', 'custom', 'invoices', 'workorders', 'quotes',  'projects','recurringInvoices',
-                            'merchant', 'attachments', 'notes'];
+    protected $softCascade = ['contacts', 'custom', 'invoices', 'workorders', 'quotes', 'projects', 'recurringInvoices',
+        'merchant', 'attachments', 'notes'];
 
     protected $casts = ['deleted_at' => 'datetime'];
 
@@ -70,8 +69,7 @@ class Client extends Model
             'id' => $id,
         ]);
 
-        if (!$client->id)
-        {
+        if (!$client->id) {
             $client->name = $name;
             $client->unique_name = self::generateUniqueName($name);
             $client->save();
@@ -81,9 +79,10 @@ class Client extends Model
         return $client;
     }
 
-    public static function generateUniqueName($name){
+    public static function generateUniqueName($name)
+    {
         return substr($name, 0, 10) . '_' .
-            substr(base_convert(mt_rand(),10,36),0,5);
+            substr(base_convert(mt_rand(), 10, 36), 0, 5);
     }
 
     /*
@@ -119,7 +118,6 @@ class Client extends Model
 
     public function invoices()
     {
-//        return $this->hasMany('BT\Modules\Invoices\Models\Invoice');
         return $this->hasMany(Invoice::class);
     }
 
@@ -150,13 +148,11 @@ class Client extends Model
 
     public function quotes()
     {
-//        return $this->hasMany('BT\Modules\Quotes\Models\Quote');
         return $this->hasMany(Quote::class);
     }
 
     public function workorders()
     {
-//        return $this->hasMany('BT\Modules\Workorders\Models\Workorder');
         return $this->hasMany(Workorder::class);
     }
 
@@ -192,15 +188,19 @@ class Client extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function getFormattedCreatedatAttribute(){
+    public function getFormattedCreatedatAttribute()
+    {
         return DateFormatter::format($this->attributes['created_at']);
     }
-    public function getUniqueNamePrefixAttribute(){
-        return substr($this->attributes['unique_name'],0, strpos($this->attributes['unique_name'], "_") +1);
+
+    public function getUniqueNamePrefixAttribute()
+    {
+        return substr($this->attributes['unique_name'], 0, strpos($this->attributes['unique_name'], "_") + 1);
     }
 
-    public function getUniqueNameSuffixAttribute(){
-        return substr($this->attributes['unique_name'],strpos($this->attributes['unique_name'], "_") + 1) ;
+    public function getUniqueNameSuffixAttribute()
+    {
+        return substr($this->attributes['unique_name'], strpos($this->attributes['unique_name'], "_") + 1);
     }
 
     public function getAttachmentPathAttribute()
@@ -269,20 +269,13 @@ class Client extends Model
 
     public function scopeStatus($query, $status)
     {
-        if ($status == 'active')
-        {
+        if ($status == 'active') {
             $query->where('active', 1);
-        }
-        elseif ($status == 'inactive')
-        {
+        } elseif ($status == 'inactive') {
             $query->where('active', 0);
-        }
-        elseif ($status == 'company')
-        {
+        } elseif ($status == 'company') {
             $query->where('is_company', 1);
-        }
-        elseif ($status == 'individual')
-        {
+        } elseif ($status == 'individual') {
             $query->where('is_company', 0);
         }
 
@@ -291,14 +284,11 @@ class Client extends Model
 
     public function scopeKeywords($query, $keywords)
     {
-        if ($keywords)
-        {
+        if ($keywords) {
             $keywords = explode(' ', $keywords);
 
-            foreach ($keywords as $keyword)
-            {
-                if ($keyword)
-                {
+            foreach ($keywords as $keyword) {
+                if ($keyword) {
                     $keyword = strtolower($keyword);
 
                     $query->where(DB::raw("CONCAT_WS('^',LOWER(name),LOWER(unique_name),LOWER(email),phone,fax,mobile)"), 'LIKE', "%$keyword%");
@@ -317,11 +307,9 @@ class Client extends Model
 
     private function getBalanceSql()
     {
-        return DB::table('document_amounts')->select(DB::raw('sum(balance)'))->whereIn('document_id', function ($q)
-        {
+        return DB::table('document_amounts')->select(DB::raw('sum(balance)'))->whereIn('document_id', function ($q) {
             $q->select('id')
                 ->from('documents')
-//                ->where('document_type', DOCUMENT_TYPE_INVOICE['modulefullname'])
                 ->where('documents.client_id', '=', DB::raw(DB::getTablePrefix() . 'clients.id'))
                 ->where('documents.document_status_id', '<>', DB::raw(DocumentStatuses::getStatusId('canceled')))
                 ->whereNull('deleted_at');
@@ -330,17 +318,18 @@ class Client extends Model
 
     private function getPaidSql()
     {
-        return DB::table('invoice_amounts')->select(DB::raw('sum(paid)'))->whereIn('invoice_id', function ($q)
-        {
-            $q->select('id')->from('invoices')->where('invoices.client_id', '=', DB::raw(DB::getTablePrefix() . 'clients.id'));
+        return DB::table('document_amounts')->select(DB::raw('sum(paid)'))->whereIn('document_id', function ($q) {
+            $q->select('id')->from('documents')->where('documents.client_id', '=', DB::raw(DB::getTablePrefix() . 'clients.id'));
         })->toSql();
     }
 
     private function getTotalSql()
     {
-        return DB::table('invoice_amounts')->select(DB::raw('sum(total)'))->whereIn('invoice_id', function ($q)
-        {
-            $q->select('id')->from('invoices')->where('invoices.client_id', '=', DB::raw(DB::getTablePrefix() . 'clients.id'));
+        //restrict total (billed) to invoices
+        return DB::table('document_amounts')->select(DB::raw('sum(total)'))->whereIn('document_id', function ($q) {
+            $q->select('id')->from('documents')
+                ->where('documents.client_id', '=', DB::raw(DB::getTablePrefix() . 'clients.id'))
+                ->where('documents.document_type', '=', DB::raw('"' . addslashes(Invoice::class) . '"'));
         })->toSql();
     }
 }

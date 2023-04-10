@@ -12,7 +12,7 @@
             </div>
         </div>
 {{--        @if(class_basename($module) == 'Purchaseorder')--}}
-        @if($module->moduletype() == 'Purchaseorder')
+        @if($module->module_type == 'Purchaseorder')
             <div class="modal-header pt-2 pb-1">
                 <label>
                     <input wire:model="pref_vendor" type="checkbox" checked name="pref_vendor"
@@ -59,7 +59,7 @@
                                     title="@lang('bt.trackable')" @endif>{!!  \BT\Support\NumberFormatter::format($resource->numstock,null,2) ?? 0 !!}
                             @endif
 {{--                            @if(class_basename($module) == 'Purchaseorder')--}}
-                            @if($module->moduletype() == 'Purchaseorder')
+                            @if($module->module_type == 'Purchaseorder')
                                 <td>{!!  $resource->formatted_cost  !!}</td>
                             @else
                                 <td>{!!  $resource->formatted_price ?? $resource->formatted_billing_rate !!}</td>

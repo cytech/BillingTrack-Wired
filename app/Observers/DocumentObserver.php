@@ -33,7 +33,7 @@ class DocumentObserver
 
         // Create the custom document record.
         //$document->custom()->save(new DocumentCustom()); todo
-        $customclass = 'BT\\Modules\\CustomFields\\Models\\' . $document->moduletype() . 'Custom';
+        $customclass = 'BT\\Modules\\CustomFields\\Models\\' . $document->module_type . 'Custom';
         $document->custom()->save(new $customclass());
     }
 
@@ -62,7 +62,7 @@ class DocumentObserver
 
         if (!$document->action_date)
         {
-            if ($document->moduletype() == 'Invoice' || $document->moduletype() == 'Purchaseorder') {
+            if ($document->module_type == 'Invoice' || $document->module_type == 'Purchaseorder') {
                 $document->action_date = DateFormatter::incrementDateByDays($document->document_date->format('Y-m-d'), config('bt.'.$document->lower_case_baseclass.'sDueAfter', 10));
             } else{
                 $document->action_date = DateFormatter::incrementDateByDays($document->document_date->format('Y-m-d'), config('bt.'.$document->lower_case_baseclass.'sExpireAfter', 10));

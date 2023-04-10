@@ -56,7 +56,7 @@
                             <p>@lang('bt.draft_invoices')</p>
                         </div>
                         <div class="small-box-faicon"><i class="fa fa-pencil-alt"></i></div>
-                        <a class="small-box-footer" href="{{ route('documents.index', ['status' => 'draft', 'module_type' => DOCUMENT_TYPE_INVOICE['document_type']]) }}">
+                        <a class="small-box-footer" href="{{ route('documents.index', ['status' => 'draft', 'module_type' => 'Invoice']) }}">
                             @lang('bt.view_draft_invoices') <i class="fa fa-arrow-circle-right"></i>
                         </a>
                     </div>
@@ -68,7 +68,7 @@
                             <p>@lang('bt.sent_invoices')</p>
                         </div>
                         <div class="small-box-faicon"><i class="fa fa-share-square"></i></div>
-                        <a class="small-box-footer" href="{{ route('documents.index', ['status' => 'sent', 'module_type' => DOCUMENT_TYPE_INVOICE['document_type']]) }}">
+                        <a class="small-box-footer" href="{{ route('documents.index', ['status' => 'sent', 'module_type' => 'Invoice']) }}">
                             @lang('bt.view_sent_invoices') <i class="fa fa-arrow-circle-right"></i>
                         </a>
                     </div>
@@ -80,7 +80,7 @@
                             <p>@lang('bt.overdue_invoices')</p>
                         </div>
                         <div class="small-box-faicon"><i class="fa fa-exclamation"></i></div>
-                        <a class="small-box-footer" href="{{ route('documents.index', ['status' => 'overdue', 'module_type' => DOCUMENT_TYPE_INVOICE['document_type']]) }}">
+                        <a class="small-box-footer" href="{{ route('documents.index', ['status' => 'overdue', 'module_type' => 'Invoice']) }}">
                             @lang('bt.view_overdue_invoices') <i class="fa fa-arrow-circle-right"></i>
                         </a>
                     </div>

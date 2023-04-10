@@ -59,7 +59,7 @@
                 <tr>
                     <td>{{ $result['number'] }}</td>
                     <td>{{ $result['client_name'] }}</td>
-                    <td>{{ $result['formatted_invoice_date'] }}</td>
+                    <td>{{ $result['formatted_document_date'] }}</td>
                     <td>{{ $result['item_name'] }}</td>
                     <td>{{ $result['item_qty'] }}</td>
                     <td>{{ $result['full_name'] }}</td>

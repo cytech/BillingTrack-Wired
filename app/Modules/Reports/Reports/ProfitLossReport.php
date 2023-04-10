@@ -30,12 +30,12 @@ class ProfitLossReport
         ];
 
         $payments = Payment::select('payments.*')
-            ->join('invoices', 'invoices.id', '=', 'payments.invoice_id')
+            ->join('documents', 'documents.id', '=', 'payments.invoice_id')
             ->with('invoice');
 
         if ($includeProfitBasedOn == 'invoice_date')
         {
-            $payments->where('invoices.invoice_date', '>=', $fromDate)->where('invoices.invoice_date', '<=', $toDate);
+            $payments->where('documents.document_date', '>=', $fromDate)->where('documents.document_date', '<=', $toDate);
         }
         elseif ($includeProfitBasedOn == 'payment_date')
         {
@@ -44,7 +44,7 @@ class ProfitLossReport
 
         if ($companyProfileId)
         {
-            $payments->where('invoices.company_profile_id', $companyProfileId);
+            $payments->where('documents.company_profile_id', $companyProfileId);
         }
 
         $payments = $payments->get();

@@ -5,8 +5,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -59,6 +58,18 @@ return new class extends Migration
                 ->onDelete('cascade')
                 ->onUpdate('restrict');
         });
+
+        Schema::disableForeignKeyConstraints();
+        //delete obsolete tables
+        $droptables = ['invoices', 'invoice_amounts', 'invoice_items', 'invoice_item_amounts',
+            'quotes', 'quote_amounts', 'quote_items', 'quote_item_amounts',
+            'workorders', 'workorder_amounts', 'workorder_items', 'workorder_item_amounts',
+            'purchaseorders', 'purchaseorder_amounts', 'purchaseorder_items', 'purchaseorder_item_amounts'];
+
+        foreach ($droptables as $droptable) {
+            Schema::dropIfExists($droptable);
+        }
+        Schema::enableForeignKeyConstraints();
 
         Setting::saveByKey('version', '7.0.0');
 

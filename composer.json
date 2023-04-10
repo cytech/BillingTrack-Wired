@@ -46,10 +46,7 @@
             "BT\\": "app/",
             "Addons\\": "custom/addons/",
             "Database\\Seeders\\": "database/seeders/"
-        },
-        "files": [
-            "app/BTConstants.php"
-        ]
+        }
     },
     "autoload-dev": {
         "psr-4": {

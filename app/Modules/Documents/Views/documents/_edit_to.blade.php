@@ -3,7 +3,7 @@
     <div class="card-header">
         <h3 class="card-title">@lang('bt.to')</h3>
         <div class="card-tools float-end">
-            @if($document->moduletype() != 'Purchaseorder')
+            @if($document->module_type != 'Purchaseorder')
 
                 <button class="btn btn-secondary btn-sm"
                         {{--                                     params 3 thru ...> mount(,,$modulefullname, $module_id = null, $search_type)--}}
@@ -24,7 +24,7 @@
             @endif
         </div>
     </div>
-    @if($document->moduletype() != 'Purchaseorder')
+    @if($document->module_type != 'Purchaseorder')
         <div class="card-body">
             <strong>{{ $document->client->name }}</strong><br>
             {!! $document->client->formatted_address !!}<br>

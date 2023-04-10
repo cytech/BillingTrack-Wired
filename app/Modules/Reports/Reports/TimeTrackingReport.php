@@ -48,8 +48,8 @@ class TimeTrackingReport
         $projects = TimeTrackingProject::with('client')
             ->companyProfileId($companyProfileId)
             ->statusId($statusId)
-            ->whereBetween('created_at', [$fromDate, $toDate])
-            ->orderBy('created_at')
+            ->whereBetween('due_at', [$fromDate, $toDate])
+            ->orderBy('due_at')
             ->get();
 
         foreach ($projects as $project)

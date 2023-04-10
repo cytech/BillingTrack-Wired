@@ -28,12 +28,12 @@ class PaymentsCollectedReport
 
         $payments = Payment::select('payments.*')
             ->with(['invoice.client', 'paymentMethod'])
-            ->join('invoices', 'invoices.id', '=', 'payments.invoice_id')
+            ->join('documents', 'documents.id', '=', 'payments.invoice_id')
             ->dateRange($fromDate, $toDate);
 
         if ($companyProfileId)
         {
-            $payments->where('invoices.company_profile_id', $companyProfileId);
+            $payments->where('documents.company_profile_id', $companyProfileId);
         }
 
         $payments = $payments->get();

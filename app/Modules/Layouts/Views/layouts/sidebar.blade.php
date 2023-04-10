@@ -18,10 +18,8 @@
                 @if(\BT\Modules\Settings\Models\Setting::isModuleEnabled('quote'))
                     <li class="nav-item">
                         <a class="nav-link"
-{{--                           href="{{ route('quotes.index', ['status' => config('bt.quoteStatusFilter')]) }}">--}}
-                                href="{{ route('documents.index', ['status' => config('bt.quoteStatusFilter'), 'module_type' => DOCUMENT_TYPE_QUOTE['document_type']]) }}">
-
-                        <i class="nav-icon far fa-file-alt fa-fw"></i>
+                           href="{{ route('documents.index', ['status' => config('bt.quoteStatusFilter'), 'module_type' => 'Quote']) }}">
+                            <i class="nav-icon far fa-file-alt fa-fw"></i>
                             <p>@lang('bt.quotes')</p>
                         </a>
                     </li>
@@ -29,20 +27,16 @@
                 @if(\BT\Modules\Settings\Models\Setting::isModuleEnabled('workorder'))
                     <li class="nav-item">
                         <a class="nav-link"
-{{--                           href="{{ route('workorders.index', ['status' => config('bt.workorderStatusFilter')]) }}">--}}
-                            href="{{ route('documents.index', ['status' => config('bt.quoteStatusFilter'), 'module_type' => DOCUMENT_TYPE_WORKORDER['document_type']]) }}">
-
-                        <i class="nav-icon far fa-file-alt fa-fw"></i>
+                           href="{{ route('documents.index', ['status' => config('bt.quoteStatusFilter'), 'module_type' => 'Workorder']) }}">
+                            <i class="nav-icon far fa-file-alt fa-fw"></i>
                             <p>@lang('bt.workorders')</p>
                         </a>
                     </li>
                 @endif
                 <li class="nav-item">
                     <a class="nav-link"
-{{--                       href="{{ route('invoices.index', ['status' => config('bt.invoiceStatusFilter')]) }}">--}}
-                        href="{{ route('documents.index', ['status' => config('bt.quoteStatusFilter'), 'module_type' => DOCUMENT_TYPE_INVOICE['document_type']]) }}">
-
-                    <i class="nav-icon fas fa-file-alt fa-fw"></i>
+                       href="{{ route('documents.index', ['status' => config('bt.quoteStatusFilter'), 'module_type' => 'Invoice']) }}">
+                        <i class="nav-icon fas fa-file-alt fa-fw"></i>
                         <p>@lang('bt.invoices')</p>
                     </a>
                 </li>
@@ -57,8 +51,7 @@
                 @if(\BT\Modules\Settings\Models\Setting::isModuleEnabled('purchaseorder'))
                     <li class="nav-item">
                         <a class="nav-link"
-{{--                           href="{{ route('purchaseorders.index', ['status' => config('bt.purchaseorderStatusFilter')]) }}">--}}
-                            href="{{ route('documents.index', ['status' => config('bt.purchaseorderStatusFilter'), 'module_type' => DOCUMENT_TYPE_PURCHASEORDER['document_type']]) }}">
+                           href="{{ route('documents.index', ['status' => config('bt.purchaseorderStatusFilter'), 'module_type' => 'Purchaseorder']) }}">
                             <i class="nav-icon fas fa-file-alt fa-fw"></i>
                             <p>@lang('bt.purchaseorders')</p>
                         </a>

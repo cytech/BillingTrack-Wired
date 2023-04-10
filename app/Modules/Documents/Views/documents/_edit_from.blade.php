@@ -19,7 +19,7 @@
         </div>
     </div>
     <div class="col">
-        @if($document->moduletype() == 'Purchaseorder')
+        @if($document->module_type == 'Purchaseorder')
             <div class="card card-outline card-primary">
                 <div class="card-header">
                     <h3 class="card-title">@lang('bt.ship_to')</h3>

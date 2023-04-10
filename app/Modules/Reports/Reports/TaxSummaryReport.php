@@ -12,11 +12,11 @@
 namespace BT\Modules\Reports\Reports;
 
 use BT\Modules\Expenses\Models\Expense;
-use BT\Modules\Invoices\Models\Invoice;
+use BT\Modules\Documents\Models\Invoice;
 use BT\Support\CurrencyFormatter;
 use BT\Support\DateFormatter;
 use BT\Support\NumberFormatter;
-use BT\Support\Statuses\InvoiceStatuses;
+use BT\Support\Statuses\DocumentStatuses;
 
 class TaxSummaryReport
 {
@@ -32,9 +32,9 @@ class TaxSummaryReport
         ];
 
         $invoices = Invoice::with(['items.taxRate', 'items.taxRate2', 'items.amount'])
-            ->where('invoice_date', '>=', $fromDate)
-            ->where('invoice_date', '<=', $toDate)
-            ->where('invoice_status_id', '<>', InvoiceStatuses::getStatusId('canceled'));
+            ->where('document_date', '>=', $fromDate)
+            ->where('document_date', '<=', $toDate)
+            ->where('document_status_id', '<>', DocumentStatuses::getStatusId('canceled'));
 
         $expenseTax = (Expense::where('expense_date', '>=', $fromDate)
             ->where('expense_date', '<=', $toDate)

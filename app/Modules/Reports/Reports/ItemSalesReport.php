@@ -11,11 +11,11 @@
 
 namespace BT\Modules\Reports\Reports;
 
-use BT\Modules\Invoices\Models\InvoiceItem;
+use BT\Modules\Documents\Models\DocumentItem;
 use BT\Support\CurrencyFormatter;
 use BT\Support\DateFormatter;
 use BT\Support\NumberFormatter;
-use BT\Support\Statuses\InvoiceStatuses;
+use BT\Support\Statuses\DocumentStatuses;
 
 class ItemSalesReport
 {
@@ -27,16 +27,16 @@ class ItemSalesReport
             'records'   => [],
         ];
 
-        $items = InvoiceItem::byDateRange($fromDate, $toDate)
-            ->select('invoice_items.name AS item_name', 'invoice_items.quantity AS item_quantity',
-                'invoice_items.price AS item_price', 'clients.name AS client_name', 'invoices.number AS invoice_number',
-                'invoices.invoice_date AS invoice_date', 'invoices.exchange_rate AS invoice_exchange_rate',
-                'invoice_item_amounts.subtotal', 'invoice_item_amounts.tax', 'invoice_item_amounts.total')
-            ->join('invoices', 'invoices.id', '=', 'invoice_items.invoice_id')
-            ->join('invoice_item_amounts', 'invoice_item_amounts.item_id', '=', 'invoice_items.id')
-            ->join('clients', 'clients.id', '=', 'invoices.client_id')
-            ->where('invoices.invoice_status_id', '<>', InvoiceStatuses::getStatusId('canceled'))
-            ->orderBy('invoice_items.name');
+        $items = DocumentItem::byDateRange($fromDate, $toDate)
+            ->select('document_items.name AS item_name', 'document_items.quantity AS item_quantity',
+                'document_items.price AS item_price', 'clients.name AS client_name', 'documents.number AS invoice_number',
+                'documents.document_date AS invoice_date', 'documents.exchange_rate AS invoice_exchange_rate',
+                'document_item_amounts.subtotal', 'document_item_amounts.tax', 'document_item_amounts.total')
+            ->join('documents', 'documents.id', '=', 'document_items.document_id')
+            ->join('document_item_amounts', 'document_item_amounts.item_id', '=', 'document_items.id')
+            ->join('clients', 'clients.id', '=', 'documents.client_id')
+            ->where('documents.document_status_id', '<>', DocumentStatuses::getStatusId('canceled'))
+            ->orderBy('document_items.name');
 
         if ($companyProfileId)
         {

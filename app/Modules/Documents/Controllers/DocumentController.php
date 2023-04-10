@@ -12,10 +12,12 @@
 namespace BT\Modules\Documents\Controllers;
 
 use BT\Http\Controllers\Controller;
-use BT\Modules\CompanyProfiles\Models\CompanyProfile;
 use BT\Modules\Documents\Models\Document;
 use BT\Modules\Documents\Models\DocumentItem;
+use BT\Modules\Documents\Models\Invoice;
 use BT\Modules\Documents\Models\Purchaseorder;
+use BT\Modules\Documents\Models\Quote;
+use BT\Modules\Documents\Models\Workorder;
 use BT\Support\FileNames;
 use BT\Support\PDF\PDFFactory;
 use BT\Support\Statuses\DocumentStatuses;
@@ -32,26 +34,25 @@ class DocumentController extends Controller
         $this->setReturnUrl();
         $status = request('status') === 'all_statuses' ? '' : request('status');
         $module = request('module_type');
-        switch ($module){
-            case 1:
-                $module_type = DOCUMENT_TYPE_QUOTE['module_type'];
-                $modulefullname = addslashes(DOCUMENT_TYPE_QUOTE['modulefullname']);
+        switch ($module) {
+            case 'Quote':
+                $module_type = $module;
+                $modulefullname = Quote::class;
                 break;
-            case 2:
-                $module_type = DOCUMENT_TYPE_WORKORDER['module_type'];
-                $modulefullname = addslashes(DOCUMENT_TYPE_WORKORDER['modulefullname']);
+            case 'Workorder':
+                $module_type = $module;
+                $modulefullname = Workorder::class;
                 break;
-            case 3:
-                $module_type = DOCUMENT_TYPE_INVOICE['module_type'];
-                $modulefullname =addslashes( DOCUMENT_TYPE_INVOICE['modulefullname']);
+            case 'Invoice':
+                $module_type = $module;
+                $modulefullname = Invoice::class;
                 break;
-            case 5:
-                $module_type = DOCUMENT_TYPE_PURCHASEORDER['module_type'];
-                $modulefullname = addslashes(DOCUMENT_TYPE_PURCHASEORDER['modulefullname']);
+            case 'Purchaseorder':
+                $module_type = $module;
+                $modulefullname = Purchaseorder::class;
                 break;
         }
 
-        //$module_type == 1 ? $module_type = 'Quote' : $module_type = null;
         return view('documents.index')->with('status', $status)->with('module_type', $module_type)->with('modulefullname', $modulefullname);
     }
 

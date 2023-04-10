@@ -10,7 +10,7 @@
 
 namespace BT\Modules\Reports\Reports;
 
-use BT\Modules\Invoices\Models\Invoice;
+use BT\Modules\Documents\Models\Invoice;
 use BT\Modules\CompanyProfiles\Models\CompanyProfile;
 use BT\Support\DateFormatter;
 use DB;
@@ -26,28 +26,28 @@ class TimeSheetReport {
 		];
 
         if ($report_type == 'condensed'){
-            $invoices = Invoice::select('invoice_items.invoice_id AS InvoiceID', 'invoices.number AS InvoiceNumber',
-                'clients.name AS CustomerName', 'invoice_items.name AS ItemName',
-                DB::raw('sum(invoice_items.quantity) AS ItemQty'), 'employees.number AS EmpNumber',
-                'invoices.invoice_date AS DateFinished', DB::raw('CONCAT(employees.last_name,", ",employees.first_name) AS FullName'))
-                ->join('invoice_items', 'invoice_items.invoice_id', '=', 'invoices.id')
-                ->join('clients', 'clients.id', '=', 'invoices.client_id')
-                ->join('employees', 'employees.id', '=', 'invoice_items.resource_id')
-                ->whereBetween('invoice_date', [$fromDate, $toDate])
-                ->where('invoice_items.resource_table', 'employees')
+            $invoices = Invoice::select('document_items.document_id AS InvoiceID', 'documents.number AS InvoiceNumber',
+                'clients.name AS CustomerName', 'document_items.name AS ItemName',
+                DB::raw('sum(document_items.quantity) AS ItemQty'), 'employees.number AS EmpNumber',
+                'documents.document_date AS DateFinished', DB::raw('CONCAT(employees.last_name,", ",employees.first_name) AS FullName'))
+                ->join('document_items', 'document_items.document_id', '=', 'documents.id')
+                ->join('clients', 'clients.id', '=', 'documents.client_id')
+                ->join('employees', 'employees.id', '=', 'document_items.resource_id')
+                ->whereBetween('document_date', [$fromDate, $toDate])
+                ->where('document_items.resource_table', 'employees')
                 ->groupBy('EmpNumber')
                 ->orderBy('FullName', 'ASC');
 
         }else {
-            $invoices = Invoice::select('invoice_items.invoice_id AS InvoiceID', 'invoices.number AS InvoiceNumber',
-                'clients.name AS CustomerName', 'invoice_items.name AS ItemName',
-                'invoice_items.quantity AS ItemQty', 'employees.number AS EmpNumber',
-                'invoices.invoice_date AS DateFinished', DB::raw('CONCAT(employees.last_name,", ",employees.first_name) AS FullName'))
-                ->join('invoice_items', 'invoice_items.invoice_id', '=', 'invoices.id')
-                ->join('clients', 'clients.id', '=', 'invoices.client_id')
-                ->join('employees', 'employees.id', '=', 'invoice_items.resource_id')
-                ->whereBetween('invoice_date', [$fromDate, $toDate])
-                ->where('invoice_items.resource_table', 'employees')
+            $invoices = Invoice::select('document_items.document_id AS InvoiceID', 'documents.number AS InvoiceNumber',
+                'clients.name AS CustomerName', 'document_items.name AS ItemName',
+                'document_items.quantity AS ItemQty', 'employees.number AS EmpNumber',
+                'documents.document_date AS DateFinished', DB::raw('CONCAT(employees.last_name,", ",employees.first_name) AS FullName'))
+                ->join('document_items', 'document_items.document_id', '=', 'documents.id')
+                ->join('clients', 'clients.id', '=', 'documents.client_id')
+                ->join('employees', 'employees.id', '=', 'document_items.resource_id')
+                ->whereBetween('document_date', [$fromDate, $toDate])
+                ->where('document_items.resource_table', 'employees')
                 ->orderBy('FullName', 'ASC')
                 ->orderBy('DateFinished', 'ASC');
         }
@@ -78,7 +78,7 @@ class TimeSheetReport {
 			$results['records'][] = [
 				'number'                 => $invoice->InvoiceNumber,
 				'client_name'            => $invoice->CustomerName,
-				'formatted_invoice_date' => $invoice->DateFinished,
+				'formatted_document_date' => $invoice->DateFinished,
 				'item_name'              => $invoice->ItemName,
 				'item_qty'               => $invoice->ItemQty,
 				'full_name'              => $invoice->FullName,
@@ -100,20 +100,20 @@ class TimeSheetReport {
 		];
 
 		$invoices = Invoice::select( DB::raw( '"TIMEACT" AS TIMEACT' ),
-			DB::raw( 'DATE_FORMAT(invoices.invoice_date,"%m/%d/%y") AS DATE' ),
+			DB::raw( 'DATE_FORMAT(documents.document_date,"%m/%d/%y") AS DATE' ),
 			DB::raw( 'NULL AS JOB' ),
 			DB::raw( 'CONCAT_WS(", ",employees.last_name, employees.first_name) AS EMP' ),
 			DB::raw( 'NULL AS ITEM' ),
 			DB::raw( '"Hourly Wage" AS PITEM' ),
-			DB::raw( 'ROUND(invoice_items.quantity,2) AS DURATION' ),
+			DB::raw( 'ROUND(document_items.quantity,2) AS DURATION' ),
 			DB::raw( 'NULL AS PROJ' ),
 			DB::raw( 'NULL AS NOTE' ),
 			DB::raw( '"0" AS BILLINGSTATUS' ) )
-		                   ->join( 'invoice_items', 'invoice_items.invoice_id', '=', 'invoices.id' )
-		                   ->join( 'clients', 'clients.id', '=', 'invoices.client_id' )
-		                   ->join( 'employees', 'employees.id', '=', 'invoice_items.resource_id' )
-		                   ->whereBetween( 'invoice_date', [ $fromDate, $toDate ] )
-		                   ->where( 'invoice_items.resource_table', 'employees' )
+		                   ->join( 'document_items', 'document_items.document_id', '=', 'documents.id' )
+		                   ->join( 'clients', 'clients.id', '=', 'documents.client_id' )
+		                   ->join( 'employees', 'employees.id', '=', 'document_items.resource_id' )
+		                   ->whereBetween( '`document_date`', [ $fromDate, $toDate ] )
+		                   ->where( 'document_items.resource_table', 'employees' )
 		                   ->orderBy( 'EMP', 'ASC' )
 		                   ->orderBy( 'DATE', 'ASC' );
 

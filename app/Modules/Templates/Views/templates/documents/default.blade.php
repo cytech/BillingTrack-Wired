@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>@lang('bt.'. strtolower($document->moduletype())) #{{ $document->number }}</title>
+    <title>@lang('bt.'. strtolower($document->module_type)) #{{ $document->number }}</title>
     <style>
         @page {
             margin: 25px;
@@ -77,7 +77,7 @@
     </style>
 </head>
 <body>
-@if($document->moduletype() == 'Purchaseorder')
+@if($document->module_type == 'Purchaseorder')
     <table>
         <tr>
             <td style="width: 50%;" valign="top">
@@ -116,12 +116,12 @@
     <table>
         <tr>
             <td style="width: 50%;" valign="top">
-                <h1>{{ mb_strtoupper(trans('bt.'. strtolower($document->moduletype()))) }}</h1>
-                <span class="info">{{ mb_strtoupper(trans('bt.'. strtolower($document->moduletype()))) }} #</span>{{ $document->number }}
+                <h1>{{ mb_strtoupper(trans('bt.'. strtolower($document->module_type))) }}</h1>
+                <span class="info">{{ mb_strtoupper(trans('bt.'. strtolower($document->module_type))) }} #</span>{{ $document->number }}
                 <br>
                 <span class="info">{{ mb_strtoupper(trans('bt.issued')) }}</span> {{ $document->formatted_created_at }}
                 <br>
-                @if($document->moduletype() == 'Quote')
+                @if($document->module_type == 'Quote')
                     <span class="info">{{ mb_strtoupper(trans('bt.expires')) }}</span> {{ $document->formatted_action_date }}
                 @else
                     <span class="info">{{ mb_strtoupper(trans('bt.due_date')) }}</span> {{ $document->formatted_action_date }}
@@ -131,7 +131,7 @@
                 @if ($document->client->address)
                     {!! $document->client->formatted_address !!}<br>
                 @endif
-                @if($document->moduletype() == 'Workorder')
+                @if($document->module_type == 'Workorder')
                     @if ($document->client->phone)
                         {!! $document->client->phone !!}
                         <br>
@@ -155,7 +155,7 @@
                     @if ($document->companyProfile->email)
                         <a href="mailto:{{ $document->companyProfile->email }}">{{ $document->companyProfile->email }}</a>
                     @endif
-                    @if($document->moduletype() == 'Workorder')
+                    @if($document->module_type == 'Workorder')
                         <br>
                         <span class="info">{{ 'Job Date: ' }}</span>{{ $document->formatted_job_date }}<br>
                         <span class="info">{{ 'Start Time: ' }}</span>{{ $document->formatted_start_time }}<br>
@@ -173,7 +173,7 @@
         </tr>
     </table>
 @endif
-@if($document->moduletype() == 'Workorder')
+@if($document->module_type == 'Workorder')
     <table>
         <tr>
             <td style="width: 100%; text-align: left;" valign="top">
@@ -197,7 +197,7 @@
         <tr>
             <td>{!! $item->name !!}</td>
             <td>{!! $item->formatted_description !!}</td>
-            @if($document->moduletype() == 'Workorder')
+            @if($document->module_type == 'Workorder')
                 <td nowrap
                     class="amount">{{ $item->formatted_quantity <> '0.00' ? $item->formatted_quantity : "________" }}</td>
                 <td nowrap
@@ -213,7 +213,7 @@
     @endforeach
     <tr>
         <td colspan="4" class="amount">{{ mb_strtoupper(trans('bt.subtotal')) }}</td>
-        @if($document->moduletype() == 'Workorder')
+        @if($document->module_type == 'Workorder')
             <td class="amount">__________</td>
         @else
             <td class="amount">{{ $document->amount->formatted_subtotal }}</td>
@@ -234,13 +234,13 @@
     @endforeach
     <tr>
         <td colspan="4" class="amount">{{ mb_strtoupper(trans('bt.total')) }}</td>
-        @if($document->moduletype() == 'Workorder')
+        @if($document->module_type == 'Workorder')
             <td class="amount">__________</td>
         @else
             <td class="amount">{{ $document->amount->formatted_total }}</td>
         @endif
     </tr>
-    @if($document->moduletype() == 'Invoice')
+    @if($document->module_type == 'Invoice')
         <tr>
             <td colspan="4" class="amount">{{ mb_strtoupper(trans('bt.paid')) }}</td>
             <td class="amount">{{ $document->amount->formatted_paid }}</td>

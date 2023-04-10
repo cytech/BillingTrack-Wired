@@ -50,19 +50,19 @@
             <div class="dropdown-menu dropdown-menu-end" role="menu">
                 <a class="dropdown-item" href="#" id="btn-copy-document"
                    {{--                   params 3 thru ... mount(,,$modulefullname, $moduleop, $resource_id = null, $module_id = null, $readonly = null)--}}
-                   onclick="window.livewire.emit('showModal', 'modals.create-module-modal', '{{  addslashes(get_class($document)) }}', '{{$document->moduletype()}}', 'copy', {{ $document->client->id }}, {{ $document->id }})">
+                   onclick="window.livewire.emit('showModal', 'modals.create-module-modal', '{{  addslashes(get_class($document)) }}', '{{$document->module_type}}', 'copy', {{ $document->client->id }}, {{ $document->id }})">
                     <i class="fa fa-copy"></i> @lang('bt.copy_'.$document->lower_case_baseclass)</a>
-                @if($document->moduletype() == 'Quote')
+                @if($document->module_type == 'Quote')
                     <a class="dropdown-item" href="javascript:void(0)" id="btn-document-to-workorder"><i
                                 class="fa fa-check"></i> @lang('bt.'.$document->lower_case_baseclass.'_to_workorder')
                     </a>
                 @endif
-                @if($document->moduletype() != 'Invoice' && $document->moduletype() != 'Purchaseorder')
+                @if($document->module_type != 'Invoice' && $document->module_type != 'Purchaseorder')
                     <a class="dropdown-item" href="javascript:void(0)" id="btn-document-to-invoice"><i
                                 class="fa fa-check"></i> @lang('bt.'.$document->lower_case_baseclass.'_to_invoice')
                     </a>
                 @endif
-                @if($document->moduletype() != 'Purchaseorder')
+                @if($document->module_type != 'Purchaseorder')
                     <a class="dropdown-item"
                        href="{{ route('clientCenter.public.' . $document->lower_case_baseclass .'.show', [$document->url_key]) }}"
                        target="_blank"><i
@@ -118,7 +118,7 @@
                     </div>
                 </div>
             </div>
-            @if($document->moduletype() == 'Workorder')
+            @if($document->module_type == 'Workorder')
                 <div class="row g-3 mb-3 align-items-center">
                     <div class="col-sm-1 text-end fw-bold">
                         <label class="col-form-label">@lang('bt.job_date')</label>
@@ -235,7 +235,7 @@
                                 value="{{$document->document_date}}"></x-fp_common>
                     </div>
                     <div class="mb-3">
-                        @if($document->moduletype() == 'Invoice' || $document->moduletype() == 'Purchaseorder')
+                        @if($document->module_type == 'Invoice' || $document->module_type == 'Purchaseorder')
                             <label>@lang('bt.due_date')</label>
                         @else
                             <label>@lang('bt.expires')</label>

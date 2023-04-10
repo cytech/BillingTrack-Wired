@@ -22,7 +22,7 @@ class AddResourceModal extends Component
         $this->resource_type = $resource_type;
         if ($resource_type == 'Product') {
 //            if ($module_type == 'Purchaseorder') {
-            if ($this->module->moduletype() == 'Purchaseorder') {
+            if ($this->module->module_type == 'Purchaseorder') {
                 $this->pref_vendor = 1;
                 $this->resources = ('BT\\Modules\\' . $resource_type . 's\\Models\\' . $resource_type)::status('active')->where('vendor_id', $this->module->client_id)->orderby('name','ASC')->get();
             }else{

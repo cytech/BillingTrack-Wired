@@ -5,7 +5,7 @@
     <div class="dropdown-menu dropdown-menu-end" role="menu">
         <a class="dropdown-item" href="{{ route('documents.edit', [$model->id]) }}"><i
                     class="fa fa-edit"></i> @lang('bt.edit')</a>
-        @if($model->moduletype() == 'Purchaseorder' && !in_array($model->status_text, ['received', 'draft', 'canceled']))
+        @if($model->module_type == 'Purchaseorder' && !in_array($model->status_text, ['received', 'draft', 'canceled']))
             <a class="dropdown-item receive-purchaseorder" href="javascript:void(0)" data-purchaseorder-id="{{ $model->id }}" ><i
                         class="fa fa-arrow-alt-circle-right" ></i> @lang('bt.receive')</a>
         @endif
@@ -16,7 +16,7 @@
                data-redirect-to="{{ request()->fullUrl() }}"><i
                         class="fa fa-envelope"></i> @lang('bt.email')</a>
         @endif
-@if($model->moduletype() != 'Purchaseorder')
+@if($model->module_type != 'Purchaseorder')
 <a class="dropdown-item" href="{{ route('clientCenter.public.' . $model->lower_case_baseclass .'.show', [$model->url_key]) }}"
    target="_blank" id="btn-public-document"><i
             class="fa fa-globe"></i> @lang('bt.public')</a>

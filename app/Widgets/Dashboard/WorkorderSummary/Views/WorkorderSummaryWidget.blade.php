@@ -57,7 +57,7 @@
                             <p>@lang('bt.draft_workorders')</p>
                         </div>
                         <div class="small-box-faicon"><i class="fa fa-pencil-alt"></i></div>
-                        <a class="small-box-footer" href="{{ route('documents.index', ['status' => 'draft', 'module_type' => DOCUMENT_TYPE_WORKORDER['document_type']]) }}">
+                        <a class="small-box-footer" href="{{ route('documents.index', ['status' => 'draft', 'module_type' => 'Workorder']) }}">
                             @lang('bt.view_draft_workorders') <i class="fa fa-arrow-circle-right"></i>
                         </a>
                     </div>
@@ -69,7 +69,7 @@
                             <p>@lang('bt.sent_workorders')</p>
                         </div>
                         <div class="small-box-faicon"><i class="fa fa-share-square"></i></div>
-                        <a class="small-box-footer" href="{{ route('documents.index', ['status' => 'sent', 'module_type' => DOCUMENT_TYPE_WORKORDER['document_type']]) }}">
+                        <a class="small-box-footer" href="{{ route('documents.index', ['status' => 'sent', 'module_type' => 'Workorder']) }}">
                             @lang('bt.view_sent_workorders') <i class="fa fa-arrow-circle-right"></i>
                         </a>
                     </div>
@@ -81,7 +81,7 @@
                             <p>@lang('bt.rejected_workorders')</p>
                         </div>
                         <div class="small-box-faicon"><i class="fa fa-thumbs-down"></i></div>
-                        <a class="small-box-footer" href="{{ route('documents.index', ['status' => 'rejected', 'module_type' => DOCUMENT_TYPE_WORKORDER['document_type']]) }}">
+                        <a class="small-box-footer" href="{{ route('documents.index', ['status' => 'rejected', 'module_type' => 'Workorder']) }}">
                             @lang('bt.view_rejected_workorders') <i class="fa fa-arrow-circle-right"></i>
                         </a>
                     </div>
@@ -93,7 +93,7 @@
                             <p>@lang('bt.approved_workorders')</p>
                         </div>
                         <div class="small-box-faicon"><i class="fa fa-thumbs-up"></i></div>
-                        <a class="small-box-footer" href="{{ route('documents.index', ['status' => 'approved', 'module_type' => DOCUMENT_TYPE_WORKORDER['document_type']]) }}">
+                        <a class="small-box-footer" href="{{ route('documents.index', ['status' => 'approved', 'module_type' => 'Workorder']) }}">
                             @lang('bt.view_approved_workorders') <i class="fa fa-arrow-circle-right"></i>
                         </a>
                     </div>

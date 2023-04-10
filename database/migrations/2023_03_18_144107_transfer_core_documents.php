@@ -19,18 +19,15 @@ return new class extends Migration {
     {
         Schema::disableForeignKeyConstraints();
 
-        $coredoctypes = [DOCUMENT_TYPE_QUOTE, DOCUMENT_TYPE_WORKORDER, DOCUMENT_TYPE_INVOICE, DOCUMENT_TYPE_PURCHASEORDER];
+        $coredoctypes = ['Quote', 'Workorder', 'Invoice', 'Purchaseorder'];
 
         foreach ($coredoctypes as $coredoctype) {
-            $modtype = '\\BT\Support\\SixtoSeven\\Models\\' . $coredoctype['module_type'];
+            $modtype = '\\BT\Support\\SixtoSeven\\Models\\' . $coredoctype;
             $docs = $modtype::withTrashed()->with('amount', 'items.amount', 'custom')->get();
-//            $docs = $coredoctype[1]::class->withTrashed()->with('amount', 'items.amount')->get();
-            //$docs = \BT\Modules\Quotes\Models\Quote::withTrashed()->with('amount', 'items.amount')->get();
 
             foreach ($docs as $doc) {
                 $document = new \BT\Modules\Documents\Models\Document();
-//                $document->document_type = $coredoctype['document_type'];
-                $document->document_type = $coredoctype['modulefullname'];
+                $document->document_type = 'BT\\Modules\\Documents\\Models\\' . $coredoctype;
                 $document->document_id = $doc->id;
                 $document->document_date = $doc->quote_date ?? $doc->workorder_date ?? $doc->invoice_date ?? $doc->purchaseorder_date;
                 $document->workorder_id = $doc->workorder_id ?? 0;
@@ -77,7 +74,7 @@ return new class extends Migration {
 
                 $documentamount->saveQuietly();
 
-                $custidfield = strtolower($coredoctype['module_type']).'_id';
+                $custidfield = strtolower($coredoctype) . '_id';
 
                 if ($doc->custom) {
                     $doc->custom->$custidfield = $document->id;
@@ -110,6 +107,7 @@ return new class extends Migration {
                     $documentitemamount = new \BT\Modules\Documents\Models\DocumentItemAmount();
 
                     $documentitemamount->item_id = $documentitem->id;
+                    $documentitemamount->subtotal = $docitem->amount->subtotal;
                     $documentitemamount->tax_1 = $docitem->amount->tax_1;
                     $documentitemamount->tax_2 = $docitem->amount->tax_2;
                     $documentitemamount->tax = $docitem->amount->tax;
@@ -126,11 +124,11 @@ return new class extends Migration {
         //move invoice status_id to document statuses
         $invoices = Invoice::get();
 
-        foreach ($invoices as $invoice){
-            if ($invoice->document_status_id == 3){
+        foreach ($invoices as $invoice) {
+            if ($invoice->document_status_id == 3) {
                 $invoice->document_status_id = 6;
             }
-            if ($invoice->document_status_id == 4){
+            if ($invoice->document_status_id == 4) {
                 $invoice->document_status_id = 5;
             }
             $invoice->updateQuietly();
@@ -138,16 +136,16 @@ return new class extends Migration {
         //move purchaseorder status_id to document statuses
         $purchaseorders = Purchaseorder::get();
 
-        foreach ($purchaseorders as $purchaseorder){
-            if ($purchaseorder->document_status_id == 3){
+        foreach ($purchaseorders as $purchaseorder) {
+            if ($purchaseorder->document_status_id == 3) {
                 $purchaseorder->document_status_id = 7;
             }
-            if ($purchaseorder->document_status_id == 4){
+            if ($purchaseorder->document_status_id == 4) {
                 $purchaseorder->document_status_id = 8;
             }
-            if ($purchaseorder->document_status_id == 5){
+            if ($purchaseorder->document_status_id == 5) {
                 $purchaseorder->document_status_id = 6;
-            } elseif ($purchaseorder->document_status_id == 6){
+            } elseif ($purchaseorder->document_status_id == 6) {
                 $purchaseorder->document_status_id = 5;
             }
             $purchaseorder->updateQuietly();
@@ -156,7 +154,7 @@ return new class extends Migration {
         //update quote workorder_id and invoice_id refs to new documents
         $quotes = Quote::get();
 
-        foreach ($quotes as $quote){
+        foreach ($quotes as $quote) {
             if ($quote->workorder_id > 0 || $quote->invoice_id > 0) {
                 if ($quote->workorder_id > 0) {
                     $quotedoc = Workorder::where('document_id', $quote->workorder_id)->first();
@@ -173,18 +171,18 @@ return new class extends Migration {
         //update workorder  invoice_id refs to new documents
         $workorders = Workorder::get();
 
-        foreach ($workorders as $workorder){
-                if ($workorder->invoice_id > 0) {
-                    $invoicedoc = Invoice::where('document_id', $workorder->invoice_id)->first();
-                    $workorder->invoice_id = $invoicedoc->id;
-                    $workorder->updateQuietly();
-                }
+        foreach ($workorders as $workorder) {
+            if ($workorder->invoice_id > 0) {
+                $invoicedoc = Invoice::where('document_id', $workorder->invoice_id)->first();
+                $workorder->invoice_id = $invoicedoc->id;
+                $workorder->updateQuietly();
+            }
         }
 
         //update payment invoice_id to new documents
         $payments = Payment::get();
 
-        foreach ($payments as $payment){
+        foreach ($payments as $payment) {
             if ($payment->invoice_id > 0) {
                 $invoicedoc = Invoice::where('document_id', $payment->invoice_id)->first();
                 $payment->invoice_id = $invoicedoc->id;
@@ -195,7 +193,7 @@ return new class extends Migration {
         //update timetrackingtasks invoice_id to new documents
         $timetrackingtasks = TimeTrackingTask::get();
 
-        foreach ($timetrackingtasks as $timetrackingtask){
+        foreach ($timetrackingtasks as $timetrackingtask) {
             if ($timetrackingtask->invoice_id > 0) {
                 $invoicedoc = Invoice::where('document_id', $timetrackingtask->invoice_id)->first();
                 $timetrackingtask->invoice_id = $invoicedoc->id;
@@ -206,7 +204,7 @@ return new class extends Migration {
         //update expenses invoice_id to new documents
         $expenses = Expense::get();
 
-        foreach ($expenses as $expense){
+        foreach ($expenses as $expense) {
             if ($expense->invoice_id > 0) {
                 $invoicedoc = Invoice::where('document_id', $expense->invoice_id)->first();
                 $expense->invoice_id = $invoicedoc->id;

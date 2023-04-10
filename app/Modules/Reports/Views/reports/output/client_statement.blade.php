@@ -47,7 +47,7 @@
         <tbody>
         @foreach ($results['records'] as $result)
             <tr>
-                <td>{{ $result['formatted_invoice_date'] }}</td>
+                <td>{{ $result['formatted_document_date'] }}</td>
                 <td>{{ $result['number'] }}</td>
                 <td>{{ $result['summary'] }}</td>
                 <td class="amount">{{ $result['formatted_subtotal'] }}</td>

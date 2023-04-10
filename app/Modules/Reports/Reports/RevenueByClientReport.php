@@ -23,8 +23,8 @@ class RevenueByClientReport
         $payments = Payment::select('payments.*')
             ->with(['invoice.client'])
             ->year($year)
-            ->join('invoices', 'invoices.id', '=', 'payments.invoice_id')
-            ->join('clients', 'clients.id', '=', 'invoices.client_id')
+            ->join('documents', 'documents.id', '=', 'payments.invoice_id')
+            ->join('clients', 'clients.id', '=', 'documents.client_id')
             ->orderBy('clients.name');
 
         if ($companyProfileId)

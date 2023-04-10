@@ -59,15 +59,11 @@ class Document extends Model
 
     protected $softCascade = ['documentItems', 'custom', 'amount', 'activities', 'attachments', 'mailQueue', 'notes'];
 
-//    public function moduletype()
-//    {
-//        return class_basename($this);
-//    }
-
     public function moduleType(): Attribute
     {
         return new Attribute(get: fn() => class_basename($this));
     }
+
     /*
     |--------------------------------------------------------------------------
     | Relationships
@@ -132,8 +128,8 @@ class Document extends Model
 
     public function custom()
     {
-        $customclass = $this->moduletype() . 'Custom';
-        return $this->hasOne('BT\Modules\CustomFields\Models\\' . $customclass, strtolower($this->moduletype()) . '_id');
+        $customclass = $this->module_type . 'Custom';
+        return $this->hasOne('BT\Modules\CustomFields\Models\\' . $customclass, strtolower($this->module_type) . '_id');
     }
 
     public function group()
