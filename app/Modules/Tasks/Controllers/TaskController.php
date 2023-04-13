@@ -11,18 +11,18 @@
 
 namespace BT\Modules\Tasks\Controllers;
 
-use BT\Events\InvoiceModified;
+use BT\Events\DocumentModified;
 use Carbon\Carbon;
 use BT\Events\InvoiceCreatedRecurring;
 use BT\Http\Controllers\Controller;
 use BT\Modules\CustomFields\Models\CustomField;
-use BT\Modules\Invoices\Models\Invoice;
-use BT\Modules\Invoices\Models\InvoiceItem;
+use BT\Modules\Documents\Models\Invoice;
+use BT\Modules\Documents\Models\DocumentItem;
 use BT\Modules\MailQueue\Support\MailQueue;
 use BT\Modules\RecurringInvoices\Models\RecurringInvoice;
 use BT\Support\DateFormatter;
 use BT\Support\Parser;
-use BT\Support\Statuses\InvoiceStatuses;
+use BT\Support\Statuses\DocumentStatuses;
 use Illuminate\Support\Facades\Log;
 
 class TaskController extends Controller
@@ -62,7 +62,7 @@ class TaskController extends Controller
                     $date = Carbon::now()->addDays($daysFromNow)->format('Y-m-d');
 
                     $invoices = Invoice::with('client')
-                        ->where('invoice_status_id', '=', InvoiceStatuses::getStatusId('sent'))
+                        ->where('invoice_status_id', '=', DocumentStatuses::getStatusId('sent'))
                         ->whereHas('amount', function ($query) {
                             $query->where('balance', '>', '0');
                         })
@@ -114,7 +114,7 @@ class TaskController extends Controller
                     $date = Carbon::now()->subDays($daysAgo)->format('Y-m-d');
 
                     $invoices = Invoice::with('client')
-                        ->where('invoice_status_id', '=', InvoiceStatuses::getStatusId('sent'))
+                        ->where('invoice_status_id', '=', DocumentStatuses::getStatusId('sent'))
                         ->whereHas('amount', function ($query) {
                             $query->where('balance', '>', '0');
                         })
@@ -185,7 +185,7 @@ class TaskController extends Controller
                     'display_order' => $item->display_order,
                 ];
 
-                InvoiceItem::create($itemData);
+                DocumentItem::create($itemData);
             }
 
 
@@ -202,7 +202,7 @@ class TaskController extends Controller
             $recurringInvoice->next_date = $nextDate;
             $recurringInvoice->save();
 
-            event(new InvoiceModified($invoice));
+            event(new DocumentModified($invoice));
             event(new InvoiceCreatedRecurring($invoice, $recurringInvoice));
         }
 

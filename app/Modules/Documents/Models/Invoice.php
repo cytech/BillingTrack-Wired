@@ -18,6 +18,13 @@ class Invoice extends Document
 {
     use HasParent;
 
+    // HasParent function getMorphClass returns the parent class
+    // overriding here to return the child class for morphMany relations
+    public function getMorphClass(): string
+    {
+        return $this::class;
+    }
+
     public function expense()
     {
         return $this->hasOne('BT\Modules\Expenses\Models\Expense');

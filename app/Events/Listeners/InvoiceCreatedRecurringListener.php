@@ -3,7 +3,7 @@
 namespace BT\Events\Listeners;
 
 use BT\Events\InvoiceCreatedRecurring;
-use BT\Events\InvoiceEmailed;
+use BT\Events\DocumentEmailed;
 use BT\Modules\MailQueue\Support\MailQueue;
 use BT\Support\Parser;
 
@@ -42,7 +42,7 @@ class InvoiceCreatedRecurringListener
 
             $this->mailQueue->send($mail->id);
 
-            event(new InvoiceEmailed($event->invoice));
+            event(new DocumentEmailed($event->invoice));
         }
     }
 }

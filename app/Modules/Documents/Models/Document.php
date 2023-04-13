@@ -220,7 +220,7 @@ class Document extends Model
 
     public function publicUrl(): Attribute
     {
-        return new Attribute(get: fn() => route('clientCenter.public.document.show', [$this->url_key]));
+        return new Attribute(get: fn() => route('clientCenter.public.' . strtolower($this->module_type) . '.show', [$this->url_key]));
     }
 
 //    public function isForeignCurrency(): Attribute

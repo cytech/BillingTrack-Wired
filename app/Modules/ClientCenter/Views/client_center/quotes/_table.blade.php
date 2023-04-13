@@ -14,7 +14,7 @@
     @foreach ($quotes as $quote)
         <tr>
             <td>
-                <span class="badge badge-{{ $quoteStatuses[$quote->quote_status_id] }}">{{ trans('bt.' . $quoteStatuses[$quote->quote_status_id]) }}</span>
+                <span class="badge badge-{{ $quoteStatuses[$quote->document_status_id] }}">{{ trans('bt.' . $quoteStatuses[$quote->document_status_id]) }}</span>
                 @if ($quote->viewed)
                     <span class="badge bg-success">@lang('bt.viewed')</span>
                 @else
@@ -23,7 +23,7 @@
             </td>
             <td>{{ $quote->number }}</td>
             <td>{{ $quote->formatted_created_at }}</td>
-            <td>{{ $quote->formatted_expires_at }}</td>
+            <td>{{ $quote->formatted_action_date }}</td>
             <td>{{ $quote->summary }}</td>
             <td>{{ $quote->amount->formatted_total }}</td>
             <td>

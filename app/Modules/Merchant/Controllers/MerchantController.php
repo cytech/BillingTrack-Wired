@@ -3,7 +3,7 @@
 namespace BT\Modules\Merchant\Controllers;
 
 use BT\Http\Controllers\Controller;
-use BT\Modules\Invoices\Models\Invoice;
+use BT\Modules\Documents\Models\Invoice;
 use BT\Modules\Merchant\Support\MerchantFactory;
 
 class MerchantController extends Controller

@@ -3,7 +3,7 @@
 namespace BT\Http\Livewire\Modals;
 
 use BT\Modules\CustomFields\Models\CustomField;
-use BT\Modules\Invoices\Models\Invoice;
+use BT\Modules\Documents\Models\Invoice;
 use BT\Modules\MailQueue\Support\MailQueue;
 use BT\Modules\PaymentMethods\Models\PaymentMethod;
 use BT\Modules\Payments\Models\Payment;

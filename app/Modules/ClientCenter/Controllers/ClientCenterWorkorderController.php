@@ -12,15 +12,17 @@
 namespace BT\Modules\ClientCenter\Controllers;
 
 use BT\Http\Controllers\Controller;
-use BT\Modules\Workorders\Models\Workorder;
-use BT\Support\Statuses\WorkorderStatuses;
+//use BT\Modules\Workorders\Models\Workorder;
+use BT\Modules\Documents\Models\Workorder;
+//use BT\Support\Statuses\WorkorderStatuses;
+use BT\Support\Statuses\DocumentStatuses;
 use Illuminate\Support\Facades\DB;
 
 class ClientCenterWorkorderController extends Controller
 {
     private $workorderStatuses;
 
-    public function __construct(WorkorderStatuses $workorderStatuses)
+    public function __construct(DocumentStatuses $workorderStatuses)
     {
         $this->workorderStatuses = $workorderStatuses;
     }

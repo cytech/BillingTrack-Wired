@@ -15,7 +15,7 @@
     @foreach ($invoices as $invoice)
         <tr>
             <td>
-                <span class="badge badge-{{ $invoiceStatuses[$invoice->invoice_status_id] }}">{{ trans('bt.' . $invoiceStatuses[$invoice->invoice_status_id]) }}</span>
+                <span class="badge badge-{{ $invoiceStatuses[$invoice->document_status_id] }}">{{ trans('bt.' . $invoiceStatuses[$invoice->document_status_id]) }}</span>
                 @if ($invoice->viewed)
                     <span class="badge bg-success">@lang('bt.viewed')</span>
                 @else
@@ -24,7 +24,7 @@
             </td>
             <td>{{ $invoice->number }}</td>
             <td>{{ $invoice->formatted_created_at }}</td>
-            <td>{{ $invoice->formatted_due_at }}</td>
+            <td>{{ $invoice->formatted_action_date }}</td>
             <td>{{ $invoice->summary }}</td>
             <td>{{ $invoice->amount->formatted_total }}</td>
             <td>{{ $invoice->amount->formatted_balance }}</td>

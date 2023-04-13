@@ -11,7 +11,7 @@
 
 namespace BT\Modules\ClientCenter\Controllers;
 
-use BT\Events\InvoiceViewed;
+use BT\Events\DocumentViewed;
 use BT\Http\Controllers\Controller;
 use BT\Modules\Documents\Models\Invoice;
 use BT\Modules\Merchant\Support\MerchantFactory;
@@ -27,7 +27,9 @@ class ClientCenterPublicInvoiceController extends Controller
 
         app()->setLocale($invoice->client->language);
 
-        event(new InvoiceViewed($invoice));
+        if (!$invoice->viewed) {
+            event(new DocumentViewed($invoice));
+        }
 
         return view('client_center.invoices.public')
             ->with('invoice', $invoice)
@@ -42,7 +44,9 @@ class ClientCenterPublicInvoiceController extends Controller
         $invoice = Invoice::with('items.taxRate', 'items.taxRate2', 'items.amount.item.invoice', 'items.invoice')
             ->where('url_key', $urlKey)->first();
 
-        event(new InvoiceViewed($invoice));
+        if (!$invoice->viewed) {
+            event(new DocumentViewed($invoice));
+        }
 
         $pdf = PDFFactory::create();
 

@@ -11,9 +11,9 @@
 
 namespace BT\Modules\ClientCenter\Controllers;
 
-use BT\Events\QuoteApproved;
-use BT\Events\QuoteRejected;
-use BT\Events\QuoteViewed;
+use BT\Events\DocumentApproved;
+use BT\Events\DocumentRejected;
+use BT\Events\DocumentViewed;
 use BT\Http\Controllers\Controller;
 use BT\Modules\Documents\Models\Quote;
 use BT\Support\FileNames;
@@ -28,7 +28,9 @@ class ClientCenterPublicQuoteController extends Controller
 
         app()->setLocale($quote->client->language);
 
-        event(new QuoteViewed($quote));
+        if (!$quote->viewed) {
+            event(new DocumentViewed($quote));
+        }
 
         return view('client_center.quotes.public')
             ->with('quote', $quote)
@@ -42,11 +44,13 @@ class ClientCenterPublicQuoteController extends Controller
         $quote = Quote::with('items.taxRate', 'items.taxRate2', 'items.amount.item.quote', 'items.quote')
             ->where('url_key', $urlKey)->first();
 
-        event(new QuoteViewed($quote));
+        if (!$quote->viewed) {
+            event(new DocumentViewed($quote));
+        }
 
         $pdf = PDFFactory::create();
 
-        $pdf->download($quote->html, FileNames::quote($quote));
+        $pdf->download($quote->html, FileNames::document($quote));
     }
 
     public function html($urlKey)
@@ -65,7 +69,7 @@ class ClientCenterPublicQuoteController extends Controller
 
         $quote->save();
 
-        event(new QuoteApproved($quote));
+        event(new DocumentApproved($quote));
 
         return redirect()->route('clientCenter.public.quote.show', [$urlKey]);
     }
@@ -78,7 +82,7 @@ class ClientCenterPublicQuoteController extends Controller
 
         $quote->save();
 
-        event(new QuoteRejected($quote));
+        event(new DocumentRejected($quote));
 
         return redirect()->route('clientCenter.public.quote.show', [$urlKey]);
     }

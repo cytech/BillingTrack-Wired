@@ -133,7 +133,7 @@
                 </div>
                 @if (auth()->check())
                     <div id="view-notes">
-                        @include('notes._notes', ['object' => $invoice, 'model' => 'BT\Modules\Invoices\Models\Invoice'])
+                        @include('notes._notes', ['object' => $invoice, 'model' => 'BT\Modules\Documents\Models\Invoice'])
                     </div>
                 @endif
             </div>

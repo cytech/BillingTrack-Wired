@@ -15,12 +15,12 @@ class FileNames
 {
     public static function document($document)
     {
-        switch ($document->document_type) {
-            case 1:
+        switch ($document->module_type) {
+            case 'Quote':
                 return trans('bt.quote') . '_' . str_replace('/', '-', $document->number) . '.pdf';
-            case 2:
+            case 'Workorder':
                 return trans('bt.workorder') . '_' . str_replace('/', '-', $document->number) . '.pdf';
-            case 3:
+            case 'Invoice':
                 return trans('bt.invoice') . '_' . str_replace('/', '-', $document->number) . '.pdf';
         }
     }

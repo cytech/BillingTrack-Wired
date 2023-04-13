@@ -2,7 +2,7 @@
 
 namespace BT\Modules\Merchant\Support\Drivers;
 
-use BT\Modules\Invoices\Models\Invoice;
+use BT\Modules\Documents\Models\Invoice;
 use BT\Modules\Merchant\Models\MerchantPayment;
 use BT\Modules\Merchant\Support\MerchantDriverPayable;
 use BT\Modules\Payments\Models\Payment;

@@ -2,11 +2,10 @@
 
 namespace BT\Events;
 
-use BT\Modules\Documents\Models\Workorder;
-
+use BT\Modules\Documents\Models\Document;
 use Illuminate\Queue\SerializesModels;
 
-class WorkorderViewed extends Event
+class DocumentViewed extends Event
 {
     use SerializesModels;
 
@@ -15,8 +14,8 @@ class WorkorderViewed extends Event
      *
      * @return void
      */
-    public function __construct(Workorder $workorder)
+    public function __construct(Document $document)
     {
-        $this->workorder = $workorder;
+        $this->document = $document;
     }
 }

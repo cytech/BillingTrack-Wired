@@ -17,6 +17,12 @@ class Quote extends Document
 {
     use HasParent;
 
+    // HasParent function getMorphClass returns the parent class
+    // overriding here to return the child class for morphMany relations
+    public function getMorphClass(): string
+    {
+        return $this::class;
+    }
     public function invoice()
     {
         return $this->hasOne(Invoice::class, 'id', 'invoice_id')->withTrashed();

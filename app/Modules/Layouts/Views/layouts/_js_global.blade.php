@@ -278,7 +278,7 @@
                     setInnerHTML(document.getElementById('modal-placeholder'), response.data)
                 })
         })
-        // email quote
+/*        // email quote
         addEvent(document, 'click', '.email-quote', (e) => {
             {{--axios.post('{{ route('quoteMail.create') }} ', {--}}
             axios.post('{{ route('documentMail.create') }} ', {
@@ -308,6 +308,17 @@
             {{--axios.post('{{ route('purchaseorderMail.create') }} ', {--}}
             axios.post('{{ route('documentMail.create') }} ', {
                 purchaseorder_id: e.target.dataset.purchaseorderId,
+                redirectTo: e.target.dataset.redirectTo
+            }).then(response => {
+                setInnerHTML(document.getElementById('modal-placeholder'), response.data)
+            }).catch((response) => {
+                notify('@lang('bt.problem_with_email_template')', 'error')
+            })
+        })*/
+        //email document
+        addEvent(document, 'click', '.email-document', (e) => {
+            axios.post('{{ route('documentMail.create') }} ', {
+                document_id: e.target.dataset.documentId,
                 redirectTo: e.target.dataset.redirectTo
             }).then(response => {
                 setInnerHTML(document.getElementById('modal-placeholder'), response.data)

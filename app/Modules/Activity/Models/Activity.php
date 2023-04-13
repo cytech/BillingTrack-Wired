@@ -36,49 +36,49 @@ class Activity extends Model
             $client=$this->audit_type::find($this->audit->id)->client->name;
 
             switch ($this->audit_type) {
-                case 'BT\Modules\Quotes\Models\Quote':
+                case 'BT\Modules\Documents\Models\Quote':
                     switch ($this->activity) {
                         case 'public.viewed':
-                            return trans('bt.activity_quote_viewed', ['number' => $this->audit->number, 'link' => route('quotes.edit', [$this->audit->id]), 'client' => $client]);
+                            return trans('bt.activity_quote_viewed', ['number' => $this->audit->number, 'link' => route('documents.edit', [$this->audit->id]), 'client' => $client]);
                             break;
 
                         case 'public.approved':
-                            return trans('bt.activity_quote_approved', ['number' => $this->audit->number, 'link' => route('quotes.edit', [$this->audit->id]), 'client' => $client]);
+                            return trans('bt.activity_quote_approved', ['number' => $this->audit->number, 'link' => route('documents.edit', [$this->audit->id]), 'client' => $client]);
                             break;
 
                         case 'public.rejected':
-                            return trans('bt.activity_quote_rejected', ['number' => $this->audit->number, 'link' => route('quotes.edit', [$this->audit->id]), 'client' => $client]);
+                            return trans('bt.activity_quote_rejected', ['number' => $this->audit->number, 'link' => route('documents.edit', [$this->audit->id]), 'client' => $client]);
                             break;
                     }
 
                     break;
 
-                case 'BT\Modules\Workorders\Models\Workorder':
+                case 'BT\Modules\Documents\Models\Workorder':
 
                     switch ($this->activity) {
                         case 'public.viewed':
-                            return trans('bt.activity_workorder_viewed', ['number' => $this->audit->number, 'link' => route('workorders.edit', [$this->audit->id]), 'client' => $client]);
+                            return trans('bt.activity_workorder_viewed', ['number' => $this->audit->number, 'link' => route('documents.edit', [$this->audit->id]), 'client' => $client]);
                             break;
 
                         case 'public.approved':
-                            return trans('bt.activity_workorder_approved', ['number' => $this->audit->number, 'link' => route('workorders.edit', [$this->audit->id]), 'client' => $client]);
+                            return trans('bt.activity_workorder_approved', ['number' => $this->audit->number, 'link' => route('documents.edit', [$this->audit->id]), 'client' => $client]);
                             break;
 
                         case 'public.rejected':
-                            return trans('bt.activity_workorder_rejected', ['number' => $this->audit->number, 'link' => route('workorders.edit', [$this->audit->id]), 'client' => $client]);
+                            return trans('bt.activity_workorder_rejected', ['number' => $this->audit->number, 'link' => route('documents.edit', [$this->audit->id]), 'client' => $client]);
                             break;
                     }
 
                     break;
 
-                case 'BT\Modules\Invoices\Models\Invoice':
+                case 'BT\Modules\Documents\Models\Invoice':
 
                     switch ($this->activity) {
                         case 'public.viewed':
-                            return trans('bt.activity_invoice_viewed', ['number' => $this->audit->number, 'link' => route('invoices.edit', [$this->audit->id]), 'client' => $client]);
+                            return trans('bt.activity_invoice_viewed', ['number' => $this->audit->number, 'link' => route('documents.edit', [$this->audit->id]), 'client' => $client]);
                             break;
                         case 'public.paid':
-                            return trans('bt.activity_invoice_paid', ['number' => $this->audit->number, 'link' => route('invoices.edit', [$this->audit->id]), 'client' => $client]);
+                            return trans('bt.activity_invoice_paid', ['number' => $this->audit->number, 'link' => route('documents.edit', [$this->audit->id]), 'client' => $client]);
                             break;
                     }
 

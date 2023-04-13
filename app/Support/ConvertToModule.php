@@ -12,6 +12,8 @@
 namespace BT\Support;
 
 use BT\Modules\CustomFields\Models\CustomField;
+use BT\Modules\Documents\Models\Invoice;
+use BT\Modules\Documents\Models\Workorder;
 use BT\Modules\Groups\Models\Group;
 
 class ConvertToModule
@@ -30,8 +32,10 @@ class ConvertToModule
         $toModuleItem = 'BT\Modules\Documents\Models\DocumentItem';
         $moduleStatuses = 'BT\Support\Statuses\DocumentStatuses';
         $module_id = strtolower($toModuleType) . '_id';
-        $module_status_id = strtolower($moduleType) . '_status_id';
-        $module_items = strtolower($moduleType) . 'Items';
+//        $module_status_id = strtolower($moduleType) . '_status_id';
+        $module_status_id = 'document_status_id';
+//        $module_items = strtolower($moduleType) . 'Items';
+        $module_items = 'documentItems';
 
         $record = [
             'client_id'          => $module->client_id,
@@ -48,12 +52,12 @@ class ConvertToModule
         ];
 
         if ($toModuleType == 'Invoice') {
-            $record['document_type'] = 3;
+            $record['document_type'] = Invoice::class;
             $record['document_date'] = $moduleDate;
             $record['action_date'] = $dueAt;
             $record['document_status_id'] = $toModuleStatuses::getStatusId('draft');
         } else { //module workorder
-            $record['document_type'] = 2;
+            $record['document_type'] = Workorder::class;
             $record['document_date'] = $moduleDate;
             $record['action_date'] = $dueAt;
             $record['document_status_id'] = $toModuleStatuses::getStatusId('draft');

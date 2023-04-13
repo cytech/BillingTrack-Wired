@@ -12,8 +12,8 @@
 namespace BT\Modules\TaxRates\Models;
 
 use BT\Modules\Documents\Models\DocumentItem;
-use BT\Modules\Invoices\Models\InvoiceItem;
-use BT\Modules\Quotes\Models\QuoteItem;
+//use BT\Modules\Invoices\Models\InvoiceItem;
+//use BT\Modules\Quotes\Models\QuoteItem;
 use BT\Modules\RecurringInvoices\Models\RecurringInvoiceItem;
 use BT\Support\NumberFormatter;
 use BT\Traits\Sortable;

@@ -14,6 +14,17 @@
         <div class="clearfix"></div>
         <span class="float-start"><strong>@lang('bt.total')</strong></span><span
                 class="float-end">{{ $document->amount->formatted_total }}</span>
+
+        @if($document->module_type == 'Invoice' or $document->module_type == 'Purchaseorder')
+            <div class="clearfix"></div>
+            <span class="float-start"><strong>@lang('bt.paid')</strong></span><span
+                    class="float-end">{{ $document->amount->formatted_paid }}</span>
+
+            <div class="clearfix"></div>
+            <span class="float-start"><strong>@lang('bt.balance')</strong></span><span
+                    class="float-end">{{ $document->amount->formatted_balance }}</span>
+        @endif
+
         <div class="clearfix"></div>
     </div>
 </div>

@@ -11,9 +11,9 @@
 
 namespace BT\Modules\Utilities\Controllers;
 
-use BT\Modules\Invoices\Models\Invoice;
-use BT\Modules\Quotes\Models\Quote;
-use BT\Modules\Workorders\Models\Workorder;
+use BT\Modules\Documents\Models\Invoice;
+use BT\Modules\Documents\Models\Quote;
+use BT\Modules\Documents\Models\Workorder;
 use BT\Support\FileNames;
 use BT\Support\PDF\PDFFactory;
 use Illuminate\Http\Request;

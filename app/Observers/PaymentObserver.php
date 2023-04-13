@@ -3,7 +3,9 @@
 namespace BT\Observers;
 
 
-use BT\Events\InvoiceModified;
+//use BT\Events\InvoiceModified;
+
+use BT\Events\DocumentModified;
 use BT\Modules\CustomFields\Models\PaymentCustom;
 use BT\Modules\MailQueue\Support\MailQueue;
 use BT\Modules\Payments\Models\Payment;
@@ -24,7 +26,7 @@ class PaymentObserver
      */
     public function created(Payment $payment): void
     {
-        event(new InvoiceModified($payment->invoice));
+        event(new DocumentModified($payment->invoice));
 
         // Create the default custom record.
         $payment->custom()->save(new PaymentCustom());
@@ -46,7 +48,7 @@ class PaymentObserver
 
     public function updated(Payment $payment): void
     {
-        event(new InvoiceModified($payment->invoice));
+        event(new DocumentModified($payment->invoice));
     }
 
     public function deleting(Payment $payment): void
@@ -66,7 +68,7 @@ class PaymentObserver
     {
         if ($payment->invoice)
         {
-            event(new InvoiceModified($payment->invoice));
+            event(new DocumentModified($payment->invoice));
         }
     }
 

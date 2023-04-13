@@ -14,7 +14,7 @@
     @foreach ($workorders as $workorder)
         <tr>
             <td>
-                <span class="badge badge-{{ $workorderStatuses[$workorder->workorder_status_id] }}">{{ trans('bt.' . $workorderStatuses[$workorder->workorder_status_id]) }}</span>
+                <span class="badge badge-{{ $workorderStatuses[$workorder->document_status_id] }}">{{ trans('bt.' . $workorderStatuses[$workorder->document_status_id]) }}</span>
                 @if ($workorder->viewed)
                     <span class="badge bg-success">@lang('bt.viewed')</span>
                 @else
@@ -23,7 +23,7 @@
             </td>
             <td>{{ $workorder->number }}</td>
             <td>{{ $workorder->formatted_created_at }}</td>
-            <td>{{ $workorder->formatted_expires_at }}</td>
+            <td>{{ $workorder->formatted_action_date }}</td>
             <td>{{ $workorder->summary }}</td>
             <td>{{ $workorder->amount->formatted_total }}</td>
             <td>

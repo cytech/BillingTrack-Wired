@@ -2,7 +2,7 @@
 
 namespace BT\Modules\Merchant\Support;
 
-use BT\Modules\Invoices\Models\Invoice;
+use BT\Modules\Documents\Models\Invoice;
 
 abstract class MerchantDriver
 {

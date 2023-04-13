@@ -40,8 +40,8 @@ class DocumentMailController extends Controller
         return view('documents._modal_mail')
             ->with('documentId', $document->id)
             ->with('redirectTo', urlencode(request('redirectTo')))
-            ->with('subject', $parser->parse('documentEmailSubject'))
-            ->with('body', $parser->parse('documentEmailBody'))
+            ->with('subject', $parser->parse(strtolower($document->module_type) . 'EmailSubject'))
+            ->with('body', $parser->parse(strtolower($document->module_type) . 'EmailBody'))
             ->with('contactDropdownTo', $contacts->contactDropdownTo())
             ->with('contactDropdownCc', $contacts->contactDropdownCc())
             ->with('contactDropdownBcc', $contacts->contactDropdownBcc());

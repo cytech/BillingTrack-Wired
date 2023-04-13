@@ -11,9 +11,9 @@
 
 namespace BT\Modules\ClientCenter\Controllers;
 
-use BT\Events\WorkorderApproved;
-use BT\Events\WorkorderRejected;
-use BT\Events\WorkorderViewed;
+use BT\Events\DocumentApproved;
+use BT\Events\DocumentRejected;
+use BT\Events\DocumentViewed;
 use BT\Http\Controllers\Controller;
 use BT\Modules\Documents\Models\Workorder;
 use BT\Support\FileNames;
@@ -28,7 +28,9 @@ class ClientCenterPublicWorkorderController extends Controller
 
         app()->setLocale($workorder->client->language);
 
-        event(new WorkorderViewed($workorder));
+        if (!$workorder->viewed) {
+            event(new DocumentViewed($workorder));
+        }
 
         return view('client_center.workorders.public')
             ->with('workorder', $workorder)
@@ -42,7 +44,9 @@ class ClientCenterPublicWorkorderController extends Controller
         $workorder = Workorder::with('items.taxRate', 'items.taxRate2', 'items.amount.item.workorder', 'items.workorder')
             ->where('url_key', $urlKey)->first();
 
-        event(new WorkorderViewed($workorder));
+        if (!$workorder->viewed) {
+            event(new DocumentViewed($workorder));
+        }
 
         $pdf = PDFFactory::create();
 
@@ -65,7 +69,7 @@ class ClientCenterPublicWorkorderController extends Controller
 
         $workorder->save();
 
-        event(new WorkorderApproved($workorder));
+        event(new DocumentApproved($workorder));
 
         return redirect()->route('clientCenter.public.workorder.show', [$urlKey]);
     }
@@ -78,7 +82,7 @@ class ClientCenterPublicWorkorderController extends Controller
 
         $workorder->save();
 
-        event(new WorkorderRejected($workorder));
+        event(new DocumentRejected($workorder));
 
         return redirect()->route('clientCenter.public.workorder.show', [$urlKey]);
     }

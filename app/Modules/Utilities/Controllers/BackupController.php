@@ -18,11 +18,11 @@ use BT\Modules\RecurringInvoices\Models\RecurringInvoice;
 use BT\Modules\TimeTracking\Models\TimeTrackingProject;
 use Ifsnop\Mysqldump\Mysqldump;
 use Illuminate\Http\Request;
-use BT\Modules\Quotes\Models\Quote;
-use BT\Modules\Workorders\Models\Workorder;
-use BT\Modules\Invoices\Models\Invoice;
+use BT\Modules\Documents\Models\Quote;
+use BT\Modules\Documents\Models\Workorder;
+use BT\Modules\Documents\Models\Invoice;
 use BT\Modules\Payments\Models\Payment;
-use BT\Modules\Purchaseorders\Models\Purchaseorder;
+use BT\Modules\Documents\Models\Purchaseorder;
 use BT\Modules\Scheduler\Models\Schedule;
 
 class BackupController extends Controller

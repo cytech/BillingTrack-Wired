@@ -18,6 +18,13 @@ class Purchaseorder extends Document
 {
     use HasParent;
 
+    // HasParent function getMorphClass returns the parent class
+    // overriding here to return the child class for morphMany relations
+    public function getMorphClass(): string
+    {
+        return $this::class;
+    }
+
     public function vendor()
     {
         return $this->belongsTo('BT\Modules\Vendors\Models\Vendor', 'client_id');

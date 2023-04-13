@@ -59,6 +59,14 @@ return new class extends Migration {
                 ->onUpdate('restrict');
         });
 
+        Schema::table('payments', function (Blueprint $table) {
+            $table->dropForeign('payments_invoice_id_index');
+            $table->foreign('invoice_id', 'payments_invoice_id_index')
+                ->references('id')->on('documents')
+                ->onDelete('cascade')
+                ->onUpdate('restrict');
+        });
+
         Schema::disableForeignKeyConstraints();
         //delete obsolete tables
         $droptables = ['invoices', 'invoice_amounts', 'invoice_items', 'invoice_item_amounts',

@@ -15,6 +15,8 @@ use BT\Modules\Documents\Models\Document;
 use BT\Modules\Documents\Models\DocumentAmount;
 use BT\Modules\Documents\Models\DocumentItem;
 use BT\Modules\Documents\Models\DocumentItemAmount;
+use BT\Modules\Payments\Models\Payment;
+use BT\Support\Statuses\DocumentStatuses;
 
 class DocumentCalculate
 {
@@ -30,9 +32,21 @@ class DocumentCalculate
             ->where('document_id', $document->id)
             ->get();
 
+        $totalPaid = Payment::where('invoice_id', $document->id)->sum('amount');
+
+
         $calculator = new DocumentCalculator;
+
         $calculator->setId($document->id);
+
+        $calculator->setTotalPaid($totalPaid);
+
         $calculator->setDiscount($document->discount);
+
+        if ($document->status_text == 'canceled')
+        {
+            $calculator->setIsCanceled(true);
+        }
 
         foreach ($documentItems as $documentItem)
         {
@@ -62,6 +76,20 @@ class DocumentCalculate
         $documentAmount = DocumentAmount::firstOrNew(['document_id' => $document->id]);
         $documentAmount->fill($calculatedAmount);
         $documentAmount->save();
+
+        // Check to see if the invoice should be marked as paid.
+        if ($calculatedAmount['total'] > 0 and $calculatedAmount['balance'] <= 0 and $document->status_text != 'canceled')
+        {
+            $document->document_status_id = DocumentStatuses::getStatusId('paid');
+            $document->save();
+        }
+
+        // Check to see if the invoice was marked as paid but should no longer be.
+        if ($calculatedAmount['total'] > 0 and $calculatedAmount['balance'] > 0 and $document->document_status_id == DocumentStatuses::getStatusId('paid'))
+        {
+            $document->document_status_id = DocumentStatuses::getStatusId('sent');
+            $document->save();
+        }
     }
 
     public function calculateAll()

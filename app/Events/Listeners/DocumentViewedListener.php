@@ -2,9 +2,9 @@
 
 namespace BT\Events\Listeners;
 
-use BT\Events\QuoteViewed;
+use BT\Events\DocumentViewed;
 
-class QuoteViewedListener
+class DocumentViewedListener
 {
     /**
      * Create the event listener.
@@ -19,18 +19,18 @@ class QuoteViewedListener
     /**
      * Handle the event.
      *
-     * @param  QuoteViewed $event
+     * @param  DocumentViewed $event
      * @return void
      */
-    public function handle(QuoteViewed $event)
+    public function handle(DocumentViewed $event)
     {
         if (request('disableFlag') != 1)
         {
             if (auth()->guest() or auth()->user()->user_type == 'client')
             {
-                $event->quote->activities()->create(['activity' => 'public.viewed']);
-                $event->quote->viewed = 1;
-                $event->quote->save();
+                $event->document->activities()->create(['activity' => 'public.viewed']);
+                $event->document->viewed = 1;
+                $event->document->save();
             }
         }
     }

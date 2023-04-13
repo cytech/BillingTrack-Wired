@@ -12,15 +12,17 @@
 namespace BT\Modules\ClientCenter\Controllers;
 
 use BT\Http\Controllers\Controller;
-use BT\Modules\Invoices\Models\Invoice;
-use BT\Support\Statuses\InvoiceStatuses;
+//use BT\Modules\Invoices\Models\Invoice;
+use BT\Modules\Documents\Models\Invoice;
+//use BT\Support\Statuses\InvoiceStatuses;
+use BT\Support\Statuses\DocumentStatuses;
 use Illuminate\Support\Facades\DB;
 
 class ClientCenterInvoiceController extends Controller
 {
     private $invoiceStatuses;
 
-    public function __construct(InvoiceStatuses $invoiceStatuses)
+    public function __construct(DocumentStatuses $invoiceStatuses)
     {
         $this->invoiceStatuses = $invoiceStatuses;
     }
