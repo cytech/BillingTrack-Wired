@@ -21,9 +21,6 @@
                         @include('client_center.payments._table')
                     </div>
                 </div>
-                <div class="float-end">
-                    {!! $payments->render() !!}
-                </div>
             </div>
         </div>
     </div>

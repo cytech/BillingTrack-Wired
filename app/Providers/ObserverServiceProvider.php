@@ -74,27 +74,15 @@ class ObserverServiceProvider extends ServiceProvider
         Expense::observe(ExpenseObserver::class);
         CompanyProfile::observe(CompanyProfileObserver::class);
         Payment::observe(PaymentObserver::class);
-//        Invoice::observe(InvoiceObserver::class);
         Note::observe(NoteObserver::class);
-//        Quote::observe(QuoteObserver::class);
         RecurringInvoice::observe(RecurringInvoiceObserver::class);
         Setting::observe(SettingObserver::class);
         TimeTrackingProject::observe(TimeTrackingProjectObserver::class);
         User::observe(UserObserver::class);
-//        Workorder::observe(WorkorderObserver::class);
-//        InvoiceItem::observe(InvoiceItemObserver::class);
-//        QuoteItem::observe(QuoteItemObserver::class);
         RecurringInvoiceItem::observe(RecurringInvoiceItemObserver::class);
-//        WorkorderItem::observe(WorkorderItemObserver::class);
         TimeTrackingTask::observe(TimeTrackingTaskObserver::class);
         Vendor::observe(VendorObserver::class);
-//        Purchaseorder::observe(PurchaseorderObserver::class);
-//        PurchaseorderItem::observe(PurchaseorderItemObserver::class);
         Document::observe(DocumentObserver::class);
         DocumentItem::observe(DocumentItemObserver::class);
-
-
-
-
     }
 }

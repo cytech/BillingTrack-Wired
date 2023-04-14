@@ -14,10 +14,6 @@ namespace BT\Modules\Documents\Support;
 use BT\Support\Calculators\Calculator;
 use BT\Support\Calculators\Interfaces\PayableInterface;
 
-//class DocumentCalculator extends Calculator
-//{
-//}
-
 //invoice and purchaseorder
 class DocumentCalculator extends Calculator implements PayableInterface
 {

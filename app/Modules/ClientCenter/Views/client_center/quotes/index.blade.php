@@ -21,9 +21,6 @@
                         @include('client_center.quotes._table')
                     </div>
                 </div>
-                <div class="float-end">
-                    {!! $quotes->render() !!}
-                </div>
             </div>
         </div>
     </div>

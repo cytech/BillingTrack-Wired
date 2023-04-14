@@ -15,17 +15,14 @@ class CalendarEventPresenter
         switch ($type){
             case 'quote':
                 $data->id = ucfirst($type) . ': ' . $entity->number;
-//                $data->url = url("/quotes/{$entity->id}/edit");
                 $data->url = url("/documents/{$entity->id}/edit");
                 $data->title = trans("bt.{$type}") . ' ' . $entity->number . ' for ' . $entity->client->name;
                 $data->description = mb_strimwidth(addslashes($entity->summary), 0, 30, '...');
-//                $data->start = $entity->expires_at ?: $entity->quote_date;
                 $data->start = $entity->action_date ?: $entity->document_date;
                 $data->category_id = 4;
                 break;
             case 'workorder':
                 $data->id = ucfirst($type) . ': ' . $entity->number;
-//                $data->url = url("/workorders/{$entity->id}/edit");
                 $data->url = url("/documents/{$entity->id}/edit");
                 $data->title = trans("bt.{$type}") . ' ' . $entity->number . ' for ' . $entity->client->name;
                 $data->description = $entity->client->phone . '<br>'
@@ -48,11 +45,9 @@ class CalendarEventPresenter
                 break;
             case 'invoice':
                 $data->id = ucfirst($type) . ': ' . $entity->number;
-//                $data->url = url("/invoices/{$entity->id}/edit");
                 $data->url = url("/documents/{$entity->id}/edit");
                 $data->title = trans("bt.{$type}") . ' ' . $entity->number . ' for ' . $entity->client->name ;
                 $data->description = mb_strimwidth(addslashes($entity->summary), 0, 30, '...');
-//                $data->start = $entity->due_at ?: $entity->invoice_date;
                 $data->start = $entity->action_date ?: $entity->document_date;
                 $data->category_id =  6;
                 break;
@@ -90,11 +85,9 @@ class CalendarEventPresenter
                 break;
             case 'purchaseorder':
                 $data->id = ucfirst($type) . ': ' . $entity->number;
-//                $data->url = url("/purchaseorders/{$entity->id}/edit");
                 $data->url = url("/documents/{$entity->id}/edit");
                 $data->title = trans("bt.{$type}") . ' ' . $entity->number . ' for ' . $entity->vendor->name ;
                 $data->description = mb_strimwidth(addslashes($entity->summary), 0, 30, '...');
-//                $data->start = $entity->due_at ?: $entity->purchaseorder_date;
                 $data->start = $entity->action_date ?: $entity->document_date;
                 $data->category_id =  8;
                 break;

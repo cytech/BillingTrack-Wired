@@ -11,7 +11,6 @@
 namespace BT\Modules\Scheduler\Controllers;
 
 use BT\Http\Controllers\Controller;
-//use BT\Modules\Purchaseorders\Models\Purchaseorder;
 use BT\Modules\Documents\Models\Purchaseorder;
 use BT\Modules\Scheduler\Requests\ReplaceRequest;
 use BT\Modules\Employees\Models\Employee;
@@ -21,7 +20,6 @@ use BT\Modules\Scheduler\Models\ScheduleOccurrence;
 use BT\Modules\Scheduler\Models\ScheduleResource;
 use BT\Modules\Scheduler\Models\Category;
 use BT\Modules\Settings\Models\Setting;
-//use BT\Modules\Workorders\Models\WorkorderItem;
 use BT\Modules\Documents\Models\DocumentItem;
 use Carbon\Carbon;
 use DB;
@@ -31,11 +29,8 @@ use BT\Modules\Scheduler\Requests\EventRequest;
 
 //for coreevnts
 use BT\Modules\Scheduler\Support\CalendarEventPresenter;
-//use BT\Modules\Quotes\Models\Quote;
 use BT\Modules\Documents\Models\Quote;
-//use BT\Modules\Workorders\Models\Workorder;
 use BT\Modules\Documents\Models\Workorder;
-//use BT\Modules\Invoices\Models\Invoice;
 use BT\Modules\Documents\Models\Invoice;
 use BT\Modules\Payments\Models\Payment;
 use BT\Modules\Expenses\Models\Expense;

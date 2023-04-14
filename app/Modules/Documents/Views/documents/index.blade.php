@@ -11,7 +11,7 @@
                             {!! Form::hidden('client', request('client')) !!}
                         {!! Form::close() !!}
                     </div>
-                    <a class="btn btn-secondary rounded border" href="{{ route('utilities.batchprint', ['module' => 'documents']) }}" title="Batch Print by DateRange"><i
+                    <a class="btn btn-secondary rounded border" href="{{ route('utilities.batchprint', ['module' => strtolower($module_type) . 's']) }}" title="Batch Print by DateRange"><i
                                 class="fa fa-print"></i> @lang('bt.batchprint')</a>
                     <button class="btn btn-primary rounded border"
                             type="button"

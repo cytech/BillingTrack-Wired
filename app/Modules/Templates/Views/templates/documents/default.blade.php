@@ -1,8 +1,8 @@
 <!doctype html>
-<html>
+<html lang="en-US">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>@lang('bt.'. strtolower($document->module_type)) #{{ $document->number }}</title>
+    <title>@lang('bt.'. $document->lower_case_baseclass ) #{{ $document->number }}</title>
     <style>
         @page {
             margin: 25px;
@@ -62,6 +62,12 @@
             font-weight: bold;
         }
 
+        .infoitalic {
+            color: #5D6975;
+            font-weight: bold;
+            font-style: italic;
+        }
+
         .terms {
             padding: 10px;
             text-align: center;
@@ -80,22 +86,23 @@
 @if($document->module_type == 'Purchaseorder')
     <table>
         <tr>
-            <td style="width: 50%;" valign="top">
+            <td style="width: 50%; vertical-align:top;">
                 <h1>{{ mb_strtoupper(trans('bt.purchaseorder')) }}</h1>
                 <span class="info">{{ mb_strtoupper(trans('bt.purchaseorder')) }} #</span>{{ $document->number }}<br>
                 <span class="info">{{ mb_strtoupper(trans('bt.issued')) }}</span> {{ $document->formatted_created_at }}
                 <br>
                 <span class="info">{{ mb_strtoupper(trans('bt.due_date')) }}</span> {{ $document->formatted_action_date }}
                 <br><br>
-                <span class="info">{{ mb_strtoupper(trans('bt.to')) }}</span><br>{{ $document->vendor->name }}<br>
+                <span class="infoitalic">{{ mb_strtoupper(trans('bt.to')) }}:</span><br>
+                <span class="info">{{ $document->vendor->name }}</span><br>
                 @if ($document->vendor->address)
                     {!! $document->vendor->formatted_address !!}<br>
                 @endif
             </td>
-            <td style="width: 50%; text-align: right;" valign="top">
-                <span class="info">{{ mb_strtoupper(trans('bt.bill_to')) }}</span>
+            <td style="width: 50%; text-align: right; vertical-align:top;">
                 {!! $document->companyProfile->logo() !!}<br>
-                {{ $document->companyProfile->company }}<br>
+                <span class="infoitalic">{{ mb_strtoupper(trans('bt.bill_to')) }}:</span><br>
+                <span class="info">{{ $document->companyProfile->company }}</span><br>
                 {!! $document->companyProfile->formatted_address !!}<br>
                 @if ($document->companyProfile->phone)
                     {{ $document->companyProfile->phone }}<br>
@@ -105,8 +112,8 @@
                 @endif
                 <br><br><br>
                 @if ($document->companyProfile->address_2)
-                    <span class="info">{{ mb_strtoupper(trans('bt.ship_to')) }}</span><br>
-                    {{ $document->companyProfile->company }}<br>
+                    <span class="infoitalic">{{ mb_strtoupper(trans('bt.ship_to')) }}:</span><br>
+                    <span class="info">{{ $document->companyProfile->company }}</span><br>
                     {!! $document->companyProfile->formatted_address2 !!}<br>
                 @endif
             </td>
@@ -115,7 +122,7 @@
 @else
     <table>
         <tr>
-            <td style="width: 50%;" valign="top">
+            <td style="width: 50%; vertical-align:top;">
                 <h1>{{ mb_strtoupper(trans('bt.'. strtolower($document->module_type))) }}</h1>
                 <span class="info">{{ mb_strtoupper(trans('bt.'. strtolower($document->module_type))) }} #</span>{{ $document->number }}
                 <br>
@@ -127,56 +134,45 @@
                     <span class="info">{{ mb_strtoupper(trans('bt.due_date')) }}</span> {{ $document->formatted_action_date }}
                 @endif
                 <br><br>
-                <span class="info">{{ mb_strtoupper(trans('bt.bill_to')) }}</span><br>{{ $document->client->name }}<br>
-                @if ($document->client->address)
-                    {!! $document->client->formatted_address !!}<br>
+                <span class="infoitalic">{{ mb_strtoupper(trans('bt.bill_to')) }}:</span><br>
+                <span class="info">{{ $document->client->name }}</span><br>
+                {!! $document->client->formatted_address ?? '' !!}<br>
+                @if($document->module_type == 'Workorder')
+                    {!! $document->client->phone ?? ''!!}<br>
+                @endif
+                @if ($document->client->address_2)
+                    <td style="width: 50%; vertical-align:bottom;">
+                        <span class="info">{{ mb_strtoupper(trans('bt.ship_to')) }}:</span><br>
+                        <span class="info">{{ $document->client->name }}</span><br>
+                        {!! $document->client->formatted_address2 !!}<br>
+                    </td>
+                @endif
+            </td>
+            <td style="width: 50%; text-align: right; vertical-align:top;">
+                {!! $document->companyProfile->logo() !!}<br>
+                <span class="info">{{ $document->companyProfile->company }}</span><br>
+                {!! $document->companyProfile->formatted_address !!}<br>
+                {{ $document->companyProfile->phone ?? ''}}<br>
+                @if ($document->companyProfile->email)
+                    <a href="mailto:{{ $document->companyProfile->email }}">{{ $document->companyProfile->email }}</a>
+                    <br>
                 @endif
                 @if($document->module_type == 'Workorder')
-                    @if ($document->client->phone)
-                        {!! $document->client->phone !!}
-                        <br>
-            @endif
-            @if ($document->client->address_2)
-                <td style="width: 50%;" valign="bottom">
-                    <span class="info">{{ mb_strtoupper(trans('bt.ship_to')) }}</span><br>{{ $document->client->name }}
                     <br>
-                    {!! $document->client->formatted_address2 !!}<br>
-                </td>
+                    <span class="info">{{ 'Job Date: ' }}</span>{{ $document->formatted_job_date }}<br>
+                    <span class="info">{{ 'Start Time: ' }}</span>{{ $document->formatted_start_time }}<br>
+                    <span class="info">{{ 'Estimated Hours: ' }}</span>{{ $document->formatted_job_length }}<br>
+                    <span class="info">
+                <strong>Client Pickup: {{ $document->will_call ? __('bt.yes') : __('bt.no')  }}</strong>
                 @endif
-                @endif
-                </td>
-                <td style="width: 50%; text-align: right;" valign="top">
-                    {!! $document->companyProfile->logo() !!}<br>
-                    {{ $document->companyProfile->company }}<br>
-                    {!! $document->companyProfile->formatted_address !!}<br>
-                    @if ($document->companyProfile->phone)
-                        {{ $document->companyProfile->phone }}<br>
-                    @endif
-                    @if ($document->companyProfile->email)
-                        <a href="mailto:{{ $document->companyProfile->email }}">{{ $document->companyProfile->email }}</a>
-                    @endif
-                    @if($document->module_type == 'Workorder')
-                        <br>
-                        <span class="info">{{ 'Job Date: ' }}</span>{{ $document->formatted_job_date }}<br>
-                        <span class="info">{{ 'Start Time: ' }}</span>{{ $document->formatted_start_time }}<br>
-                        {{--<span class="info">{{ 'End Time: ' }}</span>{{ $document->formatted_end_time }}<br>--}}
-                        <span class="info">{{ 'Estimated Hours: ' }}</span>{{ $document->formatted_job_length }}<br>
-                        <span class="info">
-                 @if ($document->will_call ==1)
-                                <strong>Client Pickup: Yes</strong>
-                            @else
-                                <strong>Client Pickup: No</strong>
-                            @endif
-            </span>
-                    @endif
-                </td>
+            </td>
         </tr>
     </table>
 @endif
 @if($document->module_type == 'Workorder')
     <table>
         <tr>
-            <td style="width: 100%; text-align: left;" valign="top">
+            <td style="width: 100%; text-align: left; vertical-align:top;">
                 <strong>Job Summary:</strong> {{$document->summary}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </td>
         </tr>
@@ -185,11 +181,11 @@
 <table class="alternate">
     <thead>
     <tr>
-        <th>{{ mb_strtoupper(trans('bt.product')) }}</th>
-        <th>{{ mb_strtoupper(trans('bt.description')) }}</th>
-        <th class="amount">{{ mb_strtoupper(trans('bt.quantity')) }}</th>
-        <th class="amount">{{ mb_strtoupper(trans('bt.price')) }}</th>
-        <th class="amount">{{ mb_strtoupper(trans('bt.total')) }}</th>
+        <th class="info">{{ mb_strtoupper(trans('bt.product')) }}</th>
+        <th class="info">{{ mb_strtoupper(trans('bt.description')) }}</th>
+        <th class="info amount">{{ mb_strtoupper(trans('bt.quantity')) }}</th>
+        <th class="info amount">{{ mb_strtoupper(trans('bt.price')) }}</th>
+        <th class="info amount">{{ mb_strtoupper(trans('bt.total')) }}</th>
     </tr>
     </thead>
     <tbody>

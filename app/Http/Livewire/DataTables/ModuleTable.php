@@ -93,7 +93,7 @@ class ModuleTable extends DataTableComponent
             $this->setDefaultSort('client_id');
             $this->module_fullname = 'BT\\Modules\\RecurringInvoices\\Models\\RecurringInvoice';
         } elseif ($this->module_type == 'Payment') {
-            $this->setDefaultSort('paid_at');
+            $this->setDefaultSort('paid_at', 'desc');
             $this->module_fullname = 'BT\\Modules\\Payments\\Models\\Payment';
         } else { //quote, workorder, invoice, purchaseorder
             $this->setDefaultSort('document_date', 'desc');
@@ -192,7 +192,6 @@ class ModuleTable extends DataTableComponent
                 'title'       => __('bt.bulk_change_status_record_warning'),
                 'ids'         => $ids,
                 'module_type' => $this->module_type,
-//                'route'       => $this->module_type == 'TimeTrackingProject' ? route('timeTracking.projects.bulk.status') : route(lcfirst($this->module_type) . 's.bulk.status'),todo
                 'route'       => $this->module_type == 'TimeTrackingProject' ? route('timeTracking.projects.bulk.status') : route('documents.bulk.status'),
                 'status'      => $status
             ];

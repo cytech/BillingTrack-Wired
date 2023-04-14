@@ -18,7 +18,7 @@
                     <button class="btn btn-primary rounded border"
                             type="button"
                             {{--                   params 3 thru ... mount(,,$modulefullname, $moduleop, $resource_id = null, $module_id = null, $readonly = null)--}}
-                            onclick="window.livewire.emit('showModal', 'modals.create-module-modal',  'BT\\Modules\\RecurringInvoices\\Models\\RecurringInvoice', 'create' )"
+                            onclick="window.livewire.emit('showModal', 'modals.create-module-modal',  'BT\\Modules\\RecurringInvoices\\Models\\RecurringInvoice', 'RecurringInvoice', 'create' )"
                     ><i class="fa fa-plus"></i> @lang('bt.create_recurring_invoice')
                     </button>
                 </div>

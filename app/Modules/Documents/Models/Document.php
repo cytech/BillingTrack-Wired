@@ -50,7 +50,7 @@ class Document extends Model
 
     protected $childColumn = 'document_type';
 
-    // todo remove unnecessary?
+    // todo remove unnecessary appends everywhere...?
     //    protected $appends = ['formatted_document_date', 'formatted_action_date','status_text', 'formatted_summary'];
 
     protected $casts = ['action_date' => 'datetime', 'document_date' => 'datetime', 'job_date' => 'datetime', 'deleted_at' => 'datetime'];

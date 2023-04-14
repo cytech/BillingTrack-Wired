@@ -12,17 +12,11 @@
 namespace BT\Modules\ClientCenter\Controllers;
 
 use BT\Http\Controllers\Controller;
-//use BT\Modules\Invoices\Models\Invoice;
 use BT\Modules\Documents\Models\Invoice;
 use BT\Modules\Payments\Models\Payment;
-//use BT\Modules\Quotes\Models\Quote;
 use BT\Modules\Documents\Models\Quote;
-//use BT\Modules\Workorders\Models\Workorder;
 use BT\Modules\Documents\Models\Workorder;
-//use BT\Support\Statuses\InvoiceStatuses;
 use BT\Support\Statuses\DocumentStatuses;
-//use BT\Support\Statuses\QuoteStatuses;
-//use BT\Support\Statuses\WorkorderStatuses;
 use Illuminate\Support\Facades\DB;
 
 class ClientCenterDashboardController extends Controller
@@ -32,9 +26,6 @@ class ClientCenterDashboardController extends Controller
     private $workorderStatuses;
 
     public function __construct(
-//        InvoiceStatuses $invoiceStatuses,
-//        QuoteStatuses $quoteStatuses,
-//        WorkorderStatuses $workorderStatuses)
         DocumentStatuses $invoiceStatuses,
         DocumentStatuses $quoteStatuses,
         DocumentStatuses $workorderStatuses)

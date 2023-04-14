@@ -12,12 +12,9 @@
 namespace BT\Modules\Vendors\Models;
 
 use Askedio\SoftCascade\Traits\SoftCascadeTrait;
-use BT\Modules\Documents\Models\Document;
 use BT\Modules\Documents\Models\Purchaseorder;
 use BT\Modules\Expenses\Models\Expense;
-//use BT\Modules\Purchaseorders\Models\Purchaseorder;
 use BT\Support\CurrencyFormatter;
-//use BT\Support\Statuses\PurchaseorderStatuses;
 use BT\Support\Statuses\DocumentStatuses;
 use Illuminate\Database\Eloquent\Model;
 use DB;
@@ -60,10 +57,6 @@ class Vendor extends Model
 
     public static function inUse($id)
     {
-//        if (Purchaseorder::where('vendor_id', $id)->count())
-//        {
-//            return true;
-//        }
         if (Purchaseorder::where('client_id', $id)->count())
         {
             return true;
@@ -121,7 +114,6 @@ class Vendor extends Model
 
     public function purchaseorders()
     {
-//        return $this->hasMany('BT\Modules\Purchaseorders\Models\Purchaseorder');
         return $this->hasMany(Purchaseorder::class, 'client_id');
     }
 

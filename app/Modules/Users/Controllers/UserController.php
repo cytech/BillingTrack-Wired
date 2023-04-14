@@ -96,10 +96,6 @@ class UserController extends Controller
 
         $user->fill($request->except('custom', 'roles', 'permissions'));
 
-//        $user->save();
-//        $user->name  = $request->name;
-//        $user->email = $request->email;
-
         if ($request->get('password')) {
             $user->password = bcrypt($request->get('password'));
         }

@@ -15,6 +15,7 @@ use BT\Events\RecurringInvoiceModified;
 use BT\Http\Controllers\Controller;
 use BT\Modules\Currencies\Models\Currency;
 use BT\Modules\CustomFields\Models\CustomField;
+use BT\Modules\Documents\Support\DocumentTemplates;
 use BT\Modules\Groups\Models\Group;
 use BT\Modules\Invoices\Support\InvoiceTemplates;
 use BT\Modules\ItemLookups\Models\ItemLookup;
@@ -41,7 +42,7 @@ class RecurringInvoiceEditController extends Controller
             ->with('taxRates', TaxRate::getList())
             ->with('customFields', CustomField::forTable('recurring_invoices')->get())
             ->with('returnUrl', $this->getReturnUrl())
-            ->with('templates', InvoiceTemplates::lists())
+            ->with('templates', DocumentTemplates::lists())
             ->with('itemCount', count($recurringInvoice->recurringInvoiceItems))
             ->with('frequencies', Frequency::lists())
             ->with('groups', Group::getList());
@@ -93,7 +94,7 @@ class RecurringInvoiceEditController extends Controller
             ->with('taxRates', TaxRate::getList())
             ->with('customFields', CustomField::forTable('recurring_invoices')->get())
             ->with('returnUrl', $this->getReturnUrl())
-            ->with('templates', InvoiceTemplates::lists())
+            ->with('templates', DocumentTemplates::lists())
             ->with('itemCount', count($recurringInvoice->recurringInvoiceItems))
             ->with('frequencies', Frequency::lists())
             ->with('groups', Group::getList());

@@ -19,12 +19,12 @@ class TrashTable extends DataTableComponent
             'class'   => 'datatable',
         ]);
         //replace v1 addAttributes for recurringinvoice -> id 5%, category -> action 10%,  user -> action 10%
-        $this->setThAttributes(function(Column $column) {
+        $this->setThAttributes(function (Column $column) {
             if ($column->isLabel()) {
                 return [
                     'default' => true,
                     //'class' => 'bg-green',
-                    'width' => '8%'
+                    'width'   => '8%'
                 ];
             }
 
@@ -40,7 +40,7 @@ class TrashTable extends DataTableComponent
             $this->module_fullname = 'BT\\Modules\\TimeTracking\\Models\\TimeTrackingProject';
         } elseif ($this->module_type == 'Schedule') {
             $this->module_fullname = 'BT\\Modules\\Scheduler\\Models\\Schedule';
-        } elseif (in_array($this->module_type, ['Invoice', 'Quote', 'Workorder', 'Purchaseorder'])){
+        } elseif (in_array($this->module_type, ['Invoice', 'Quote', 'Workorder', 'Purchaseorder'])) {
             $this->module_fullname = 'BT\\Modules\\Documents\\Models\\' . $this->module_type;
         } else {
             $this->module_fullname = 'BT\\Modules\\' . $this->module_type . 's\\Models\\' . $this->module_type;
@@ -49,7 +49,7 @@ class TrashTable extends DataTableComponent
 
     public function columns(): array
     {
-        if (in_array($this->module_type, ['Invoice', 'Quote', 'Workorder', 'Purchaseorder'])){
+        if (in_array($this->module_type, ['Invoice', 'Quote', 'Workorder', 'Purchaseorder'])) {
             $status_model = 'BT\\Support\\Statuses\\DocumentStatuses';
         } else {
             $status_model = 'BT\\Support\\Statuses\\' . $this->module_type . 'Statuses';
@@ -73,7 +73,7 @@ class TrashTable extends DataTableComponent
         if ($this->getSelectedCount() > 0) {
             $ids = $this->getSelected();
             $swaldata = [
-                'title'     => __('bt.trash_restoreselected_warning'),
+                'title'       => __('bt.trash_restoreselected_warning'),
                 'ids'         => $ids,
                 'module_type' => $this->module_type,
                 'route'       => route('utilities.bulk.restoretrash'),
@@ -88,10 +88,10 @@ class TrashTable extends DataTableComponent
         if ($this->getSelectedCount() > 0) {
             $ids = $this->getSelected();
             $swaldata = [
-                'title' => __('bt.bulk_delete_record_warning'),
-                'ids'     => $ids,
+                'title'       => __('bt.bulk_delete_record_warning'),
+                'ids'         => $ids,
                 'module_type' => $this->module_type,
-                'route'   => route('utilities.bulk.deletetrash'),
+                'route'       => route('utilities.bulk.deletetrash'),
             ];
             $this->dispatchBrowserEvent('swal:bulkConfirm', $swaldata);
         }
@@ -122,7 +122,6 @@ class TrashTable extends DataTableComponent
                 ->select('recurring_invoices.*', 'recurring_invoices.id as number')
                 ->onlyTrashed();
         } else {
-//            return $this->module_fullname::has('client')->with('client')->onlyTrashed()->select(lcfirst($this->module_type) . 's.*');
             return $this->module_fullname::has('client')->with('client')->onlyTrashed()->select('documents.*');
         }
     }

@@ -50,7 +50,7 @@ class ClientCenterPublicWorkorderController extends Controller
 
         $pdf = PDFFactory::create();
 
-        $pdf->download($workorder->html, FileNames::workorder($workorder));
+        $pdf->download($workorder->html, FileNames::document($workorder));
     }
 
     public function html($urlKey)

@@ -21,9 +21,6 @@
                         @include('client_center.invoices._table')
                     </div>
                 </div>
-                <div class="float-end">
-                    {!! $invoices->render() !!}
-                </div>
             </div>
         </div>
     </div>

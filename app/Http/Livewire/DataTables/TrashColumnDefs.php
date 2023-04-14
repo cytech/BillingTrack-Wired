@@ -2,16 +2,9 @@
 
 namespace BT\Http\Livewire\DataTables;
 
-use BT\Modules\Clients\Models\Client;
-//use BT\Modules\Invoices\Models\Invoice;
-use BT\Modules\Documents\Models\Invoice;
-use BT\Modules\PaymentMethods\Models\PaymentMethod;
-use BT\Modules\Scheduler\Models\Category;
-use BT\Modules\Vendors\Models\Vendor;
 use BT\Support\CurrencyFormatter;
 use BT\Support\DateFormatter;
 use BT\Support\Frequency;
-use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\Views\Columns\BooleanColumn;
 
@@ -25,7 +18,7 @@ class TrashColumnDefs
             switch ($module_type) {
                 case 'Purchaseorder':
                     $col_client_vendor = Column::make(trans('bt.vendor'), 'vendor.name')
-                        ->sortable(fn(Builder $query, string $direction) => $query->orderBy(Vendor::select('name')->whereColumn('vendor_id', 'id'), $direction))
+                        ->sortable()
                         ->format(fn($value, $row, Column $column) => '<a href="/vendors/' . $row->vendor->id . '">' . $value . '</a>')
                         ->html();
                     $col_invoice_id = null;
@@ -36,7 +29,7 @@ class TrashColumnDefs
                     break;
                 case 'Invoice':
                     $col_client_vendor = Column::make(trans('bt.client'), 'client.name')
-                        ->sortable(fn(Builder $query, string $direction) => $query->orderBy(Client::select('name')->whereColumn('client_id', 'id'), $direction))
+                        ->sortable()
                         ->format(fn($value, $row, Column $column) => '<a href="/clients/' . $row->client->id . '">' . $value . '</a>')
                         ->html();
                     $col_invoice_id = null;
@@ -48,7 +41,7 @@ class TrashColumnDefs
                 default: //quote or workorder
                     $col_client_vendor = Column::make(trans('bt.client'), 'client.name')
                         //error in WithSorting.php. need fix or pr#805
-                        ->sortable(fn(Builder $query, string $direction) => $query->orderBy(Client::select('name')->whereColumn('client_id', 'id'), $direction))
+                        ->sortable()
                         ->format(fn($value, $row, Column $column) => '<a href="/clients/' . $row->client->id . '">' . $value . '</a>')
                         ->html();
                     $col_invoice_id = Column::make(trans('bt.converted'), 'invoice_id')
@@ -82,12 +75,10 @@ class TrashColumnDefs
                 Column::make(trans('bt.' . lcfirst($module_type)), 'number'),
                 //Column::make(trans('bt.date'), lcfirst($module_type) . '_date')
                 Column::make(trans('bt.date'), 'document_date')
-//                    ->sortable(fn(Builder $query, string $direction) => $query->orderBy(lcfirst($module_type) . '_date', $direction))
-//                    ->format(fn($value, $row, Column $column) => DateFormatter::format($row->{lcfirst($module_type) . '_date'})),
-                    ->sortable(fn(Builder $query, string $direction) => $query->orderBy('document_date', $direction))
+                    ->sortable()
                     ->format(fn($value, $row, Column $column) => DateFormatter::format($row->{'document_date'})),
                 Column::make($col_title_date_due, $col_db_date_due)
-                    ->sortable(fn(Builder $query, string $direction) => $query->orderBy($col_db_date_due, $direction))
+                    ->sortable()
                     ->format(fn($value, $row, Column $column) => DateFormatter::format($row->$col_db_date_due)),
                 $col_client_vendor,
                 Column::make(trans('bt.summary'), 'summary')
@@ -112,7 +103,7 @@ class TrashColumnDefs
                 BooleanColumn::make(__('bt.active'), 'active')
                     ->yesNo(),
                 Column::make(trans('bt.created'), 'created_at')
-                    ->sortable(fn(Builder $query, string $direction) => $query->orderBy('created_at', $direction))
+                    ->sortable()
                     ->format(fn($value, $row, Column $column) => DateFormatter::format($row->created_at)),
                 Column::make('Action')
                     ->label(fn($row, Column $column) => view('utilities._actions')->withModel($row)),
@@ -123,17 +114,17 @@ class TrashColumnDefs
                 Column::make(__('bt.number'), 'id')
                     ->sortable(),
                 Column::make(__('bt.client'), 'client.name')
-                    ->sortable(fn(Builder $query, string $direction) => $query->orderBy(Client::select('name')->whereColumn('client_id', 'id'), $direction))
+                    ->sortable()
                     ->format(fn($value, $row, Column $column) => '<a href="/clients/' . $row->client->id . '">' . $value . '</a>')
                     ->html(),
                 Column::make(trans('bt.summary'), 'summary')
-                    ->sortable(fn(Builder $query, string $direction) => $query->orderBy('summary', $direction))
+                    ->sortable()
                     ->format(fn($value, $row, Column $column) => $row->formatted_summary),
                 Column::make(trans('bt.next_date'), 'next_date')
-                    ->sortable(fn(Builder $query, string $direction) => $query->orderBy('next_date', $direction))
+                    ->sortable()
                     ->format(fn($value, $row, Column $column) => $row->formatted_next_date),
                 Column::make(trans('bt.stop_date'), 'stop_date')
-                    ->sortable(fn(Builder $query, string $direction) => $query->orderBy('stop_date', $direction))
+                    ->sortable()
                     ->format(fn($value, $row, Column $column) => $row->formatted_stop_date),
                 Column::make(__('bt.every'), 'recurring_frequency')
                     ->sortable()
@@ -144,26 +135,26 @@ class TrashColumnDefs
         } elseif (!$statuses && $module_type == 'Payment') { //Payment column defs
             $default_columns = [
                 Column::make(__('bt.payment_date'), 'paid_at')
-                    ->sortable(fn(Builder $query, string $direction) => $query->orderBy('paid_at', $direction))
+                    ->sortable()
                     ->format(fn($value, $row, Column $column) => DateFormatter::format($row->paid_at)),
                 Column::make(trans('bt.invoice'), 'invoice.number')
-                    ->sortable(fn(Builder $query, string $direction) => $query->orderBy(Invoice::select('number')->whereColumn('invoice_id', 'id'), $direction))
+                    ->sortable()
                     ->format(fn($value, $row, Column $column) => '<a href="/documents/' . $row->invoice_id . '/edit">' . $value . '</a>')
                     ->html(),
                 Column::make(trans('bt.invoice_date'), 'invoice.document_date')
-                    ->sortable(fn(Builder $query, string $direction) => $query->orderBy(Invoice::select('document_date')->whereColumn('invoice_id', 'id'), $direction))
+                    ->sortable()
                     ->format(fn($value, $row, Column $column) => DateFormatter::format($row->paid_at)),
                 Column::make(__('bt.client'), 'client.name')
-                    ->sortable(fn(Builder $query, string $direction) => $query->orderBy(Client::select('name')->whereColumn('client_id', 'id'), $direction))
+                    ->sortable()
                     ->format(fn($value, $row, Column $column) => '<a href="/clients/' . $row->client->id . '">' . $value . '</a>')
                     ->html(),
                 Column::make(trans('bt.summary'), 'invoice.summary')
-                    ->sortable(fn(Builder $query, string $direction) => $query->orderBy(Invoice::select('summary')->whereColumn('invoice_id', 'id'), $direction)),
+                    ->sortable(),
                 Column::make(trans('bt.amount'), 'amount')
-                    ->sortable(fn(Builder $query, string $direction) => $query->orderBy('amount', $direction))
+                    ->sortable()
                     ->format(fn($value, $row, Column $column) => CurrencyFormatter::format($row->amount)),
                 Column::make(__('bt.payment_method'), 'paymentMethod.name')
-                    ->sortable(fn(Builder $query, string $direction) => $query->orderBy(PaymentMethod::select('name')->whereColumn('payment_method_id', 'id'), $direction)),
+                    ->sortable(),
                 Column::make(__('bt.note'), 'note')
                     ->sortable(),
                 Column::make('Action')
@@ -172,7 +163,7 @@ class TrashColumnDefs
         } elseif (!$statuses && $module_type == 'Expense') { //Expense column defs
             $default_columns = [
                 Column::make(__('bt.date'), 'expense_date')
-                    ->sortable(fn(Builder $query, string $direction) => $query->orderBy('expense_date', $direction))
+                    ->sortable()
                     ->format(fn($value, $row, Column $column) => DateFormatter::format($row->expense_date)),
                 Column::make(trans('bt.category'), 'category.name')
                     ->sortable()
@@ -186,7 +177,7 @@ class TrashColumnDefs
                 Column::make(trans('bt.description'), 'description')
                     ->sortable(),
                 Column::make(__('bt.amount'), 'amount')
-                    ->sortable(fn(Builder $query, string $direction) => $query->orderBy('amount', $direction))
+                    ->sortable()
                     ->format(function ($value, $row, Column $column) {
                         $ret = $row->formatted_amount;
                         if ($row->is_billable)
@@ -209,18 +200,16 @@ class TrashColumnDefs
                 Column::make(__('bt.project'), 'name')
                     ->sortable(),
                 Column::make(__('bt.client'), 'client.name')
-                    ->sortable(fn(Builder $query, string $direction) => $query->orderBy(Client::select('name')->whereColumn('client_id', 'id'), $direction))
+                    ->sortable()
                     ->format(fn($value, $row, Column $column) => '<a href="/clients/' . $row->client->id . '">' . $value . '</a>')
                     ->html(),
                 Column::make(trans('bt.status'), 'status_id')
                     ->format(fn($value, $row, Column $column) => $statuses[$row->status_text]),
                 Column::make(trans('bt.created'), 'created_at')
-                    ->sortable(fn(Builder $query, string $direction) => $query->orderBy('created_at', $direction))
+                    ->sortable()
                     ->format(fn($value, $row, Column $column) => DateFormatter::format($row->created_at)),
                 Column::make(trans('bt.due_date'), 'due_at')
-//                    ->sortable(fn(Builder $query, string $direction) => $query->orderBy('due_at', $direction))
-//                    ->format(fn($value, $row, Column $column) => DateFormatter::format($row->due_at)),
-                    ->sortable(fn(Builder $query, string $direction) => $query->orderBy('action_date', $direction))
+                    ->sortable()
                     ->format(fn($value, $row, Column $column) => DateFormatter::format($row->action_date)),
                 Column::make(trans('bt.unbilled_hours'))
                     ->label(fn($row, Column $column) => $row->unbilled_hours),
@@ -244,7 +233,7 @@ class TrashColumnDefs
                 Column::make(__('bt.end_date'))
                     ->label(fn($row, Column $column) => $row->latestOccurrence->formatted_end_date),
                 Column::make(trans('bt.category'), 'category.name')
-                    ->sortable(fn(Builder $query, string $direction) => $query->orderBy(Category::select('name')->whereColumn('category_id', 'id'), $direction)),
+                    ->sortable(),
                 Column::make('Action')
                     ->label(fn($row, Column $column) => view('utilities._actions')->withModel($row)),
             ];

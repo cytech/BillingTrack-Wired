@@ -38,7 +38,6 @@ class Product extends Model
 
     public function purchaseorders()
     {
-//        return $this->hasMany('BT\Modules\Purchaseorders\Models\Purchaseorder');
         return $this->hasMany(Purchaseorder::class);
     }
 

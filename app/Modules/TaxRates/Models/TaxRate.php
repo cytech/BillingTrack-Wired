@@ -12,8 +12,6 @@
 namespace BT\Modules\TaxRates\Models;
 
 use BT\Modules\Documents\Models\DocumentItem;
-//use BT\Modules\Invoices\Models\InvoiceItem;
-//use BT\Modules\Quotes\Models\QuoteItem;
 use BT\Modules\RecurringInvoices\Models\RecurringInvoiceItem;
 use BT\Support\NumberFormatter;
 use BT\Traits\Sortable;
@@ -65,7 +63,6 @@ class TaxRate extends Model
 
     public function getInUseAttribute()
     {
-//        if (InvoiceItem::where('tax_rate_id', $this->id)->orWhere('tax_rate_2_id', $this->id)->count())
         if (DocumentItem::where('tax_rate_id', $this->id)->orWhere('tax_rate_2_id', $this->id)->count())
         {
             return true;
@@ -75,11 +72,6 @@ class TaxRate extends Model
         {
             return true;
         }
-
-//        if (QuoteItem::where('tax_rate_id', $this->id)->orWhere('tax_rate_2_id', $this->id)->count())
-//        {
-//            return true;
-//        }
 
         if (config('bt.itemTaxRate') == $this->id or config('bt.itemTax2Rate') == $this->id)
         {

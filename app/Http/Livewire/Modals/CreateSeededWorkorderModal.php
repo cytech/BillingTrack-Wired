@@ -2,16 +2,16 @@
 
 namespace BT\Http\Livewire\Modals;
 
-use BT\Events\WorkorderModified;
+use BT\Events\DocumentModified;
 use BT\Modules\Clients\Models\Client;
 use BT\Modules\CompanyProfiles\Models\CompanyProfile;
 use BT\Modules\Employees\Models\Employee;
 use BT\Modules\Groups\Models\Group;
 use BT\Modules\Products\Models\Product;
 use BT\Modules\Scheduler\Controllers\SchedulerController;
-use BT\Modules\Workorders\Models\Workorder;
-use BT\Modules\Workorders\Models\WorkorderItem;
-use BT\Support\Statuses\WorkorderStatuses;
+use BT\Modules\Documents\Models\Workorder;
+use BT\Modules\Documents\Models\DocumentItem;
+use BT\Support\Statuses\DocumentStatuses;
 use Carbon\Carbon;
 use Livewire\Component;
 
@@ -108,11 +108,11 @@ class CreateSeededWorkorderModal extends Component
         }
 
         $createfields = [
-            'workorder_date'     => $this->module_date,
+            'document_date'      => $this->module_date,
             'user_id'            => $this->user_id,
             'client_id'          => $this->resource_id,
             'group_id'           => $this->group_id,
-            'workorder_status_id'=> WorkorderStatuses::getStatusId('approved'),
+            'document_status_id' => DocumentStatuses::getStatusId('approved'),
             'company_profile_id' => $this->company_profile_id,
             'summary'            => $this->summary,
             'job_date'           => $this->job_date,
@@ -131,7 +131,7 @@ class CreateSeededWorkorderModal extends Component
         if ($this->selected_employees) {
             foreach ($this->selected_employees as $val) {
                 $lookupItem = Employee::where('id', '=', $val)->firstOrFail();
-                $item['workorder_id'] = $module->id;
+                $item['document_id'] = $module->id;
                 $item['resource_table'] = 'employees';
                 $item['resource_id'] = $lookupItem->id;
                 $item['name'] = $lookupItem->short_name;
@@ -139,14 +139,14 @@ class CreateSeededWorkorderModal extends Component
                 $item['quantity'] = 0;
                 $item['price'] = $lookupItem->billing_rate;
 
-                WorkorderItem::create($item);
+                DocumentItem::create($item);
             }
         }
         // Now let's add some resource items to that new workorder.
         if ($res) {
             foreach ($res as $k => $v) {
                 $lookupItem = Product::where('id', '=', $k)->firstOrFail();
-                $item['workorder_id'] = $module->id;
+                $item['document_id'] = $module->id;
                 $item['resource_table'] = 'products';
                 $item['resource_id'] = $lookupItem->id;
                 $item['name'] = $lookupItem->name;
@@ -154,17 +154,17 @@ class CreateSeededWorkorderModal extends Component
                 $item['quantity'] = $v;
                 $item['price'] = $lookupItem->price;
 
-                WorkorderItem::create($item);
+                DocumentItem::create($item);
             }
         }
 
-        event(new WorkorderModified(Workorder::find($module->id)));
+        event(new DocumentModified(Workorder::find($module->id)));
         // Close Modal After Logic
         $this->emit('hideModal');
         $this->dispatchBrowserEvent('swal:saved', ['message' => trans('bt.record_successfully_created')]);
 
         if(!$module->client->address) {
-            return redirect()->route('workorders.edit', $module->id);
+            return redirect()->route('documents.edit', $module->id);
         }else{
             return redirect()->route('scheduler.'.$this->returnurl);
         }

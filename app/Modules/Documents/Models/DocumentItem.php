@@ -96,7 +96,6 @@ class DocumentItem extends Model
     public function employees()
     {
         return $this->hasMany('BT\Modules\Employees\Models\Employee', 'id','resource_id');
-            //->where('resource_table','=','employees');
     }
 
     /*

@@ -13,8 +13,6 @@ namespace BT\Modules\CompanyProfiles\Models;
 
 use Askedio\SoftCascade\Traits\SoftCascadeTrait;
 use BT\Modules\Expenses\Models\Expense;
-//use BT\Modules\Invoices\Models\Invoice;
-//use BT\Modules\Quotes\Models\Quote;
 use BT\Modules\Documents\Models\Invoice;
 use BT\Modules\Documents\Models\Quote;
 use Illuminate\Database\Eloquent\Model;

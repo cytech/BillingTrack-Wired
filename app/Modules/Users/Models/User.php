@@ -22,12 +22,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-//use Laravel\Sanctum\HasApiTokens;
-
-//class User extends Model implements AuthenticatableContract, CanResetPasswordContract
 class User extends Authenticatable
 {
-//    use Authenticatable, CanResetPassword, SoftDeletes, SoftCascadeTrait, HasRoles;
     use  HasFactory, Notifiable, HasRoles, SoftDeletes, SoftCascadeTrait;
 
     protected $softCascade = ['custom'];
@@ -65,13 +61,11 @@ class User extends Authenticatable
 
     public function invoices()
     {
-//        return $this->hasMany('BT\Modules\Invoices\Models\Invoice');
         return $this->hasMany(Invoice::class);
     }
 
     public function quotes()
     {
-//        return $this->hasMany('BT\Modules\Quotes\Models\Quote');
         return $this->hasMany(Quote::class);
     }
 
@@ -83,20 +77,12 @@ class User extends Authenticatable
 
     public function getUserTypeAttribute()
     {
-//        return ($this->client_id) ? 'client' : 'admin';
         return $this->roles()->first()->name;
     }
 
     public function getUserRoleAttribute()
     {
-//        $roles = $this->roles()->get();
-//        $role_names = [];
-//        foreach ($roles as $role) {
-//            $role_names[] = $role->name;
-//        }
-//        return implode(', ', $role_names);
         return $this->roles()->first()->name;
-
     }
 
     /*

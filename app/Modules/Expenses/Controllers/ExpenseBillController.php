@@ -12,12 +12,10 @@
 namespace BT\Modules\Expenses\Controllers;
 
 use BT\Events\DocumentModified;
-//use BT\Events\InvoiceModified;
 use BT\Http\Controllers\Controller;
 use BT\Modules\Documents\Models\DocumentItem;
 use BT\Modules\Expenses\Models\Expense;
 use BT\Modules\Expenses\Requests\ExpenseBillRequest;
-//use BT\Modules\Invoices\Models\InvoiceItem;
 
 class ExpenseBillController extends Controller
 {

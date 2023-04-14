@@ -12,9 +12,7 @@
 namespace BT\Modules\ClientCenter\Controllers;
 
 use BT\Http\Controllers\Controller;
-//use BT\Modules\Invoices\Models\Invoice;
 use BT\Modules\Documents\Models\Invoice;
-//use BT\Support\Statuses\InvoiceStatuses;
 use BT\Support\Statuses\DocumentStatuses;
 use Illuminate\Support\Facades\DB;
 

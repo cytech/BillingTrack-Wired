@@ -6,10 +6,8 @@ use BT\Modules\Clients\Models\Client;
 use BT\Modules\CompanyProfiles\Models\CompanyProfile;
 use BT\Modules\Groups\Models\Group;
 use BT\Modules\Products\Models\Product;
-use BT\Modules\Purchaseorders\Models\PurchaseorderItem;
 use BT\Modules\Vendors\Models\Vendor;
 use BT\Support\Frequency;
-use Illuminate\Support\Str;
 use Livewire\Component;
 
 class CreateModuleModal extends Component

@@ -32,10 +32,6 @@ use BT\Support\Languages;
 use BT\Support\PDF\PDFFactory;
 use BT\Support\ProfileImage\ProfileImageFactory;
 use BT\Support\Skins;
-//use BT\Support\Statuses\InvoiceStatuses;
-//use BT\Support\Statuses\PurchaseorderStatuses;
-//use BT\Support\Statuses\QuoteStatuses;
-//use BT\Support\Statuses\WorkorderStatuses;
 use BT\Support\Statuses\DocumentStatuses;
 use BT\Support\UpdateChecker;
 use Illuminate\Support\Facades\Crypt;
@@ -55,10 +51,6 @@ class SettingController extends Controller
             ->with([
                 'languages'                     => Languages::listLanguages(),
                 'dateFormats'                   => DateFormatter::dropdownArray(),
-//                'invoiceTemplates'              => InvoiceTemplates::lists(),
-//                'purchaseorderTemplates'        => PurchaseorderTemplates::lists(),
-//                'workorderTemplates'            => WorkorderTemplates::lists(),
-//                'quoteTemplates'                => QuoteTemplates::lists(),
                 'invoiceTemplates'              => DocumentTemplates::lists(),
                 'purchaseorderTemplates'        => DocumentTemplates::lists(),
                 'workorderTemplates'            => DocumentTemplates::lists(),
@@ -91,10 +83,6 @@ class SettingController extends Controller
                 'roundTaxDecimalOptions'        => ['2' => '2', '3' => '3', '4' => '4'],
                 'companyProfiles'               => CompanyProfile::getList(),
                 'merchantDrivers'               => MerchantFactory::getDrivers(),
-//                'invoiceStatuses'               => InvoiceStatuses::listsAllFlat() + ['overdue' => trans('bt.overdue')],
-//                'purchaseorderStatuses'         => PurchaseorderStatuses::listsAllFlat() + ['overdue' => trans('bt.overdue')],
-//                'workorderStatuses'             => WorkorderStatuses::listsAllFlat(),
-//                'quoteStatuses'                 => QuoteStatuses::listsAllFlat(),
                 'invoiceStatuses'               => DocumentStatuses::listsAllFlat() + ['overdue' => trans('bt.overdue')],
                 'purchaseorderStatuses'         => DocumentStatuses::listsAllFlat() + ['overdue' => trans('bt.overdue')],
                 'workorderStatuses'             => DocumentStatuses::listsAllFlat(),

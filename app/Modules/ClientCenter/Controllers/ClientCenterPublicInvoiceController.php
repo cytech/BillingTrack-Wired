@@ -50,7 +50,7 @@ class ClientCenterPublicInvoiceController extends Controller
 
         $pdf = PDFFactory::create();
 
-        $pdf->download($invoice->html, FileNames::invoice($invoice));
+        $pdf->download($invoice->html, FileNames::document($invoice));
     }
 
     public function html($urlKey)

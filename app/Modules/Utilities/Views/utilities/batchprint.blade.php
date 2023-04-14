@@ -23,7 +23,7 @@
             <div class="card card-light">
                 <div class="card-header">
                     <h3 class="card-title">
-                        @lang('bt.criteria_batchprint') of @lang('bt.'.$module)
+                        @lang('bt.criteria_batchprint') of @lang('bt.'. $module)
                     </h3>
                 </div>
                 <div class="card-body">

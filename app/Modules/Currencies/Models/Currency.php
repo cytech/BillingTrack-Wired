@@ -12,8 +12,6 @@
 namespace BT\Modules\Currencies\Models;
 
 use BT\Modules\Clients\Models\Client;
-//use BT\Modules\Invoices\Models\Invoice;
-//use BT\Modules\Quotes\Models\Quote;
 use BT\Modules\Documents\Models\Invoice;
 use BT\Modules\Documents\Models\Quote;
 use BT\Traits\Sortable;

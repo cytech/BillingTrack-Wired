@@ -12,9 +12,7 @@
 namespace BT\Modules\ClientCenter\Controllers;
 
 use BT\Http\Controllers\Controller;
-//use BT\Modules\Quotes\Models\Quote;
 use BT\Modules\Documents\Models\Quote;
-//use BT\Support\Statuses\QuoteStatuses;
 use BT\Support\Statuses\DocumentStatuses;
 use Illuminate\Support\Facades\DB;
 
