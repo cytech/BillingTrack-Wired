@@ -81,7 +81,7 @@
 
 <table>
     <tr>
-        <td style="width: 50%;" valign="top">
+        <td style="width: 50%; vertical-align: top">
             <h1>{{ mb_strtoupper(trans('bt.quote')) }}</h1>
             <span class="info">{{ mb_strtoupper(trans('bt.quote')) }} #</span>{{ $quote->number }}<br>
             <span class="info">{{ mb_strtoupper(trans('bt.issued')) }}</span> {{ $quote->formatted_created_at }}<br>
@@ -89,7 +89,7 @@
             <span class="info">{{ mb_strtoupper(trans('bt.bill_to')) }}</span><br>{{ $quote->client->name }}<br>
             @if ($quote->client->address) {!! $quote->client->formatted_address !!}<br>@endif
         </td>
-        <td style="width: 50%; text-align: right;" valign="top">
+        <td style="width: 50%; text-align: right; vertical-align: top">
             {!! $quote->companyProfile->logo() !!}<br>
             {{ $quote->companyProfile->company }}<br>
             {!! $quote->companyProfile->formatted_address !!}<br>

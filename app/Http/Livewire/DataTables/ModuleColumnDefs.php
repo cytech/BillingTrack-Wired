@@ -132,7 +132,9 @@ class ModuleColumnDefs
             $frequencies = Frequency::lists();
             $default_columns = [
                 Column::make(__('bt.number'), 'id')
-                    ->sortable(),
+                    ->sortable()
+                    ->format(fn($value, $row, Column $column) => '<a href="/recurring_invoices/' . $row->id . '/edit">' . $value . '</a>')
+                    ->html(),
                 Column::make(__('bt.client'), 'client.name')
                     ->searchable()
                     ->sortable()
@@ -332,7 +334,9 @@ class ModuleColumnDefs
             $default_columns = [
                 Column::make(__('bt.vendor_name'), 'name')
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->format(fn($value, $row, Column $column) => '<div title="' . $row->name . '"><a href="/vendors/' . $row->id . '">' . $value . '</a>')
+                    ->html(),
                 Column::make(__('bt.email_address'), 'email')
                     ->sortable()
                     ->searchable(),

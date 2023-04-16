@@ -18,8 +18,8 @@
             </div>
         </div>
     </div>
-    <div class="col">
-        @if($document->module_type == 'Purchaseorder')
+    @if($document->module_type == 'Purchaseorder')
+        <div class="col">
             <div class="card card-outline card-primary">
                 <div class="card-header">
                     <h3 class="card-title">@lang('bt.ship_to')</h3>
@@ -35,6 +35,6 @@
                     {{--            @lang('bt.email'): {{ $document->companyProfile->email }}--}}
                 </div>
             </div>
-        @endif
-    </div>
+        </div>
+    @endif
 </div>

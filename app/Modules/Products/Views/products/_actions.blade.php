@@ -8,7 +8,7 @@
         <a class="dropdown-item" href="#" id="btn-create-purchaseorder"
            {{--                   params 3 thru ... mount(,,$modulefullname, $moduleop, $resource_id = null, $module_id = null, $readonly = null, $lineitem = null)--}}
            onclick="window.livewire.emit('showModal', 'modals.create-module-modal',
-                   '{{ addslashes(get_class($model->purchaseorders()->getRelated())) }}', 'create', {{ $model->vendor_id ?? 'null'  }}, null, true, {{ $model->id}})">
+                   '{{ addslashes(get_class($model->purchaseorders()->getRelated())) }}', 'Purchaseorder', 'create', {{ $model->vendor_id ?? 'null'  }}, null, true, {{ $model->id}})">
             <i class="far fa-file-alt"></i> @lang('bt.create_purchaseorder')</a>
     </div>
 </div>

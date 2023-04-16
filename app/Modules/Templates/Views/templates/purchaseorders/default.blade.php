@@ -82,7 +82,7 @@
 
 <table>
     <tr>
-        <td style="width: 50%;" valign="top">
+        <td style="width: 50%;  vertical-align: top">
             <h1>{{ mb_strtoupper(trans('bt.purchaseorder')) }}</h1>
             <span class="info">{{ mb_strtoupper(trans('bt.purchaseorder')) }} #</span>{{ $purchaseorder->number }}<br>
             <span class="info">{{ mb_strtoupper(trans('bt.issued')) }}</span> {{ $purchaseorder->formatted_created_at }}
@@ -92,7 +92,7 @@
             <span class="info">{{ mb_strtoupper(trans('bt.to')) }}</span><br>{{ $purchaseorder->vendor->name }}<br>
             @if ($purchaseorder->vendor->address) {!! $purchaseorder->vendor->formatted_address !!}<br>@endif
         </td>
-        <td style="width: 50%; text-align: right;" valign="top">
+        <td style="width: 50%; text-align: right;  vertical-align: top">
             <span class="info">{{ mb_strtoupper(trans('bt.bill_to')) }}</span>
             {!! $purchaseorder->companyProfile->logo() !!}<br>
             {{ $purchaseorder->companyProfile->company }}<br>

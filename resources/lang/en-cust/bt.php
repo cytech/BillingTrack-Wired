@@ -822,6 +822,7 @@ return [
     'start_timer'                              => 'Start Timer',
     'state'                                    => 'State',
     'status'                                   => 'Status',
+    'status_to'                                => 'Status To ',
     'status_successfully_updated'              => 'Status successfully updated',
     'step_database_complete'                   => 'Database setup complete. Click to continue.',
     'step_database_setup'                      => 'This step will install and upgrade your database tables. This step may take a while to complete.',

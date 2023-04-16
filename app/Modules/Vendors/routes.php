@@ -24,6 +24,8 @@ Route::middleware(['web', 'auth.admin'])
         Route::name('ajax.lookup')->get('ajax/lookup', [VendorController::class, 'ajaxLookup']);
         Route::name('ajax.modalEdit')->post('ajax/modal_edit', [VendorController::class, 'ajaxModalEdit']);
         Route::name('ajax.modalUpdate')->post('ajax/modal_update/{id}', [VendorController::class, 'ajaxModalUpdate']);
+        Route::name('bulk.status')->post('bulk/status', [VendorController::class, 'bulkStatus']);
+
 
         Route::prefix('{vendorId}/contacts')->group(function () {
             Route::name('contacts.create')->get('create', [ContactController::class, 'create']);

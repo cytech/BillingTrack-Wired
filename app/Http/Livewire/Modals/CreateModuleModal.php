@@ -4,6 +4,7 @@ namespace BT\Http\Livewire\Modals;
 
 use BT\Modules\Clients\Models\Client;
 use BT\Modules\CompanyProfiles\Models\CompanyProfile;
+use BT\Modules\Documents\Models\DocumentItem;
 use BT\Modules\Groups\Models\Group;
 use BT\Modules\Products\Models\Product;
 use BT\Modules\Vendors\Models\Vendor;
@@ -88,6 +89,7 @@ class CreateModuleModal extends Component
         $this->user_id = auth()->user()->id;
         $this->module_date = date('Y-m-d');
         $this->next_date = date('Y-m-d');
+        $this->stop_date = null;
         $this->recurring_frequency = 1;
         $this->recurring_period = 3;
         $this->orig_resource_id = $this->resource_id;
@@ -117,7 +119,8 @@ class CreateModuleModal extends Component
             'user_id'            => trans('bt.user'),
             'module_date'        => trans('bt.date'),
             'group_id'           => trans('bt.group'),
-            'next_date'          => trans('bt.start_date')
+            'next_date'          => trans('bt.start_date'),
+            'stop_date'          => trans('bt.stop_date')
         ];
     }
 
@@ -136,6 +139,11 @@ class CreateModuleModal extends Component
     public function updatedNextDate()
     {
         $this->validateOnly('next_date');
+    }
+
+    public function updatedStopDate()
+    {
+        $this->validateOnly('stop_date');
     }
 
     public function doCancel()
@@ -202,15 +210,15 @@ class CreateModuleModal extends Component
             $module = $this->modulefullname::create($createfields);
             //currently only Purchaseorder Item from Products
             if ($this->moduletype == 'Purchaseorder' && $this->lineitem) {
-                $moduleitemfullname = $this->modulefullname . 'Item';
+                $moduleitemfullname = DocumentItem::class;
                 $moduleitemfullname::create([
-                    lcfirst(snake_case($this->moduletype)) . '_id' => $module->id,
+                    'document_id'                                  => $module->id,
                     'name'                                         => $this->lineitem->name,
                     'description'                                  => $this->lineitem->description,
                     'quantity'                                     => 1,
-                    'cost'                                         => $this->lineitem->cost,
-                    'tax_rate_id'                                  => $this->lineitem->tax_rate_id,
-                    'tax_rate_2_id'                                => $this->lineitem->tax_rate_2_id,
+                    'price'                                        => $this->lineitem->price,
+                    'tax_rate_id'                                  => $this->lineitem->tax_rate_id ?? 0,
+                    'tax_rate_2_id'                                => $this->lineitem->tax_rate_2_id ?? 0,
                     'resource_table'                               => 'products',
                     'resource_id'                                  => $this->lineitem->id,
                     'display_order'                                => 1,
@@ -221,8 +229,14 @@ class CreateModuleModal extends Component
             // Close Modal After Logic
             $this->emit('hideModal');
 
-            return redirect()->route('documents.edit', $module->id)
-                ->with('alertSuccess', trans('bt.record_successfully_created'));
+            if ($this->moduletype == 'RecurringInvoice'){
+                return redirect()->route('recurringInvoices.edit', $module->id)
+                    ->with('alertSuccess', trans('bt.record_successfully_created'));
+
+            } else {
+                return redirect()->route('documents.edit', $module->id)
+                    ->with('alertSuccess', trans('bt.record_successfully_created'));
+            }
 
         } elseif ($this->moduleop == 'copy') {
             $this->copyModule();
@@ -247,12 +261,13 @@ class CreateModuleModal extends Component
         }
         switch ($this->moduletype) {
             case 'Purchaseorder':
+                $moduleitemfullname = DocumentItem::class;
                 $fromModule = $this->modulefullname::find($this->module_id);
                 $modulemodeventfullname = 'BT\\Events\\DocumentModified';
                 $createfields = [
-                    lcfirst($this->moduletype) . '_date' => $this->module_date,
+                    'document_date'                      => $this->module_date,
                     'user_id'                            => $this->user_id,
-                    'vendor_id'                          => $this->resource_id,
+                    'client_id'                          => $this->resource_id,
                     'group_id'                           => $this->group_id,
                     'company_profile_id'                 => $this->company_profile_id,
                     'currency_code'                      => $fromModule->currency_code,
@@ -273,13 +288,13 @@ class CreateModuleModal extends Component
                 foreach ($fromModule->items as $item) {
                     $moduleitemfullname::create(
                         [
-                            lcfirst(snake_case($this->moduletype)) . '_id' => $toModule->id,
+                            'document_id'                                  => $toModule->id,
                             'name'                                         => $item->name,
                             'description'                                  => $item->description,
                             'quantity'                                     => $item->quantity,
-                            'cost'                                         => $item->cost,
-                            'tax_rate_id'                                  => $item->tax_rate_id,
-                            'tax_rate_2_id'                                => $item->tax_rate_2_id,
+                            'price'                                         => $item->price,
+                            'tax_rate_id'                                  => $item->tax_rate_id ?? 0,
+                            'tax_rate_2_id'                                => $item->tax_rate_2_id ?? 0,
                             //'resource_table' => $item->resource_table,
                             //'resource_id'    => $item->resource_id,
                             'display_order'                                => $item->display_order,
@@ -329,6 +344,7 @@ class CreateModuleModal extends Component
                 }
                 break;
             default: //Quote, Workorder, Invoice
+                $moduleitemfullname = DocumentItem::class;
                 $fromModule = $this->modulefullname::find($this->module_id);
                 $modulemodeventfullname = 'BT\\Events\\DocumentModified';
                 $createfields = [
@@ -386,8 +402,14 @@ class CreateModuleModal extends Component
         // Close Modal After Logic
         $this->emit('hideModal');
 
-        return redirect()->route('documents.edit', $toModule->id)
-            ->with('alertSuccess', trans('bt.record_successfully_created'));
+        if ($this->moduletype == 'RecurringInvoice'){
+            return redirect()->route('recurringInvoices.edit', $toModule->id)
+                ->with('alertSuccess', trans('bt.record_successfully_created'));
+
+        } else {
+            return redirect()->route('documents.edit', $toModule->id)
+                ->with('alertSuccess', trans('bt.record_successfully_created'));
+        }
     }
 
     public function render()

@@ -82,7 +82,7 @@
 
 <table>
     <tr>
-        <td style="width: 50%;" valign="top">
+        <td style="width: 50%;  vertical-align: top">
             <h1>{{ mb_strtoupper(trans('bt.workorder')) }}</h1>
             <span class="info">{{ mb_strtoupper(trans('bt.workorder')) }} #</span>{{ $workorder->number }}<br>
             <span class="info">{{ mb_strtoupper(trans('bt.issued')) }}</span> {{ $workorder->formatted_workorder_date }}
@@ -94,13 +94,13 @@
             @if ($workorder->client->phone) {!! $workorder->client->phone !!}<br>@endif
         </td>
         @if ($workorder->client->address_2)
-            <td style="width: 50%;" valign="bottom">
+            <td style="width: 50%; vertical-align: bottom">
                 <span class="info">{{ mb_strtoupper(trans('bt.ship_to')) }}</span><br>{{ $workorder->client->name }}<br>
                 {!! $workorder->client->formatted_address2 !!}<br>
             </td>
         @endif
 
-        <td style="width: 50%; text-align: right;" valign="top">
+        <td style="width: 50%; text-align: right;  vertical-align: top">
             {!! $workorder->companyProfile->logo() !!}<br>
             {{ $workorder->companyProfile->company }}<br>
             {!! $workorder->companyProfile->formatted_address !!}<br>
@@ -125,7 +125,7 @@
 
 <table>
     <tr>
-        <td style="width: 100%; text-align: left;" valign="top">
+        <td style="width: 100%; text-align: left;  vertical-align: top">
             <strong>Job Summary:</strong> {{$workorder->summary}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
     </tr>

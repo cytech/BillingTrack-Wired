@@ -82,7 +82,7 @@
 
 <table>
     <tr>
-        <td style="width: 50%;" valign="top">
+        <td style="width: 50%;  vertical-align: top">
             <h1>{{ mb_strtoupper(trans('bt.invoice')) }}</h1>
             <span class="info">{{ mb_strtoupper(trans('bt.invoice')) }} #</span>{{ $invoice->number }}<br>
             <span class="info">{{ mb_strtoupper(trans('bt.issued')) }}</span> {{ $invoice->formatted_created_at }}<br>
@@ -90,7 +90,7 @@
             <span class="info">{{ mb_strtoupper(trans('bt.bill_to')) }}</span><br>{{ $invoice->client->name }}<br>
             @if ($invoice->client->address) {!! $invoice->client->formatted_address !!}<br>@endif
         </td>
-        <td style="width: 50%; text-align: right;" valign="top">
+        <td style="width: 50%; text-align: right;  vertical-align: top">
             {!! $invoice->companyProfile->logo() !!}<br>
             {{ $invoice->companyProfile->company }}<br>
             {!! $invoice->companyProfile->formatted_address !!}<br>

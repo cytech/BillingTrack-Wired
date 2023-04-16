@@ -23,7 +23,7 @@
         @include('layouts._alerts')
         <div class="card ">
             <div class="card-body">
-                <livewire:data-tables.module-table :module_type="'Vendor'"/>
+                <livewire:data-tables.module-table :module_type="'Vendor'" :keyedStatuses="$keyedStatuses"/>
             </div>
         </div>
     </section>

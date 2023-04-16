@@ -31,10 +31,10 @@ class ProductController extends Controller
     public function index()
     {
         $this->setReturnUrl();
-
         $status = (request('status')) ?: 'all';
+        $keyedStatuses = collect([0 => __('bt.inactive'), 1 => __('bt.active')]);
 
-        return view('products.index', ['status' => $status]);
+        return view('products.index', ['status' => $status, 'keyedStatuses' => $keyedStatuses]);
     }
 
     /**
@@ -186,5 +186,12 @@ class ProductController extends Controller
             return redirect()->route('settings.index')
                 ->with('alertInfo', trans('bt.lut_updated'));
         }
+    }
+
+    public function bulkStatus()
+    {
+        Product::whereIn('id', request('ids'))->update(['active' => request('status')]);
+        return response()->json(['success' => trans('bt.status_successfully_updated')], 200);
+
     }
 }

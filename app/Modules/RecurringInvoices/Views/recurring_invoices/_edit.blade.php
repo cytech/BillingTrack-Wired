@@ -8,8 +8,8 @@
             </button>
             <div class="dropdown-menu dropdown-menu-end" role="menu">
                 <a class="dropdown-item" href="#" id="btn-copy-recurring-invoice"
-                   {{--                   params 3 thru ... mount(,,$modulefullname, $moduleop, $resource_id = null, $module_id = null, $readonly = null)--}}
-                   onclick="window.livewire.emit('showModal', 'modals.create-module-modal', '{{  addslashes(get_class($recurringInvoice)) }}', 'copy', {{ $recurringInvoice->client->id }}, {{ $recurringInvoice->id }})">
+                   {{--                   params 3 thru ... mount(,,$modulefullname, $module_type, $moduleop, $resource_id = null, $module_id = null, $readonly = null)--}}
+                   onclick="window.livewire.emit('showModal', 'modals.create-module-modal', '{{  addslashes(get_class($recurringInvoice)) }}', 'RecurringInvoice' ,'copy', {{ $recurringInvoice->client->id }}, {{ $recurringInvoice->id }})">
                     <i class="fa fa-copy"></i> @lang('bt.copy_recurring_invoice')</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="#"

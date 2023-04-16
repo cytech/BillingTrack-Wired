@@ -30,10 +30,10 @@ class ClientController extends Controller
     public function index()
     {
         $this->setReturnUrl();
-
         $status = (request('status')) ?: 'all';
+        $keyedStatuses = collect([0 => __('bt.inactive'), 1 => __('bt.active')]);
 
-        return view('clients.index', ['status' => $status]);
+        return view('clients.index', ['status' => $status, 'keyedStatuses' => $keyedStatuses]);
     }
 
     public function create()
@@ -136,6 +136,13 @@ class ClientController extends Controller
     {
         Client::destroy(request('ids'));
         return response()->json(['success' => trans('bt.record_successfully_trashed')], 200);
+    }
+
+    public function bulkStatus()
+    {
+        Client::whereIn('id', request('ids'))->update(['active' => request('status')]);
+        return response()->json(['success' => trans('bt.status_successfully_updated')], 200);
+
     }
 
     public function ajaxModalEdit()

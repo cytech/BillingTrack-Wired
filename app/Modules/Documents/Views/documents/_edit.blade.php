@@ -49,7 +49,7 @@
             </button>
             <div class="dropdown-menu dropdown-menu-end" role="menu">
                 <a class="dropdown-item" href="#" id="btn-copy-document"
-                   {{--                   params 3 thru ... mount(,,$modulefullname, $moduleop, $resource_id = null, $module_id = null, $readonly = null)--}}
+                   {{--                   params 3 thru ... mount(,,$modulefullname, $module_type, $moduleop, $resource_id = null, $module_id = null, $readonly = null)--}}
                    onclick="window.livewire.emit('showModal', 'modals.create-module-modal', '{{  addslashes(get_class($document)) }}', '{{$document->module_type}}', 'copy', {{ $document->client->id }}, {{ $document->id }})">
                     <i class="fa fa-copy"></i> @lang('bt.copy_'.$document->lower_case_baseclass)</a>
                 @if($document->module_type == 'Quote')
@@ -99,10 +99,10 @@
             @include('layouts._alerts')
             <div id="form-status-placeholder"></div>
             <div class="row">
-                <div class="col-sm-8" id="col-from">
+                <div class="col" id="col-from">
                     @include('documents._edit_from')
                 </div>
-                <div class="col-sm-4" id="col-to">
+                <div class="col" id="col-to">
                     @include('documents._edit_to')
                 </div>
             </div>

@@ -30,10 +30,10 @@ class VendorController extends Controller
     public function index()
     {
         $this->setReturnUrl();
-
         $status = (request('status')) ?: 'all';
+        $keyedStatuses = collect([0 => __('bt.inactive'), 1 => __('bt.active')]);
 
-        return view('vendors.index', ['status' => $status]);
+        return view('vendors.index', ['status' => $status, 'keyedStatuses' => $keyedStatuses]);
     }
 
     /**
@@ -174,5 +174,11 @@ class VendorController extends Controller
         return response()->json(['success' => true], 200);
     }
 
+    public function bulkStatus()
+    {
+        Vendor::whereIn('id', request('ids'))->update(['active' => request('status')]);
+        return response()->json(['success' => trans('bt.status_successfully_updated')], 200);
+
+    }
 
 }

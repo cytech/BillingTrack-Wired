@@ -9,4 +9,5 @@ Route::middleware(['web', 'auth.admin'])
         Route::name('store')->post('create', [EmployeeController::class, 'store']);
         Route::name('edit')->get('{id}/edit', [EmployeeController::class, 'edit']);
         Route::name('update')->put('{id}/edit', [EmployeeController::class, 'update']);
+        Route::name('bulk.status')->post('bulk/status', [EmployeeController::class, 'bulkStatus']);
     });

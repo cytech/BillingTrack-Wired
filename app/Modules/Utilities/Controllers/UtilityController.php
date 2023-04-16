@@ -96,20 +96,20 @@ class UtilityController
             switch ($request->batch_type) {
                 case 'quotes':
                     //quotes sent or approved, not converted to workorder or invoice
-                    $batchtypes = Quote::whereBetween('quote_date', [$start, $end])
-                        ->whereBetween('quote_status_id', [2, 3])
+                    $batchtypes = Quote::whereBetween('document_date', [$start, $end])
+                        ->whereBetween('document_status_id', [2, 3])
                         ->where('invoice_id', 0)->where('workorder_id', 0)->get();
                     break;
                 case 'workorders':
                     //workorders sent or approved, not converted to invoice
                     $batchtypes = Workorder::whereBetween('job_date', [$start, $end])
-                        ->whereBetween('workorder_status_id', [2, 3])
+                        ->whereBetween('document_status_id', [2, 3])
                         ->where('invoice_id', 0)->get();
                     break;
                 case 'invoices':
                     //invoices sent (not paid)
-                    $batchtypes = Invoice::whereBetween('invoice_date', [$start, $end])
-                        ->where('invoice_status_id', 2)->get();
+                    $batchtypes = Invoice::whereBetween('document_date', [$start, $end])
+                        ->where('document_status_id', 2)->get();
                     break;
             }
 

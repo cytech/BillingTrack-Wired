@@ -111,6 +111,7 @@
                         <div class="col-sm-7">
                             <x-fp_common
                                     wire:model.lazy="stop_date"
+                                    value="null"
                             ></x-fp_common>
                         </div>
                     </div>

@@ -17,4 +17,6 @@ Route::middleware(['web', 'auth.admin'])
         Route::name('store')->post('create', [ProductController::class, 'store']);
         Route::name('edit')->get('{id}/edit', [ProductController::class, 'edit']);
         Route::name('update')->put('{id}/edit', [ProductController::class, 'update']);
+        Route::name('bulk.status')->post('bulk/status', [ProductController::class, 'bulkStatus']);
+
     });

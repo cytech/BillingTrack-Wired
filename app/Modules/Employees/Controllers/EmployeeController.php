@@ -16,6 +16,7 @@ use BT\Modules\Employees\Requests\EmployeeRequest;
 use BT\Http\Controllers\Controller;
 use BT\Modules\ItemLookups\Models\ItemLookup;
 use BT\Modules\Titles\Models\Title;
+use BT\Support\Statuses\TimeTrackingProjectStatuses;
 use BT\Traits\ReturnUrl;
 
 class EmployeeController extends Controller
@@ -29,10 +30,10 @@ class EmployeeController extends Controller
     public function index()
     {
         $this->setReturnUrl();
-
         $status = (request('status')) ?: 'all';
+        $keyedStatuses = collect([0 => __('bt.inactive'), 1 => __('bt.active')]);
 
-        return view('employees.index', ['status' => $status]);
+        return view('employees.index', ['status' => $status, 'keyedStatuses' => $keyedStatuses]);
 
     }
 
@@ -154,5 +155,12 @@ class EmployeeController extends Controller
             return redirect()->route('settings.index')
                 ->with('alertSuccess', trans('bt.lut_updated'));
         }
+    }
+
+    public function bulkStatus()
+    {
+        Employee::whereIn('id', request('ids'))->update(['active' => request('status')]);
+        return response()->json(['success' => trans('bt.status_successfully_updated')], 200);
+
     }
 }

@@ -98,7 +98,7 @@ class ModuleTable extends DataTableComponent
         } else { //quote, workorder, invoice, purchaseorder
             $this->setDefaultSort('document_date', 'desc');
             if (in_array($this->module_type, ['Invoice', 'Quote', 'Workorder', 'Purchaseorder'])) {
-                $this->keyedStatuses = collect(('BT\\Support\\Statuses\\DocumentStatuses')::lists())->except(4, 6);
+                $this->keyedStatuses = collect(('BT\\Support\\Statuses\\DocumentStatuses')::lists())->except(4, 6, 7, 8);
             }
             $this->module_fullname = 'BT\\Modules\\Documents\\Models\\' . $this->module_type;
         }
@@ -161,8 +161,9 @@ class ModuleTable extends DataTableComponent
 
     public function bulkActions(): array
     {
-        $no_bulk_actions = ['ScheduleCategory', 'Employee', 'Vendor', 'Product', 'Category', 'ItemLookup', 'MailQueue', 'User'];
-        $trash_only_action = ['Client', 'RecurringInvoice', 'Payment', 'Expense', 'Schedule', 'RecurringEvent'];
+        $no_bulk_actions = ['ScheduleCategory', 'Category', 'ItemLookup', 'MailQueue', 'User'];
+        $trash_only_action = ['RecurringInvoice', 'Payment', 'Expense', 'Schedule', 'RecurringEvent'];
+        $no_trash_action = ['Employee', 'Vendor', 'Product'];
         //do not allow bulk actions on invoices if update inventory products is enabled
         if ($this->module_type == 'Invoice' && config('bt.updateInvProductsDefault')) {
             return [];
@@ -177,9 +178,11 @@ class ModuleTable extends DataTableComponent
         } else {
             $cs = [];
             foreach ($this->keyedStatuses as $k => $v) {
-                $cs += ['changestatus(' . $k . ')' => 'Status to ' . $v];
+                $cs += ['changestatus(' . $k . ')' => __('bt.status_to') . $v];
             }
-            $cs += ['trash' => __('bt.trash')];
+            if (!in_array($this->module_type, $no_trash_action)) {
+                $cs += ['trash' => __('bt.trash')];
+            }
             return $cs;
         }
     }
@@ -188,11 +191,19 @@ class ModuleTable extends DataTableComponent
     {
         if ($this->getSelectedCount() > 0) {
             $ids = $this->getSelected();
+            if ($this->module_type == 'TimeTrackingProject'){
+                $route = route('timeTracking.projects.bulk.status');
+            } elseif (in_array($this->module_type,['Client', 'Employee', 'Vendor', 'Product'])){
+                $route = route(strtolower($this->module_type)  . 's.bulk.status');
+            } else{
+                $route = route('documents.bulk.status');
+            }
+
             $swaldata = [
                 'title'       => __('bt.bulk_change_status_record_warning'),
                 'ids'         => $ids,
                 'module_type' => $this->module_type,
-                'route'       => $this->module_type == 'TimeTrackingProject' ? route('timeTracking.projects.bulk.status') : route('documents.bulk.status'),
+                'route'       => $route,
                 'status'      => $status
             ];
             $this->dispatchBrowserEvent('swal:bulkConfirm', $swaldata);
