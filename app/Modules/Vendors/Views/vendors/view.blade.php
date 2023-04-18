@@ -63,16 +63,16 @@
                                                 @lang('bt.default_terms')
                                             @endif
                                         </div>
-                                        {{--                                        <div class="float-end" style="text-align: right;">--}}
-                                        {{--                                            <p>--}}
-                                        {{--                                                <strong>@lang('bt.total_billed')--}}
-                                        {{--                                                    :</strong> {{ $vendor->formatted_total }}<br/>--}}
-                                        {{--                                                <strong>@lang('bt.total_paid'):</strong> {{ $vendor->formatted_paid }}--}}
-                                        {{--                                                <br/>--}}
-                                        {{--                                                <strong>@lang('bt.total_balance')--}}
-                                        {{--                                                    :</strong> {{ $vendor->formatted_balance }}--}}
-                                        {{--                                            </p>--}}
-                                        {{--                                        </div>--}}
+                                        <div class="float-end" style="text-align: right;">
+                                            <p>
+                                                <strong>@lang('bt.total_charged')
+                                                    :</strong> {{ $vendor->formatted_total }}<br/>
+                                                <strong>@lang('bt.total_paid'):</strong> {{ $vendor->formatted_paid }}
+                                                <br/>
+                                                <strong>@lang('bt.total_payable')
+                                                    :</strong> {{ $vendor->formatted_balance }}
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="row">

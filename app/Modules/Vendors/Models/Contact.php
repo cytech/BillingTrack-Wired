@@ -11,7 +11,12 @@
 
 namespace BT\Modules\Vendors\Models;
 
+use BT\Modules\Notes\Models\Note;
+use BT\Modules\Titles\Models\Title;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Contact extends Model
@@ -30,19 +35,19 @@ class Contact extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function vendor()
+    public function vendor(): BelongsTo
     {
-        return $this->belongsTo('BT\Modules\Vendors\Models\Vendor');
+        return $this->belongsTo(Vendor::class);
     }
 
-    public function title()
+    public function title(): BelongsTo
     {
-        return $this->belongsTo('BT\Modules\Titles\Models\Title');
+        return $this->belongsTo(Title::class);
     }
 
-    public function notes()
+    public function notes(): MorphMany
     {
-        return $this->morphMany('BT\Modules\Notes\Models\Note', 'notable');
+        return $this->morphMany(Note::class, 'notable');
     }
 
     /*
@@ -50,34 +55,33 @@ class Contact extends Model
     | Accessors
     |--------------------------------------------------------------------------
     */
-
-    public function getFormattedContactAttribute()
+    public function formattedContact(): Attribute
     {
-        return $this->name . ' <' . $this->email . '>';
+        return new Attribute(get: fn() => $this->name . ' <' . $this->email . '>');
     }
 
-    public function getFormattedDefaultBccAttribute()
+    public function formattedDefaultBcc(): Attribute
     {
-        return ($this->default_bcc) ? trans('bt.yes') : trans('bt.no');
+        return new Attribute(get: fn() => ($this->default_bcc) ? trans('bt.yes') : trans('bt.no'));
     }
 
-    public function getFormattedDefaultCcAttribute()
+    public function formattedDefaultCc(): Attribute
     {
-        return ($this->default_cc) ? trans('bt.yes') : trans('bt.no');
+        return new Attribute(get: fn() => ($this->default_cc) ? trans('bt.yes') : trans('bt.no'));
     }
 
-    public function getFormattedDefaultToAttribute()
+    public function formattedDefaultTo(): Attribute
     {
-        return ($this->default_to) ? trans('bt.yes') : trans('bt.no');
+        return new Attribute(get: fn() => ($this->default_to) ? trans('bt.yes') : trans('bt.no'));
     }
 
-    public function getFormattedIsPrimaryAttribute()
+    public function formattedIsPrimary(): Attribute
     {
-        return ($this->is_primary) ? trans('bt.yes') : trans('bt.no');
+        return new Attribute(get: fn() => ($this->is_primary) ? trans('bt.yes') : trans('bt.no'));
     }
 
-    public function getFormattedOptinAttribute()
+    public function formattedOptin(): Attribute
     {
-        return ($this->optin) ? trans('bt.yes') : trans('bt.no');
+        return new Attribute(get: fn() => ($this->optin) ? trans('bt.yes') : trans('bt.no'));
     }
 }

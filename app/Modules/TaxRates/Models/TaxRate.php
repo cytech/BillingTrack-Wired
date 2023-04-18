@@ -15,6 +15,7 @@ use BT\Modules\Documents\Models\DocumentItem;
 use BT\Modules\RecurringInvoices\Models\RecurringInvoiceItem;
 use BT\Support\NumberFormatter;
 use BT\Traits\Sortable;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 
 class TaxRate extends Model
@@ -46,35 +47,32 @@ class TaxRate extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function getFormattedPercentAttribute()
+    public function formattedPercent(): Attribute
     {
-        return NumberFormatter::format($this->attributes['percent'], null, 3) . '%';
+        return new Attribute(get: fn() => NumberFormatter::format($this->attributes['percent'], null, 3) . '%');
     }
 
-    public function getFormattedNumericPercentAttribute()
+    public function formattedNumericPercent(): Attribute
     {
-        return NumberFormatter::format($this->attributes['percent'], null, 3);
+        return new Attribute(get: fn() => NumberFormatter::format($this->attributes['percent'], null, 3));
     }
 
-    public function getFormattedIsCompoundAttribute()
+    public function formattedIsCompound(): Attribute
     {
-        return ($this->attributes['is_compound']) ? trans('bt.yes') : trans('bt.no');
+        return new Attribute(get: fn() => ($this->attributes['is_compound']) ? trans('bt.yes') : trans('bt.no'));
     }
 
     public function getInUseAttribute()
     {
-        if (DocumentItem::where('tax_rate_id', $this->id)->orWhere('tax_rate_2_id', $this->id)->count())
-        {
+        if (DocumentItem::where('tax_rate_id', $this->id)->orWhere('tax_rate_2_id', $this->id)->count()) {
             return true;
         }
 
-        if (RecurringInvoiceItem::where('tax_rate_id', $this->id)->orWhere('tax_rate_2_id', $this->id)->count())
-        {
+        if (RecurringInvoiceItem::where('tax_rate_id', $this->id)->orWhere('tax_rate_2_id', $this->id)->count()) {
             return true;
         }
 
-        if (config('bt.itemTaxRate') == $this->id or config('bt.itemTax2Rate') == $this->id)
-        {
+        if (config('bt.itemTaxRate') == $this->id or config('bt.itemTax2Rate') == $this->id) {
             return true;
         }
 

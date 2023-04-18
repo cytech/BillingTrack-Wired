@@ -56,4 +56,10 @@ Route::middleware(['web', 'auth.admin'])->namespace('BT\Modules\Reports\Controll
         Route::name('timesheet.html')->get('timesheet_report/html', 'TimeSheetReportController@html');
         Route::name('timesheet.pdf')->get('timesheet_report/pdf', 'TimeSheetReportController@pdf');
         Route::name('timesheet.iif')->get('timesheet_report/iif', 'TimeSheetReportController@iif');
+
+        Route::name('vendorPayments')->get('vendor_payments', 'VendorPaymentsReportController@index');
+        Route::name('vendorPayments.validate')->post('vendor_payments/validate', 'VendorPaymentsReportController@validateOptions');
+        Route::name('vendorPayments.html')->get('vendor_payments/html', 'VendorPaymentsReportController@html');
+        Route::name('vendorPayments.pdf')->get('vendor_payments/pdf', 'VendorPaymentsReportController@pdf');
+
     });

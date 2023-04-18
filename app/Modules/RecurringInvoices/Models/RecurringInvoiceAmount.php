@@ -12,7 +12,9 @@
 namespace BT\Modules\RecurringInvoices\Models;
 
 use BT\Support\CurrencyFormatter;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class RecurringInvoiceAmount extends Model
@@ -26,7 +28,7 @@ class RecurringInvoiceAmount extends Model
      */
     protected $guarded = ['id'];
 
-    protected $appends = ['formatted_total'];
+//    protected $appends = ['formatted_total'];
 
     /*
     |--------------------------------------------------------------------------
@@ -34,9 +36,9 @@ class RecurringInvoiceAmount extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function recurringInvoice()
+    public function recurringInvoice(): BelongsTo
     {
-        return $this->belongsTo('BT\Modules\RecurringInvoices\Models\RecurringInvoice');
+        return $this->belongsTo(RecurringInvoice::class);
     }
 
     /*
@@ -45,32 +47,32 @@ class RecurringInvoiceAmount extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function getFormattedSubtotalAttribute()
+    public function formattedSubtotal(): Attribute
     {
-        return CurrencyFormatter::format($this->attributes['subtotal'], $this->recurringInvoice->currency);
+        return new Attribute(get: fn() => CurrencyFormatter::format($this->attributes['subtotal'], $this->recurringInvoice->currency));
     }
 
-    public function getFormattedTaxAttribute()
+    public function formattedTax(): Attribute
     {
-        return CurrencyFormatter::format($this->attributes['tax'], $this->recurringInvoice->currency);
+        return new Attribute(get: fn() => CurrencyFormatter::format($this->attributes['tax'], $this->recurringInvoice->currency));
     }
 
-    public function getFormattedTotalAttribute()
+    public function formattedTotal(): Attribute
     {
-        return CurrencyFormatter::format($this->attributes['total'], $this->recurringInvoice->currency);
+        return new Attribute(get: fn() => CurrencyFormatter::format($this->attributes['total'], $this->recurringInvoice->currency));
     }
 
-    public function getFormattedDiscountAttribute()
+    public function formattedDiscount(): Attribute
     {
-        return CurrencyFormatter::format($this->attributes['discount'], $this->recurringInvoice->currency);
+        return new Attribute(get: fn() => CurrencyFormatter::format($this->attributes['discount'], $this->recurringInvoice->currency));
     }
 
     /**
      * Retrieve the formatted total prior to conversion.
      * @return string
      */
-    public function getFormattedTotalWithoutConversionAttribute()
-    {
-        return CurrencyFormatter::format($this->attributes['total'] / $this->recurringInvoice->exchange_rate);
-    }
+//    public function getFormattedTotalWithoutConversionAttribute()
+//    {
+//        return CurrencyFormatter::format($this->attributes['total'] / $this->recurringInvoice->exchange_rate);
+//    }
 }

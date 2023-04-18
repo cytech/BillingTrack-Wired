@@ -12,14 +12,24 @@
 namespace BT\Modules\Payments\Models;
 
 use Askedio\SoftCascade\Traits\SoftCascadeTrait;
+use BT\Modules\Clients\Models\Client;
+use BT\Modules\CustomFields\Models\PaymentCustom;
 use BT\Modules\Documents\Models\Invoice;
+use BT\Modules\Documents\Models\Purchaseorder;
+use BT\Modules\MailQueue\Models\MailQueue;
+use BT\Modules\Notes\Models\Note;
+use BT\Modules\PaymentMethods\Models\PaymentMethod;
 use Carbon\Carbon;
 use BT\Support\CurrencyFormatter;
 use BT\Support\DateFormatter;
 use BT\Support\FileNames;
 use BT\Support\HTML;
 use BT\Support\NumberFormatter;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
 
@@ -39,7 +49,7 @@ class Payment extends Model
 
     protected $casts = ['paid_at' => 'datetime', 'deleted_at' => 'datetime'];
 
-    protected $appends = ['formatted_paid_at','formatted_amount'];
+//    protected $appends = ['formatted_paid_at','formatted_amount'];
 
     /*
     |--------------------------------------------------------------------------
@@ -47,34 +57,39 @@ class Payment extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function client()
+    public function client(): BelongsTo
     {
-        return $this->belongsTo('BT\Modules\Clients\Models\Client');
+        return $this->belongsTo(Client::class);
     }
 
-    public function custom()
+    public function custom(): HasOne
     {
-        return $this->hasOne('BT\Modules\CustomFields\Models\PaymentCustom');
+        return $this->hasOne(PaymentCustom::class);
     }
 
-    public function invoice()
+    public function invoice(): BelongsTo
     {
-        return $this->belongsTo(Invoice::class);
+        return $this->belongsTo(Invoice::class, 'invoice_id');
     }
 
-    public function mailQueue()
+    public function purchaseorder(): BelongsTo
     {
-        return $this->morphMany('BT\Modules\MailQueue\Models\MailQueue', 'mailable');
+        return $this->belongsTo(Purchaseorder::class, 'invoice_id');
     }
 
-    public function notes()
+    public function mailQueue(): MorphMany
     {
-        return $this->morphMany('BT\Modules\Notes\Models\Note', 'notable');
+        return $this->morphMany(MailQueue::class, 'mailable');
     }
 
-    public function paymentMethod()
+    public function notes(): MorphMany
     {
-        return $this->belongsTo('BT\Modules\PaymentMethods\Models\PaymentMethod');
+        return $this->morphMany(Note::class, 'notable');
+    }
+
+    public function paymentMethod(): BelongsTo
+    {
+        return $this->belongsTo(PaymentMethod::class);
     }
 
     /*
@@ -83,39 +98,39 @@ class Payment extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function getFormattedPaidAtAttribute()
+    public function formattedPaidAt(): Attribute
     {
-        return DateFormatter::format($this->attributes['paid_at']);
+        return new Attribute(get: fn() => DateFormatter::format($this->attributes['paid_at']));
     }
 
-    public function getFormattedAmountAttribute()
+    public function formattedAmount(): Attribute
     {
-        return CurrencyFormatter::format($this->attributes['amount'], $this->invoice->currency ?? '');
+        return new Attribute(get: fn() => CurrencyFormatter::format($this->attributes['amount'], $this->invoice->currency ?? ''));
     }
 
-    public function getFormattedNumericAmountAttribute()
+    public function formattedNumericAmount(): Attribute
     {
-        return NumberFormatter::format($this->attributes['amount']);
+        return new Attribute(get: fn() => NumberFormatter::format($this->attributes['amount']));
     }
 
-    public function getFormattedNoteAttribute()
+    public function formattedNote(): Attribute
     {
-        return nl2br($this->attributes['note']);
+        return new Attribute(get: fn() => nl2br($this->attributes['note']));
     }
 
-    public function getUserAttribute()
+    public function user(): Attribute
     {
-        return $this->invoice->user;
+        return new Attribute(get: fn() => $this->invoice->user);
     }
 
-    public function getHtmlAttribute()
+    public function html(): Attribute
     {
-        return HTML::invoice($this->invoice);
+        return new Attribute(get: fn() => HTML::invoice($this->invoice));
     }
 
-    public function getPdfFilenameAttribute()
+    public function pdfFilename(): Attribute
     {
-        return FileNames::invoice($this->invoice);
+        return new Attribute(get: fn() => FileNames::invoice($this->invoice));
     }
 
     /*
@@ -149,22 +164,18 @@ class Payment extends Model
 
     public function scopeKeywords($query, $keywords)
     {
-        if ($keywords)
-        {
+        if ($keywords) {
             $keywords = strtolower($keywords);
 
             $query->where('payments.created_at', 'like', '%' . $keywords . '%')
-                ->orWhereIn('invoice_id', function ($query) use ($keywords)
-                {
+                ->orWhereIn('invoice_id', function ($query) use ($keywords) {
                     $query->select('id')->from('invoices')->where(DB::raw('lower(number)'), 'like', '%' . $keywords . '%')
                         ->orWhere('summary', 'like', '%' . $keywords . '%')
-                        ->orWhereIn('client_id', function ($query) use ($keywords)
-                        {
+                        ->orWhereIn('client_id', function ($query) use ($keywords) {
                             $query->select('id')->from('clients')->where(DB::raw("CONCAT_WS('^',LOWER(name),LOWER(unique_name))"), 'like', '%' . $keywords . '%');
                         });
                 })
-                ->orWhereIn('payment_method_id', function ($query) use ($keywords)
-                {
+                ->orWhereIn('payment_method_id', function ($query) use ($keywords) {
                     $query->select('id')->from('payment_methods')->where(DB::raw('lower(name)'), 'like', '%' . $keywords . '%');
                 });
         }
@@ -174,10 +185,8 @@ class Payment extends Model
 
     public function scopeClientId($query, $clientId)
     {
-        if ($clientId)
-        {
-            $query->whereHas('invoice', function ($query) use ($clientId)
-            {
+        if ($clientId) {
+            $query->whereHas('invoice', function ($query) use ($clientId) {
                 $query->where('client_id', $clientId);
             });
         }
@@ -187,10 +196,8 @@ class Payment extends Model
 
     public function scopeInvoiceId($query, $invoiceId)
     {
-        if ($invoiceId)
-        {
-            $query->whereHas('invoice', function ($query) use ($invoiceId)
-            {
+        if ($invoiceId) {
+            $query->whereHas('invoice', function ($query) use ($invoiceId) {
                 $query->where('id', $invoiceId);
             });
         }
@@ -200,10 +207,8 @@ class Payment extends Model
 
     public function scopeInvoiceNumber($query, $invoiceNumber)
     {
-        if ($invoiceNumber)
-        {
-            $query->whereHas('invoice', function ($query) use ($invoiceNumber)
-            {
+        if ($invoiceNumber) {
+            $query->whereHas('invoice', function ($query) use ($invoiceNumber) {
                 $query->where('number', $invoiceNumber);
             });
         }

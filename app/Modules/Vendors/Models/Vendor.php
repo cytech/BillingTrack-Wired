@@ -12,12 +12,23 @@
 namespace BT\Modules\Vendors\Models;
 
 use Askedio\SoftCascade\Traits\SoftCascadeTrait;
+use BT\Modules\Attachments\Models\Attachment;
+use BT\Modules\Currencies\Models\Currency;
+use BT\Modules\CustomFields\Models\VendorCustom;
 use BT\Modules\Documents\Models\Purchaseorder;
 use BT\Modules\Expenses\Models\Expense;
+use BT\Modules\Notes\Models\Note;
+use BT\Modules\PaymentTerms\Models\PaymentTerm;
+use BT\Modules\Users\Models\User;
 use BT\Support\CurrencyFormatter;
 use BT\Support\Statuses\DocumentStatuses;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use DB;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Vendor extends Model
@@ -45,8 +56,7 @@ class Vendor extends Model
             'id' => $id,
         ]);
 
-        if (!$vendor->id)
-        {
+        if (!$vendor->id) {
             $vendor->name = $name;
             $vendor->save();
             return self::find($vendor->id);
@@ -57,13 +67,11 @@ class Vendor extends Model
 
     public static function inUse($id)
     {
-        if (Purchaseorder::where('client_id', $id)->count())
-        {
+        if (Purchaseorder::where('client_id', $id)->count()) {
             return true;
         }
 
-        if (Expense::where('vendor_id', $id)->count())
-        {
+        if (Expense::where('vendor_id', $id)->count()) {
             return true;
         }
 
@@ -77,42 +85,42 @@ class Vendor extends Model
    |--------------------------------------------------------------------------
    */
 
-    public function attachments()
+    public function attachments(): MorphMany
     {
-        return $this->morphMany('BT\Modules\Attachments\Models\Attachment', 'attachable');
+        return $this->morphMany(Attachment::class, 'attachable');
     }
 
-    public function contacts()
+    public function contacts(): HasMany
     {
-        return $this->hasMany('BT\Modules\Vendors\Models\Contact');
+        return $this->hasMany(Contact::class);
     }
 
-    public function currency()
+    public function currency(): BelongsTo
     {
-        return $this->belongsTo('BT\Modules\Currencies\Models\Currency', 'currency_code', 'code');
+        return $this->belongsTo(Currency::class, 'currency_code', 'code');
     }
 
-    public function custom()
+    public function custom(): HasOne
     {
-        return $this->hasOne('BT\Modules\CustomFields\Models\VendorCustom');
+        return $this->hasOne(VendorCustom::class);
     }
 
-    public function notes()
+    public function notes(): MorphMany
     {
-        return $this->morphMany('BT\Modules\Notes\Models\Note', 'notable');
+        return $this->morphMany(Note::class, 'notable');
     }
 
-    public function user()
+    public function user(): HasOne
     {
-        return $this->hasOne('BT\Modules\Users\Models\User');
+        return $this->hasOne(User::class);
     }
 
-    public function paymentterm()
+    public function paymentterm(): BelongsTo
     {
-        return $this->belongsTo('BT\Modules\PaymentTerms\Models\PaymentTerm');
+        return $this->belongsTo(PaymentTerm::class);
     }
 
-    public function purchaseorders()
+    public function purchaseorders(): HasMany
     {
         return $this->hasMany(Purchaseorder::class, 'client_id');
     }
@@ -123,56 +131,57 @@ class Vendor extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function getAttachmentPathAttribute()
+    public function attachmentPath(): Attribute
     {
-        return attachment_path('vendors/' . $this->id);
+        return new Attribute(get: fn() => attachment_path('vendors/' . $this->id));
     }
 
-    public function getAttachmentPermissionOptionsAttribute()
+    public function attachmentPermissionOptions(): Attribute
     {
-        return ['0' => trans('bt.not_visible')];
+        return new Attribute(get: fn() => ['0' => trans('bt.not_visible')]);
     }
 
-    public function getFormattedBalanceAttribute()
+    public function formattedBalance(): Attribute
     {
-        return CurrencyFormatter::format($this->balance, $this->currency);
+        return new Attribute(get: fn() => CurrencyFormatter::format($this->balance, $this->currency));
     }
 
-    public function getFormattedPaidAttribute()
+    public function formattedPaid(): Attribute
     {
-        return CurrencyFormatter::format($this->paid, $this->currency);
+        return new Attribute(get: fn() => CurrencyFormatter::format($this->paid, $this->currency));
     }
 
-    public function getFormattedTotalAttribute()
+    public function formattedTotal(): Attribute
     {
-        return CurrencyFormatter::format($this->total, $this->currency);
+        return new Attribute(get: fn() => CurrencyFormatter::format($this->total, $this->currency));
     }
 
-    public function getFormattedAddressAttribute()
+    public function formattedAddress(): Attribute
     {
-        return nl2br(formatAddress($this));
+        return new Attribute(get: fn() => nl2br(formatAddress($this)));
     }
 
-    public function getFormattedAddress2Attribute()
+    public function formattedAddress2(): Attribute
     {
-        return nl2br(formatAddress2($this));
+        return new Attribute(get: fn() => nl2br(formatAddress2($this)));
     }
 
-    public function getVendorEmailAttribute()
+    public function vendorEmail(): Attribute
     {
-        return $this->email;
+        return new Attribute(get: fn() => $this->email);
     }
 
-    public function getVendorTermsAttribute()
+    public function vendorTerms(): Attribute
     {
         if ($this->paymentterm->id != 1) {
-            return $this->paymentterm->num_days;
+            return new Attribute(get: fn() => $this->paymentterm->num_days);
         } else
-            return config('bt.purchaseordersDueAfter');
+            return new Attribute(get: fn() => config('bt.purchaseordersDueAfter'));
     }
 
-    public function getFormattedActiveAttribute(){
-        return $this->active ? trans('bt.yes') : trans('bt.no');
+    public function formattedActive(): Attribute
+    {
+        return new Attribute(get: fn() => $this->active ? trans('bt.yes') : trans('bt.no'));
     }
 
     /*
@@ -185,19 +194,16 @@ class Vendor extends Model
     {
         return self::select('vendors.*',
             DB::raw('(' . $this->getBalanceSql() . ') as balance'),
-//            DB::raw('(' . $this->getPaidSql() . ') AS paid'),
+            DB::raw('(' . $this->getPaidSql() . ') AS paid'),
             DB::raw('(' . $this->getTotalSql() . ') AS total')
         );
     }
 
     public function scopeStatus($query, $status)
     {
-        if ($status == 'active')
-        {
+        if ($status == 'active') {
             $query->where('active', 1);
-        }
-        elseif ($status == 'inactive')
-        {
+        } elseif ($status == 'inactive') {
             $query->where('active', 0);
         }
 
@@ -206,14 +212,11 @@ class Vendor extends Model
 
     public function scopeKeywords($query, $keywords)
     {
-        if ($keywords)
-        {
+        if ($keywords) {
             $keywords = explode(' ', $keywords);
 
-            foreach ($keywords as $keyword)
-            {
-                if ($keyword)
-                {
+            foreach ($keywords as $keyword) {
+                if ($keyword) {
                     $keyword = strtolower($keyword);
 
                     $query->where(DB::raw("CONCAT_WS('^',LOWER(name),LOWER(unique_name),LOWER(email),phone,fax,mobile)"), 'LIKE', "%$keyword%");
@@ -230,52 +233,32 @@ class Vendor extends Model
     |--------------------------------------------------------------------------
     */
 
-//    private function getBalanceSql()
-//    {
-//        return DB::table('purchaseorder_amounts')->select(DB::raw('sum(balance)'))->whereIn('purchaseorder_id', function ($q)
-//        {
-//            $q->select('id')
-//                ->from('purchaseorders')
-//                ->where('purchaseorders.vendor_id', '=', DB::raw(DB::getTablePrefix() . 'purchaseorders.id'))
-//                ->where('purchaseorders.purchaseorder_status_id', '<>', DB::raw(PurchaseorderStatuses::getStatusId('canceled')));
-//        })->toSql();
-//    }
-
     private function getBalanceSql()
     {
-        return DB::table('document_amounts')->select(DB::raw('sum(balance)'))->whereIn('document_id', function ($q)
-        {
+        return DB::table('document_amounts')->select(DB::raw('sum(balance)'))->whereIn('document_id', function ($q) {
             $q->select('id')
                 ->from('documents')
-//                ->where('document_type', DOCUMENT_TYPE_INVOICE['modulefullname'])
                 ->where('documents.client_id', '=', DB::raw(DB::getTablePrefix() . 'vendors.id'))
                 ->where('documents.document_status_id', '<>', DB::raw(DocumentStatuses::getStatusId('canceled')))
                 ->whereNull('deleted_at');
         })->toSql();
     }
 
-//
-//    private function getPaidSql()
-//    {
-//        return DB::table('invoice_amounts')->select(DB::raw('sum(paid)'))->whereIn('invoice_id', function ($q)
-//        {
-//            $q->select('id')->from('invoices')->where('invoices.vendor_id', '=', DB::raw(DB::getTablePrefix() . 'vendors.id'));
-//        })->toSql();
-//    }
-//
-//    private function getTotalSql()
-//    {
-//        return DB::table('purchaseorder_amounts')->select(DB::raw('sum(total)'))->whereIn('purchaseorder_id', function ($q)
-//        {
-//            $q->select('id')->from('purchaseorders')->where('purchaseorders.vendor_id', '=', DB::raw(DB::getTablePrefix() . 'vendors.id'));
-//        })->toSql();
-//    }
+    private function getPaidSql()
+    {
+        return DB::table('document_amounts')->select(DB::raw('sum(paid)'))->whereIn('document_id', function ($q) {
+            $q->select('id')->from('documents')
+                ->where('documents.client_id', '=', DB::raw(DB::getTablePrefix() . 'vendors.id'))
+                ->where('documents.document_type', '=', DB::raw('"' . addslashes(Purchaseorder::class) . '"'));;
+        })->toSql();
+    }
 
     private function getTotalSql()
     {
-        return DB::table('document_amounts')->select(DB::raw('sum(total)'))->whereIn('document_id', function ($q)
-        {
-            $q->select('id')->from('documents')->where('documents.client_id', '=', DB::raw(DB::getTablePrefix() . 'vendors.id'));
+        return DB::table('document_amounts')->select(DB::raw('sum(total)'))->whereIn('document_id', function ($q) {
+            $q->select('id')->from('documents')
+                ->where('documents.client_id', '=', DB::raw(DB::getTablePrefix() . 'vendors.id'))
+                ->where('documents.document_type', '=', DB::raw('"' . addslashes(Purchaseorder::class) . '"'));
         })->toSql();
     }
 
@@ -285,20 +268,10 @@ class Vendor extends Model
     |--------------------------------------------------------------------------
     */
 
-//    public static function getList()
-//    {
-//        return self::whereIn('id', function ($query)
-//        {
-//            $query->select('vendor_id')->distinct()->from('expenses');
-//        })->orderBy('name')
-//            ->pluck('name', 'id')
-//            ->all();
-//    }
     public static function getList()
     {
-        return self::whereIn('id', function ($query)
-        {
-            $query->select('client_id')->distinct()->from('expenses');
+        return self::whereIn('id', function ($query) {
+            $query->select('vendor_id')->distinct()->from('expenses');
         })->orderBy('name')
             ->pluck('name', 'id')
             ->all();

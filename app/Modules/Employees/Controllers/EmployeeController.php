@@ -67,7 +67,7 @@ class EmployeeController extends Controller
         //
         $employees->title = $request->title;
         $employees->type_id = $request->type_id;
-        $employees->term_date = $request->term_date;
+        $employees->term_date = !empty($request->term_date) ? $request->term_date : null;
         $employees->billing_rate = $request->billing_rate ?: 0;
         $employees->schedule = $request->schedule ?: 0;
         $employees->active = $request->active ?: 0;
@@ -116,7 +116,7 @@ class EmployeeController extends Controller
         //
         $employees->title = $request->title;
         $employees->type_id = $request->type_id;
-        $employees->term_date = $request->term_date;
+        $employees->term_date = !empty($request->term_date) ? $request->term_date : null;
         $employees->billing_rate = $request->billing_rate;
         $employees->schedule = $request->schedule ?: 0;
         $employees->active = $request->active ?: 0;

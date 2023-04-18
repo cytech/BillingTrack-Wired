@@ -13,6 +13,7 @@ namespace BT\Modules\Documents\Models;
 
 use BT\Support\CurrencyFormatter;
 use BT\Support\NumberFormatter;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -28,8 +29,6 @@ class DocumentAmount extends Model
      * @var array
      */
     protected $guarded = ['id'];
-
-//    protected $appends = ['formatted_total'];
 
     /*
     |--------------------------------------------------------------------------
@@ -68,40 +67,40 @@ class DocumentAmount extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function getFormattedSubtotalAttribute()
+    public function formattedSubtotal(): Attribute
     {
-        return CurrencyFormatter::format($this->attributes['subtotal'], $this->document->currency);
+        return new Attribute(get: fn() => CurrencyFormatter::format($this->attributes['subtotal'], $this->document->currency));
     }
 
-    public function getFormattedTaxAttribute()
+    public function formattedTax(): Attribute
     {
-        return CurrencyFormatter::format($this->attributes['tax'], $this->document->currency);
+        return new Attribute(get: fn() => CurrencyFormatter::format($this->attributes['tax'], $this->document->currency));
     }
 
-    public function getFormattedTotalAttribute()
+    public function formattedTotal(): Attribute
     {
-        return CurrencyFormatter::format($this->attributes['total'], $this->document->currency);
-    }
-    public function getFormattedPaidAttribute()
-    {
-        return CurrencyFormatter::format($this->attributes['paid'], $this->document->currency);
+        return new Attribute(get: fn() => CurrencyFormatter::format($this->attributes['total'], $this->document->currency));
     }
 
-    public function getFormattedBalanceAttribute()
+    public function formattedPaid(): Attribute
     {
-        return CurrencyFormatter::format($this->attributes['balance'], $this->document->currency);
+        return new Attribute(get: fn() => CurrencyFormatter::format($this->attributes['paid'], $this->document->currency));
     }
 
-    public function getFormattedNumericBalanceAttribute()
+    public function formattedBalance(): Attribute
     {
-        return NumberFormatter::format($this->attributes['balance']);
+        return new Attribute(get: fn() => CurrencyFormatter::format($this->attributes['balance'], $this->document->currency));
     }
 
-    public function getFormattedDiscountAttribute()
+    public function formattedNumericBalance(): Attribute
     {
-        return CurrencyFormatter::format($this->attributes['discount'], $this->document->currency);
+        return new Attribute(get: fn() => NumberFormatter::format($this->attributes['balance']));
     }
 
+    public function formattedDiscount(): Attribute
+    {
+        return new Attribute(get: fn() => CurrencyFormatter::format($this->attributes['discount'], $this->document->currency));
+    }
     /**
      * Retrieve the formatted total prior to conversion.
      * @return string

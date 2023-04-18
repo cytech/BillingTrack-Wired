@@ -12,10 +12,16 @@
 namespace BT\Modules\TimeTracking\Models;
 
 use Askedio\SoftCascade\Traits\SoftCascadeTrait;
+use BT\Modules\Clients\Models\Client;
+use BT\Modules\CompanyProfiles\Models\CompanyProfile;
+use BT\Modules\Users\Models\User;
 use BT\Support\Statuses\TimeTrackingProjectStatuses;
 use BT\Support\CurrencyFormatter;
 use BT\Support\DateFormatter;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
 
@@ -33,7 +39,7 @@ class TimeTrackingProject extends Model
 
     protected $guarded = ['id'];
 
-    protected $appends = ['status_text', 'formatted_created_at', 'formatted_due_at'];
+//    protected $appends = ['status_text', 'formatted_created_at', 'formatted_due_at'];
 
     public static function getList($status = null)
     {
@@ -46,24 +52,24 @@ class TimeTrackingProject extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function client()
+    public function client(): BelongsTo
     {
-        return $this->belongsTo('BT\Modules\Clients\Models\Client');
+        return $this->belongsTo(Client::class);
     }
 
-    public function companyProfile()
+    public function companyProfile(): BelongsTo
     {
-        return $this->belongsTo('BT\Modules\CompanyProfiles\Models\CompanyProfile');
+        return $this->belongsTo(CompanyProfile::class);
     }
 
-    public function tasks()
+    public function tasks(): HasMany
     {
-        return $this->hasMany('BT\Modules\TimeTracking\Models\TimeTrackingTask');
+        return $this->hasMany(TimeTrackingTask::class);
     }
 
-    public function user()
+    public function user(): BelongsTo
     {
-        return $this->belongsTo('BT\Modules\Users\Models\User');
+        return $this->belongsTo(User::class);
     }
 
     /*
@@ -72,25 +78,25 @@ class TimeTrackingProject extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function getFormattedCreatedAtAttribute()
+    public function formattedCreatedat(): Attribute
     {
-        return DateFormatter::format($this->attributes['created_at']);
+        return new Attribute(get: fn() => DateFormatter::format($this->attributes['created_at']));
     }
 
-    public function getFormattedDueAtAttribute()
+    public function formattedDueAt(): Attribute
     {
-        return DateFormatter::format($this->attributes['due_at']);
+        return new Attribute(get: fn() => DateFormatter::format($this->attributes['due_at']));
     }
 
-    public function getFormattedHourlyRateAttribute()
+    public function formattedHourlyRate(): Attribute
     {
-        return CurrencyFormatter::format($this->attributes['hourly_rate']);
+        return new Attribute(get: fn() => CurrencyFormatter::format($this->attributes['hourly_rate']));
     }
 
-    public function getStatusTextAttribute()
+    public function statusText(): Attribute
     {
         $statuses = TimeTrackingProjectStatuses::statuses();
-        return $statuses[$this->attributes['status_id']];
+        return new Attribute(get: fn() => $statuses[$this->attributes['status_id']]);
     }
 
     /*
@@ -112,8 +118,7 @@ class TimeTrackingProject extends Model
 
     public function scopeCompanyProfileId($query, $companyProfileId = null)
     {
-        if ($companyProfileId)
-        {
+        if ($companyProfileId) {
             $query->where('company_profile_id', $companyProfileId);
         }
 
@@ -122,8 +127,7 @@ class TimeTrackingProject extends Model
 
     public function scopeStatusId($query, $statusId = null)
     {
-        if ($statusId)
-        {
+        if ($statusId) {
             $query->where('status_id', $statusId);
         }
 

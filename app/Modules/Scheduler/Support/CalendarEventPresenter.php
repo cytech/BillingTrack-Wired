@@ -33,12 +33,10 @@ class CalendarEventPresenter
                 $data->category_id =  5;
                 $data->will_call = $entity->will_call;
                 foreach ($entity->documentItems as $documentItem){
-                    if ($documentItem->resource_table == 'employees' && $documentItem->employees->isNotEmpty()) {
-                        foreach ($documentItem->employees as $employee) {
-                            if ($employee->driver == 1) {
-                                $documentItem->name = '<span style="color:blue">' . $employee->short_name . '</span>';
+                    if ($documentItem->resource_table == 'employees' && $documentItem->employee) {
+                            if ($documentItem->employee->driver == 1) {
+                                $documentItem->name = '<span style="color:blue">' . $documentItem->employee->short_name . '</span>';
                             }
-                        }
                     }
                 }
                 $data->resources = $entity->documentItems;

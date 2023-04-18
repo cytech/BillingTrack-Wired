@@ -140,13 +140,11 @@
                                                         @if($emp->job_date->format('Y-m-d') == $date)
                                                             @foreach($emp->documentItems->sortBy('name') as $woitem)
                                                                 <tr>
-                                                                    @foreach ($woitem->employees as $woemp)
-                                                                        @if($woemp->driver)
+                                                                        @if($woitem->employee->driver)
                                                                             <td style="color: blue">{{$woitem->name}}</td>
                                                                         @else
                                                                             <td> {{ $woitem->name }} </td>
                                                                         @endif
-                                                                    @endforeach
                                                                     <td> {{ $emp->formatted_start_time }}</td>
                                                                     <td> {{ $emp->formatted_end_time }}</td>
                                                                     <td><a href="{!! url('/documents') . '/' . $emp->id . '/edit' !!}">

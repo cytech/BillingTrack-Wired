@@ -11,10 +11,18 @@
 
 namespace BT\Modules\Products\Models;
 
+use BT\Modules\Documents\Models\DocumentItem;
 use BT\Modules\Documents\Models\Purchaseorder;
+use BT\Modules\RecurringInvoices\Models\RecurringInvoiceItem;
+use BT\Modules\Scheduler\Models\Category;
+use BT\Modules\TaxRates\Models\TaxRate;
+use BT\Modules\Vendors\Models\Vendor;
 use BT\Support\CurrencyFormatter;
 use BT\Support\NumberFormatter;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Product extends Model
 {
@@ -24,90 +32,73 @@ class Product extends Model
      */
     protected $guarded = ['id'];
 
-	protected $table = 'products';
+    protected $table = 'products';
 
-    public function vendor()
+    public function vendor(): BelongsTo
     {
-        return $this->belongsTo('BT\Modules\Vendors\Models\Vendor')->withDefault(['name' => '']);
+        return $this->belongsTo(Vendor::class)->withDefault(['name' => '']);
     }
 
-    public function category()
+    public function category(): BelongsTo
     {
-        return $this->belongsTo('BT\Modules\Categories\Models\Category')->withDefault(['name' => '']);
+        return $this->belongsTo(Category::class)->withDefault(['name' => '']);
     }
 
-    public function purchaseorders()
+    public function purchaseorders(): HasMany
     {
         return $this->hasMany(Purchaseorder::class);
     }
 
-    public function inventorytype()
+    public function inventorytype(): BelongsTo
     {
-        return $this->belongsTo('BT\Modules\Products\Models\InventoryType');
+        return $this->belongsTo(InventoryType::class);
     }
 
-//    public function quoteitem()
-//    {
-//        return $this->belongsTo('BT\Modules\Quotes\Models\QuoteItem','resource_id', 'id')
-//            ->where('resource_table','=','products');
-//    }
-//
-//    public function workorderitem()
-//    {
-//        return $this->belongsTo('BT\Modules\Workorders\Models\WorkorderItem','resource_id', 'id')
-//            ->where('resource_table','=','products');
-//    }
-//
-//    public function invoiceitem()
-//    {
-//        return $this->belongsTo('BT\Modules\Invoices\Models\InvoiceItem','resource_id', 'id')
-//            ->where('resource_table','=','products');
-//    }
-
-    public function recurringinvoiceitem()
+    public function documentitem(): BelongsTo
     {
-        return $this->belongsTo('BT\Modules\RecurringInvoices\Models\RecurringInvoiceItem','resource_id', 'id')
-            ->where('resource_table','=','products');
+        return $this->belongsTo(DocumentItem::class, 'resource_id', 'id')
+            ->where('resource_table', '=', 'products');
     }
 
-    public function purchaseorderitem()
+    public function recurringinvoiceitem(): BelongsTo
     {
-        return $this->belongsTo('BT\Modules\Purchaseorders\Models\purchaseorderItem','resource_id', 'id')
-            ->where('resource_table','=','products');
+        return $this->belongsTo(RecurringInvoiceItem::class, 'resource_id', 'id')
+            ->where('resource_table', '=', 'products');
     }
 
-    public function taxRate()
+    public function taxRate(): BelongsTo
     {
-        return $this->belongsTo('BT\Modules\TaxRates\Models\TaxRate')->withDefault(['name' => '']);
+        return $this->belongsTo(TaxRate::class)->withDefault(['name' => '']);
     }
 
-    public function taxRate2()
+    public function taxRate2(): BelongsTo
     {
-        return $this->belongsTo('BT\Modules\TaxRates\Models\TaxRate', 'tax_rate_2_id')->withDefault(['name' => '']);
+        return $this->belongsTo(TaxRate::class, 'tax_rate_2_id')->withDefault(['name' => '']);
     }
 
-    public function getIsTrackableAttribute(){
-        return $this->inventorytype->tracked;
-    }
-
-
-    public function getFormattedPriceAttribute()
+    public function isTrackable(): Attribute
     {
-        return CurrencyFormatter::format($this->attributes['price']);
+        return new Attribute(get: fn() => $this->inventorytype->tracked);
     }
 
-    public function getFormattedCostAttribute()
+    public function formattedPrice(): Attribute
     {
-        return CurrencyFormatter::format($this->attributes['cost']);
+        return new Attribute(get: fn() => CurrencyFormatter::format($this->attributes['price']));
     }
 
-    public function getFormattedNumericPriceAttribute()
+    public function formattedCost(): Attribute
     {
-        return NumberFormatter::format($this->attributes['price']);
+        return new Attribute(get: fn() => CurrencyFormatter::format($this->attributes['cost']));
     }
 
-    public function getFormattedActiveAttribute(){
-        return $this->active ? trans('bt.yes') : trans('bt.no');
+    public function formattedNumericPrice(): Attribute
+    {
+        return new Attribute(get: fn() => NumberFormatter::format($this->attributes['price']));
+    }
+
+    public function formattedActive(): Attribute
+    {
+        return new Attribute(get: fn() => $this->active ? trans('bt.yes') : trans('bt.no'));
     }
 
     //inventory tracked scope
@@ -118,12 +109,9 @@ class Product extends Model
 
     public function scopeStatus($query, $status)
     {
-        if ($status == 'active')
-        {
+        if ($status == 'active') {
             $query->where($this->table . '.active', 1);
-        }
-        elseif ($status == 'inactive')
-        {
+        } elseif ($status == 'inactive') {
             $query->where($this->table . '.active', 0);
         }
 

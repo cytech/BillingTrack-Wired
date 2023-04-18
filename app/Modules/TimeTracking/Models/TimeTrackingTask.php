@@ -14,7 +14,11 @@ namespace BT\Modules\TimeTracking\Models;
 use Askedio\SoftCascade\Traits\SoftCascadeTrait;
 use BT\Modules\Documents\Models\Invoice;
 use BT\Support\NumberFormatter;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
 
@@ -38,22 +42,22 @@ class TimeTrackingTask extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function activeTimer()
+    public function activeTimer(): HasOne
     {
         return $this->hasOne(TimeTrackingTimer::class)->where('time_tracking_timers.end_at', null);
     }
 
-    public function invoice()
+    public function invoice(): BelongsTo
     {
         return $this->belongsTo(Invoice::class);
     }
 
-    public function project()
+    public function project(): BelongsTo
     {
         return $this->belongsTo(TimeTrackingProject::class, 'time_tracking_project_id');
     }
 
-    public function timers()
+    public function timers(): HasMany
     {
         return $this->hasMany(TimeTrackingTimer::class);
     }
@@ -64,9 +68,9 @@ class TimeTrackingTask extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function getFormattedHoursAttribute()
+    public function formattedHours(): Attribute
     {
-        return NumberFormatter::format($this->attributes['hours']);
+        return new Attribute(get: fn() => NumberFormatter::format($this->attributes['hours']));
     }
 
     /*

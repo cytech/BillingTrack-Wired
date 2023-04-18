@@ -12,6 +12,7 @@
 namespace BT\Modules\Documents\Models;
 
 use BT\Support\CurrencyFormatter;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -39,28 +40,18 @@ class DocumentItemAmount extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function getFormattedSubtotalAttribute()
+    public function formattedSubtotal(): Attribute
     {
-        return CurrencyFormatter::format($this->attributes['subtotal'], $this->item->document->currency);
+        return new Attribute(get: fn() => CurrencyFormatter::format($this->attributes['subtotal'], $this->item->document->currency));
     }
 
-    public function getFormattedTaxAttribute()
+    public function formattedTax(): Attribute
     {
-        return CurrencyFormatter::format($this->attributes['tax'], $this->item->invoice->currency);
+        return new Attribute(get: fn() => CurrencyFormatter::format($this->attributes['tax'], $this->item->document->currency));
     }
 
-    public function getFormattedTax1Attribute()
+    public function formattedTotal(): Attribute
     {
-        return CurrencyFormatter::format($this->attributes['tax_1'], $this->item->invoice->currency);
-    }
-
-    public function getFormattedTax2Attribute()
-    {
-        return CurrencyFormatter::format($this->attributes['tax_2'], $this->item->invoice->currency);
-    }
-
-    public function getFormattedTotalAttribute()
-    {
-        return CurrencyFormatter::format($this->attributes['total'], $this->item->document->currency);
+        return new Attribute(get: fn() => CurrencyFormatter::format($this->attributes['total'], $this->item->document->currency));
     }
 }

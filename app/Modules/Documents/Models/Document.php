@@ -12,6 +12,15 @@
 namespace BT\Modules\Documents\Models;
 
 use Askedio\SoftCascade\Traits\SoftCascadeTrait;
+use BT\Modules\Activity\Models\Activity;
+use BT\Modules\Attachments\Models\Attachment;
+use BT\Modules\Clients\Models\Client;
+use BT\Modules\CompanyProfiles\Models\CompanyProfile;
+use BT\Modules\Currencies\Models\Currency;
+use BT\Modules\Groups\Models\Group;
+use BT\Modules\MailQueue\Models\MailQueue;
+use BT\Modules\Notes\Models\Note;
+use BT\Modules\Users\Models\User;
 use BT\Observers\DocumentObserver;
 use BT\Support\CurrencyFormatter;
 use BT\Support\DateFormatter;
@@ -22,8 +31,10 @@ use BT\Support\Statuses\DocumentStatuses;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
 use Parental\HasChildren;
@@ -88,24 +99,24 @@ class Document extends Model
             ->orderBy('display_order');
     }
 
-    public function activities()
+    public function activities(): MorphMany
     {
-        return $this->morphMany('BT\Modules\Activity\Models\Activity', 'audit');
+        return $this->morphMany(Activity::class, 'audit');
     }
 
-    public function attachments()
+    public function attachments(): MorphMany
     {
-        return $this->morphMany('BT\Modules\Attachments\Models\Attachment', 'attachable');
+        return $this->morphMany(Attachment::class, 'attachable');
     }
 
-    public function client()
+    public function client(): BelongsTo
     {
-        return $this->belongsTo('BT\Modules\Clients\Models\Client');
+        return $this->belongsTo(Client::class);
     }
 
-    public function clientAttachments()
+    public function clientAttachments(): MorphMany
     {
-        $relationship = $this->morphMany('BT\Modules\Attachments\Models\Attachment', 'attachable');
+        $relationship = $this->morphMany(Attachment::class, 'attachable');
 
         if ($this->status_text == 'paid') {
             $relationship->whereIn('client_visibility', [1, 2]);
@@ -116,40 +127,40 @@ class Document extends Model
     }
 
 
-    public function companyProfile()
+    public function companyProfile(): BelongsTo
     {
-        return $this->belongsTo('BT\Modules\CompanyProfiles\Models\CompanyProfile');
+        return $this->belongsTo(CompanyProfile::class);
     }
 
-    public function currency()
+    public function currency(): BelongsTo
     {
-        return $this->belongsTo('BT\Modules\Currencies\Models\Currency', 'currency_code', 'code');
+        return $this->belongsTo(Currency::class, 'currency_code', 'code');
     }
 
-    public function custom()
+    public function custom(): HasOne
     {
         $customclass = $this->module_type . 'Custom';
         return $this->hasOne('BT\Modules\CustomFields\Models\\' . $customclass, strtolower($this->module_type) . '_id');
     }
 
-    public function group()
+    public function group(): HasOne
     {
-        return $this->hasOne('BT\Modules\Groups\Models\Group');
+        return $this->hasOne(Group::class);
     }
 
-    public function mailQueue()
+    public function mailQueue(): MorphMany
     {
-        return $this->morphMany('BT\Modules\MailQueue\Models\MailQueue', 'mailable');
+        return $this->morphMany(MailQueue::class, 'mailable');
     }
 
-    public function notes()
+    public function notes(): MorphMany
     {
-        return $this->morphMany('BT\Modules\Notes\Models\Note', 'notable');
+        return $this->morphMany(Note::class, 'notable');
     }
 
-    public function user()
+    public function user(): BelongsTo
     {
-        return $this->belongsTo('BT\Modules\Users\Models\User');
+        return $this->belongsTo(User::class);
     }
 
     /*
@@ -241,11 +252,6 @@ class Document extends Model
     {
         return new Attribute(get: fn() => NumberFormatter::format($this->discount));
     }
-
-//    public function isPayable(): Attribute
-//    {
-//        return new Attribute(get: fn() => $this->status_text <> 'canceled' and $this->amount->balance > 0);
-//    }
 
     public function formattedSummary(): Attribute
     {

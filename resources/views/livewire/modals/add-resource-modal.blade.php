@@ -40,19 +40,15 @@
                         <tr class="prodlist">
                             <td><input wire:model.defer="selected_resources" type="checkbox" name="resource_ids[]"
                                        value="{!! $resource->id!!}"></td>
-                            @if($resource->driver)
-                                <td style="color: blue">{!!  $resource->name ?? $resource->short_name !!}</td>
-                            @else
-                                <td>{!!  $resource->name ?? $resource->short_name !!}</td>
-                            @endif
-                            <td>{!!  $resource->description ?? $resource->title !!}</td>
-                            <td>{!!  $resource->formatted_cost ?? $resource->formatted_price ?? $resource->formatted_billing_rate !!}</td>
+                            <td>{!! $resource->formatted_short_name !!}</td>
+                            <td>{!! $resource->title !!}</td>
+                            <td>{!! $resource->formatted_billing_rate !!}</td>
                         </tr>
                     @else
                         <tr class="prodlist">
                             <td><input wire:model.defer="selected_resources" type="checkbox" name="resource_ids[]"
                                        value="{!! $resource->id!!}"></td>
-                            <td>{!!  $resource->name ?? $resource->short_name !!}</td>
+                            <td>{!!  $resource->formatted_name ?? $resource->name !!}</td>
                             <td>{!!  $resource->description ?? $resource->title !!}</td>
                             @if($resource_type == 'Product')
                                 <td @if($resource->is_trackable) class="bg-secondary"

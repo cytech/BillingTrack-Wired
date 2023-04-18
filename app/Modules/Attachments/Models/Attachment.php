@@ -11,8 +11,12 @@
 
 namespace BT\Modules\Attachments\Models;
 
+use BT\Modules\Users\Models\User;
 use BT\Support\DateFormatter;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Attachment extends Model
@@ -31,14 +35,14 @@ class Attachment extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function attachable()
+    public function attachable(): MorphTo
     {
         return $this->morphTo();
     }
 
-    public function user()
+    public function user(): BelongsTo
     {
-        return $this->belongsTo('BT\Modules\Users\Models\User');
+        return $this->belongsTo(User::class);
     }
 
     /*
@@ -47,13 +51,13 @@ class Attachment extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function getDownloadUrlAttribute()
+    public function downloadUrl(): Attribute
     {
-        return route('attachments.download', [$this->url_key]);
+        return new Attribute(get: fn() => route('attachments.download', [$this->url_key]));
     }
 
-    public function getFormattedCreatedAtAttribute()
+    public function formattedCreatedAt(): Attribute
     {
-        return DateFormatter::format($this->created_at, true);
+        return new Attribute(get: fn() => DateFormatter::format($this->created_at, true));
     }
 }

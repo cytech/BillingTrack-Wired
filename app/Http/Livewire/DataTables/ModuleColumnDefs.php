@@ -206,10 +206,15 @@ class ModuleColumnDefs
                     ->format(function ($value, $row, Column $column) {
                         $ret = $row->formatted_amount;
                         if ($row->is_billable)
-                            if ($row->has_been_billed)
-                                $ret .= '<br><a href="' . route('documents.edit', [$row->invoice_id]) . '"><span class="badge bg-success">' . trans('bt.billed') . '</span></a>';
+                            if ($row->has_been_billed) {
+                                if ($row->invoice_id == 0) {
+                                    $ret .= '<br><span class="badge bg-danger" title="Invoice Deleted">' . trans('bt.billed') . '</span></a>';
+                                } else {
+                                    $ret .= '<br><a href="' . route('documents.edit', [$row->invoice_id]) . '"><span class="badge bg-success">' . trans('bt.billed') . '</span></a>';
+                                }
+                            }
                             else
-                                $ret .= '<br><span class="badge bg-danger">' . trans('bt.not_billed') . '</span>';
+                                $ret .= '<br><span class="badge bg-info">' . trans('bt.not_billed') . '</span>';
                         else
                             $ret .= '<br><span class="badge bg-secondary">' . trans('bt.not_billable') . '</span>';
                         if ($row->client)

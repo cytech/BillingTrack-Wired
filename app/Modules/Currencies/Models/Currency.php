@@ -15,6 +15,7 @@ use BT\Modules\Clients\Models\Client;
 use BT\Modules\Documents\Models\Invoice;
 use BT\Modules\Documents\Models\Quote;
 use BT\Traits\Sortable;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 
 class Currency extends Model
@@ -61,8 +62,8 @@ class Currency extends Model
         return false;
     }
 
-    public function getFormattedPlacementAttribute()
+    public function formattedPlacement(): Attribute
     {
-        return ($this->placement == 'before') ? trans('bt.before_amount') : trans('bt.after_amount');
+        return new Attribute(get: fn() => ($this->placement == 'before') ? trans('bt.before_amount') : trans('bt.after_amount'));
     }
 }

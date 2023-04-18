@@ -11,7 +11,12 @@
 
 namespace BT\Modules\Documents\Models;
 
+use BT\Modules\Attachments\Models\Attachment;
+use BT\Modules\Vendors\Models\Vendor;
 use BT\Support\Statuses\DocumentStatuses;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Parental\HasParent;
 
 class Purchaseorder extends Document
@@ -25,14 +30,14 @@ class Purchaseorder extends Document
         return $this::class;
     }
 
-    public function vendor()
+    public function vendor(): BelongsTo
     {
-        return $this->belongsTo('BT\Modules\Vendors\Models\Vendor', 'client_id');
+        return $this->belongsTo(Vendor::class, 'client_id');
     }
 
-    public function vendorAttachments()
+    public function vendorAttachments(): MorphMany
     {
-        $relationship = $this->morphMany('BT\Modules\Attachments\Models\Attachment', 'attachable');
+        $relationship = $this->morphMany(Attachment::class, 'attachable');
 
         if ($this->status_text == 'paid')
         {
@@ -45,6 +50,15 @@ class Purchaseorder extends Document
 
         return $relationship;
     }
+
+    //accessors
+    public function isPayable(): Attribute
+    {
+        return new Attribute(get: fn() => $this->status_text <> 'canceled' and $this->amount->balance > 0);
+    }
+
+
+    //scopes
     public function scopeVendorId($query, $vendorId = null)
     {
         if ($vendorId)

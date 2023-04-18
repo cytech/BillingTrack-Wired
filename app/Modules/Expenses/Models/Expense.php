@@ -12,12 +12,21 @@
 namespace BT\Modules\Expenses\Models;
 
 use Askedio\SoftCascade\Traits\SoftCascadeTrait;
-use BT\Events\CheckAttachment;
+use BT\Modules\Attachments\Models\Attachment;
+use BT\Modules\Categories\Models\Category;
+use BT\Modules\Clients\Models\Client;
+use BT\Modules\CompanyProfiles\Models\CompanyProfile;
+use BT\Modules\CustomFields\Models\ExpenseCustom;
 use BT\Modules\Documents\Models\Invoice;
+use BT\Modules\Vendors\Models\Vendor;
 use BT\Support\CurrencyFormatter;
 use BT\Support\DateFormatter;
 use BT\Support\NumberFormatter;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Expense extends Model
@@ -34,7 +43,7 @@ class Expense extends Model
 
     protected $casts = ['deleted_at' => 'datetime'];
 
-    protected $appends = ['formatted_description', 'formatted_expense_date', 'formatted_amount', 'is_billable', 'has_been_billed'];
+//    protected $appends = ['formatted_description', 'formatted_expense_date', 'formatted_amount', 'is_billable', 'has_been_billed'];
 
     /*
     |--------------------------------------------------------------------------
@@ -42,39 +51,39 @@ class Expense extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function attachments()
+    public function attachments(): MorphMany
     {
-        return $this->morphMany('BT\Modules\Attachments\Models\Attachment', 'attachable');
+        return $this->morphMany(Attachment::class, 'attachable');
     }
 
-    public function category()
+    public function category(): BelongsTo
     {
-        return $this->belongsTo('BT\Modules\Categories\Models\Category');
+        return $this->belongsTo(Category::class);
     }
 
-    public function client()
+    public function client(): BelongsTo
     {
-        return $this->belongsTo('BT\Modules\Clients\Models\Client');
+        return $this->belongsTo(Client::class);
     }
 
-    public function companyProfile()
+    public function companyProfile(): BelongsTo
     {
-        return $this->belongsTo('BT\Modules\CompanyProfiles\Models\CompanyProfile');
+        return $this->belongsTo(CompanyProfile::class);
     }
 
-    public function custom()
+    public function custom(): HasOne
     {
-        return $this->hasOne('BT\Modules\CustomFields\Models\ExpenseCustom');
+        return $this->hasOne(ExpenseCustom::class);
     }
 
-    public function invoice()
+    public function invoice(): HasOne
     {
-        return $this->belongsTo(Invoice::class);
+        return $this->hasOne(Invoice::class, 'id', 'invoice_id')->withTrashed();
     }
 
-    public function vendor()
+    public function vendor(): BelongsTo
     {
-        return $this->belongsTo('BT\Modules\Vendors\Models\Vendor');
+        return $this->belongsTo(Vendor::class);
     }
 
     /*
@@ -83,67 +92,63 @@ class Expense extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function getAttachmentPathAttribute()
+    public function attachmentPath(): Attribute
     {
-        return attachment_path('expenses/' . $this->id);
+        return new Attribute(get: fn() => attachment_path('expenses/' . $this->id));
     }
 
-    public function getAttachmentPermissionOptionsAttribute()
+    public function attachmentPermissionOptions(): Attribute
     {
-        return [
+        return new Attribute(get: fn() => [
             '0' => trans('bt.not_visible'),
             '1' => trans('bt.visible'),
-        ];
+        ]);
     }
 
-    public function getFormattedAmountAttribute()
+    public function formattedAmount(): Attribute
     {
-        return CurrencyFormatter::format($this->amount);
+        return new Attribute(get: fn() => CurrencyFormatter::format($this->amount));
     }
 
-    public function getFormattedTaxAttribute()
+    public function formattedTax(): Attribute
     {
-        return CurrencyFormatter::format($this->tax);
+        return new Attribute(get: fn() => CurrencyFormatter::format($this->tax));
     }
 
-    public function getFormattedDescriptionAttribute()
+    public function formattedDescription(): Attribute
     {
-        return nl2br($this->description);
+        return new Attribute(get: fn() => nl2br($this->description));
     }
 
-    public function getFormattedExpenseDateAttribute()
+    public function formattedExpenseDate(): Attribute
     {
-        return DateFormatter::format($this->expense_date);
+        return new Attribute(get: fn() => DateFormatter::format($this->expense_date));
     }
 
-    public function getFormattedNumericAmountAttribute()
+    public function formattedNumericAmount(): Attribute
     {
-        return NumberFormatter::format($this->amount);
+        return new Attribute(get: fn() => NumberFormatter::format($this->amount));
     }
 
-    public function getFormattedNumericTaxAttribute()
+    public function formattedNumericTax(): Attribute
     {
-        return NumberFormatter::format($this->tax);
+        return new Attribute(get: fn() => NumberFormatter::format($this->tax));
     }
 
-    public function getHasBeenBilledAttribute()
+    public function hasBeenBilled(): Attribute
     {
-        if ($this->invoice_id)
-        {
-            return true;
+        if (!is_null($this->invoice_id)) {
+            return new Attribute(get: fn() => true);
         }
-
-        return false;
+        return new Attribute(get: fn() => false);
     }
 
-    public function getIsBillableAttribute()
+    public function isBillable(): Attribute
     {
-        if ($this->client_id)
-        {
-            return true;
+        if ($this->client_id) {
+            return new Attribute(get: fn() => true);
         }
-
-        return false;
+        return new Attribute(get: fn() => false);
     }
 
     /*
@@ -154,8 +159,7 @@ class Expense extends Model
 
     public function scopeCategoryId($query, $categoryId = null)
     {
-        if ($categoryId)
-        {
+        if ($categoryId) {
             $query->where('category_id', $categoryId);
         }
 
@@ -164,8 +168,7 @@ class Expense extends Model
 
     public function scopeCompanyProfileId($query, $companyProfileId = null)
     {
-        if ($companyProfileId)
-        {
+        if ($companyProfileId) {
             $query->where('company_profile_id', $companyProfileId);
         }
 
@@ -183,8 +186,7 @@ class Expense extends Model
 
     public function scopeKeywords($query, $keywords = null)
     {
-        if ($keywords)
-        {
+        if ($keywords) {
             $keywords = strtolower($keywords);
 
             $query->where('expenses.expense_date', 'like', '%' . $keywords . '%')
@@ -199,10 +201,8 @@ class Expense extends Model
 
     public function scopeStatus($query, $status = null)
     {
-        if ($status)
-        {
-            switch ($status)
-            {
+        if ($status) {
+            switch ($status) {
                 case 'billed':
                     $query->where('invoice_id', '<>', 0);
                     break;
@@ -220,8 +220,7 @@ class Expense extends Model
 
     public function scopeVendorId($query, $vendorId = null)
     {
-        if ($vendorId)
-        {
+        if ($vendorId) {
             $query->where('vendor_id', $vendorId);
         }
 

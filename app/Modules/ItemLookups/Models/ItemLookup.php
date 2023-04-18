@@ -12,9 +12,14 @@
 namespace BT\Modules\ItemLookups\Models;
 
 use BT\Modules\Employees\Models\Employee;
+use BT\Modules\Products\Models\Product;
+use BT\Modules\TaxRates\Models\TaxRate;
 use BT\Support\CurrencyFormatter;
 use BT\Support\NumberFormatter;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\DB;
 
 class ItemLookup extends Model
@@ -26,7 +31,7 @@ class ItemLookup extends Model
      */
     protected $guarded = ['id'];
 
-    protected $appends = ['formatted_name', 'formatted_price'];
+//    protected $appends = ['formatted_name', 'formatted_price'];
 
     /*
     |--------------------------------------------------------------------------
@@ -34,26 +39,26 @@ class ItemLookup extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function taxRate()
+    public function taxRate(): BelongsTo
     {
-        return $this->belongsTo('BT\Modules\TaxRates\Models\TaxRate')->withDefault(['name' => '']);
+        return $this->belongsTo(TaxRate::class)->withDefault(['name' => '']);
     }
 
-    public function taxRate2()
+    public function taxRate2(): BelongsTo
     {
-        return $this->belongsTo('BT\Modules\TaxRates\Models\TaxRate', 'tax_rate_2_id')->withDefault(['name' => '']);
+        return $this->belongsTo(TaxRate::class, 'tax_rate_2_id')->withDefault(['name' => '']);
     }
 
-    public function products()
+    public function products(): HasMany
     {
-        return $this->hasMany('BT\Modules\Products\Models\Product', 'resource_id')
-            ->where('resource_table','=','products');
+        return $this->hasMany(Product::class, 'resource_id')
+            ->where('resource_table', '=', 'products');
     }
 
-    public function employees()
+    public function employees(): HasMany
     {
-        return $this->hasMany('BT\Modules\Employees\Models\Employee', 'resource_id')
-            ->where('resource_table','=','employees');
+        return $this->hasMany(Employee::class, 'resource_id')
+            ->where('resource_table', '=', 'employees');
     }
 
     /*
@@ -62,26 +67,26 @@ class ItemLookup extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function getFormattedPriceAttribute()
+    public function formattedPrice(): Attribute
     {
-        return CurrencyFormatter::format($this->attributes['price']);
+        return new Attribute(get: fn() => CurrencyFormatter::format($this->attributes['price']));
     }
 
-    public function getFormattedNumericPriceAttribute()
+    public function formattedNumericPrice(): Attribute
     {
-        return NumberFormatter::format($this->attributes['price']);
+        return new Attribute(get: fn() => NumberFormatter::format($this->attributes['price']));
     }
 
     //format drivers blue
-    public function getFormattedNameAttribute()
+    public function formattedName(): Attribute
     {
-        if ($this->resource_table == 'employees'){
-            if (Employee::find($this->resource_id)->driver == 1){
-                return '<span style = "color:blue">'.$this->name.'</span>';
+        if ($this->resource_table == 'employees') {
+            if (Employee::find($this->resource_id)->driver == 1) {
+                return new Attribute(get: fn() => '<span style = "color:blue">' . $this->name . '</span>');
             }
-            return $this->name;
+            return new Attribute(get: fn() => $this->name);
         }
-        return $this->name;
+        return new Attribute(get: fn() => $this->name);
     }
 
     /*
@@ -92,21 +97,17 @@ class ItemLookup extends Model
 
     public function scopeKeywords($query, $keywords)
     {
-        if ($keywords)
-        {
+        if ($keywords) {
             $keywords = explode(' ', $keywords);
 
-            foreach ($keywords as $keyword)
-            {
-                if ($keyword)
-                {
+            foreach ($keywords as $keyword) {
+                if ($keyword) {
                     $keyword = strtolower($keyword);
 
                     $query->where(DB::raw("CONCAT_WS('^',LOWER(name),LOWER(description),price)"), 'LIKE', "%$keyword%");
                 }
             }
         }
-
         return $query;
     }
 }

@@ -26,7 +26,10 @@ class PaymentObserver
      */
     public function created(Payment $payment): void
     {
-        event(new DocumentModified($payment->invoice));
+        if ($payment->invoice) {
+            event(new DocumentModified($payment->invoice));
+        } else
+            event(new DocumentModified($payment->purchaseorder));
 
         // Create the default custom record.
         $payment->custom()->save(new PaymentCustom());
@@ -48,7 +51,10 @@ class PaymentObserver
 
     public function updated(Payment $payment): void
     {
-        event(new DocumentModified($payment->invoice));
+        if ($payment->invoice) {
+            event(new DocumentModified($payment->invoice));
+        } else
+            event(new DocumentModified($payment->purchaseorder));
     }
 
     public function deleting(Payment $payment): void

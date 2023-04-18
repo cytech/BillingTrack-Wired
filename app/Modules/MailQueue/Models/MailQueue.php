@@ -12,7 +12,9 @@
 namespace BT\Modules\MailQueue\Models;
 
 use BT\Support\DateFormatter;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class MailQueue extends Model
@@ -23,7 +25,7 @@ class MailQueue extends Model
 
     protected $guarded = [];
 
-    protected $appends = ['formatted_created_at', 'formatted_from', 'formatted_to', 'formatted_cc', 'formatted_bcc', 'formatted_sent'];
+//    protected $appends = ['formatted_created_at', 'formatted_from', 'formatted_to', 'formatted_cc', 'formatted_bcc', 'formatted_sent'];
 
     /*
     |--------------------------------------------------------------------------
@@ -36,41 +38,41 @@ class MailQueue extends Model
     | Relationships
     |--------------------------------------------------------------------------
     */
-    public function mailable()
+    public function mailable(): MorphTo
     {
         return $this->morphTo();
     }
 
-    public function getFormattedCreatedAtAttribute()
+    //accessors
+    public function formattedCreatedAt(): Attribute
     {
-        return DateFormatter::format($this->attributes['created_at'], true);
+        return new Attribute(get: fn() => DateFormatter::format($this->attributes['created_at'], true));
     }
 
-    public function getFormattedFromAttribute()
+    public function formattedFrom(): Attribute
     {
         $from = json_decode($this->attributes['from']);
-
-        return $from->email;
+        return new Attribute(get: fn() => $from->email);
     }
 
-    public function getFormattedToAttribute()
+    public function formattedTo(): Attribute
     {
-        return implode(', ', json_decode($this->attributes['to']));
+        return new Attribute(get: fn() => implode(', ', json_decode($this->attributes['to'])));
     }
 
-    public function getFormattedCcAttribute()
+    public function formattedCc(): Attribute
     {
-        return implode(', ', json_decode($this->attributes['cc']));
+        return new Attribute(get: fn() => implode(', ', json_decode($this->attributes['cc'])));
     }
 
-    public function getFormattedBccAttribute()
+    public function formattedBcc(): Attribute
     {
-        return implode(', ', json_decode($this->attributes['bcc']));
+        return new Attribute(get: fn() => implode(', ', json_decode($this->attributes['bcc'])));
     }
 
-    public function getFormattedSentAttribute()
+    public function formattedSent(): Attribute
     {
-        return ($this->attributes['sent']) ? trans('bt.yes') : trans('bt.no');
+        return new Attribute(get: fn() => ($this->attributes['sent']) ? trans('bt.yes') : trans('bt.no'));
     }
 
     /*
@@ -81,8 +83,7 @@ class MailQueue extends Model
 
     public function scopeKeywords($query, $keywords = null)
     {
-        if ($keywords)
-        {
+        if ($keywords) {
             $keywords = strtolower($keywords);
 
             $query->where('created_at', 'like', '%' . $keywords . '%')

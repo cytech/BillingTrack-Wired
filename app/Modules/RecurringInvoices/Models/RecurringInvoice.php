@@ -12,9 +12,21 @@
 namespace BT\Modules\RecurringInvoices\Models;
 
 use Askedio\SoftCascade\Traits\SoftCascadeTrait;
+use BT\Modules\Activity\Models\Activity;
+use BT\Modules\Clients\Models\Client;
+use BT\Modules\CompanyProfiles\Models\CompanyProfile;
+use BT\Modules\Currencies\Models\Currency;
+use BT\Modules\CustomFields\Models\RecurringInvoiceCustom;
+use BT\Modules\Groups\Models\Group;
+use BT\Modules\Users\Models\User;
 use BT\Support\DateFormatter;
 use BT\Support\NumberFormatter;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
 
@@ -30,7 +42,7 @@ class RecurringInvoice extends Model
 
     protected $guarded = ['id'];
 
-    protected $appends = ['formatted_next_date', 'formatted_stop_date', 'formatted_summary'];
+//    protected $appends = ['formatted_next_date', 'formatted_stop_date', 'formatted_summary'];
 
     /*
     |--------------------------------------------------------------------------
@@ -38,58 +50,58 @@ class RecurringInvoice extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function activities()
+    public function activities(): MorphMany
     {
-        return $this->morphMany('BT\Modules\Activity\Models\Activity', 'audit');
+        return $this->morphMany(Activity::class, 'audit');
     }
 
-    public function amount()
+    public function amount(): HasOne
     {
-        return $this->hasOne('BT\Modules\RecurringInvoices\Models\RecurringInvoiceAmount');
+        return $this->hasOne(RecurringInvoiceAmount::class);
     }
 
-    public function client()
+    public function client(): BelongsTo
     {
-        return $this->belongsTo('BT\Modules\Clients\Models\Client');
+        return $this->belongsTo(Client::class);
     }
 
-    public function companyProfile()
+    public function companyProfile(): BelongsTo
     {
-        return $this->belongsTo('BT\Modules\CompanyProfiles\Models\CompanyProfile');
+        return $this->belongsTo(CompanyProfile::class);
     }
 
-    public function currency()
+    public function currency(): BelongsTo
     {
-        return $this->belongsTo('BT\Modules\Currencies\Models\Currency', 'currency_code', 'code');
+        return $this->belongsTo(Currency::class, 'currency_code', 'code');
     }
 
-    public function custom()
+    public function custom(): HasOne
     {
-        return $this->hasOne('BT\Modules\CustomFields\Models\RecurringInvoiceCustom');
+        return $this->hasOne(RecurringInvoiceCustom::class);
     }
 
-    public function group()
+    public function group(): BelongsTo
     {
-        return $this->belongsTo('BT\Modules\Groups\Models\Group');
+        return $this->belongsTo(Group::class);
     }
 
-    public function items()
+    public function items(): HasMany
     {
-        return $this->hasMany('BT\Modules\RecurringInvoices\Models\RecurringInvoiceItem')
+        return $this->hasMany(RecurringInvoiceItem::class)
             ->orderBy('display_order');
     }
 
     // This and items() are the exact same. This is added to appease the IDE gods
     // and the fact that Laravel has a protected items property.
-    public function recurringInvoiceItems()
+    public function recurringInvoiceItems(): HasMany
     {
-        return $this->hasMany('BT\Modules\RecurringInvoices\Models\RecurringInvoiceItem')
+        return $this->hasMany(RecurringInvoiceItem::class)
             ->orderBy('display_order');
     }
 
-    public function user()
+    public function user(): BelongsTo
     {
-        return $this->belongsTo('BT\Modules\Users\Models\User');
+        return $this->belongsTo(User::class);
     }
 
     /*
@@ -98,53 +110,49 @@ class RecurringInvoice extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function getFormattedFooterAttribute()
+    public function formattedFooter(): Attribute
     {
-        return nl2br($this->attributes['footer']);
+        return new Attribute(get: fn() => nl2br($this->footer));
     }
 
-    public function getFormattedNextDateAttribute()
+    public function formattedNextDate(): Attribute
     {
-        if ($this->attributes['next_date'] <> '0000-00-00')
-        {
-            return DateFormatter::format($this->attributes['next_date']);
+        if ($this->attributes['next_date'] <> '0000-00-00') {
+            return new Attribute(get: fn() => DateFormatter::format($this->attributes['next_date']));
         }
-
-        return '';
+        return new Attribute(get: fn() => '');
     }
 
-    public function getFormattedNumericDiscountAttribute()
+    public function formattedNumericDiscount(): Attribute
     {
-        return NumberFormatter::format($this->attributes['discount']);
+        return new Attribute(get: fn() => NumberFormatter::format($this->discount));
     }
 
-    public function getFormattedStopDateAttribute()
+    public function formattedStopDate(): Attribute
     {
-        if ($this->attributes['stop_date'] <> '0000-00-00')
-        {
-            return DateFormatter::format($this->attributes['stop_date']);
+        if ($this->attributes['stop_date'] <> '0000-00-00') {
+            return new Attribute(get: fn() => DateFormatter::format($this->attributes['stop_date']));
         }
-
-        return '';
+        return new Attribute(get: fn() => '');
     }
 
-    public function getFormattedTermsAttribute()
+    public function formattedTerms(): Attribute
     {
-        return nl2br($this->attributes['terms']);
+        return new Attribute(get: fn() => nl2br($this->terms));
     }
 
-    public function getIsForeignCurrencyAttribute()
+//    public function isForeignCurrency(): Attribute
+//    {
+//        if ($this->currency_code == config('bt.baseCurrency'))
+//        {
+//            return new Attribute(get: fn() => False);
+//        }
+//        return new Attribute(get: fn() => True);
+//    }
+
+    public function formattedSummary(): Attribute
     {
-        if ($this->attributes['currency_code'] == config('bt.baseCurrency'))
-        {
-            return false;
-        }
-
-        return true;
-    }
-
-    public function  getFormattedSummaryAttribute(){
-        return mb_strimwidth($this->attributes['summary'],0,50,'...');
+        return new Attribute(get: fn() => mb_strimwidth((string)$this->summary, 0, 50, '...'));
     }
 
     /*
@@ -161,8 +169,7 @@ class RecurringInvoice extends Model
 
     public function scopeClientId($query, $clientId = null)
     {
-        if ($clientId)
-        {
+        if ($clientId) {
             $query->where('client_id', $clientId);
         }
 
@@ -171,8 +178,7 @@ class RecurringInvoice extends Model
 
     public function scopeCompanyProfileId($query, $companyProfileId = null)
     {
-        if ($companyProfileId)
-        {
+        if ($companyProfileId) {
             $query->where('company_profile_id', $companyProfileId);
         }
 
@@ -187,13 +193,11 @@ class RecurringInvoice extends Model
 
     public function scopeKeywords($query, $keywords = null)
     {
-        if ($keywords)
-        {
+        if ($keywords) {
             $keywords = strtolower($keywords);
 
             $query->where('summary', 'like', '%' . $keywords . '%')
-                ->orWhereIn('client_id', function ($query) use ($keywords)
-                {
+                ->orWhereIn('client_id', function ($query) use ($keywords) {
                     $query->select('id')->from('clients')->where(DB::raw("CONCAT_WS('^',LOWER(name),LOWER(unique_name))"), 'like', '%' . $keywords . '%');
                 });
         }
@@ -205,8 +209,7 @@ class RecurringInvoice extends Model
     {
         $query->where('next_date', '<>', '0000-00-00');
         $query->where('next_date', '<=', date('Y-m-d'));
-        $query->where(function ($q)
-        {
+        $query->where(function ($q) {
             $q->where('stop_date', '0000-00-00');
             $q->orWhere('next_date', '<=', DB::raw('stop_date'));
         });
@@ -216,8 +219,7 @@ class RecurringInvoice extends Model
 
     public function scopeStatus($query, $status)
     {
-        switch ($status)
-        {
+        switch ($status) {
             case 'active':
                 return $query->active();
             case 'inactive':

@@ -150,7 +150,11 @@ class DocumentObserver
         // set invoice_id ref in quote, workorder and expense to 0, denoting deleted
         if ($document->module_type == 'Invoice' && $document->isForceDeleting()) {
             $document->where('invoice_id', $document->id)->update(['invoice_id' => 0]);
-            if ($document->expense() && $document->isForceDeleting()) $document->expense()->update(['invoice_id' => 0]);
+            if ($document->expenses && $document->isForceDeleting()){
+                foreach ($document->expenses as $expense) {
+                    $expense->update(['invoice_id' => 0]);
+                }
+            }
         }
 
         if ($document->module_type == 'Workorder' && $document->isForceDeleting()) {

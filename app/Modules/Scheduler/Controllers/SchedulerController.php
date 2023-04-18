@@ -130,14 +130,14 @@ class SchedulerController extends Controller
                 Workorder::where(function ($query) {
                     $query->sentorapproved();
                 })
-                    ->with('client', 'documentItems.employees') :
+                    ->with('client', 'documentItems.employee') :
                 Workorder::where(function ($query) {
                     $query->notinvoiced();
                 })
                     ->where(function ($query) {
                         $query->sentorapproved();
                     })
-                    ->with('client', 'documentItems.employees'),
+                    ->with('client', 'documentItems.employee'),
             'invoice'       => Invoice::sent()->with('client'),
             'payment'       => Payment::with(['invoice', 'paymentMethod']),
             'expense'       => Expense::status('not_billed')->with(['category']),
@@ -191,7 +191,7 @@ class SchedulerController extends Controller
         $companyProfiles = CompanyProfile::getList();
 
 
-        $scheduled_employees = Workorder::with(['client', 'documentItems.employees', 'documentItems' => function ($q) {
+        $scheduled_employees = Workorder::with(['client', 'documentItems' => function ($q) {
             $q->where('resource_table', 'employees');
         }])->whereBetween('job_date', [$mySdate, $myEdate])->approved()->get();
 

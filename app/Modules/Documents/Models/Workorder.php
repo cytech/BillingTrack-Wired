@@ -13,6 +13,7 @@ namespace BT\Modules\Documents\Models;
 
 use BT\Support\DateFormatter;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Parental\HasParent;
 
 class Workorder extends Document
@@ -25,7 +26,7 @@ class Workorder extends Document
     {
         return $this::class;
     }
-    public function invoice()
+    public function invoice() :HasOne
     {
         return $this->hasOne(Invoice::class, 'id', 'invoice_id')->withTrashed();
     }

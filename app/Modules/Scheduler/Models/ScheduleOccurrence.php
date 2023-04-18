@@ -13,12 +13,17 @@ namespace BT\Modules\Scheduler\Models;
 
 use Askedio\SoftCascade\Traits\SoftCascadeTrait;
 use BT\Support\DateFormatter;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 
-class ScheduleOccurrence extends Model {
+class ScheduleOccurrence extends Model
+{
 
     use SoftDeletes, SoftCascadeTrait;
 
@@ -30,56 +35,57 @@ class ScheduleOccurrence extends Model {
 
     protected $table = 'schedule_occurrences';
 
-	protected $guarded = ['id'];
+    protected $guarded = ['id'];
 
-    protected $casts = ['start_date' => 'datetime','end_date' => 'datetime', 'reminder_date' => 'datetime', 'deleted_at' => 'datetime'];
+    protected $casts = ['start_date' => 'datetime', 'end_date' => 'datetime', 'reminder_date' => 'datetime', 'deleted_at' => 'datetime'];
 
-	protected $appends = ['formatted_start_date', 'formatted_end_date'];
+//	protected $appends = ['formatted_start_date', 'formatted_end_date'];
 
-    public static function reminderinterval(){
+    public static function reminderinterval()
+    {
         return [
-            'none' => __('bt.no_reminder'),
+            'none'    => __('bt.no_reminder'),
             'minutes' => __('bt.minutes'),
-            'hours' => __('bt.hours'),
-            'days' => __('bt.days'),
-            'weeks' => __('bt.weeks')
+            'hours'   => __('bt.hours'),
+            'days'    => __('bt.days'),
+            'weeks'   => __('bt.weeks')
         ];
     }
 
-    public static function reminderDate($num, $interval, $startdate){
+    public static function reminderDate($num, $interval, $startdate)
+    {
         $date = Carbon::parse($startdate);
 
-        if ($interval != 'none'){
+        if ($interval != 'none') {
             return $date->subtract($num, $interval);
         }
         return null;
     }
 
-    public function schedule()
+    public function schedule(): BelongsTo
     {
         return $this->belongsTo(Schedule::class, 'schedule_id', 'id');
     }
 
-    public function resources()
+    public function resources(): HasMany
     {
-        return $this->hasMany(ScheduleResource::class,'occurrence_id', 'id');
+        return $this->hasMany(ScheduleResource::class, 'occurrence_id', 'id');
     }
 
-    public function resource()
+    public function resource(): HasOne
     {
-        return $this->hasOne(ScheduleResource::class,'occurrence_id', 'id');
+        return $this->hasOne(ScheduleResource::class, 'occurrence_id', 'id');
     }
 
     //getters
 
-    public function getFormattedStartDateAttribute() {
-        return DateFormatter::format($this->attributes['start_date'],true);
+    public function formattedStartDate(): Attribute
+    {
+        return new Attribute(get: fn() => DateFormatter::format($this->attributes['start_date'], true));
     }
 
-    public function getFormattedEndDateAttribute() {
-        return DateFormatter::format($this->attributes['end_date'],true);
+    public function formattedEndDate(): Attribute
+    {
+        return new Attribute(get: fn() => DateFormatter::format($this->attributes['end_date'], true));
     }
-
-
-
 }

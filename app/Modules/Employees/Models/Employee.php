@@ -10,10 +10,13 @@
 
 namespace BT\Modules\Employees\Models;
 
+use BT\Modules\Documents\Models\DocumentItem;
 use BT\Modules\Scheduler\Models\ScheduleResource;
 use BT\Support\CurrencyFormatter;
 use BT\Support\DateFormatter;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Employee extends Model
 {
@@ -23,82 +26,81 @@ class Employee extends Model
      */
     protected $guarded = ['id'];
 
-	protected $table = 'employees';
+    protected $table = 'employees';
 
 //    protected $appends = ['formatted_billing_rate'];
 
-    public function workorderitem()
+    public function type(): BelongsTo
     {
-        return $this->belongsTo('BT\Modules\Workorders\Models\WorkorderItem','resource_id', 'id')
-            ->where('resource_table','=','employees');
-    }
-
-    public function scheduleresource()
-    {
-        return $this->belongsTo(ScheduleResource::class,'resource_id', 'id')
-            ->where('resource_table','=','employees');
-    }
-
-    public function type()
-    {
-        return $this->belongsTo('BT\Modules\Employees\Models\EmployeeType');
+        return $this->belongsTo(EmployeeType::class);
     }
 
     //mutators
-    public function setFirstNameAttribute($value){
-        $this->attributes['first_name'] = ucfirst($value);
-    }
-
-    public function setLastNameAttribute($value){
-        $this->attributes['last_name'] = ucfirst($value);
-    }
-
-    public function setFullNameAttribute(){
-        $this->attributes['full_name'] = $this->attributes['first_name'] . ' ' . $this->attributes['last_name'];
-    }
-
-    public function setShortNameAttribute($value){
-        $this->attributes['short_name'] = $this->attributes['first_name'] . ' ' . substr($this->attributes['last_name'],0,1) . '.';
-    }
-    //getters
-    public function getFormattedBillingRateAttribute()
+    public function firstName(): Attribute
     {
-        return CurrencyFormatter::format($this->attributes['billing_rate']);
+        return new Attribute(set: fn($value) => $this->attributes['first_name'] = ucfirst($value));
     }
 
-    public function getFormattedTermDateAttribute()
+    public function lastName(): Attribute
+    {
+        return new Attribute(set: fn($value) => $this->attributes['last_name'] = ucfirst($value));
+    }
+
+    public function fullName(): Attribute
+    {
+        return new Attribute(set: fn($value) => $this->attributes['full_name'] = $this->attributes['first_name'] . ' ' . $this->attributes['last_name']);
+    }
+
+    public function shortName(): Attribute
+    {
+        return new Attribute(set: fn($value) => $this->attributes['short_name'] = $this->attributes['first_name'] . ' ' . substr($this->attributes['last_name'], 0, 1) . '.');
+    }
+
+    public function formattedShortName(): Attribute
+    {
+        if ($this->driver == 1) {
+            return new Attribute(get: fn() => '<span style = "color:blue">' . $this->short_name . '</span>');
+        }
+        return new Attribute(get: fn() => $this->short_name);
+    }
+
+    //getters
+    public function formattedBillingRate(): Attribute
+    {
+        return new Attribute(get: fn() => CurrencyFormatter::format($this->attributes['billing_rate']));
+    }
+
+    public function formattedTermDate(): Attribute
     {
         if (!is_null($this->attributes['term_date'])) {
-            return DateFormatter::format($this->attributes['term_date']);
+            return new Attribute(get: fn() => DateFormatter::format($this->attributes['term_date']));
         }
+        return Attribute::get(fn() => null);
     }
 
-    public function getFormattedScheduleAttribute(){
-        return $this->schedule ? trans('bt.yes') : trans('bt.no');
+    public function formattedSchedule(): Attribute
+    {
+        return new Attribute(get: fn() => $this->schedule ? trans('bt.yes') : trans('bt.no'));
     }
 
-    public function getFormattedActiveAttribute(){
-        return $this->active ? trans('bt.yes') : trans('bt.no');
+    public function formattedActive(): Attribute
+    {
+        return new Attribute(get: fn() => $this->active ? trans('bt.yes') : trans('bt.no'));
     }
 
-    public function getFormattedDriverAttribute(){
-        return $this->driver ? trans('bt.yes') : trans('bt.no');
+    public function formattedDriver(): Attribute
+    {
+        return new Attribute(get: fn() => $this->driver ? trans('bt.yes') : trans('bt.no'));
     }
-
 
     public function scopeStatus($query, $status)
     {
-        if ($status == 'active')
-        {
+        if ($status == 'active') {
             $query->where('active', 1);
-        }
-        elseif ($status == 'inactive')
-        {
+        } elseif ($status == 'inactive') {
             $query->where('active', 0);
         }
 
         return $query;
     }
-
-
 }

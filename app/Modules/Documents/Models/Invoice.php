@@ -11,7 +11,11 @@
 
 namespace BT\Modules\Documents\Models;
 
+use BT\Modules\Expenses\Models\Expense;
+use BT\Modules\Payments\Models\Payment;
 use BT\Support\Statuses\DocumentStatuses;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Parental\HasParent;
 
 class Invoice extends Document
@@ -25,18 +29,20 @@ class Invoice extends Document
         return $this::class;
     }
 
-    public function expense()
+    public function expenses(): HasMany
     {
-        return $this->hasOne('BT\Modules\Expenses\Models\Expense');
-    }
-    public function payments()
-    {
-        return $this->hasMany('BT\Modules\Payments\Models\Payment');
+        return $this->hasMany(Expense::class, 'invoice_id', 'id');
     }
 
-    public function transactions()
+    public function payments(): HasMany
     {
-        return $this->hasMany('BT\Modules\Merchant\Models\InvoiceTransaction');
+        return $this->hasMany(Payment::class, 'invoice_id', 'id');
+    }
+
+    // accessors
+    public function isPayable(): Attribute
+    {
+        return new Attribute(get: fn() => $this->status_text <> 'canceled' and $this->amount->balance > 0);
     }
 
     public function getIsOverdueAttribute()

@@ -162,6 +162,8 @@
                         </li>
                         <li class="nav-item"><a class="nav-link"
                                                 href="{{ route('reports.timesheet') }}">@lang('bt.timesheet')</a></li>
+                        <li class="nav-item"><a class="nav-link"
+                                                href="{{ route('reports.vendorPayments') }}">@lang('bt.vendor_payments')</a></li>
                         @foreach (config('bt.menus.reports') as $report)
                             @if (view()->exists($report))
                                 @include($report)

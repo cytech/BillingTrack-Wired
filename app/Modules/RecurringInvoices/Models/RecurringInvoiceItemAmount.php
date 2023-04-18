@@ -12,7 +12,9 @@
 namespace BT\Modules\RecurringInvoices\Models;
 
 use BT\Support\CurrencyFormatter;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class RecurringInvoiceItemAmount extends Model
@@ -28,9 +30,9 @@ class RecurringInvoiceItemAmount extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function item()
+    public function item(): BelongsTo
     {
-        return $this->belongsTo('BT\Modules\RecurringInvoices\Models\RecurringInvoiceItem');
+        return $this->belongsTo(RecurringInvoiceItem::class);
     }
 
     /*
@@ -39,18 +41,18 @@ class RecurringInvoiceItemAmount extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function getFormattedSubtotalAttribute()
+    public function formattedSubtotal(): Attribute
     {
-        return CurrencyFormatter::format($this->attributes['subtotal'], $this->item->recurringInvoice->currency);
+        return new Attribute(get: fn() => CurrencyFormatter::format($this->attributes['subtotal'], $this->recurringInvoice->currency));
     }
 
-    public function getFormattedTaxAttribute()
+    public function formattedTax(): Attribute
     {
-        return CurrencyFormatter::format($this->attributes['tax'], $this->item->recurringInvoice->currency);
+        return new Attribute(get: fn() => CurrencyFormatter::format($this->attributes['tax'], $this->recurringInvoice->currency));
     }
 
-    public function getFormattedTotalAttribute()
+    public function formattedTotal(): Attribute
     {
-        return CurrencyFormatter::format($this->attributes['total'], $this->item->recurringInvoice->currency);
+        return new Attribute(get: fn() => CurrencyFormatter::format($this->attributes['total'], $this->recurringInvoice->currency));
     }
 }

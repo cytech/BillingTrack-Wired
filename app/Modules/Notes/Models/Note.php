@@ -11,8 +11,12 @@
 
 namespace BT\Modules\Notes\Models;
 
+use BT\Modules\Users\Models\User;
 use BT\Support\DateFormatter;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Note extends Model
@@ -31,14 +35,14 @@ class Note extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function notable()
+    public function notable(): MorphTo
     {
         return $this->morphTo();
     }
 
-    public function user()
+    public function user(): BelongsTo
     {
-        return $this->belongsTo('BT\Modules\Users\Models\User');
+        return $this->belongsTo(User::class);
     }
 
     /*
@@ -47,16 +51,15 @@ class Note extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function getFormattedCreatedAtAttribute()
+    public function formattedCreatedAt(): Attribute
     {
-        return DateFormatter::format($this->created_at, true);
+        return new Attribute(get: fn() => DateFormatter::format($this->created_at, true));
     }
 
-    public function getFormattedNoteAttribute()
+    public function formattedNote(): Attribute
     {
-        return nl2br($this->note);
+        return new Attribute(get: fn() => nl2br($this->note));
     }
-
     /*
     |--------------------------------------------------------------------------
     | Scopes

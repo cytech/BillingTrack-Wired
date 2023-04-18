@@ -48,6 +48,13 @@
                 @lang('bt.other')
             </button>
             <div class="dropdown-menu dropdown-menu-end" role="menu">
+                @if ($document->module_type == 'Invoice' and ($document->isPayable or config('bt.allowPaymentsWithoutBalance')))
+                    <button class="dropdown-item"
+                            type="button"
+                            onclick="window.livewire.emit('showModal', 'modals.create-payment-modal', '{{  addslashes(get_class($document)) }}', {{ $document->id }}, true )"
+                    ><i class="fa fa-credit-card"></i> @lang('bt.enter_payment')
+                    </button>
+                @endif
                 <a class="dropdown-item" href="#" id="btn-copy-document"
                    {{--                   params 3 thru ... mount(,,$modulefullname, $module_type, $moduleop, $resource_id = null, $module_id = null, $readonly = null)--}}
                    onclick="window.livewire.emit('showModal', 'modals.create-module-modal', '{{  addslashes(get_class($document)) }}', '{{$document->module_type}}', 'copy', {{ $document->client->id }}, {{ $document->id }})">

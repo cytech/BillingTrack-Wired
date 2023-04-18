@@ -15,7 +15,7 @@ use BT\Modules\Payments\Models\Payment;
 use BT\Support\CurrencyFormatter;
 use BT\Support\DateFormatter;
 
-class PaymentsCollectedReport
+class VendorPaymentsReport
 {
     public function getResults($fromDate, $toDate, $companyProfileId = null)
     {
@@ -27,8 +27,8 @@ class PaymentsCollectedReport
         ];
 
         $payments = Payment::select('payments.*')
-            ->whereHas('invoice')
-            ->with(['invoice.client', 'paymentMethod'])
+            ->whereHas('purchaseorder')
+            ->with(['purchaseorder.vendor', 'paymentMethod'])
             ->join('documents', 'documents.id', '=', 'payments.invoice_id')
             ->dateRange($fromDate, $toDate);
 
@@ -42,15 +42,15 @@ class PaymentsCollectedReport
         foreach ($payments as $payment)
         {
             $results['payments'][] = [
-                'client_name'    => $payment->invoice->client->name,
-                'invoice_number' => $payment->invoice->number,
+                'client_name'    => $payment->purchaseorder->vendor->name,
+                'invoice_number' => $payment->purchaseorder->number,
                 'payment_method' => isset($payment->paymentMethod->name) ? $payment->paymentMethod->name : '',
                 'note'           => $payment->note,
                 'date'           => $payment->formatted_paid_at,
-                'amount'         => CurrencyFormatter::format($payment->amount / $payment->invoice->exchange_rate),
+                'amount'         => CurrencyFormatter::format($payment->amount / $payment->purchaseorder->exchange_rate),
             ];
 
-            $results['total'] += $payment->amount / $payment->invoice->exchange_rate;
+            $results['total'] += $payment->amount / $payment->purchaseorder->exchange_rate;
         }
 
         $results['total'] = CurrencyFormatter::format($results['total']);

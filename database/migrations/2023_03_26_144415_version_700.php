@@ -67,12 +67,17 @@ return new class extends Migration {
                 ->onUpdate('restrict');
         });
 
+        Schema::table('expenses', function (Blueprint $table) {
+            $table->dropForeign('fk_expenses_invoices1_idx');
+        });
+
         Schema::disableForeignKeyConstraints();
         //delete obsolete tables
         $droptables = ['invoices', 'invoice_amounts', 'invoice_items', 'invoice_item_amounts',
             'quotes', 'quote_amounts', 'quote_items', 'quote_item_amounts',
             'workorders', 'workorder_amounts', 'workorder_items', 'workorder_item_amounts',
-            'purchaseorders', 'purchaseorder_amounts', 'purchaseorder_items', 'purchaseorder_item_amounts'];
+            'purchaseorders', 'purchaseorder_amounts', 'purchaseorder_items', 'purchaseorder_item_amounts',
+            'invoice_transactions'];
 
         foreach ($droptables as $droptable) {
             Schema::dropIfExists($droptable);

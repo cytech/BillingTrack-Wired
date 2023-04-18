@@ -36,7 +36,7 @@
                 itemrec_att: itemrec_att,
             }).then(function (response) {
                 setTimeout(function () { //give notify a chance to display before redirect
-                    window.location = '{!! url('documents?status=all_statuses&module_type=5') !!}';
+                    window.location = '{!! url('documents?status=all_statuses&module_type=Purchaseorder') !!}';
                 }, 2000);
                 notify('@lang('bt.items_successfully_received')', 'success');
             }).catch(function (error) {

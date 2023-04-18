@@ -12,13 +12,32 @@
 namespace BT\Modules\Clients\Models;
 
 use Askedio\SoftCascade\Traits\SoftCascadeTrait;
+use BT\Modules\Attachments\Models\Attachment;
+use BT\Modules\Currencies\Models\Currency;
+use BT\Modules\CustomFields\Models\ClientCustom;
+use BT\Modules\Documents\Models\Document;
 use BT\Modules\Documents\Models\Invoice;
 use BT\Modules\Documents\Models\Quote;
 use BT\Modules\Documents\Models\Workorder;
+use BT\Modules\Expenses\Models\Expense;
+use BT\Modules\Industries\Models\Industry;
+use BT\Modules\Merchant\Models\MerchantClient;
+use BT\Modules\Notes\Models\Note;
+use BT\Modules\Payments\Models\Payment;
+use BT\Modules\PaymentTerms\Models\PaymentTerm;
+use BT\Modules\RecurringInvoices\Models\RecurringInvoice;
+use BT\Modules\Sizes\Models\Size;
+use BT\Modules\TimeTracking\Models\TimeTrackingProject;
+use BT\Modules\Users\Models\User;
 use BT\Support\CurrencyFormatter;
 use BT\Support\DateFormatter;
 use BT\Support\Statuses\DocumentStatuses;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
 
@@ -37,7 +56,7 @@ class Client extends Model
 
     protected $hidden = ['password', 'remember_token'];
 
-    protected $appends = ['formatted_balance', 'formatted_createdat'];
+//    protected $appends = ['formatted_balance', 'formatted_createdat'];
 
     /*
     |--------------------------------------------------------------------------
@@ -91,49 +110,54 @@ class Client extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function attachments()
+    public function attachments(): MorphMany
     {
-        return $this->morphMany('BT\Modules\Attachments\Models\Attachment', 'attachable');
+        return $this->morphMany(Attachment::class, 'attachable');
     }
 
-    public function contacts()
+    public function contacts(): HasMany
     {
-        return $this->hasMany('BT\Modules\Clients\Models\Contact');
+        return $this->hasMany(Contact::class);
     }
 
-    public function currency()
+    public function currency(): BelongsTo
     {
-        return $this->belongsTo('BT\Modules\Currencies\Models\Currency', 'currency_code', 'code');
+        return $this->belongsTo(Currency::class, 'currency_code', 'code');
     }
 
-    public function custom()
+    public function custom(): HasOne
     {
-        return $this->hasOne('BT\Modules\CustomFields\Models\ClientCustom');
+        return $this->hasOne(ClientCustom::class);
     }
 
-    public function expenses()
+    public function documents(): HasMany
     {
-        return $this->hasMany('BT\Modules\Expenses\Models\Expense');
+        return $this->hasMany(Document::class);
     }
 
-    public function invoices()
+    public function expenses(): HasMany
+    {
+        return $this->hasMany(Expense::class);
+    }
+
+    public function invoices(): HasMany
     {
         return $this->hasMany(Invoice::class);
     }
 
-    public function payments()
+    public function payments(): HasMany
     {
-        return $this->hasMany('BT\Modules\Payments\Models\Payment');
+        return $this->hasMany(Payment::class);
     }
 
-    public function merchant()
+    public function merchant(): HasOne
     {
-        return $this->hasOne('BT\Modules\Merchant\Models\MerchantClient');
+        return $this->hasOne(MerchantClient::class);
     }
 
-    public function notes()
+    public function notes(): MorphMany
     {
-        return $this->morphMany('BT\Modules\Notes\Models\Note', 'notable');
+        return $this->morphMany(Note::class, 'notable');
     }
 
     /*public function payments()
@@ -141,46 +165,45 @@ class Client extends Model
         return $this->hasManyThrough('BT\Modules\Payments\Models\Payment', 'BT\Modules\Invoices\Models\Invoice');
     }*/
 
-    public function projects()
+    public function projects(): HasMany
     {
-        return $this->hasMany('BT\Modules\TimeTracking\Models\TimeTrackingProject');
+        return $this->hasMany(TimeTrackingProject::class);
     }
 
-    public function quotes()
+    public function quotes(): HasMany
     {
         return $this->hasMany(Quote::class);
     }
 
-    public function workorders()
+    public function workorders(): HasMany
     {
         return $this->hasMany(Workorder::class);
     }
 
-    public function recurringInvoices()
+    public function recurringInvoices(): HasMany
     {
-        return $this->hasMany('BT\Modules\RecurringInvoices\Models\RecurringInvoice');
+        return $this->hasMany(RecurringInvoice::class);
     }
 
-    public function user()
+    public function user(): HasOne
     {
-        return $this->hasOne('BT\Modules\Users\Models\User');
+        return $this->hasOne(User::class);
     }
 
-    public function size()
+    public function size(): BelongsTo
     {
-        return $this->belongsTo('BT\Modules\Sizes\Models\Size');
+        return $this->belongsTo(Size::class);
     }
 
-    public function industry()
+    public function industry(): BelongsTo
     {
-        return $this->belongsTo('BT\Modules\Industries\Models\Industry');
+        return $this->belongsTo(Industry::class);
     }
 
-    public function paymentterm()
+    public function paymentterm(): BelongsTo
     {
-        return $this->belongsTo('BT\Modules\PaymentTerms\Models\PaymentTerm');
+        return $this->belongsTo(PaymentTerm::class);
     }
-
 
     /*
     |--------------------------------------------------------------------------
@@ -188,69 +211,69 @@ class Client extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function getFormattedCreatedatAttribute()
+    public function formattedCreatedat(): Attribute
     {
-        return DateFormatter::format($this->attributes['created_at']);
+        return new Attribute(get: fn() => DateFormatter::format($this->attributes['created_at']));
     }
 
-    public function getUniqueNamePrefixAttribute()
+    public function uniqueNamePrefix(): Attribute
     {
-        return substr($this->attributes['unique_name'], 0, strpos($this->attributes['unique_name'], "_") + 1);
+        return new Attribute(get: fn() => substr($this->attributes['unique_name'], 0, strpos($this->attributes['unique_name'], "_") + 1));
     }
 
-    public function getUniqueNameSuffixAttribute()
+    public function uniqueNameSuffix(): Attribute
     {
-        return substr($this->attributes['unique_name'], strpos($this->attributes['unique_name'], "_") + 1);
+        return new Attribute(get: fn() => substr($this->attributes['unique_name'], strpos($this->attributes['unique_name'], "_") + 1));
     }
 
-    public function getAttachmentPathAttribute()
+    public function attachmentPath(): Attribute
     {
-        return attachment_path('clients/' . $this->id);
+        return new Attribute(get: fn() => attachment_path('clients/' . $this->id));
     }
 
-    public function getAttachmentPermissionOptionsAttribute()
+    public function attachmentPermissionOptions(): Attribute
     {
-        return ['0' => trans('bt.not_visible')];
+        return new Attribute(get: fn() => ['0' => trans('bt.not_visible')]);
     }
 
-    public function getFormattedBalanceAttribute()
+    public function formattedBalance(): Attribute
     {
-        return CurrencyFormatter::format($this->balance, $this->currency);
+        return new Attribute(get: fn() => CurrencyFormatter::format($this->balance, $this->currency));
     }
 
-    public function getFormattedPaidAttribute()
+    public function formattedPaid(): Attribute
     {
-        return CurrencyFormatter::format($this->paid, $this->currency);
+        return new Attribute(get: fn() => CurrencyFormatter::format($this->paid, $this->currency));
     }
 
-    public function getFormattedTotalAttribute()
+    public function formattedTotal(): Attribute
     {
-        return CurrencyFormatter::format($this->total, $this->currency);
+        return new Attribute(get: fn() => CurrencyFormatter::format($this->total, $this->currency));
     }
 
-    public function getFormattedAddressAttribute()
+    public function formattedAddress(): Attribute
     {
-        return nl2br(formatAddress($this));
+        return new Attribute(get: fn() => nl2br(formatAddress($this)));
     }
 
-    public function getFormattedAddress2Attribute()
+    public function formattedAddress2(): Attribute
     {
-        return nl2br(formatAddress2($this));
+        return new Attribute(get: fn() => nl2br(formatAddress2($this)));
     }
 
-    public function getClientEmailAttribute()
+    public function clientEmail(): Attribute
     {
-        return $this->email;
+        return new Attribute(get: fn() => $this->email);
     }
 
-    public function getClientTermsAttribute()
+    public function clientTerms(): Attribute
     {
         if ($this->paymentterm->id != 1) {
-            return $this->paymentterm->num_days;
-        } else
-            return config('bt.invoicesDueAfter');
+            return new Attribute(get: fn() => $this->paymentterm->num_days);
+        } else {
+            return new Attribute(get: fn() => config('bt.invoicesDueAfter'));
+        }
     }
-
 
     /*
     |--------------------------------------------------------------------------

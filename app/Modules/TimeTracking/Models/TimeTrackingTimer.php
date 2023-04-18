@@ -13,6 +13,7 @@ namespace BT\Modules\TimeTracking\Models;
 
 use BT\Support\DateFormatter;
 use BT\Support\NumberFormatter;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -31,38 +32,34 @@ class TimeTrackingTimer extends Model
         parent::boot();
     }
 
-    public function getFormattedBilledAttribute()
+    public function formattedBilled(): Attribute
     {
-        return ($this->attributes['billed']) ? trans('bt.yes') : trans('bt.no');
+        return new Attribute(get: fn() => ($this->attributes['billed']) ? trans('bt.yes') : trans('bt.no'));
     }
 
-    public function getFormattedEndAtAttribute()
+    public function formattedEndAt(): Attribute
     {
-        if ($this->attributes['end_at'] <> null)
-        {
-            return DateFormatter::format($this->attributes['end_at'], true);
+        if ($this->attributes['end_at'] <> null) {
+            return new Attribute(get: fn() => DateFormatter::format($this->attributes['end_at'], true));
         }
-
-        return '';
+        return new Attribute(get: fn() => '');
     }
 
-    public function getFormattedHoursAttribute()
+    public function formattedHours(): Attribute
     {
-        return NumberFormatter::format($this->attributes['hours']);
+        return new Attribute(get: fn() => NumberFormatter::format($this->attributes['hours']));
     }
 
-    public function getFormattedStartAtAttribute()
+    public function formattedStartAt(): Attribute
     {
-        return DateFormatter::format($this->attributes['start_at'], true);
+        return new Attribute(get: fn() => DateFormatter::format($this->attributes['start_at'], true));
     }
 
-    public function getHoursAttribute()
+    public function hours(): Attribute
     {
-        if (!$this->formatted_end_at)
-        {
-            return '';
+        if (!$this->formatted_end_at) {
+            return new Attribute(get: fn() => '');
         }
-
-        return $this->attributes['hours'];
+        return new Attribute(get: fn() => $this->attributes['hours']);
     }
 }

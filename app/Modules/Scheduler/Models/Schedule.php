@@ -14,67 +14,74 @@ namespace BT\Modules\Scheduler\Models;
 use Askedio\SoftCascade\Traits\SoftCascadeTrait;
 use BT\Support\DateFormatter;
 use Collective\Html\Eloquent\FormAccessible;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
 use Recurr\Exception\InvalidRRule;
 use Recurr\Rule;
 use Recurr\Transformer\TextTransformer;
 
-class Schedule extends Model {
+class Schedule extends Model
+{
 
     use SoftDeletes, SoftCascadeTrait, FormAccessible;
 
     protected $softCascade = ['occurrences', 'resources'];
 
-    protected $appends = ['text_trans', 'rule_start', 'formatted_date_trashed'];
+//    protected $appends = ['text_trans', 'rule_start', 'formatted_date_trashed'];
 
     protected $casts = ['deleted_at' => 'datetime'];
 
-	protected $guarded = ['id'];
+    protected $guarded = ['id'];
 
     protected $table = 'schedule';
 
     public $timestamps = true;
 
 
-    public function category()
+    public function category(): HasOne
     {
         return $this->hasOne(Category::class, 'id', 'category_id');
     }
 
-    public function occurrences()
+    public function occurrences(): HasMany
     {
         return $this->hasMany(ScheduleOccurrence::class, 'schedule_id', 'id');
     }
 
-    public function occurrence()
+    public function occurrence(): HasOne
     {
         return $this->hasOne(ScheduleOccurrence::class, 'schedule_id', 'id');
     }
 
-    public function latestOccurrence()
+    public function latestOccurrence(): HasOne
     {
         return $this->occurrence()->latest('start_date');
     }
 
-    public function firstOccurrence()
+    public function firstOccurrence(): HasOne
     {
         return $this->occurrence()->oldest('start_date');
     }
 
-    public function resources()
+    public function resources(): HasManyThrough
     {
-        return $this->hasManyThrough(ScheduleResource::class, ScheduleOccurrence::class,'schedule_id', 'occurrence_id', 'id', 'id');
+        return $this->hasManyThrough(ScheduleResource::class, ScheduleOccurrence::class, 'schedule_id', 'occurrence_id', 'id', 'id');
     }
 
-    public function resource()
+    public function resource(): HasOneThrough
     {
-        return $this->hasOneThrough(ScheduleResource::class, ScheduleOccurrence::class,'schedule_id', 'occurrence_id', 'id', 'id');
+        return $this->hasOneThrough(ScheduleResource::class, ScheduleOccurrence::class, 'schedule_id', 'occurrence_id', 'id', 'id');
     }
 
     //getters
-    public function getTextTransAttribute(){
+    public function getTextTransAttribute()
+    {
         try {
             $rule = new Rule($this->rrule, new \DateTime());
         } catch (InvalidRRule $e) {
@@ -83,38 +90,42 @@ class Schedule extends Model {
         return $textTransformer->transform($rule);
     }
 
-    public function getRuleStartAttribute(){
+    public function getRuleStartAttribute()
+    {
         if ($this->rrule) {
             $rule = Rule::createFromString($this->rrule);
             return $rule->getStartDate()->format('Y-m-d H:i');
         }
-        return;
     }
 
-    public function getFormattedRuleStartAttribute(){
+    public function getFormattedRuleStartAttribute()
+    {
         if ($this->rrule) {
             $rule = Rule::createFromString($this->rrule);
             return DateFormatter::format($rule->getStartDate()->format('Y-m-d H:i'), true);
         }
-        return;
     }
 
-    public function getFormattedDateTrashedAttribute() {
-        return Carbon::parse( $this->attributes['deleted_at'] )->format( 'Y-m-d H:i' );
+    public function formattedDateTrashed(): Attribute
+    {
+        return new Attribute(get: fn() => Carbon::parse($this->attributes['deleted_at'])->format('Y-m-d H:i'));
     }
 
     //below for form model binding
-    public function formStartDateAttribute() {
-        return Carbon::parse( $this->attributes['start_date'] )->format( 'Y-m-d H:i' );
+    public function formStartDateAttribute()
+    {
+        return Carbon::parse($this->attributes['start_date'])->format('Y-m-d H:i');
     }
 
-    public function formEndDateAttribute() {
-        return Carbon::parse( $this->attributes['end_date'] )->format( 'Y-m-d H:i' );
+    public function formEndDateAttribute()
+    {
+        return Carbon::parse($this->attributes['end_date'])->format('Y-m-d H:i');
     }
 
     //scopes
-    public function scopeWithOccurrences($query){
-        $query->leftjoin('schedule_occurrences','schedule.id', '=',
+    public function scopeWithOccurrences($query)
+    {
+        $query->leftjoin('schedule_occurrences', 'schedule.id', '=',
             'schedule_occurrences.schedule_id')->select('*', 'schedule.id as id', 'schedule_occurrences.id as oid');
     }
 

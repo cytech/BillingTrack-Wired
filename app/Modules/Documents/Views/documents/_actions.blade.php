@@ -24,6 +24,13 @@
                         class="fa fa-globe"></i> @lang('bt.public')</a>
             <div class="dropdown-divider"></div>
         @endif
+        @if ($model->isPayable or config('bt.allowPaymentsWithoutBalance'))
+            <button class="dropdown-item"
+                    type="button"
+                    onclick="window.livewire.emit('showModal', 'modals.create-payment-modal', '{{  addslashes(get_class($model)) }}', {{ $model->id }}, true )"
+            ><i class="fa fa-credit-card"></i> @lang('bt.enter_payment')
+            </button>
+        @endif
         <a class="dropdown-item" href="#"
            onclick="swalConfirm('@lang('bt.trash_record_warning')', '', '{{ route('documents.delete', [$model->id]) }}');"><i
                     class="fa fa-trash-alt text-danger"></i> @lang('bt.trash')</a>

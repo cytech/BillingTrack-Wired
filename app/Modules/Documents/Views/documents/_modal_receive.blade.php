@@ -27,7 +27,7 @@
                                 <tr>
                                     <input type="hidden" name="id" value="{!! $item->id !!}">
                                     <td>
-                                        <span class="badge badge-{{ $item->status_text }}"> {!! ucfirst($item->status_text) !!}</span>
+                                        <span class="badge badge-{{ $item->rec_status_text }}"> {!! ucfirst($item->rec_status_text) !!}</span>
                                     </td>
                                     <td>{!! $item->name !!}</td>
                                     <td>{!! $item->quantity !!}</td>
