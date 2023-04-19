@@ -108,18 +108,18 @@ class Schedule extends Model
 
     public function formattedDateTrashed(): Attribute
     {
-        return new Attribute(get: fn() => Carbon::parse($this->attributes['deleted_at'])->format('Y-m-d H:i'));
+        return new Attribute(get: fn() => Carbon::parse($this->deleted_at)->format('Y-m-d H:i'));
     }
 
     //below for form model binding
     public function formStartDateAttribute()
     {
-        return Carbon::parse($this->attributes['start_date'])->format('Y-m-d H:i');
+        return Carbon::parse($this->start_date)->format('Y-m-d H:i');
     }
 
     public function formEndDateAttribute()
     {
-        return Carbon::parse($this->attributes['end_date'])->format('Y-m-d H:i');
+        return Carbon::parse($this->end_date)->format('Y-m-d H:i');
     }
 
     //scopes

@@ -69,37 +69,37 @@ class DocumentAmount extends Model
 
     public function formattedSubtotal(): Attribute
     {
-        return new Attribute(get: fn() => CurrencyFormatter::format($this->attributes['subtotal'], $this->document->currency));
+        return new Attribute(get: fn() => CurrencyFormatter::format($this->subtotal, $this->document->currency));
     }
 
     public function formattedTax(): Attribute
     {
-        return new Attribute(get: fn() => CurrencyFormatter::format($this->attributes['tax'], $this->document->currency));
+        return new Attribute(get: fn() => CurrencyFormatter::format($this->tax, $this->document->currency));
     }
 
     public function formattedTotal(): Attribute
     {
-        return new Attribute(get: fn() => CurrencyFormatter::format($this->attributes['total'], $this->document->currency));
+        return new Attribute(get: fn() => CurrencyFormatter::format($this->total, $this->document->currency));
     }
 
     public function formattedPaid(): Attribute
     {
-        return new Attribute(get: fn() => CurrencyFormatter::format($this->attributes['paid'], $this->document->currency));
+        return new Attribute(get: fn() => CurrencyFormatter::format($this->paid, $this->document->currency));
     }
 
     public function formattedBalance(): Attribute
     {
-        return new Attribute(get: fn() => CurrencyFormatter::format($this->attributes['balance'], $this->document->currency));
+        return new Attribute(get: fn() => CurrencyFormatter::format($this->balance, $this->document->currency));
     }
 
     public function formattedNumericBalance(): Attribute
     {
-        return new Attribute(get: fn() => NumberFormatter::format($this->attributes['balance']));
+        return new Attribute(get: fn() => NumberFormatter::format($this->balance));
     }
 
     public function formattedDiscount(): Attribute
     {
-        return new Attribute(get: fn() => CurrencyFormatter::format($this->attributes['discount'], $this->document->currency));
+        return new Attribute(get: fn() => CurrencyFormatter::format($this->discount, $this->document->currency));
     }
     /**
      * Retrieve the formatted total prior to conversion.
@@ -107,6 +107,6 @@ class DocumentAmount extends Model
      */
 //    public function getFormattedTotalWithoutConversionAttribute()
 //    {
-//        return CurrencyFormatter::format($this->attributes['total'] / $this->document->exchange_rate);
+//        return CurrencyFormatter::format($this->total / $this->document->exchange_rate);
 //    }
 }

@@ -79,7 +79,7 @@ class Activity extends Model
 
     public function formattedCreatedAtDate(): Attribute
     {
-        return new Attribute(get: fn() => DateFormatter::format($this->created_at, false));
+        return new Attribute(get: fn() => DateFormatter::format($this->created_at));
     }
 
     public function formattedCreatedAtTime(): Attribute

@@ -28,8 +28,8 @@ class CreateDocumentsTable extends Migration
             $table->string('document_type')->nullable()->default(null);
             $table->unsignedInteger('document_id');
             $table->date('document_date');
-            $table->unsignedInteger('workorder_id')->default('0');
-            $table->unsignedInteger('invoice_id')->default('0');
+            $table->unsignedInteger('workorder_id')->nullable()->default(null);
+            $table->unsignedInteger('invoice_id')->nullable()->default(null);
             $table->unsignedInteger('user_id')->nullable()->default(null);
             $table->unsignedInteger('client_id');
             $table->unsignedInteger('group_id')->nullable()->default(null);

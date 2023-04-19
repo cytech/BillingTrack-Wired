@@ -69,12 +69,12 @@ class ItemLookup extends Model
 
     public function formattedPrice(): Attribute
     {
-        return new Attribute(get: fn() => CurrencyFormatter::format($this->attributes['price']));
+        return new Attribute(get: fn() => CurrencyFormatter::format($this->price));
     }
 
     public function formattedNumericPrice(): Attribute
     {
-        return new Attribute(get: fn() => NumberFormatter::format($this->attributes['price']));
+        return new Attribute(get: fn() => NumberFormatter::format($this->price));
     }
 
     //format drivers blue

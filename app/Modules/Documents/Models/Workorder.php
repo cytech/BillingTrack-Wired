@@ -13,6 +13,7 @@ namespace BT\Modules\Documents\Models;
 
 use BT\Support\DateFormatter;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Parental\HasParent;
 
@@ -29,6 +30,11 @@ class Workorder extends Document
     public function invoice() :HasOne
     {
         return $this->hasOne(Invoice::class, 'id', 'invoice_id')->withTrashed();
+    }
+
+    public function quote(): BelongsTo
+    {
+        return $this->belongsTo(Quote::class, 'id', 'workorder_id');
     }
 
     public function formattedJobDate(): Attribute

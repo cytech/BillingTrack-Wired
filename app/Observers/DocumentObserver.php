@@ -149,7 +149,8 @@ class DocumentObserver
 
         // set invoice_id ref in quote, workorder and expense to 0, denoting deleted
         if ($document->module_type == 'Invoice' && $document->isForceDeleting()) {
-            $document->where('invoice_id', $document->id)->update(['invoice_id' => 0]);
+            if ($document->workorder) $document->workorder->update(['invoice_id' => 0]);
+            if ($document->quote) $document->quote->update(['invoice_id' => 0]);
             if ($document->expenses && $document->isForceDeleting()){
                 foreach ($document->expenses as $expense) {
                     $expense->update(['invoice_id' => 0]);
@@ -158,7 +159,7 @@ class DocumentObserver
         }
 
         if ($document->module_type == 'Workorder' && $document->isForceDeleting()) {
-            $document->where('workorder_id', $document->id)->update(['workorder_id' => 0]);
+            if($document->quote) $document->quote->update(['workorder_id' => 0]);
         }
 
         //this gets messy with soft deletes...

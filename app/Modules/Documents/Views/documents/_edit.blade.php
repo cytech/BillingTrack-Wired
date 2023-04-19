@@ -77,7 +77,7 @@
                     <div class="dropdown-divider"></div>
                 @endif
                 <a class="dropdown-item" href="#"
-                   onclick="swalConfirm('@lang('bt.trash_record_warning')', '', '{{ route('documents.delete', [$document->id]) }}');"><i
+                   onclick="swalConfirm('@lang('bt.trash_record_warning')', '', '{{ route('documents.delete', ['id' => $document->id, 'module_type' => $document->module_type]) }}');"><i
                             class="fa fa-trash-alt text-danger"></i> @lang('bt.trash')</a>
             </div>
         </div>

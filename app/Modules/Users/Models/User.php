@@ -117,7 +117,7 @@ class User extends Authenticatable
 
     public function password(): Attribute
     {
-        return new Attribute(set: fn($password) => $this->attributes['password'] = Hash::make($password));
+        return new Attribute(set: fn($password) => $this->password = Hash::make($password));
     }
     /*
     |--------------------------------------------------------------------------

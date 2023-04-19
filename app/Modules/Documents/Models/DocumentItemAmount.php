@@ -42,16 +42,16 @@ class DocumentItemAmount extends Model
 
     public function formattedSubtotal(): Attribute
     {
-        return new Attribute(get: fn() => CurrencyFormatter::format($this->attributes['subtotal'], $this->item->document->currency));
+        return new Attribute(get: fn() => CurrencyFormatter::format($this->subtotal, $this->item->document->currency));
     }
 
     public function formattedTax(): Attribute
     {
-        return new Attribute(get: fn() => CurrencyFormatter::format($this->attributes['tax'], $this->item->document->currency));
+        return new Attribute(get: fn() => CurrencyFormatter::format($this->tax, $this->item->document->currency));
     }
 
     public function formattedTotal(): Attribute
     {
-        return new Attribute(get: fn() => CurrencyFormatter::format($this->attributes['total'], $this->item->document->currency));
+        return new Attribute(get: fn() => CurrencyFormatter::format($this->total, $this->item->document->currency));
     }
 }

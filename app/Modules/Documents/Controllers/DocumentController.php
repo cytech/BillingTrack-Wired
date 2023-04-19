@@ -60,9 +60,7 @@ class DocumentController extends Controller
     {
         Document::destroy($id);
 
-//        return redirect()->route('documents.index')
-//            ->with('alert', trans('bt.record_successfully_trashed'));
-        return back()
+        return redirect()->route('documents.index', ['module_type' => \request('module_type')])
             ->with('alert', trans('bt.record_successfully_trashed'));
     }
 

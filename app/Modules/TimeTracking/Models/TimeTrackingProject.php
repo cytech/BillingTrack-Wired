@@ -80,23 +80,23 @@ class TimeTrackingProject extends Model
 
     public function formattedCreatedat(): Attribute
     {
-        return new Attribute(get: fn() => DateFormatter::format($this->attributes['created_at']));
+        return new Attribute(get: fn() => DateFormatter::format($this->created_at));
     }
 
     public function formattedDueAt(): Attribute
     {
-        return new Attribute(get: fn() => DateFormatter::format($this->attributes['due_at']));
+        return new Attribute(get: fn() => DateFormatter::format($this->due_at));
     }
 
     public function formattedHourlyRate(): Attribute
     {
-        return new Attribute(get: fn() => CurrencyFormatter::format($this->attributes['hourly_rate']));
+        return new Attribute(get: fn() => CurrencyFormatter::format($this->hourly_rate));
     }
 
     public function statusText(): Attribute
     {
         $statuses = TimeTrackingProjectStatuses::statuses();
-        return new Attribute(get: fn() => $statuses[$this->attributes['status_id']]);
+        return new Attribute(get: fn() => $statuses[$this->status_id]);
     }
 
     /*

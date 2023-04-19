@@ -32,7 +32,7 @@
             </button>
         @endif
         <a class="dropdown-item" href="#"
-           onclick="swalConfirm('@lang('bt.trash_record_warning')', '', '{{ route('documents.delete', [$model->id]) }}');"><i
+           onclick="swalConfirm('@lang('bt.trash_record_warning')', '', '{{ route('documents.delete', ['id' => $model->id, 'module_type' => $model->module_type]) }}');"><i
                     class="fa fa-trash-alt text-danger"></i> @lang('bt.trash')</a>
     </div>
 </div>

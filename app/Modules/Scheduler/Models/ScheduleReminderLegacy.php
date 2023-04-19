@@ -38,6 +38,6 @@ class ScheduleReminderLegacy extends Model
     //accessors
     public function reminderDate(): Attribute
     {
-        return new Attribute(get: fn() => Carbon::parse($this->attributes['reminder_date'])->format('Y-m-d H:i'));
+        return new Attribute(get: fn() => Carbon::parse($this->reminder_date)->format('Y-m-d H:i'));
     }
 }

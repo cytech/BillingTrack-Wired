@@ -46,33 +46,33 @@ class MailQueue extends Model
     //accessors
     public function formattedCreatedAt(): Attribute
     {
-        return new Attribute(get: fn() => DateFormatter::format($this->attributes['created_at'], true));
+        return new Attribute(get: fn() => DateFormatter::format($this->created_at, true));
     }
 
     public function formattedFrom(): Attribute
     {
-        $from = json_decode($this->attributes['from']);
+        $from = json_decode($this->from);
         return new Attribute(get: fn() => $from->email);
     }
 
     public function formattedTo(): Attribute
     {
-        return new Attribute(get: fn() => implode(', ', json_decode($this->attributes['to'])));
+        return new Attribute(get: fn() => implode(', ', json_decode($this->to)));
     }
 
     public function formattedCc(): Attribute
     {
-        return new Attribute(get: fn() => implode(', ', json_decode($this->attributes['cc'])));
+        return new Attribute(get: fn() => implode(', ', json_decode($this->cc)));
     }
 
     public function formattedBcc(): Attribute
     {
-        return new Attribute(get: fn() => implode(', ', json_decode($this->attributes['bcc'])));
+        return new Attribute(get: fn() => implode(', ', json_decode($this->bcc)));
     }
 
     public function formattedSent(): Attribute
     {
-        return new Attribute(get: fn() => ($this->attributes['sent']) ? trans('bt.yes') : trans('bt.no'));
+        return new Attribute(get: fn() => ($this->sent) ? trans('bt.yes') : trans('bt.no'));
     }
 
     /*

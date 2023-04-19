@@ -38,22 +38,22 @@ class Employee extends Model
     //mutators
     public function firstName(): Attribute
     {
-        return new Attribute(set: fn($value) => $this->attributes['first_name'] = ucfirst($value));
+        return new Attribute(set: fn($value) => $this->first_name = ucfirst($value));
     }
 
     public function lastName(): Attribute
     {
-        return new Attribute(set: fn($value) => $this->attributes['last_name'] = ucfirst($value));
+        return new Attribute(set: fn($value) => $this->last_name = ucfirst($value));
     }
 
     public function fullName(): Attribute
     {
-        return new Attribute(set: fn($value) => $this->attributes['full_name'] = $this->attributes['first_name'] . ' ' . $this->attributes['last_name']);
+        return new Attribute(set: fn($value) => $this->full_name = $this->first_name . ' ' . $this->last_name);
     }
 
     public function shortName(): Attribute
     {
-        return new Attribute(set: fn($value) => $this->attributes['short_name'] = $this->attributes['first_name'] . ' ' . substr($this->attributes['last_name'], 0, 1) . '.');
+        return new Attribute(set: fn($value) => $this->short_name = $this->first_name . ' ' . substr($this->last_name, 0, 1) . '.');
     }
 
     public function formattedShortName(): Attribute
@@ -67,13 +67,13 @@ class Employee extends Model
     //getters
     public function formattedBillingRate(): Attribute
     {
-        return new Attribute(get: fn() => CurrencyFormatter::format($this->attributes['billing_rate']));
+        return new Attribute(get: fn() => CurrencyFormatter::format($this->billing_rate));
     }
 
     public function formattedTermDate(): Attribute
     {
-        if (!is_null($this->attributes['term_date'])) {
-            return new Attribute(get: fn() => DateFormatter::format($this->attributes['term_date']));
+        if (!is_null($this->term_date)) {
+            return new Attribute(get: fn() => DateFormatter::format($this->term_date));
         }
         return Attribute::get(fn() => null);
     }

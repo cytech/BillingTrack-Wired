@@ -15,6 +15,7 @@ use BT\Modules\Expenses\Models\Expense;
 use BT\Modules\Payments\Models\Payment;
 use BT\Support\Statuses\DocumentStatuses;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Parental\HasParent;
 
@@ -27,6 +28,17 @@ class Invoice extends Document
     public function getMorphClass(): string
     {
         return $this::class;
+    }
+
+    //relations
+    public function workorder(): BelongsTo
+    {
+        return $this->belongsTo(Workorder::class, 'id', 'invoice_id');
+    }
+
+    public function quote(): BelongsTo
+    {
+        return $this->belongsTo(Quote::class, 'id', 'invoice_id');
     }
 
     public function expenses(): HasMany
@@ -48,8 +60,8 @@ class Invoice extends Document
     public function getIsOverdueAttribute()
     {
         // Only invoices in Sent status, with a balance qualify to be overdue
-        if ($this->attributes['action_date'] < date('Y-m-d')
-            and $this->attributes['document_status_id'] == DocumentStatuses::getStatusId('sent')
+        if ($this->action_date < date('Y-m-d')
+            and $this->document_status_id == DocumentStatuses::getStatusId('sent')
             and $this->amount->balance <> 0)
             return 1;
 

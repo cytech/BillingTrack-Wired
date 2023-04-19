@@ -117,8 +117,8 @@ class RecurringInvoice extends Model
 
     public function formattedNextDate(): Attribute
     {
-        if ($this->attributes['next_date'] <> '0000-00-00') {
-            return new Attribute(get: fn() => DateFormatter::format($this->attributes['next_date']));
+        if ($this->next_date <> '0000-00-00') {
+            return new Attribute(get: fn() => DateFormatter::format($this->next_date));
         }
         return new Attribute(get: fn() => '');
     }
@@ -130,8 +130,8 @@ class RecurringInvoice extends Model
 
     public function formattedStopDate(): Attribute
     {
-        if ($this->attributes['stop_date'] <> '0000-00-00') {
-            return new Attribute(get: fn() => DateFormatter::format($this->attributes['stop_date']));
+        if ($this->stop_date <> '0000-00-00') {
+            return new Attribute(get: fn() => DateFormatter::format($this->stop_date));
         }
         return new Attribute(get: fn() => '');
     }

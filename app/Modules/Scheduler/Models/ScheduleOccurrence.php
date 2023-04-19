@@ -81,11 +81,11 @@ class ScheduleOccurrence extends Model
 
     public function formattedStartDate(): Attribute
     {
-        return new Attribute(get: fn() => DateFormatter::format($this->attributes['start_date'], true));
+        return new Attribute(get: fn() => DateFormatter::format($this->start_date, true));
     }
 
     public function formattedEndDate(): Attribute
     {
-        return new Attribute(get: fn() => DateFormatter::format($this->attributes['end_date'], true));
+        return new Attribute(get: fn() => DateFormatter::format($this->end_date, true));
     }
 }

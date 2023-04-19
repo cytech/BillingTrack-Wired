@@ -70,7 +70,7 @@ class TimeTrackingTask extends Model
 
     public function formattedHours(): Attribute
     {
-        return new Attribute(get: fn() => NumberFormatter::format($this->attributes['hours']));
+        return new Attribute(get: fn() => NumberFormatter::format($this->hours));
     }
 
     /*

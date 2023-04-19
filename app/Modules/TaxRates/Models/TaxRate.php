@@ -49,17 +49,17 @@ class TaxRate extends Model
 
     public function formattedPercent(): Attribute
     {
-        return new Attribute(get: fn() => NumberFormatter::format($this->attributes['percent'], null, 3) . '%');
+        return new Attribute(get: fn() => NumberFormatter::format($this->percent, null, 3) . '%');
     }
 
     public function formattedNumericPercent(): Attribute
     {
-        return new Attribute(get: fn() => NumberFormatter::format($this->attributes['percent'], null, 3));
+        return new Attribute(get: fn() => NumberFormatter::format($this->percent, null, 3));
     }
 
     public function formattedIsCompound(): Attribute
     {
-        return new Attribute(get: fn() => ($this->attributes['is_compound']) ? trans('bt.yes') : trans('bt.no'));
+        return new Attribute(get: fn() => ($this->is_compound) ? trans('bt.yes') : trans('bt.no'));
     }
 
     public function getInUseAttribute()

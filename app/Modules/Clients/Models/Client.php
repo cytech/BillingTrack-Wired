@@ -213,17 +213,17 @@ class Client extends Model
 
     public function formattedCreatedat(): Attribute
     {
-        return new Attribute(get: fn() => DateFormatter::format($this->attributes['created_at']));
+        return new Attribute(get: fn() => DateFormatter::format($this->created_at));
     }
 
     public function uniqueNamePrefix(): Attribute
     {
-        return new Attribute(get: fn() => substr($this->attributes['unique_name'], 0, strpos($this->attributes['unique_name'], "_") + 1));
+        return new Attribute(get: fn() => substr($this->unique_name, 0, strpos($this->unique_name, "_") + 1));
     }
 
     public function uniqueNameSuffix(): Attribute
     {
-        return new Attribute(get: fn() => substr($this->attributes['unique_name'], strpos($this->attributes['unique_name'], "_") + 1));
+        return new Attribute(get: fn() => substr($this->unique_name, strpos($this->unique_name, "_") + 1));
     }
 
     public function attachmentPath(): Attribute

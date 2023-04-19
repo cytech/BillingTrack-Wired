@@ -2,8 +2,6 @@
 
 namespace BT\Http\Livewire\DataTables;
 
-use BT\Support\CurrencyFormatter;
-use BT\Support\DateFormatter;
 use BT\Support\Frequency;
 use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\Views\Column;
@@ -25,9 +23,8 @@ class ModuleColumnDefs
                         ->html();
                     $col_invoice_id = null;
                     $col_title_date_due = trans('bt.due');
-                    $col_db_date_due = 'action_date';
                     $col_formatted_balance = Column::make(__('bt.balance'), 'amount.balance')
-                        ->format(fn($value, $row, Column $column) => CurrencyFormatter::format($value, $row->currency));
+                        ->format(fn($value, $row, Column $column) => $row->amount->formatted_balance);
                     break;
                 case 'Invoice':
                     $col_client_vendor = Column::make(trans('bt.client'), 'client.name')
@@ -37,9 +34,8 @@ class ModuleColumnDefs
                         ->html();
                     $col_invoice_id = null;
                     $col_title_date_due = trans('bt.due');
-                    $col_db_date_due = 'action_date';
                     $col_formatted_balance = Column::make(__('bt.balance'), 'amount.balance')
-                        ->format(fn($value, $row, Column $column) => CurrencyFormatter::format($value, $row->currency));
+                        ->format(fn($value, $row, Column $column) => $row->amount->formatted_balance);
                     break;
                 default: //quote or workorder
                     $col_client_vendor = Column::make(trans('bt.client'), 'client.name')
@@ -68,7 +64,6 @@ class ModuleColumnDefs
                         })
                         ->html();
                     $col_title_date_due = trans('bt.expires');
-                    $col_db_date_due = 'action_date';
                     $col_formatted_balance = null;
             }
             $default_columns = [
@@ -89,16 +84,16 @@ class ModuleColumnDefs
                     ->html(),
                 Column::make(trans('bt.date'), 'document_date')
                     ->sortable()
-                    ->format(fn($value, $row, Column $column) => DateFormatter::format($row->{'document_date'})),
-                Column::make($col_title_date_due, $col_db_date_due)
+                    ->format(fn($value, $row, Column $column) => $row->{'formatted_document_date'}),
+                Column::make($col_title_date_due, 'action_date')
                     ->sortable()
-                    ->format(fn($value, $row, Column $column) => $row->isOverdue ? '<div style="color: red; font-weight: bold;">' . DateFormatter::format($row->$col_db_date_due) . '</div>' : DateFormatter::format($row->$col_db_date_due))
+                    ->format(fn($value, $row, Column $column) => $row->isOverdue ? '<div style="color: red; font-weight: bold;">' . $row->formatted_action_date . '</div>' : $row->formatted_action_date)
                     ->html(),
                 $col_client_vendor,
                 Column::make(trans('bt.summary'), 'summary')
                     ->sortable(),
                 Column::make(__('bt.total'), 'amount.total')
-                    ->format(fn($value, $row, Column $column) => CurrencyFormatter::format($value, $row->currency)),
+                    ->format(fn($value, $row, Column $column) => $row->amount->formatted_total),
                 $col_formatted_balance,
                 $col_invoice_id,
                 Column::make('Action')
@@ -124,7 +119,7 @@ class ModuleColumnDefs
                     ->yesNo(),
                 Column::make(trans('bt.created'), 'created_at')
                     ->sortable()
-                    ->format(fn($value, $row, Column $column) => DateFormatter::format($row->created_at)),
+                    ->format(fn($value, $row, Column $column) => $row->formatted_created_at),
                 Column::make('Action')
                     ->label(fn($row, Column $column) => view('clients._actions')->withModel($row)),
             ];
@@ -159,14 +154,14 @@ class ModuleColumnDefs
             $default_columns = [
                 Column::make(__('bt.payment_date'), 'paid_at')
                     ->sortable()
-                    ->format(fn($value, $row, Column $column) => DateFormatter::format($row->paid_at)),
+                    ->format(fn($value, $row, Column $column) => $row->formatted_paid_at),
                 Column::make(trans('bt.invoice'), 'invoice.number')
                     ->sortable()
                     ->format(fn($value, $row, Column $column) => '<a href="/documents/' . $row->invoice_id . '/edit">' . $value . '</a>')
                     ->html(),
                 Column::make(trans('bt.invoice_date'), 'invoice.document_date')
                     ->sortable()
-                    ->format(fn($value, $row, Column $column) => DateFormatter::format($row->paid_at)),
+                    ->format(fn($value, $row, Column $column) => $row->invoice->formatted_document_date),
                 Column::make(__('bt.client'), 'client.name')
                     ->searchable()
                     ->sortable()
@@ -176,7 +171,7 @@ class ModuleColumnDefs
                     ->sortable(),
                 Column::make(trans('bt.amount'), 'amount')
                     ->sortable()
-                    ->format(fn($value, $row, Column $column) => CurrencyFormatter::format($row->amount)),
+                    ->format(fn($value, $row, Column $column) => $row->formatted_amount),
                 Column::make(__('bt.payment_method'), 'paymentMethod.name')
                     ->sortable(),
                 Column::make(__('bt.note'), 'note')
@@ -188,7 +183,7 @@ class ModuleColumnDefs
             $default_columns = [
                 Column::make(__('bt.date'), 'expense_date')
                     ->sortable()
-                    ->format(fn($value, $row, Column $column) => DateFormatter::format($row->expense_date)),
+                    ->format(fn($value, $row, Column $column) => $row->formatted_expense_date),
                 Column::make(trans('bt.category'), 'category.name')
                     ->sortable()
                     ->format(function ($value, $row, Column $column) {
@@ -240,10 +235,10 @@ class ModuleColumnDefs
                     ->format(fn($value, $row, Column $column) => $statuses[$row->status_text]),
                 Column::make(trans('bt.created'), 'created_at')
                     ->sortable()
-                    ->format(fn($value, $row, Column $column) => DateFormatter::format($row->created_at)),
+                    ->format(fn($value, $row, Column $column) => $row->formatted_created_at),
                 Column::make(trans('bt.due_date'), 'due_at')
                     ->sortable()
-                    ->format(fn($value, $row, Column $column) => DateFormatter::format($row->due_at)),
+                    ->format(fn($value, $row, Column $column) => $row->formatted_due_at),
                 Column::make(trans('bt.unbilled_hours'))
                     ->label(fn($row, Column $column) => $row->unbilled_hours),
                 Column::make(trans('bt.billed_hours'))

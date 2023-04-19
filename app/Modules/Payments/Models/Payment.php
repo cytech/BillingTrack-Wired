@@ -100,22 +100,22 @@ class Payment extends Model
 
     public function formattedPaidAt(): Attribute
     {
-        return new Attribute(get: fn() => DateFormatter::format($this->attributes['paid_at']));
+        return new Attribute(get: fn() => DateFormatter::format($this->paid_at));
     }
 
     public function formattedAmount(): Attribute
     {
-        return new Attribute(get: fn() => CurrencyFormatter::format($this->attributes['amount'], $this->invoice->currency ?? ''));
+        return new Attribute(get: fn() => CurrencyFormatter::format($this->amount, $this->invoice->currency ?? ''));
     }
 
     public function formattedNumericAmount(): Attribute
     {
-        return new Attribute(get: fn() => NumberFormatter::format($this->attributes['amount']));
+        return new Attribute(get: fn() => NumberFormatter::format($this->amount));
     }
 
     public function formattedNote(): Attribute
     {
-        return new Attribute(get: fn() => nl2br($this->attributes['note']));
+        return new Attribute(get: fn() => nl2br($this->note));
     }
 
     public function user(): Attribute

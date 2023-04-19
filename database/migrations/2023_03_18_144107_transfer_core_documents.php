@@ -30,8 +30,8 @@ return new class extends Migration {
                 $document->document_type = 'BT\\Modules\\Documents\\Models\\' . $coredoctype;
                 $document->document_id = $doc->id;
                 $document->document_date = $doc->quote_date ?? $doc->workorder_date ?? $doc->invoice_date ?? $doc->purchaseorder_date;
-                $document->workorder_id = $doc->workorder_id ?? 0;
-                $document->invoice_id = $doc->invoice_id ?? 0;
+                $document->workorder_id = $doc->workorder_id ?? null;
+                $document->invoice_id = $doc->invoice_id ?? null;
                 $document->user_id = $doc->user_id;
                 $document->client_id = $doc->client_id ?? $doc->vendor_id;
                 $document->group_id = $doc->group_id;

@@ -87,21 +87,21 @@ class RecurringInvoiceItem extends Model
 
     public function formattedQuantity(): Attribute
     {
-        return new Attribute(get: fn() => NumberFormatter::format($this->attributes['quantity']));
+        return new Attribute(get: fn() => NumberFormatter::format($this->quantity));
     }
 
     public function formattedNumericPrice(): Attribute
     {
-        return new Attribute(get: fn() => NumberFormatter::format($this->attributes['price']));
+        return new Attribute(get: fn() => NumberFormatter::format($this->price));
     }
 
     public function formattedPrice(): Attribute
     {
-        return new Attribute(get: fn() => CurrencyFormatter::format($this->attributes['price'], $this->recurringInvoice->currency));
+        return new Attribute(get: fn() => CurrencyFormatter::format($this->price, $this->recurringInvoice->currency));
     }
 
     public function formattedDescription(): Attribute
     {
-        return new Attribute(get: fn() => nl2br($this->attributes['description']));
+        return new Attribute(get: fn() => nl2br($this->description));
     }
 }

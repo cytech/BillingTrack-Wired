@@ -83,17 +83,17 @@ class Product extends Model
 
     public function formattedPrice(): Attribute
     {
-        return new Attribute(get: fn() => CurrencyFormatter::format($this->attributes['price']));
+        return new Attribute(get: fn() => CurrencyFormatter::format($this->price));
     }
 
     public function formattedCost(): Attribute
     {
-        return new Attribute(get: fn() => CurrencyFormatter::format($this->attributes['cost']));
+        return new Attribute(get: fn() => CurrencyFormatter::format($this->cost));
     }
 
     public function formattedNumericPrice(): Attribute
     {
-        return new Attribute(get: fn() => NumberFormatter::format($this->attributes['price']));
+        return new Attribute(get: fn() => NumberFormatter::format($this->price));
     }
 
     public function formattedActive(): Attribute

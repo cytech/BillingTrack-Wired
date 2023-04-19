@@ -34,25 +34,25 @@ class TimeTrackingTimer extends Model
 
     public function formattedBilled(): Attribute
     {
-        return new Attribute(get: fn() => ($this->attributes['billed']) ? trans('bt.yes') : trans('bt.no'));
+        return new Attribute(get: fn() => ($this->billed) ? trans('bt.yes') : trans('bt.no'));
     }
 
     public function formattedEndAt(): Attribute
     {
-        if ($this->attributes['end_at'] <> null) {
-            return new Attribute(get: fn() => DateFormatter::format($this->attributes['end_at'], true));
+        if ($this->end_at <> null) {
+            return new Attribute(get: fn() => DateFormatter::format($this->end_at, true));
         }
         return new Attribute(get: fn() => '');
     }
 
     public function formattedHours(): Attribute
     {
-        return new Attribute(get: fn() => NumberFormatter::format($this->attributes['hours']));
+        return new Attribute(get: fn() => NumberFormatter::format($this->hours));
     }
 
     public function formattedStartAt(): Attribute
     {
-        return new Attribute(get: fn() => DateFormatter::format($this->attributes['start_at'], true));
+        return new Attribute(get: fn() => DateFormatter::format($this->start_at, true));
     }
 
     public function hours(): Attribute
@@ -60,6 +60,6 @@ class TimeTrackingTimer extends Model
         if (!$this->formatted_end_at) {
             return new Attribute(get: fn() => '');
         }
-        return new Attribute(get: fn() => $this->attributes['hours']);
+        return new Attribute(get: fn() => $this->hours);
     }
 }

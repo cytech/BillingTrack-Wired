@@ -49,22 +49,22 @@ class RecurringInvoiceAmount extends Model
 
     public function formattedSubtotal(): Attribute
     {
-        return new Attribute(get: fn() => CurrencyFormatter::format($this->attributes['subtotal'], $this->recurringInvoice->currency));
+        return new Attribute(get: fn() => CurrencyFormatter::format($this->subtotal, $this->recurringInvoice->currency));
     }
 
     public function formattedTax(): Attribute
     {
-        return new Attribute(get: fn() => CurrencyFormatter::format($this->attributes['tax'], $this->recurringInvoice->currency));
+        return new Attribute(get: fn() => CurrencyFormatter::format($this->tax, $this->recurringInvoice->currency));
     }
 
     public function formattedTotal(): Attribute
     {
-        return new Attribute(get: fn() => CurrencyFormatter::format($this->attributes['total'], $this->recurringInvoice->currency));
+        return new Attribute(get: fn() => CurrencyFormatter::format($this->total, $this->recurringInvoice->currency));
     }
 
     public function formattedDiscount(): Attribute
     {
-        return new Attribute(get: fn() => CurrencyFormatter::format($this->attributes['discount'], $this->recurringInvoice->currency));
+        return new Attribute(get: fn() => CurrencyFormatter::format($this->discount, $this->recurringInvoice->currency));
     }
 
     /**
@@ -73,6 +73,6 @@ class RecurringInvoiceAmount extends Model
      */
 //    public function getFormattedTotalWithoutConversionAttribute()
 //    {
-//        return CurrencyFormatter::format($this->attributes['total'] / $this->recurringInvoice->exchange_rate);
+//        return CurrencyFormatter::format($this->total / $this->recurringInvoice->exchange_rate);
 //    }
 }
