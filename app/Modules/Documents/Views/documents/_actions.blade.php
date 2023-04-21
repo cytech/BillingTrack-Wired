@@ -10,14 +10,16 @@
                data-purchaseorder-id="{{ $model->id }}"><i
                         class="fa fa-arrow-alt-circle-right"></i> @lang('bt.receive')</a>
         @endif
+        @if($model->module_type != 'Recurringinvoice')
         <a class="dropdown-item" href="{{ route('documents.pdf', [$model->id]) }}" target="_blank"
            id="btn-pdf-document"><i class="fa fa-print"></i> @lang('bt.pdf')</a>
+        @endif
         @if (config('bt.mailConfigured'))
             <a class="dropdown-item email-document" href="javascript:void(0)" data-document-id="{{ $model->id }}"
                data-redirect-to="{{ request()->fullUrl() }}"><i
                         class="fa fa-envelope"></i> @lang('bt.email')</a>
         @endif
-        @if($model->module_type != 'Purchaseorder')
+        @if($model->module_type != 'Purchaseorder' && $model->module_type != 'Recurringinvoice')
             <a class="dropdown-item"
                href="{{ route('clientCenter.public.' . $model->lower_case_baseclass .'.show', [$model->url_key]) }}"
                target="_blank" id="btn-public-document"><i

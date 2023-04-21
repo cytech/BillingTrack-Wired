@@ -1,7 +1,9 @@
 <?php
 
 use BT\Modules\Expenses\Models\Expense;
+use BT\Modules\Groups\Models\Group;
 use BT\Modules\Payments\Models\Payment;
+use BT\Modules\Settings\Models\Setting;
 use BT\Modules\TimeTracking\Models\TimeTrackingTask;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -19,7 +21,14 @@ return new class extends Migration {
     {
         Schema::disableForeignKeyConstraints();
 
-        $coredoctypes = ['Quote', 'Workorder', 'Invoice', 'Purchaseorder'];
+        Schema::rename('recurring_invoices_custom', 'recurringinvoices_custom');
+
+        Schema::table('recurringinvoices_custom', function (Blueprint $table) {
+            $table->renameColumn('recurring_invoice_id', 'recurringinvoice_id');
+        });
+
+
+        $coredoctypes = ['Quote', 'Workorder', 'Invoice', 'Purchaseorder', 'RecurringInvoice'];
 
         foreach ($coredoctypes as $coredoctype) {
             $modtype = '\\BT\Support\\SixtoSeven\\Models\\' . $coredoctype;
@@ -27,31 +36,35 @@ return new class extends Migration {
 
             foreach ($docs as $doc) {
                 $document = new \BT\Modules\Documents\Models\Document();
-                $document->document_type = 'BT\\Modules\\Documents\\Models\\' . $coredoctype;
+                $document->document_type = 'BT\\Modules\\Documents\\Models\\' . ucfirst($coredoctype);
                 $document->document_id = $doc->id;
-                $document->document_date = $doc->quote_date ?? $doc->workorder_date ?? $doc->invoice_date ?? $doc->purchaseorder_date;
+                $document->document_date = $doc->quote_date ?? $doc->workorder_date ?? $doc->invoice_date ?? $doc->purchaseorder_date ?? '0000-00-00';
                 $document->workorder_id = $doc->workorder_id ?? null;
                 $document->invoice_id = $doc->invoice_id ?? null;
                 $document->user_id = $doc->user_id;
                 $document->client_id = $doc->client_id ?? $doc->vendor_id;
-                $document->group_id = $doc->group_id;
-                $document->document_status_id = $doc->quote_status_id ?? $doc->workorder_status_id ?? $doc->invoice_status_id ?? $doc->purchaseorder_status_id;
-                $document->action_date = $doc->expires_at ?? $doc->due_at;
-                $document->number = $doc->number;
+                $document->company_profile_id = $doc->company_profile_id;
+                $document->group_id = $doc->group_id ?? null;
+                $document->document_status_id = $doc->quote_status_id ?? $doc->workorder_status_id ?? $doc->invoice_status_id ?? $doc->purchaseorder_status_id ?? 9;
+                $document->action_date = $doc->expires_at ?? $doc->due_at ?? '0000-00-00';
+                $document->number = $doc->number ?? 0;
                 $document->footer = $doc->footer;
-                $document->url_key = $doc->url_key;
+                $document->url_key = $doc->url_key ?? '';
                 $document->currency_code = $doc->currency_code;
                 $document->exchange_rate = $doc->exchange_rate;
                 $document->terms = $doc->terms;
                 $document->template = $doc->template;
                 $document->summary = $doc->summary;
-                $document->viewed = $doc->viewed;
+                $document->viewed = $doc->viewed ?? 0;
                 $document->discount = $doc->discount;
                 $document->job_date = $doc->job_date ?? null;
                 $document->start_time = $doc->start_time ?? null;
                 $document->end_time = $doc->end_time ?? null;
                 $document->will_call = $doc->will_call ?? 0;
-                $document->company_profile_id = $doc->company_profile_id;
+                $document->recurring_frequency = $doc->recurring_frequency ?? null;
+                $document->recurring_period = $doc->recurring_period ?? null;
+                $document->next_date = $doc->next_date ?? null;
+                $document->stop_date = $doc->stop_date ?? null;
                 $document->deleted_at = $doc->deleted_at;
                 $document->created_at = $doc->created_at;
                 $document->updated_at = $doc->updated_at;
@@ -210,6 +223,20 @@ return new class extends Migration {
                 $expense->invoice_id = $invoicedoc->id;
                 $expense->updateQuietly();
             }
+        }
+
+        //create recurringinvoiceGroup and config setting
+        $existinggroups = Group::count();
+        Setting::saveByKey('recurringinvoiceGroup', $existinggroups + 1);
+
+        $maxrinvs = \BT\Support\SixtoSeven\Models\RecurringInvoice::max('id');
+        Group::create(['name' => 'Recurringinvoice Default', 'format' => 'RINV{NUMBER}', 'next_id' => $maxrinvs + 1,
+            'left_pad' => 0, 'reset_number' => 0]);
+
+        $recurringinvoices = \BT\Modules\Documents\Models\Recurringinvoice::get();
+        foreach ($recurringinvoices as $recurringinvoice){
+            $recurringinvoice->number = 'RINV' . $recurringinvoice->document_id;
+            $recurringinvoice->updateQuietly();
         }
 
         //remove temporary column

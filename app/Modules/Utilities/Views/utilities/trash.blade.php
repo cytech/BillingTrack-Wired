@@ -52,7 +52,7 @@
                             <livewire:data-tables.trash-table :module_type="'Invoice'"/>
                         </div>
                         <div id="tab-recurring_invoices" class="tab-pane">
-                            <livewire:data-tables.trash-table :module_type="'RecurringInvoice'"/>
+                            <livewire:data-tables.trash-table :module_type="'Recurringinvoice'"/>
                         </div>
                         <div id="tab-purchaseorders" class="tab-pane">
                             <livewire:data-tables.trash-table :module_type="'Purchaseorder'"/>

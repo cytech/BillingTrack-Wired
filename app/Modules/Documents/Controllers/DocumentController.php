@@ -17,6 +17,7 @@ use BT\Modules\Documents\Models\DocumentItem;
 use BT\Modules\Documents\Models\Invoice;
 use BT\Modules\Documents\Models\Purchaseorder;
 use BT\Modules\Documents\Models\Quote;
+use BT\Modules\Documents\Models\Recurringinvoice;
 use BT\Modules\Documents\Models\Workorder;
 use BT\Support\FileNames;
 use BT\Support\PDF\PDFFactory;
@@ -34,6 +35,7 @@ class DocumentController extends Controller
         $this->setReturnUrl();
         $status = request('status') === 'all_statuses' ? '' : request('status');
         $module = request('module_type');
+        $clientid = request('client');
         switch ($module) {
             case 'Quote':
                 $module_type = $module;
@@ -51,9 +53,16 @@ class DocumentController extends Controller
                 $module_type = $module;
                 $modulefullname = addslashes(Purchaseorder::class);
                 break;
+            case 'Recurringinvoice':
+                $module_type = $module;
+                $modulefullname = addslashes(Recurringinvoice::class);
+                break;
         }
 
-        return view('documents.index')->with('status', $status)->with('module_type', $module_type)->with('modulefullname', $modulefullname);
+        return view('documents.index')->with('status', $status)
+            ->with('module_type', $module_type)
+            ->with('modulefullname', $modulefullname)
+            ->with('client', $clientid);
     }
 
     public function delete($id)

@@ -43,6 +43,17 @@ return new class extends Migration {
                 ->onUpdate('restrict');
         });
 
+        Schema::table('recurring_invoices_custom', function (Blueprint $table) {
+            $table->dropForeign('recurring_invoices_custom_recurring_invoice_id');
+        });
+
+        Schema::table('recurringinvoices_custom', function (Blueprint $table) {
+            $table->foreign('recurringinvoice_id', 'recurringinvoices_custom_recurringinvoice_id')
+                ->references('id')->on('documents')
+                ->onDelete('cascade')
+                ->onUpdate('restrict');
+        });
+
         Schema::table('expenses', function (Blueprint $table) {
             $table->dropForeign('fk_expenses_invoices1_idx');
             $table->foreign('invoice_id', 'fk_expenses_invoices1_idx')
@@ -77,7 +88,8 @@ return new class extends Migration {
             'quotes', 'quote_amounts', 'quote_items', 'quote_item_amounts',
             'workorders', 'workorder_amounts', 'workorder_items', 'workorder_item_amounts',
             'purchaseorders', 'purchaseorder_amounts', 'purchaseorder_items', 'purchaseorder_item_amounts',
-            'invoice_transactions'];
+            'invoice_transactions', 'recurring_invoices', 'recurring_invoice_amounts', 'recurring_invoice_items',
+            'recurring_invoice_item_amounts'];
 
         foreach ($droptables as $droptable) {
             Schema::dropIfExists($droptable);

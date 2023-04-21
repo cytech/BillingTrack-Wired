@@ -20,8 +20,10 @@ class DocumentStatuses extends AbstractStatuses
         '3' => 'approved', //not allowed invoice, po
         '4' => 'rejected', //not allowed invoice, po
         '5' => 'canceled', //po was 6
-        '6' => 'paid', //invoice and  po was 5
+        '6' => 'paid', //invoice and po was 5
         '7' => 'received', //po was 3
         '8' => 'partial', //po was 4
+        '9' => 'active', //recurring invoice
+        '10' => 'inactive' //recurring invoice
     ];
 }

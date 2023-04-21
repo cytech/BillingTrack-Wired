@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace BT\Modules\RecurringInvoices\Models;
+namespace BT\Support\SixtoSeven\Models;
 
 use Askedio\SoftCascade\Traits\SoftCascadeTrait;
 use BT\Modules\Activity\Models\Activity;
 use BT\Modules\Clients\Models\Client;
 use BT\Modules\CompanyProfiles\Models\CompanyProfile;
 use BT\Modules\Currencies\Models\Currency;
-use BT\Modules\CustomFields\Models\RecurringInvoiceCustom;
+use BT\Modules\CustomFields\Models\RecurringinvoiceCustom;
 use BT\Modules\Groups\Models\Group;
 use BT\Modules\Users\Models\User;
 use BT\Support\DateFormatter;
@@ -77,7 +77,7 @@ class RecurringInvoice extends Model
 
     public function custom(): HasOne
     {
-        return $this->hasOne(RecurringInvoiceCustom::class);
+        return $this->hasOne(RecurringinvoiceCustom::class, 'recurringinvoice_id');
     }
 
     public function group(): BelongsTo

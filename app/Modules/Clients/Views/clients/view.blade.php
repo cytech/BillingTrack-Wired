@@ -65,7 +65,7 @@
                             <li class="nav-item "><a class="nav-link" data-bs-toggle="tab"
                                                      href="#tab-invoices">@lang('bt.invoices')</a></li>
                             <li class="nav-item "><a class="nav-link" data-bs-toggle="tab"
-                                                     href="#tab-recurring-invoices">@lang('bt.recurring_invoices')</a>
+                                                     href="#tab-recurring-invoices">@lang('bt.recurringinvoices')</a>
                             </li>
                             <li class="nav-item "><a class="nav-link" data-bs-toggle="tab"
                                                      href="#tab-payments">@lang('bt.payments')</a></li>
@@ -193,9 +193,9 @@
                             </div>
                             <div id="tab-recurring-invoices" class="tab-pane">
                                 <div class="card">
-                                    @include('recurring_invoices._table')
+                                    @include('clients._recurring_invoices_table')
                                     <div class="card-footer"><p class="text-center"><strong><a
-                                                        href="{{ route('recurringInvoices.index') }}?client={{ $client->id }}">@lang('bt.view_all')</a></strong>
+                                                        href="{{ route('documents.index', ['module_type' => 'Recurringinvoice', 'client' => $client->id]) }}">@lang('bt.view_all')</a></strong>
                                         </p></div>
                                 </div>
                             </div>

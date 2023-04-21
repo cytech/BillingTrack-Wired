@@ -14,7 +14,7 @@ namespace BT\Modules\CustomFields\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class RecurringInvoiceCustom extends Model
+class RecurringinvoiceCustom extends Model
 {
     use SoftDeletes;
 
@@ -23,13 +23,13 @@ class RecurringInvoiceCustom extends Model
      * The table name
      * @var string
      */
-    protected $table = 'recurring_invoices_custom';
+    protected $table = 'recurringinvoices_custom';
 
     /**
      * The primary key
      * @var string
      */
-    protected $primaryKey = 'recurring_invoice_id';
+    protected $primaryKey = 'recurringinvoice_id';
 
     /**
      * Guarded properties

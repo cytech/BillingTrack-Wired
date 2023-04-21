@@ -2,6 +2,7 @@
 
 namespace BT\Http\Livewire\Modals;
 
+use BT\Events\DocumentModified;
 use BT\Modules\Clients\Models\Client;
 use BT\Modules\CompanyProfiles\Models\CompanyProfile;
 use BT\Modules\Documents\Models\DocumentItem;
@@ -176,31 +177,18 @@ class CreateModuleModal extends Component
                 $this->resource_id = $searchmodel::firstOrCreateByName(null, $this->resource_name)->id;
                 $swaldata['text'] = $swaldatatext;
             }
-            switch ($this->moduletype) {
-                case 'RecurringInvoice':
-                    $createfields = [
-                        'user_id'             => $this->user_id,
-                        'client_id'           => $this->resource_id,
-                        'group_id'            => $this->group_id,
-                        'company_profile_id'  => $this->company_profile_id,
-                        'next_date'           => $this->next_date,
-                        'stop_date'           => $this->stop_date ?? '0000-00-00',
-                        'recurring_frequency' => $this->recurring_frequency,
-                        'recurring_period'    => $this->recurring_period,
-                    ];
-                    $modulemodeventfullname = 'BT\\Events\\RecurringInvoiceModified';
-                    break;
-                default: //Quote, Workorder, Invoice, Document, Purchaseorder
-                    $createfields = [
-                        'document_date'      => $this->module_date,
-                        'user_id'            => $this->user_id,
-                        'client_id'          => $this->resource_id,
-                        'group_id'           => $this->group_id,
-                        'company_profile_id' => $this->company_profile_id
-                    ];
-                    $modulemodeventfullname = 'BT\\Events\\DocumentModified';
-
-            }
+            // Quote, Workorder, Invoice, Purchaseorder, Recurringinvoice
+            $createfields = [
+                'document_date'       => $this->module_date ?? Date('Y-m-d'),
+                'user_id'             => $this->user_id,
+                'client_id'           => $this->resource_id,
+                'group_id'            => $this->group_id,
+                'company_profile_id'  => $this->company_profile_id,
+                'next_date'           => $this->next_date ?? null,
+                'stop_date'           => $this->stop_date ?? '0000-00-00',
+                'recurring_frequency' => $this->recurring_frequency ?? null,
+                'recurring_period'    => $this->recurring_period ?? null
+            ];
 
             $this->validate();
 
@@ -210,44 +198,34 @@ class CreateModuleModal extends Component
             $module = $this->modulefullname::create($createfields);
             //currently only Purchaseorder Item from Products
             if ($this->moduletype == 'Purchaseorder' && $this->lineitem) {
-                $moduleitemfullname = DocumentItem::class;
-                $moduleitemfullname::create([
-                    'document_id'                                  => $module->id,
-                    'name'                                         => $this->lineitem->name,
-                    'description'                                  => $this->lineitem->description,
-                    'quantity'                                     => 1,
-                    'price'                                        => $this->lineitem->price,
-                    'tax_rate_id'                                  => $this->lineitem->tax_rate_id ?? 0,
-                    'tax_rate_2_id'                                => $this->lineitem->tax_rate_2_id ?? 0,
-                    'resource_table'                               => 'products',
-                    'resource_id'                                  => $this->lineitem->id,
-                    'display_order'                                => 1,
+                DocumentItem::create([
+                    'document_id'    => $module->id,
+                    'name'           => $this->lineitem->name,
+                    'description'    => $this->lineitem->description,
+                    'quantity'       => 1,
+                    'price'          => $this->lineitem->price,
+                    'tax_rate_id'    => $this->lineitem->tax_rate_id ?? 0,
+                    'tax_rate_2_id'  => $this->lineitem->tax_rate_2_id ?? 0,
+                    'resource_table' => 'products',
+                    'resource_id'    => $this->lineitem->id,
+                    'display_order'  => 1,
                 ]);
 
             }
-            event(new $modulemodeventfullname($module));
+            event(new DocumentModified($module));
             // Close Modal After Logic
             $this->emit('hideModal');
 
-            if ($this->moduletype == 'RecurringInvoice'){
-                return redirect()->route('recurringInvoices.edit', $module->id)
-                    ->with('alertSuccess', trans('bt.record_successfully_created'));
-
-            } else {
-                return redirect()->route('documents.edit', $module->id)
-                    ->with('alertSuccess', trans('bt.record_successfully_created'));
-            }
+            return redirect()->route('documents.edit', $module->id)
+                ->with('alertSuccess', trans('bt.record_successfully_created'));
 
         } elseif ($this->moduleop == 'copy') {
             $this->copyModule();
         }
-
     }
 
     public function copyModule()
     {
-        $moduleitemfullname = $this->modulefullname . 'Item';
-
         if ($this->moduletype == 'Purchaseorder') {
             $searchmodel = Vendor::class;
             $swaldatatext = __('bt.creating_new_vendor');
@@ -259,157 +237,67 @@ class CreateModuleModal extends Component
             $this->resource_id = $searchmodel::firstOrCreateByName(null, $this->resource_name)->id;
             $swaldata['text'] = $swaldatatext;
         }
-        switch ($this->moduletype) {
-            case 'Purchaseorder':
-                $moduleitemfullname = DocumentItem::class;
-                $fromModule = $this->modulefullname::find($this->module_id);
-                $modulemodeventfullname = 'BT\\Events\\DocumentModified';
-                $createfields = [
-                    'document_date'                      => $this->module_date,
-                    'user_id'                            => $this->user_id,
-                    'client_id'                          => $this->resource_id,
-                    'group_id'                           => $this->group_id,
-                    'company_profile_id'                 => $this->company_profile_id,
-                    'currency_code'                      => $fromModule->currency_code,
-                    'exchange_rate'                      => $fromModule->exchange_rate,
-                    'terms'                              => $fromModule->terms,
-                    'footer'                             => $fromModule->footer,
-                    'template'                           => $fromModule->template,
-                    'summary'                            => $fromModule->summary,
-                    'discount'                           => $fromModule->discount,
-                ];
-                $this->validate();
-                $swaldata['message'] = __('bt.saving');
+        $fromModule = $this->modulefullname::find($this->module_id);
+        $createfields = [
+            'document_date'       => $this->module_date ?? Date('Y-m-d'),
+            'user_id'             => $this->user_id,
+            'client_id'           => $this->resource_id,
+            'group_id'            => $this->group_id,
+            'company_profile_id'  => $this->company_profile_id,
+            'currency_code'       => $fromModule->currency_code,
+            'exchange_rate'       => $fromModule->exchange_rate,
+            'terms'               => $fromModule->terms,
+            'footer'              => $fromModule->footer,
+            'template'            => $fromModule->template,
+            'summary'             => $fromModule->summary,
+            'discount'            => $fromModule->discount,
+            'next_date'           => $this->next_date ?? null,
+            'stop_date'           => $this->stop_date ?? '0000-00-00',
+            'recurring_frequency' => $this->recurring_frequency ?? null,
+            'recurring_period'    => $this->recurring_period ?? null
+        ];
 
-                $this->dispatchBrowserEvent('swal:saving', $swaldata);
+        $this->validate();
+        $swaldata['message'] = __('bt.saving');
 
-                $toModule = $this->modulefullname::create($createfields);
+        $this->dispatchBrowserEvent('swal:saving', $swaldata);
 
-                foreach ($fromModule->items as $item) {
-                    $moduleitemfullname::create(
-                        [
-                            'document_id'                                  => $toModule->id,
-                            'name'                                         => $item->name,
-                            'description'                                  => $item->description,
-                            'quantity'                                     => $item->quantity,
-                            'price'                                         => $item->price,
-                            'tax_rate_id'                                  => $item->tax_rate_id ?? 0,
-                            'tax_rate_2_id'                                => $item->tax_rate_2_id ?? 0,
-                            //'resource_table' => $item->resource_table,
-                            //'resource_id'    => $item->resource_id,
-                            'display_order'                                => $item->display_order,
-                        ]);
-                }
-                break;
-            case 'RecurringInvoice':
-                $fromModule = $this->modulefullname::find($this->module_id);
-                $modulemodeventfullname = 'BT\\Events\\' . $this->moduletype . 'Modified';
-                $createfields = [
-                    'user_id'             => $this->user_id,
-                    'client_id'           => $this->resource_id,
-                    'group_id'            => $this->group_id,
-                    'company_profile_id'  => $this->company_profile_id,
-                    'currency_code'       => $fromModule->currency_code,
-                    'exchange_rate'       => $fromModule->exchange_rate,
-                    'terms'               => $fromModule->terms,
-                    'footer'              => $fromModule->footer,
-                    'template'            => $fromModule->template,
-                    'summary'             => $fromModule->summary,
-                    'discount'            => $fromModule->discount,
-                    'next_date'           => $this->next_date,
-                    'stop_date'           => $this->stop_date ?? '0000-00-00',
-                    'recurring_frequency' => $this->recurring_frequency,
-                    'recurring_period'    => $this->recurring_period,
-                ];
-                $this->validate();
-                $swaldata['message'] = __('bt.saving');
+        $toModule = $this->modulefullname::create($createfields);
 
-                $this->dispatchBrowserEvent('swal:saving', $swaldata);
-
-                $toModule = $this->modulefullname::create($createfields);
-                foreach ($fromModule->items as $item) {
-                    $moduleitemfullname::create(
-                        [
-                            lcfirst(snake_case($this->moduletype)) . '_id' => $toModule->id,
-                            'name'                                         => $item->name,
-                            'description'                                  => $item->description,
-                            'quantity'                                     => $item->quantity,
-                            'price'                                        => $item->price,
-                            'tax_rate_id'                                  => $item->tax_rate_id,
-                            'tax_rate_2_id'                                => $item->tax_rate_2_id,
-                            'resource_table'                               => $item->resource_table,
-                            'resource_id'                                  => $item->resource_id,
-                            'display_order'                                => $item->display_order,
-                        ]);
-                }
-                break;
-            default: //Quote, Workorder, Invoice
-                $moduleitemfullname = DocumentItem::class;
-                $fromModule = $this->modulefullname::find($this->module_id);
-                $modulemodeventfullname = 'BT\\Events\\DocumentModified';
-                $createfields = [
-                    'document_date'      => $this->module_date,
-                    'user_id'            => $this->user_id,
-                    'client_id'          => $this->resource_id,
-                    'group_id'           => $this->group_id,
-                    'company_profile_id' => $this->company_profile_id,
-                    'currency_code'      => $fromModule->currency_code,
-                    'exchange_rate'      => $fromModule->exchange_rate,
-                    'terms'              => $fromModule->terms,
-                    'footer'             => $fromModule->footer,
-                    'template'           => $fromModule->template,
-                    'summary'            => $fromModule->summary,
-                    'discount'           => $fromModule->discount,
-                ];
-
-                $this->validate();
-                $swaldata['message'] = __('bt.saving');
-
-                $this->dispatchBrowserEvent('swal:saving', $swaldata);
-
-                $toModule = $this->modulefullname::create($createfields);
-
-                if ($this->moduletype == 'Workorder') {
-                    $toModule->job_date = $fromModule->job_date;
-                    $toModule->start_time = $fromModule->start_time;
-                    $toModule->end_time = $fromModule->end_time;
-                    $toModule->will_call = $fromModule->will_call;
-                    $toModule->save();
-                }
-
-                foreach ($fromModule->items as $item) {
-                    $moduleitemfullname::create(
-                        [
-                            'document_id'    => $toModule->id,
-                            'name'           => $item->name,
-                            'description'    => $item->description,
-                            'quantity'       => $item->quantity,
-                            'price'          => $item->price,
-                            'tax_rate_id'    => $item->tax_rate_id,
-                            'tax_rate_2_id'  => $item->tax_rate_2_id,
-                            'resource_table' => $item->resource_table,
-                            'resource_id'    => $item->resource_id,
-                            'display_order'  => $item->display_order,
-                        ]);
-                }
-
+        if ($this->moduletype == 'Workorder') {
+            $toModule->job_date = $fromModule->job_date;
+            $toModule->start_time = $fromModule->start_time;
+            $toModule->end_time = $fromModule->end_time;
+            $toModule->will_call = $fromModule->will_call;
+            $toModule->save();
         }
+
+        foreach ($fromModule->items as $item) {
+            DocumentItem::create(
+                [
+                    'document_id'    => $toModule->id,
+                    'name'           => $item->name,
+                    'description'    => $item->description,
+                    'quantity'       => $item->quantity,
+                    'price'          => $item->price,
+                    'tax_rate_id'    => $item->tax_rate_id,
+                    'tax_rate_2_id'  => $item->tax_rate_2_id,
+                    'resource_table' => $item->resource_table,
+                    'resource_id'    => $item->resource_id,
+                    'display_order'  => $item->display_order,
+                ]);
+        }
+
         // Copy the custom fields
         $custom = collect($fromModule->custom)->except(lcfirst(snake_case($this->moduletype)) . '_id')->toArray();
         $toModule->custom->update($custom);
 
-        event(new $modulemodeventfullname($toModule));
+        event(new DocumentModified($toModule));
         // Close Modal After Logic
         $this->emit('hideModal');
 
-        if ($this->moduletype == 'RecurringInvoice'){
-            return redirect()->route('recurringInvoices.edit', $toModule->id)
-                ->with('alertSuccess', trans('bt.record_successfully_created'));
-
-        } else {
-            return redirect()->route('documents.edit', $toModule->id)
-                ->with('alertSuccess', trans('bt.record_successfully_created'));
-        }
+        return redirect()->route('documents.edit', $toModule->id)
+            ->with('alertSuccess', trans('bt.record_successfully_created'));
     }
 
     public function render()

@@ -61,6 +61,11 @@ class DocumentAmount extends Model
         return $this->belongsTo(Purchaseorder::class, 'document_id');
     }
 
+    public function recurringinvoice(): BelongsTo
+    {
+        return $this->belongsTo(Recurringinvoice::class, 'document_id');
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Accessors

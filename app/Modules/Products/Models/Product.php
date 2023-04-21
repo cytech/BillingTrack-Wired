@@ -13,7 +13,7 @@ namespace BT\Modules\Products\Models;
 
 use BT\Modules\Documents\Models\DocumentItem;
 use BT\Modules\Documents\Models\Purchaseorder;
-use BT\Modules\RecurringInvoices\Models\RecurringInvoiceItem;
+//use BT\Modules\RecurringInvoices\Models\RecurringInvoiceItem;
 use BT\Modules\Scheduler\Models\Category;
 use BT\Modules\TaxRates\Models\TaxRate;
 use BT\Modules\Vendors\Models\Vendor;
@@ -62,7 +62,7 @@ class Product extends Model
 
     public function recurringinvoiceitem(): BelongsTo
     {
-        return $this->belongsTo(RecurringInvoiceItem::class, 'resource_id', 'id')
+        return $this->belongsTo(DocumentItem::class, 'resource_id', 'id')
             ->where('resource_table', '=', 'products');
     }
 

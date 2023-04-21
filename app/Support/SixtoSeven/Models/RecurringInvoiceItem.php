@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace BT\Modules\RecurringInvoices\Models;
+namespace BT\Support\SixtoSeven\Models;
 
 use Askedio\SoftCascade\Traits\SoftCascadeTrait;
 use BT\Modules\Employees\Models\Employee;
@@ -49,7 +49,7 @@ class RecurringInvoiceItem extends Model
 
     public function amount(): HasOne
     {
-        return $this->hasOne(RecurringInvoiceAmount::class, 'item_id');
+        return $this->hasOne(RecurringInvoiceItemAmount::class, 'item_id');
     }
 
     public function recurringInvoice(): BelongsTo

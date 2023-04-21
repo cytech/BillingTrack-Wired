@@ -19,7 +19,7 @@ use BT\Modules\CustomFields\Models\CustomField;
 use BT\Modules\Documents\Models\Invoice;
 use BT\Modules\Documents\Models\DocumentItem;
 use BT\Modules\MailQueue\Support\MailQueue;
-use BT\Modules\RecurringInvoices\Models\RecurringInvoice;
+use BT\Modules\Documents\Models\Recurringinvoice;
 use BT\Support\DateFormatter;
 use BT\Support\Parser;
 use BT\Support\Statuses\DocumentStatuses;
@@ -150,7 +150,7 @@ class TaskController extends Controller
 
     private function recurInvoices()
     {
-        $recurringInvoices = RecurringInvoice::recurNow()->get();
+        $recurringInvoices = Recurringinvoice::recurNow()->get();
 
         foreach ($recurringInvoices as $recurringInvoice)
         {

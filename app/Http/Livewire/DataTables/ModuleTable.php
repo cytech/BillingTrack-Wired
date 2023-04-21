@@ -5,6 +5,7 @@ namespace BT\Http\Livewire\DataTables;
 use BT\Modules\Clients\Models\Client;
 use BT\Modules\CompanyProfiles\Models\CompanyProfile;
 use BT\Modules\Vendors\Models\Vendor;
+use BT\Support\Statuses\DocumentStatuses;
 use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
@@ -89,16 +90,15 @@ class ModuleTable extends DataTableComponent
         } elseif ($this->module_type == 'Client') {
             $this->setDefaultSort('name');
             $this->module_fullname = 'BT\\Modules\\Clients\\Models\\Client';
-        } elseif ($this->module_type == 'RecurringInvoice') {
-            $this->setDefaultSort('client_id');
-            $this->module_fullname = 'BT\\Modules\\RecurringInvoices\\Models\\RecurringInvoice';
         } elseif ($this->module_type == 'Payment') {
             $this->setDefaultSort('paid_at', 'desc');
             $this->module_fullname = 'BT\\Modules\\Payments\\Models\\Payment';
-        } else { //quote, workorder, invoice, purchaseorder
+        } else { //quote, workorder, invoice, purchaseorder, recurringinvoice
             $this->setDefaultSort('document_date', 'desc');
             if (in_array($this->module_type, ['Invoice', 'Quote', 'Workorder', 'Purchaseorder'])) {
-                $this->keyedStatuses = collect(('BT\\Support\\Statuses\\DocumentStatuses')::lists())->except(4, 6, 7, 8);
+                $this->keyedStatuses = collect(('BT\\Support\\Statuses\\DocumentStatuses')::lists())->except(4, 6, 7, 8, 9, 10);
+            } elseif ($this->module_type === 'Recurringinvoice') {
+                $this->keyedStatuses = collect(('BT\\Support\\Statuses\\DocumentStatuses')::lists())->only(9, 10);
             }
             $this->module_fullname = 'BT\\Modules\\Documents\\Models\\' . $this->module_type;
         }
@@ -112,7 +112,7 @@ class ModuleTable extends DataTableComponent
     public function columns(): array
     {
 
-        if (in_array($this->module_type, ['Invoice', 'Quote', 'Workorder', 'Purchaseorder'])) {
+        if (in_array($this->module_type, ['Invoice', 'Quote', 'Workorder', 'Purchaseorder', 'Recurringinvoice'])) {
             $status_model = 'BT\\Support\\Statuses\\DocumentStatuses';
         } else {
             $status_model = 'BT\\Support\\Statuses\\' . $this->module_type . 'Statuses';
@@ -124,28 +124,17 @@ class ModuleTable extends DataTableComponent
     public function filters(): array
     {
         //filters only applied to 'Invoice', 'Quote', 'Workorder'
-        if (in_array($this->module_type, ['Invoice', 'Quote', 'Workorder'])) {
-            $status_model = 'BT\\Support\\Statuses\\DocumentStatuses';
+        if (in_array($this->module_type, ['Invoice', 'Quote', 'Workorder', 'Purchaseorder', 'Recurringinvoice'])) {
+            $options = DocumentStatuses::listsAllFlatDT($this->module_type);
 
             return [
                 SelectFilter::make(__('bt.status'))
-                    ->options($status_model::listsAllFlatDT($this->module_type))
+                    ->options($options)
                     ->filter(function (Builder $builder, string $value) {
-                        if ($value === 'draft') {
-                            $builder->where('document_status_id', 1);
-                        } elseif ($value === 'sent') {
-                            $builder->where('document_status_id', 2);
-                        } elseif ($value === 'paid') {
-                            $builder->where('document_status_id', 6);
-                        } elseif ($value === 'canceled') {
-                            $builder->where('document_status_id', 5);
-                        } elseif ($value === 'approved') {
-                            $builder->where('document_status_id', 3);
-                        } elseif ($value === 'rejected') {
-                            $builder->where('document_status_id', 4);
-                        } elseif ($value === 'overdue') {
+                        if ($value === 'overdue') {
                             $builder->Overdue();
-                        }
+                        } else
+                            $builder->where('document_status_id', $value);
                     }),
                 SelectFilter::make(__('bt.company_profiles'), 'company_profile_id')
                     ->options(['' => trans('bt.all_company_profiles')] + CompanyProfile::getList())
@@ -162,7 +151,7 @@ class ModuleTable extends DataTableComponent
     public function bulkActions(): array
     {
         $no_bulk_actions = ['ScheduleCategory', 'Category', 'ItemLookup', 'MailQueue', 'User'];
-        $trash_only_action = ['RecurringInvoice', 'Payment', 'Expense', 'Schedule', 'RecurringEvent'];
+        $trash_only_action = ['Payment', 'Expense', 'Schedule', 'RecurringEvent'];
         $no_trash_action = ['Employee', 'Vendor', 'Product'];
         //do not allow bulk actions on invoices if update inventory products is enabled
         if ($this->module_type == 'Invoice' && config('bt.updateInvProductsDefault')) {
@@ -191,11 +180,11 @@ class ModuleTable extends DataTableComponent
     {
         if ($this->getSelectedCount() > 0) {
             $ids = $this->getSelected();
-            if ($this->module_type == 'TimeTrackingProject'){
+            if ($this->module_type == 'TimeTrackingProject') {
                 $route = route('timeTracking.projects.bulk.status');
-            } elseif (in_array($this->module_type,['Client', 'Employee', 'Vendor', 'Product'])){
-                $route = route(strtolower($this->module_type)  . 's.bulk.status');
-            } else{
+            } elseif (in_array($this->module_type, ['Client', 'Employee', 'Vendor', 'Product'])) {
+                $route = route(strtolower($this->module_type) . 's.bulk.status');
+            } else {
                 $route = route('documents.bulk.status');
             }
 
@@ -214,7 +203,7 @@ class ModuleTable extends DataTableComponent
     {
         if ($this->module_type == 'TimeTrackingProject') {
             $route = route('timeTracking.projects.bulk.delete');
-        } elseif ($this->module_type == 'Schedule' || $this->module_type == 'RecurringInvoice') {
+        } elseif ($this->module_type == 'Schedule' || $this->module_type == 'RecurringEvent') {
             $route = route('scheduler.bulk.delete');
         } else {
             $route = route('documents.bulk.delete');
@@ -233,11 +222,7 @@ class ModuleTable extends DataTableComponent
 
     public function builder(): Builder
     {
-        if ($this->module_type == 'RecurringInvoice') {
-            return $this->module_fullname::select('recurring_invoices.*', 'recurring_invoices.id as number')
-                ->status(request('status'))
-                ->companyProfileId(request('company_profile'));
-        } elseif ($this->module_type == 'Payment') {
+        if ($this->module_type == 'Payment') {
             return $this->module_fullname::has('client')->has('invoice')
                 ->select(lcfirst($this->module_type) . 's.*');
         } elseif ($this->module_type == 'Expense') {
@@ -278,7 +263,7 @@ class ModuleTable extends DataTableComponent
                 return $this->module_fullname::select('id', 'name', 'email', 'client_id')
                     ->role(['admin', 'user', 'client']);
             }
-        } else { //quotes, workorders, invoices, purchaseorders
+        } else { //quotes, workorders, invoices, purchaseorders, recurringinvoices
             if ($this->reqstatus) $this->setFilter(snake_case(__('bt.status')), $this->reqstatus);
             return $this->module_fullname::
             select('documents.*')->where('document_type', $this->module_fullname)

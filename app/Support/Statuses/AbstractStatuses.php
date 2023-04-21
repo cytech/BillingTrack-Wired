@@ -49,13 +49,32 @@ abstract class AbstractStatuses
         }
 
         switch ($module_type){
-            case 1:
-            case 2:
+            case 'Quote':
+            case 'Workorder':
                 unset($statuses[6]);
+                unset($statuses[7]);
+                unset($statuses[8]);
+                unset($statuses[9]);
+                unset($statuses[10]);
                 break;
-            case 3:
+            case 'Invoice':
                 unset($statuses[3]);
                 unset($statuses[4]);
+                unset($statuses[7]);
+                unset($statuses[8]);
+                unset($statuses[9]);
+                unset($statuses[10]);
+                break;
+            case 'Purchaseorder':
+                unset($statuses[3]);
+                unset($statuses[4]);
+                unset($statuses[9]);
+                unset($statuses[10]);
+                break;
+            case 'Recurringinvoice':
+                unset($statuses);
+                $statuses[9] = __('bt.active');
+                $statuses[10] = __('bt.inactive');
                 break;
         }
 
@@ -99,12 +118,42 @@ abstract class AbstractStatuses
         foreach (static::$statuses as $key => $status)
             if ($key === array_key_first(static::$statuses)) {
                 $statuses[''] = trans('bt.' . $status);
-            } else {
-                $statuses[$status] = trans('bt.' . $status);
+            }
+        else {
+            $statuses[$key] = trans('bt.' . $status);
             }
 
-        if ($module_type === 'Invoice' || $module_type === 'Purchaseorder') {
-            $statuses['overdue'] = __('bt.overdue');
+        switch ($module_type){
+            case 'Quote':
+            case 'Workorder':
+                unset($statuses[6]);
+                unset($statuses[7]);
+                unset($statuses[8]);
+                unset($statuses[9]);
+                unset($statuses[10]);
+                break;
+            case 'Invoice':
+                unset($statuses[3]);
+                unset($statuses[4]);
+                unset($statuses[7]);
+                unset($statuses[8]);
+                unset($statuses[9]);
+                unset($statuses[10]);
+                $statuses['overdue'] = __('bt.overdue');
+                break;
+            case 'Purchaseorder':
+                unset($statuses[3]);
+                unset($statuses[4]);
+                unset($statuses[9]);
+                unset($statuses[10]);
+                $statuses['overdue'] = __('bt.overdue');
+                break;
+            case 'Recurringinvoice':
+                unset($statuses);
+                $statuses[''] = __('bt.all_statuses');
+                $statuses[9] = __('bt.active');
+                $statuses[10] = __('bt.inactive');
+                break;
         }
 
         return $statuses;

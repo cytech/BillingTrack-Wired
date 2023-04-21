@@ -25,7 +25,7 @@ use BT\Modules\Merchant\Models\MerchantClient;
 use BT\Modules\Notes\Models\Note;
 use BT\Modules\Payments\Models\Payment;
 use BT\Modules\PaymentTerms\Models\PaymentTerm;
-use BT\Modules\RecurringInvoices\Models\RecurringInvoice;
+use BT\Modules\Documents\Models\Recurringinvoice;
 use BT\Modules\Sizes\Models\Size;
 use BT\Modules\TimeTracking\Models\TimeTrackingProject;
 use BT\Modules\Users\Models\User;
@@ -180,9 +180,9 @@ class Client extends Model
         return $this->hasMany(Workorder::class);
     }
 
-    public function recurringInvoices(): HasMany
+    public function recurringinvoices(): HasMany
     {
-        return $this->hasMany(RecurringInvoice::class);
+        return $this->hasMany(Recurringinvoice::class);
     }
 
     public function user(): HasOne

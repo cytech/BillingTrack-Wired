@@ -32,6 +32,7 @@ class CreateDocumentsTable extends Migration
             $table->unsignedInteger('invoice_id')->nullable()->default(null);
             $table->unsignedInteger('user_id')->nullable()->default(null);
             $table->unsignedInteger('client_id');
+            $table->unsignedInteger('company_profile_id')->nullable()->default(null);
             $table->unsignedInteger('group_id')->nullable()->default(null);
             $table->integer('document_status_id');
             $table->date('action_date');
@@ -49,7 +50,10 @@ class CreateDocumentsTable extends Migration
             $table->time('start_time')->nullable();
             $table->time('end_time')->nullable();
             $table->tinyInteger('will_call')->default('0');
-            $table->unsignedInteger('company_profile_id')->nullable()->default(null);
+            $table->integer('recurring_frequency')->nullable();
+            $table->integer('recurring_period')->nullable();
+            $table->date('next_date')->nullable();
+            $table->date('stop_date')->nullable();
 
             $table->index(["user_id"], 'documents_user_id_index');
 

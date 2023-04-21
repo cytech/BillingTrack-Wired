@@ -61,7 +61,7 @@ class ItemsTable extends Component
                                'tax_rate_id'                          => config('bt.itemTaxRate'),
                                'tax_rate_2_id'                        => config('bt.itemTax2Rate')];
         $this->new_item = new $this->moduleitem_fullname($this->new_item_cfg);
-        if ($this->module_type == 'RecurringInvoice'){
+        if ($this->module_type == 'Recurringinvoice'){
             $module_id_type = $this->module_id_type = 'recurring_invoice_id';
         } else{
             $module_id_type = $this->module_id_type = 'document_id';
@@ -103,7 +103,7 @@ class ItemsTable extends Component
 
         foreach ($params['resources'] as $val) {
             $add_item = new $this->moduleitem_fullname($this->new_item_cfg);
-            if ($this->module_type == 'RecurringInvoice'){
+            if ($this->module_type == 'Recurringinvoice'){
                 $module_id_type = $this->module_id_type = 'recurring_invoice_id';
             } else{
                 $module_id_type = $this->module_id_type = 'document_id';

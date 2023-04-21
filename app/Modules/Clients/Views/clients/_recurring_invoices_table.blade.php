@@ -14,7 +14,7 @@
     @foreach ($recurringInvoices as $recurringInvoice)
         <tr>
             <td>
-                <a href="{{ route('recurringInvoices.edit', [$recurringInvoice->id]) }}"
+                <a href="{{ route('documents.edit', [$recurringInvoice->id]) }}"
                    title="@lang('bt.edit')">{{ $recurringInvoice->id }}</a>
             </td>
             <td>{{ mb_strimwidth($recurringInvoice->summary,0,100,'...') }}</td>
@@ -29,9 +29,9 @@
                     </button>
                     <div class="dropdown-menu dropdown-menu-end" role="menu">
                         <a class="dropdown-item"
-                           href="{{ route('recurringInvoices.edit', [$recurringInvoice->id]) }}"><i
+                           href="{{ route('documents.edit', [$recurringInvoice->id]) }}"><i
                                     class="fa fa-edit"></i> @lang('bt.edit')</a>
-                        <a class="dropdown-item" href="{{ route('recurringInvoices.delete', [$recurringInvoice->id]) }}"
+                        <a class="dropdown-item" href="{{ route('documents.delete', [$recurringInvoice->id]) }}"
                            onclick="return confirm('@lang('bt.trash_record_warning')');"><i
                                     class="fa fa-trash-alt text-danger"></i> @lang('bt.trash')</a>
                     </div>

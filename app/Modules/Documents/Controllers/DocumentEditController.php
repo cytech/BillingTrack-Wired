@@ -15,12 +15,14 @@ use BT\Events\DocumentModified;
 use BT\Http\Controllers\Controller;
 use BT\Modules\Currencies\Models\Currency;
 use BT\Modules\CustomFields\Models\CustomField;
+use BT\Modules\Groups\Models\Group;
 use BT\Modules\ItemLookups\Models\ItemLookup;
 use BT\Modules\Documents\Models\Document;
 use BT\Modules\Documents\Models\DocumentItem;
 use BT\Modules\Documents\Support\DocumentTemplates;
 use BT\Modules\Documents\Requests\DocumentUpdateRequest;
 use BT\Modules\TaxRates\Models\TaxRate;
+use BT\Support\Frequency;
 use BT\Support\Statuses\DocumentStatuses;
 use BT\Traits\ReturnUrl;
 
@@ -36,12 +38,14 @@ class DocumentEditController extends Controller
 
         return view('documents.edit')
             ->with('document', $document)
-            ->with('statuses', DocumentStatuses::listsType($document->document_type))
+            ->with('statuses', DocumentStatuses::listsType($document->module_type))
             ->with('currencies', Currency::getList())
             ->with('taxRates', TaxRate::getList())
             ->with('customFields', CustomField::forTable($document->view_directory_name)->get())
             ->with('returnUrl', $this->getReturnUrl())
             ->with('templates', DocumentTemplates::lists())
+            ->with('frequencies', Frequency::lists())
+            ->with('groups', Group::getList())
             ->with('itemCount', count($document->documentItems));
     }
 
@@ -88,12 +92,14 @@ class DocumentEditController extends Controller
 
         return view('documents._edit')
             ->with('document', $document)
-            ->with('statuses', DocumentStatuses::listsType($document->document_type))
+            ->with('statuses', DocumentStatuses::listsType($document->module_type))
             ->with('currencies', Currency::getList())
             ->with('taxRates', TaxRate::getList())
             ->with('customFields', CustomField::forTable($document->view_directory_name)->get())
             ->with('returnUrl', $this->getReturnUrl())
             ->with('templates', DocumentTemplates::lists())
+            ->with('frequencies', Frequency::lists())
+            ->with('groups', Group::getList())
             ->with('itemCount', count($document->documentItems));
     }
 

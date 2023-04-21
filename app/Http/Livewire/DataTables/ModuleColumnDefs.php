@@ -123,14 +123,19 @@ class ModuleColumnDefs
                 Column::make('Action')
                     ->label(fn($row, Column $column) => view('clients._actions')->withModel($row)),
             ];
-        } elseif ($module_type == 'RecurringInvoice') { //RecurringInvoice column defs
+        } elseif ($module_type == 'Recurringinvoice') { //Recurringinvoice column defs
             $frequencies = Frequency::lists();
             $default_columns = [
-                Column::make(__('bt.number'), 'id')
+                Column::make(__('bt.number'), 'number')
                     ->sortable()
-                    ->format(fn($value, $row, Column $column) => '<a href="/recurring_invoices/' . $row->id . '/edit">' . $value . '</a>')
+                    ->format(fn($value, $row, Column $column) => '<a href="/documents/' . $row->id . '/edit">' . $value . '</a>')
                     ->html(),
-                Column::make(__('bt.client'), 'client.name')
+                Column::make(__('bt.status'), 'document_status_id')
+                    ->format(function ($value, $row, Column $column) use ($statuses) {
+                        $ret = '<span class="badge badge-' . strtolower($statuses[$row->status_text]) . '">' . $statuses[$row->status_text] . '</span>';
+                        return $ret;
+                    })
+                    ->html(),                Column::make(__('bt.client'), 'client.name')
                     ->searchable()
                     ->sortable()
                     ->format(fn($value, $row, Column $column) => '<a href="/clients/' . $row->client->id . '">' . $value . '</a>')
@@ -148,7 +153,8 @@ class ModuleColumnDefs
                     ->sortable()
                     ->format(fn($value, $row, Column $column) => $value . ' ' . $frequencies[$row->recurring_period]),
                 Column::make('Action')
-                    ->label(fn($row, Column $column) => view('recurring_invoices._actions')->withModel($row)),
+//                    ->label(fn($row, Column $column) => view('recurring_invoices._actions')->withModel($row)),
+                    ->label(fn($row, Column $column) => view('documents._actions')->withModel($row)),
             ];
         } elseif ($module_type == 'Payment') { //Payment column defs
             $default_columns = [

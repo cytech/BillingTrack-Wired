@@ -8,7 +8,7 @@
     @endif
 
     @if ($document->invoice_id)
-            @if ($document->invoice->trashed())
+        @if ($document->invoice->trashed())
             <span class="badge bg-danger"
                   title="Trashed">@lang('bt.converted_to_invoice') {{ $document->invoice->number }}</span>
 
@@ -36,8 +36,10 @@
         @endif
     @endif
     <div class="float-end">
-        <a href="{{ route('documents.pdf', [$document->id]) }}" target="_blank" id="btn-pdf-document"
-           class="btn btn-secondary"><i class="fa fa-print"></i> @lang('bt.pdf')</a>
+        @if($document->module_type != 'Recurringinvoice')
+            <a href="{{ route('documents.pdf', [$document->id]) }}" target="_blank" id="btn-pdf-document"
+               class="btn btn-secondary"><i class="fa fa-print"></i> @lang('bt.pdf')</a>
+        @endif
         @if (config('bt.mailConfigured'))
             <a href="javascript:void(0)" id="btn-email-document" class="btn btn-secondary email-document"
                data-document-id="{{ $document->id }}" data-redirect-to="{{ route('documents.edit', [$document->id]) }}"><i
@@ -64,12 +66,12 @@
                                 class="fa fa-check"></i> @lang('bt.'.$document->lower_case_baseclass.'_to_workorder')
                     </a>
                 @endif
-                @if($document->module_type != 'Invoice' && $document->module_type != 'Purchaseorder')
+                @if($document->module_type != 'Invoice' && $document->module_type != 'Purchaseorder' && $document->module_type != 'Recurringinvoice')
                     <a class="dropdown-item" href="javascript:void(0)" id="btn-document-to-invoice"><i
                                 class="fa fa-check"></i> @lang('bt.'.$document->lower_case_baseclass.'_to_invoice')
                     </a>
                 @endif
-                @if($document->module_type != 'Purchaseorder')
+                @if($document->module_type != 'Purchaseorder' && $document->module_type != 'Recurringinvoice')
                     <a class="dropdown-item"
                        href="{{ route('clientCenter.public.' . $document->lower_case_baseclass .'.show', [$document->url_key]) }}"
                        target="_blank"><i
@@ -228,64 +230,11 @@
                     <h3 class="card-title">@lang('bt.options')</h3>
                 </div>
                 <div class="card-body">
-                    <div class="mb-3">
-                        <label>@lang('bt.'.$document->lower_case_baseclass) #</label>
-                        {!! Form::text('number', $document->number, ['id' => 'number', 'class' =>
-                        'form-control
-                        form-control-sm']) !!}
-                    </div>
-                    <div class="mb-3">
-                        <label>@lang('bt.date')</label>
-                        <x-fp_common
-                                id="document_date"
-                                class="form-control form-control-sm"
-                                value="{{$document->document_date}}"></x-fp_common>
-                    </div>
-                    <div class="mb-3">
-                        @if($document->module_type == 'Invoice' || $document->module_type == 'Purchaseorder')
-                            <label>@lang('bt.due_date')</label>
-                        @else
-                            <label>@lang('bt.expires')</label>
-                        @endif
-                        <x-fp_common
-                                id="action_date"
-                                class="form-control form-control-sm"
-                                value="{{$document->action_date}}"></x-fp_common>
-                    </div>
-                    <div class="mb-3">
-                        <label>@lang('bt.discount')</label>
-                        <div class="input-group input-group-sm">
-                            {!! Form::text('discount', $document->formatted_numeric_discount, ['id' =>
-                            'discount', 'class' => 'form-control form-control-sm']) !!}
-                            <span class="input-group-text">%</span>
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label>@lang('bt.currency')</label>
-                        {!! Form::select('currency_code', $currencies, $document->currency_code, ['id' =>
-                        'currency_code', 'class' => 'form-select form-select-sm']) !!}
-                    </div>
-                    <div class="mb-3">
-                        <label>@lang('bt.exchange_rate')</label>
-                        <div class="input-group">
-                            {!! Form::text('exchange_rate', $document->exchange_rate, ['id' =>
-                            'exchange_rate', 'class' => 'form-control form-control-sm']) !!}
-                            <button class="btn btn-sm input-group-text " id="btn-update-exchange-rate" type="button"
-                                    data-toggle="tooltip" data-placement="left"
-                                    title="@lang('bt.update_exchange_rate')"><i class="fa fa-sync"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label>@lang('bt.status')</label>
-                        {!! Form::select('document_status_id', $statuses, $document->document_status_id,
-                        ['id' => 'document_status_id', 'class' => 'form-select form-select-sm']) !!}
-                    </div>
-                    <div class="mb-3">
-                        <label>@lang('bt.template')</label>
-                        {!! Form::select('template', $templates, $document->template,
-                        ['id' => 'template', 'class' => 'form-select form-select-sm']) !!}
-                    </div>
+                    @if($document->module_type == 'Recurringinvoice')
+                        @include('documents._options_recurr_invoice')
+                    @else
+                        @include('documents._options')
+                    @endif
                 </div>
             </div>
         </div>

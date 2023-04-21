@@ -77,7 +77,11 @@
                 apply_exchange_rate: apply_exchange_rate,
                 template: document.getElementById('template').value,
                 summary: document.getElementById('summary').value,
-                discount: document.getElementById('discount').value
+                discount: document.getElementById('discount').value,
+                next_date: document.getElementById('next_date').value,
+                stop_date: document.getElementById('stop_date').value,
+                recurring_frequency: document.getElementById('recurring_frequency').value,
+                recurring_period: document.getElementById('recurring_period').value,
             }
             axios.post('{{ route('documents.update', [$document->id]) }}', data).then(function () {
                 axios.get('{{ route('documents.documentEdit.refreshEdit', [$document->id]) }}')

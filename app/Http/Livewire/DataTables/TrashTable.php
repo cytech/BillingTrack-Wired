@@ -117,7 +117,7 @@ class TrashTable extends DataTableComponent
             return $this->module_fullname::with(['latestOccurrence' => function ($q) {
                 $q->onlyTrashed();
             }, 'category'])->select('schedule.*')->onlyTrashed();
-        } elseif ($this->module_type == 'RecurringInvoice') {
+        } elseif ($this->module_type == 'Recurringinvoice') {
             return $this->module_fullname::with(['client', 'activities', 'amount.recurringInvoice.currency'])
                 ->select('recurring_invoices.*', 'recurring_invoices.id as number')
                 ->onlyTrashed();

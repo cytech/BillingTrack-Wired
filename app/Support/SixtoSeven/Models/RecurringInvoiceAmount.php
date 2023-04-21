@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace BT\Modules\RecurringInvoices\Models;
+namespace BT\Support\SixtoSeven\Models;
 
 use BT\Support\CurrencyFormatter;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -17,12 +17,18 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class RecurringInvoiceItemAmount extends Model
+class RecurringInvoiceAmount extends Model
 {
     use SoftDeletes;
 
     protected $casts = ['deleted_at' => 'datetime'];
+    /**
+     * Guarded properties
+     * @var array
+     */
     protected $guarded = ['id'];
+
+//    protected $appends = ['formatted_total'];
 
     /*
     |--------------------------------------------------------------------------
@@ -30,9 +36,9 @@ class RecurringInvoiceItemAmount extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function item(): BelongsTo
+    public function recurringInvoice(): BelongsTo
     {
-        return $this->belongsTo(RecurringInvoiceItem::class);
+        return $this->belongsTo(RecurringInvoice::class);
     }
 
     /*
@@ -55,4 +61,18 @@ class RecurringInvoiceItemAmount extends Model
     {
         return new Attribute(get: fn() => CurrencyFormatter::format($this->total, $this->recurringInvoice->currency));
     }
+
+    public function formattedDiscount(): Attribute
+    {
+        return new Attribute(get: fn() => CurrencyFormatter::format($this->discount, $this->recurringInvoice->currency));
+    }
+
+    /**
+     * Retrieve the formatted total prior to conversion.
+     * @return string
+     */
+//    public function getFormattedTotalWithoutConversionAttribute()
+//    {
+//        return CurrencyFormatter::format($this->total / $this->recurringInvoice->exchange_rate);
+//    }
 }

@@ -27,7 +27,7 @@
                 @if(\BT\Modules\Settings\Models\Setting::isModuleEnabled('workorder'))
                     <li class="nav-item">
                         <a class="nav-link"
-                           href="{{ route('documents.index', ['status' => config('bt.quoteStatusFilter'), 'module_type' => 'Workorder']) }}">
+                           href="{{ route('documents.index', ['status' => config('bt.workorderStatusFilter'), 'module_type' => 'Workorder']) }}">
                             <i class="nav-icon far fa-file-alt fa-fw"></i>
                             <p>@lang('bt.workorders')</p>
                         </a>
@@ -35,16 +35,18 @@
                 @endif
                 <li class="nav-item">
                     <a class="nav-link"
-                       href="{{ route('documents.index', ['status' => config('bt.quoteStatusFilter'), 'module_type' => 'Invoice']) }}">
+                       href="{{ route('documents.index', ['status' => config('bt.invoiceStatusFilter'), 'module_type' => 'Invoice']) }}">
                         <i class="nav-icon fas fa-file-alt fa-fw"></i>
                         <p>@lang('bt.invoices')</p>
                     </a>
                 </li>
                 @if(\BT\Modules\Settings\Models\Setting::isModuleEnabled('recurring_invoice'))
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('recurringInvoices.index') }}">
+                        <a class="nav-link"
+{{--                           href="{{ route('recurringInvoices.index') }}">--}}
+                            href="{{ route('documents.index', [ 'module_type' => 'Recurringinvoice']) }}">
                             <i class="nav-icon fas fa-sync-alt fa-fw"></i>
-                            <p>@lang('bt.recurring_invoices')</p>
+                            <p>@lang('bt.recurringinvoices')</p>
                         </a>
                     </li>
                 @endif

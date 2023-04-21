@@ -12,7 +12,7 @@
 namespace BT\Modules\TaxRates\Models;
 
 use BT\Modules\Documents\Models\DocumentItem;
-use BT\Modules\RecurringInvoices\Models\RecurringInvoiceItem;
+//use BT\Modules\RecurringInvoices\Models\RecurringInvoiceItem;
 use BT\Support\NumberFormatter;
 use BT\Traits\Sortable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -68,9 +68,9 @@ class TaxRate extends Model
             return true;
         }
 
-        if (RecurringInvoiceItem::where('tax_rate_id', $this->id)->orWhere('tax_rate_2_id', $this->id)->count()) {
-            return true;
-        }
+//        if (RecurringInvoiceItem::where('tax_rate_id', $this->id)->orWhere('tax_rate_2_id', $this->id)->count()) {
+//            return true;
+//        }
 
         if (config('bt.itemTaxRate') == $this->id or config('bt.itemTax2Rate') == $this->id) {
             return true;

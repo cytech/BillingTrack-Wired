@@ -14,7 +14,7 @@ namespace BT\Modules\Utilities\Controllers;
 use BT\Http\Controllers\Controller;
 use BT\Modules\Clients\Models\Client;
 use BT\Modules\Expenses\Models\Expense;
-use BT\Modules\RecurringInvoices\Models\RecurringInvoice;
+use BT\Modules\Documents\Models\Recurringinvoice;
 use BT\Modules\TimeTracking\Models\TimeTrackingProject;
 use Ifsnop\Mysqldump\Mysqldump;
 use Illuminate\Http\Request;
@@ -134,7 +134,7 @@ class BackupController extends Controller
         $active_quote = Quote::distinct('client_id')->where('quote_date', '>=', $date)->pluck('client_id', 'client_id');
         $active_workorder = Workorder::distinct('client_id')->where('workorder_date', '>=', $date)->pluck('client_id', 'client_id');
         $active_invoice = Invoice::distinct('client_id')->where('invoice_date', '>=', $date)->pluck('client_id', 'client_id');
-        $active_recurringinvoice = RecurringInvoice::distinct('client_id')->where('next_date', '>=', $date)->pluck('client_id', 'client_id');
+        $active_recurringinvoice = Recurringinvoice::distinct('client_id')->where('next_date', '>=', $date)->pluck('client_id', 'client_id');
         $active_payment = Payment::distinct('client_id')->where('paid_at', '>=', $date)->pluck('client_id', 'client_id');
         $active_expense = Expense::distinct('client_id')->where('expense_date', '>=', $date)->pluck('client_id', 'client_id');
         $active_project = TimeTrackingProject::distinct('client_id')->where('due_at', '>=', $date)->pluck('client_id', 'client_id');
