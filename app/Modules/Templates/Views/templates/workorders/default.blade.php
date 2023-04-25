@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>@lang('bt.workorder') #{{ $workorder->number }}</title>
+    <title>@lang('bt.workorder') #{{ $document->number }}</title>
 
     <style>
         @page {
@@ -82,37 +82,37 @@
 
 <table>
     <tr>
-        <td style="width: 50%;  vertical-align: top">
+        <td style="width: 33%;  vertical-align: top">
             <h1>{{ mb_strtoupper(trans('bt.workorder')) }}</h1>
-            <span class="info">{{ mb_strtoupper(trans('bt.workorder')) }} #</span>{{ $workorder->number }}<br>
-            <span class="info">{{ mb_strtoupper(trans('bt.issued')) }}</span> {{ $workorder->formatted_workorder_date }}
+            <span class="info">{{ mb_strtoupper(trans('bt.workorder')) }} #</span>{{ $document->number }}<br>
+            <span class="info">{{ mb_strtoupper(trans('bt.issued')) }}</span> {{ $document->formatted_workorder_date }}
             <br>
-            <span class="info">{{ mb_strtoupper(trans('bt.expires')) }}</span> {{ $workorder->formatted_expires_at }}
+            <span class="info">{{ mb_strtoupper(trans('bt.expires')) }}</span> {{ $document->formatted_expires_at }}
             <br><br>
-            <span class="info">{{ mb_strtoupper(trans('bt.bill_to')) }}</span><br>{{ $workorder->client->name }}<br>
-            @if ($workorder->client->address) {!! $workorder->client->formatted_address !!}<br>@endif
-            @if ($workorder->client->phone) {!! $workorder->client->phone !!}<br>@endif
+            <span class="info">{{ mb_strtoupper(trans('bt.bill_to')) }}</span><br>{{ $document->client->name }}<br>
+            @if ($document->client->address) {!! $document->client->formatted_address !!}<br>@endif
+            @if ($document->client->phone) {!! $document->client->phone !!}<br>@endif
         </td>
-        @if ($workorder->client->address_2)
-            <td style="width: 50%; vertical-align: bottom">
-                <span class="info">{{ mb_strtoupper(trans('bt.ship_to')) }}</span><br>{{ $workorder->client->name }}<br>
-                {!! $workorder->client->formatted_address2 !!}<br>
+        @if ($document->client->address_2)
+            <td style="width: 33%; vertical-align: bottom">
+                <span class="info">{{ mb_strtoupper(trans('bt.ship_to')) }}</span><br>{{ $document->client->name }}<br>
+                {!! $document->client->formatted_address2 !!}<br>
             </td>
         @endif
 
         <td style="width: 50%; text-align: right;  vertical-align: top">
-            {!! $workorder->companyProfile->logo() !!}<br>
-            {{ $workorder->companyProfile->company }}<br>
-            {!! $workorder->companyProfile->formatted_address !!}<br>
-            @if ($workorder->companyProfile->phone) {{ $workorder->user->phone }}<br>@endif
-            @if ($workorder->companyProfile->email) <a href="mailto:{{ $workorder->companyProfile->email }}">{{ $workorder->companyProfile->email }}</a>@endif
+            {!! $document->companyProfile->logo() !!}<br>
+            {{ $document->companyProfile->company }}<br>
+            {!! $document->companyProfile->formatted_address !!}<br>
+            @if ($document->companyProfile->phone) {{ $document->user->phone }}<br>@endif
+            @if ($document->companyProfile->email) <a href="mailto:{{ $document->companyProfile->email }}">{{ $document->companyProfile->email }}</a>@endif
             <br>
-            <span class="info">{{ 'Job Date: ' }}</span>{{ $workorder->formatted_job_date }}<br>
-            <span class="info">{{ 'Start Time: ' }}</span>{{ $workorder->formatted_start_time }}<br>
-            {{--<span class="info">{{ 'End Time: ' }}</span>{{ $workorder->formatted_end_time }}<br>--}}
-            <span class="info">{{ 'Estimated Hours: ' }}</span>{{ $workorder->formatted_job_length }}<br>
+            <span class="info">{{ 'Job Date: ' }}</span>{{ $document->formatted_job_date }}<br>
+            <span class="info">{{ 'Start Time: ' }}</span>{{ $document->formatted_start_time }}<br>
+            {{--<span class="info">{{ 'End Time: ' }}</span>{{ $document->formatted_end_time }}<br>--}}
+            <span class="info">{{ 'Estimated Hours: ' }}</span>{{ $document->formatted_job_length }}<br>
             <span class="info">
-                 @if ($workorder->will_call ==1)
+                 @if ($document->will_call ==1)
                     <strong>Client Pickup: Yes</strong>
                 @else
                     <strong>Client Pickup: No</strong>
@@ -126,7 +126,7 @@
 <table>
     <tr>
         <td style="width: 100%; text-align: left;  vertical-align: top">
-            <strong>Job Summary:</strong> {{$workorder->summary}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <strong>Job Summary:</strong> {{$document->summary}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
     </tr>
 
@@ -143,7 +143,7 @@
     </tr>
     </thead>
     <tbody>
-    @foreach ($workorder->items as $item)
+    @foreach ($document->items as $item)
         <tr>
             <td>{!! $item->name !!}</td>
             <td>{!! $item->formatted_description !!}</td>
@@ -164,14 +164,14 @@
         <td class="amount">__________</td>
     </tr>
 
-    @if ($workorder->discount > 0)
+    @if ($document->discount > 0)
         <tr>
             <td colspan="4" class="amount">{{ mb_strtoupper(trans('bt.discount')) }}</td>
-            <td class="amount">{{ $workorder->amount->formatted_discount }}</td>
+            <td class="amount">{{ $document->amount->formatted_discount }}</td>
         </tr>
     @endif
 
-    @foreach ($workorder->summarized_taxes as $tax)
+    @foreach ($document->summarized_taxes as $tax)
         <tr>
             <td colspan="4" class="amount">{{ mb_strtoupper($tax->name) }} ({{ $tax->percent }})</td>
             <td class="amount">{{ $tax->total }}</td>
@@ -185,13 +185,13 @@
     </tbody>
 </table>
 
-@if ($workorder->terms)
+@if ($document->terms)
     <div class="section-header">{{ mb_strtoupper(trans('bt.terms_and_conditions')) }}</div>
-    <div class="terms">{!! $workorder->formatted_terms !!}</div>
+    <div class="terms">{!! $document->formatted_terms !!}</div>
     <br>
 @endif
 
-<div class="footer"> {!! $workorder->formatted_footer !!}</div>
+<div class="footer"> {!! $document->formatted_footer !!}</div>
 
 </body>
 </html>

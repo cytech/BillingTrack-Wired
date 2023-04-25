@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>@lang('bt.quote') #{{ $quote->number }}</title>
+    <title>@lang('bt.quote') #{{ $document->number }}</title>
 
     <style>
         @page {
@@ -82,21 +82,21 @@
 
 <table>
     <tr>
-        <td style="width: 50%;  vertical-align: top">
+        <td style="width: 33%;  vertical-align: top">
             <h1>{{ mb_strtoupper(trans('bt.quote')) }}</h1>
-            <span class="info">{{ mb_strtoupper(trans('bt.quote')) }} #</span>{{ $quote->number }}<br>
-            <span class="info">{{ mb_strtoupper(trans('bt.issued')) }}</span> {{ $quote->formatted_created_at }}<br>
-            <span class="info">{{ mb_strtoupper(trans('bt.expires')) }}</span> {{ $quote->formatted_expires_at }}
+            <span class="info">{{ mb_strtoupper(trans('bt.quote')) }} #</span>{{ $document->number }}<br>
+            <span class="info">{{ mb_strtoupper(trans('bt.issued')) }}</span> {{ $document->formatted_created_at }}<br>
+            <span class="info">{{ mb_strtoupper(trans('bt.expires')) }}</span> {{ $document->formatted_expires_at }}
             <br><br>
-            <span class="info">{{ mb_strtoupper(trans('bt.bill_to')) }}</span><br>{{ $quote->client->name }}<br>
-            @if ($quote->client->address) {!! $quote->client->formatted_address !!}<br>@endif
+            <span class="info">{{ mb_strtoupper(trans('bt.bill_to')) }}</span><br>{{ $document->client->name }}<br>
+            @if ($document->client->address) {!! $document->client->formatted_address !!}<br>@endif
         </td>
         <td style="width: 50%; text-align: right;  vertical-align: top">
-            {!! $quote->companyProfile->logo() !!}<br>
-            {{ $quote->companyProfile->company }}<br>
-            {!! $quote->companyProfile->formatted_address !!}<br>
-            @if ($quote->companyProfile->phone) {{ $quote->companyProfile->phone }}<br>@endif
-            @if ($quote->companyProfile->email) <a href="mailto:{{ $quote->companyProfile->email }}">{{ $quote->companyProfile->email }}</a>@endif
+            {!! $document->companyProfile->logo() !!}<br>
+            {{ $document->companyProfile->company }}<br>
+            {!! $document->companyProfile->formatted_address !!}<br>
+            @if ($document->companyProfile->phone) {{ $document->companyProfile->phone }}<br>@endif
+            @if ($document->companyProfile->email) <a href="mailto:{{ $document->companyProfile->email }}">{{ $document->companyProfile->email }}</a>@endif
         </td>
     </tr>
 </table>
@@ -112,7 +112,7 @@
     </tr>
     </thead>
     <tbody>
-    @foreach ($quote->items as $item)
+    @foreach ($document->items as $item)
         <tr>
             <td>{!! $item->name !!}</td>
             <td>{!! $item->formatted_description !!}</td>
@@ -124,17 +124,17 @@
 
     <tr>
         <td colspan="4" class="amount">{{ mb_strtoupper(trans('bt.subtotal')) }}</td>
-        <td class="amount">{{ $quote->amount->formatted_subtotal }}</td>
+        <td class="amount">{{ $document->amount->formatted_subtotal }}</td>
     </tr>
 
-    @if ($quote->discount > 0)
+    @if ($document->discount > 0)
         <tr>
             <td colspan="4" class="amount">{{ mb_strtoupper(trans('bt.discount')) }}</td>
-            <td class="amount">{{ $quote->amount->formatted_discount }}</td>
+            <td class="amount">{{ $document->amount->formatted_discount }}</td>
         </tr>
     @endif
 
-    @foreach ($quote->summarized_taxes as $tax)
+    @foreach ($document->summarized_taxes as $tax)
         <tr>
             <td colspan="4" class="amount">{{ mb_strtoupper($tax->name) }} ({{ $tax->percent }})</td>
             <td class="amount">{{ $tax->total }}</td>
@@ -143,18 +143,18 @@
 
     <tr>
         <td colspan="4" class="amount">{{ mb_strtoupper(trans('bt.total')) }}</td>
-        <td class="amount">{{ $quote->amount->formatted_total }}</td>
+        <td class="amount">{{ $document->amount->formatted_total }}</td>
     </tr>
     </tbody>
 </table>
 
-@if ($quote->terms)
+@if ($document->terms)
     <div class="section-header">{{ mb_strtoupper(trans('bt.terms_and_conditions')) }}</div>
-    <div class="terms">{!! $quote->formatted_terms !!}</div>
+    <div class="terms">{!! $document->formatted_terms !!}</div>
     <br>
 @endif
 
-<div class="footer" > {!! $quote->formatted_footer !!}</div>
+<div class="footer" > {!! $document->formatted_footer !!}</div>
 
 </body>
 </html>

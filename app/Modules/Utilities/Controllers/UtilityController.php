@@ -126,7 +126,7 @@ class UtilityController
                 $counter++;
             }
 
-            $pdf->download($wohtml, FileNames::batchprint());
+            $pdf->download($wohtml, FileNames::batchprint($request->batch_type));
 
         } else {
             return view('utilities.batchprint', ['module' => $module]);

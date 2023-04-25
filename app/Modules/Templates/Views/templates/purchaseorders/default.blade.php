@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>@lang('bt.purchaseorder') #{{ $purchaseorder->number }}</title>
+    <title>@lang('bt.purchaseorder') #{{ $document->number }}</title>
 
     <style>
         @page {
@@ -82,29 +82,29 @@
 
 <table>
     <tr>
-        <td style="width: 50%;  vertical-align: top">
+        <td style="width: 33%;  vertical-align: top">
             <h1>{{ mb_strtoupper(trans('bt.purchaseorder')) }}</h1>
-            <span class="info">{{ mb_strtoupper(trans('bt.purchaseorder')) }} #</span>{{ $purchaseorder->number }}<br>
-            <span class="info">{{ mb_strtoupper(trans('bt.issued')) }}</span> {{ $purchaseorder->formatted_created_at }}
+            <span class="info">{{ mb_strtoupper(trans('bt.purchaseorder')) }} #</span>{{ $document->number }}<br>
+            <span class="info">{{ mb_strtoupper(trans('bt.issued')) }}</span> {{ $document->formatted_created_at }}
             <br>
-            <span class="info">{{ mb_strtoupper(trans('bt.due_date')) }}</span> {{ $purchaseorder->formatted_due_at }}
+            <span class="info">{{ mb_strtoupper(trans('bt.due_date')) }}</span> {{ $document->formatted_due_at }}
             <br><br>
-            <span class="info">{{ mb_strtoupper(trans('bt.to')) }}</span><br>{{ $purchaseorder->vendor->name }}<br>
-            @if ($purchaseorder->vendor->address) {!! $purchaseorder->vendor->formatted_address !!}<br>@endif
+            <span class="info">{{ mb_strtoupper(trans('bt.to')) }}</span><br>{{ $document->vendor->name }}<br>
+            @if ($document->vendor->address) {!! $document->vendor->formatted_address !!}<br>@endif
         </td>
         <td style="width: 50%; text-align: right;  vertical-align: top">
             <span class="info">{{ mb_strtoupper(trans('bt.bill_to')) }}</span>
-            {!! $purchaseorder->companyProfile->logo() !!}<br>
-            {{ $purchaseorder->companyProfile->company }}<br>
-            {!! $purchaseorder->companyProfile->formatted_address !!}<br>
-            @if ($purchaseorder->companyProfile->phone) {{ $purchaseorder->companyProfile->phone }}<br>@endif
-            @if ($purchaseorder->companyProfile->email) <a href="mailto:{{ $purchaseorder->companyProfile->email }}">{{ $purchaseorder->companyProfile->email }}</a>@endif
+            {!! $document->companyProfile->logo() !!}<br>
+            {{ $document->companyProfile->company }}<br>
+            {!! $document->companyProfile->formatted_address !!}<br>
+            @if ($document->companyProfile->phone) {{ $document->companyProfile->phone }}<br>@endif
+            @if ($document->companyProfile->email) <a href="mailto:{{ $document->companyProfile->email }}">{{ $document->companyProfile->email }}</a>@endif
 
             <br><br><br>
-            @if ($purchaseorder->companyProfile->address_2)
+            @if ($document->companyProfile->address_2)
                 <span class="info">{{ mb_strtoupper(trans('bt.ship_to')) }}</span><br>
-                {{ $purchaseorder->companyProfile->company }}<br>
-                {!! $purchaseorder->companyProfile->formatted_address2 !!}<br>
+                {{ $document->companyProfile->company }}<br>
+                {!! $document->companyProfile->formatted_address2 !!}<br>
             @endif
 
         </td>
@@ -122,7 +122,7 @@
     </tr>
     </thead>
     <tbody>
-    @foreach ($purchaseorder->items as $item)
+    @foreach ($document->items as $item)
         <tr>
             <td>{!! $item->name !!}</td>
             <td>{!! $item->formatted_description !!}</td>
@@ -134,17 +134,17 @@
 
     <tr>
         <td colspan="4" class="amount">{{ mb_strtoupper(trans('bt.subtotal')) }}</td>
-        <td class="amount">{{ $purchaseorder->amount->formatted_subtotal }}</td>
+        <td class="amount">{{ $document->amount->formatted_subtotal }}</td>
     </tr>
 
-    @if ($purchaseorder->discount > 0)
+    @if ($document->discount > 0)
         <tr>
             <td colspan="4" class="amount">{{ mb_strtoupper(trans('bt.discount')) }}</td>
-            <td class="amount">{{ $purchaseorder->amount->formatted_discount }}</td>
+            <td class="amount">{{ $document->amount->formatted_discount }}</td>
         </tr>
     @endif
 
-    @foreach ($purchaseorder->summarized_taxes as $tax)
+    @foreach ($document->summarized_taxes as $tax)
         <tr>
             <td colspan="4" class="amount">{{ mb_strtoupper($tax->name) }} ({{ $tax->percent }})</td>
             <td class="amount">{{ $tax->total }}</td>
@@ -153,26 +153,26 @@
 
     <tr>
         <td colspan="4" class="amount">{{ mb_strtoupper(trans('bt.total')) }}</td>
-        <td class="amount">{{ $purchaseorder->amount->formatted_total }}</td>
+        <td class="amount">{{ $document->amount->formatted_total }}</td>
     </tr>
     <tr>
         <td colspan="4" class="amount">{{ mb_strtoupper(trans('bt.paid')) }}</td>
-        <td class="amount">{{ $purchaseorder->amount->formatted_paid }}</td>
+        <td class="amount">{{ $document->amount->formatted_paid }}</td>
     </tr>
     <tr>
         <td colspan="4" class="amount">{{ mb_strtoupper(trans('bt.balance')) }}</td>
-        <td class="amount">{{ $purchaseorder->amount->formatted_balance }}</td>
+        <td class="amount">{{ $document->amount->formatted_balance }}</td>
     </tr>
     </tbody>
 </table>
 
-@if ($purchaseorder->terms)
+@if ($document->terms)
     <div class="section-header">{{ mb_strtoupper(trans('bt.terms_and_conditions')) }}</div>
-    <div class="terms">{!! $purchaseorder->formatted_terms !!}</div>
+    <div class="terms">{!! $document->formatted_terms !!}</div>
     <br>
 @endif
 
-<div class="footer"> {!! $purchaseorder->formatted_footer !!}</div>
+<div class="footer"> {!! $document->formatted_footer !!}</div>
 
 </body>
 </html>

@@ -1,6 +1,8 @@
 <?php
 
 use BT\Modules\Settings\Models\Setting;
+use BT\Support\Directory;
+use BT\Support\SixtoSeven\ConvertCustomTemplates;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -43,7 +45,7 @@ return new class extends Migration {
                 ->onUpdate('restrict');
         });
 
-        Schema::table('recurring_invoices_custom', function (Blueprint $table) {
+        Schema::table('recurringinvoices_custom', function (Blueprint $table) {
             $table->dropForeign('recurring_invoices_custom_recurring_invoice_id');
         });
 
@@ -95,6 +97,19 @@ return new class extends Migration {
             Schema::dropIfExists($droptable);
         }
         Schema::enableForeignKeyConstraints();
+
+        // copy and convert user custom templates
+        // copies existing custom templates (except for custom.blade.php) to same name with 'V7' prefix
+        // then replaces new V7 file variable ($quote, $workorder, $invoice, $purchaseorder) with $document
+
+        ConvertCustomTemplates::copy();
+        ConvertCustomTemplates::update();
+
+        Setting::saveByKey('workorderEmailSubject','Workorder #{{ $workorder->number }}');
+        Setting::saveByKey('workorderEmailBody','<p>To view your workorder from {{ $workorder->user->name }} for {{ $workorder->amount->formatted_total }}, click the link below:</p> <p><a href="{{ $workorder->public_url }}">{{ $workorder->public_url }}</a></p>');
+        Setting::saveByKey('workorderApprovedEmailBody','<p><a href="{{ $workorder->public_url }}">Workorder #{{ $workorder->number }}</a> has been APPROVED.</p>');
+        Setting::saveByKey('workorderRejectedEmailBody','<p><a href="{{ $workorder->public_url }}">Workorder #{{ $workorder->number }}</a> has been REJECTED.</p>');
+        Setting::writeEmailTemplates();
 
         Setting::saveByKey('version', '7.0.0');
 

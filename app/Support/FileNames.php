@@ -22,31 +22,14 @@ class FileNames
                 return trans('bt.workorder') . '_' . str_replace('/', '-', $document->number) . '.pdf';
             case 'Invoice':
                 return trans('bt.invoice') . '_' . str_replace('/', '-', $document->number) . '.pdf';
+            case 'Purchaseorder':
+                return trans('bt.purchaseorder') . '_' . str_replace('/', '-', $document->number) . '.pdf';
         }
     }
 
-//    public static function invoice($invoice)
-//    {
-//        return trans('bt.invoice') . '_' . str_replace('/', '-', $invoice->number) . '.pdf';
-//    }
-//
-//    public static function quote($quote)
-//    {
-//        return trans('bt.quote') . '_' . str_replace('/', '-', $quote->number) . '.pdf';
-//    }
-//
-//    public static function workorder($workorder)
-//    {
-//        return trans('bt.workorder') . '_' . str_replace('/', '-', $workorder->number) . '.pdf';
-//    }
 
-    public static function purchaseorder($purchaseorder)
+    public static function batchprint($batch_type)
     {
-        return trans('bt.purchaseorder') . '_' . str_replace('/', '-', $purchaseorder->number) . '.pdf';
-    }
-
-    public static function batchprint()
-    {
-        return trans('bt.batchprint') . '_' . 'batchprint' . '.pdf';
+        return trans('bt.batchprint') . '_' . ucfirst($batch_type) . '.pdf';
     }
 }

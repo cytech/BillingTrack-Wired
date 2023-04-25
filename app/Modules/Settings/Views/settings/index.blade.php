@@ -99,7 +99,7 @@
         @include('layouts._alerts')
         <div class="card">
                 <div class="card m-2">
-                    <div class="card-header d-flex p-0">
+                    <div class="card-header d-flex p-0 justify-content-center">
                         <ul class="nav nav-pills" id="setting-tabs">
                             <li class="nav-item"><a class="nav-link active show" data-bs-toggle="tab"
                                                     href="#tab-general">@lang('bt.general')</a></li>

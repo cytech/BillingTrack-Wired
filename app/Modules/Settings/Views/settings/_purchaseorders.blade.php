@@ -67,26 +67,6 @@
 {{--    </div>--}}
 {{--</div>--}}
 <div class="row">
-    <div class="col-md-6">
-        <div class="mb-3">
-            <label class="form-label fw-bold">@lang('bt.purchaseorder_email_subject'): </label>
-            {!! Form::text('setting[purchaseorderEmailSubject]', config('bt.purchaseorderEmailSubject'), ['class' => 'form-control']) !!}
-            <span class="form-text text-muted"><a
-                        href="{{ url('documentation',['page' => 'Email-Templates'])}}#purchaseorder-email-template"
-                        target="_blank">@lang('bt.available_fields')</a></span>
-        </div>
-    </div>
-    <div class="col-md-6">
-        <div class="mb-3">
-            <label class="form-label fw-bold">@lang('bt.default_purchaseorder_email_body'): </label>
-            {!! Form::textarea('setting[purchaseorderEmailBody]', config('bt.purchaseorderEmailBody'), ['class' => 'form-control', 'rows' => 5]) !!}
-            <span class="form-text text-muted"><a
-                        href="{{ url('documentation',['page' => 'Email-Templates'])}}#purchaseorder-email-template"
-                        target="_blank">@lang('bt.available_fields')</a></span>
-        </div>
-    </div>
-</div>
-<div class="row">
     <div class="col-md-3">
         <div class="mb-3">
             <label class="form-label fw-bold">@lang('bt.if_purchaseorder_is_emailed_while_draft'): </label>

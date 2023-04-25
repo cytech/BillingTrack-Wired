@@ -2,7 +2,7 @@
 <html lang="en-US">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>@lang('bt.'. strtolower($document->module_type)) #{{ $document->number }}</title>
+    <title>@lang('bt.'. $document->lower_case_baseclass ) #{{ $document->number }}</title>
     <style>
         @page {
             margin: 25px;
@@ -139,33 +139,33 @@
                 {!! $document->client->formatted_address ?? '' !!}<br>
                 @if($document->module_type == 'Workorder')
                     {!! $document->client->phone ?? ''!!}<br>
-            @endif
-            @if ($document->client->address_2)
-                <td style="width: 50%; vertical-align:bottom;">
-                    <span class="info">{{ mb_strtoupper(trans('bt.ship_to')) }}:</span><br>
-                    <span class="info">{{ $document->client->name }}</span><br>
-                    {!! $document->client->formatted_address2 !!}<br>
-                </td>
                 @endif
-                </td>
-                <td style="width: 50%; text-align: right; vertical-align:top;">
-                    {!! $document->companyProfile->logo() !!}<br>
-                    <span class="info">{{ $document->companyProfile->company }}</span><br>
-                    {!! $document->companyProfile->formatted_address !!}<br>
-                    {{ $document->companyProfile->phone ?? ''}}<br>
-                    @if ($document->companyProfile->email)
-                        <a href="mailto:{{ $document->companyProfile->email }}">{{ $document->companyProfile->email }}</a>
-                        <br>
-                    @endif
-                    @if($document->module_type == 'Workorder')
-                        <br>
-                        <span class="info">{{ 'Job Date: ' }}</span>{{ $document->formatted_job_date }}<br>
-                        <span class="info">{{ 'Start Time: ' }}</span>{{ $document->formatted_start_time }}<br>
-                        <span class="info">{{ 'Estimated Hours: ' }}</span>{{ $document->formatted_job_length }}<br>
-                        <span class="info">
+                @if ($document->client->address_2)
+                    <td style="width: 50%; vertical-align:bottom;">
+                        <span class="info">{{ mb_strtoupper(trans('bt.ship_to')) }}:</span><br>
+                        <span class="info">{{ $document->client->name }}</span><br>
+                        {!! $document->client->formatted_address2 !!}<br>
+                    </td>
+                @endif
+            </td>
+            <td style="width: 50%; text-align: right; vertical-align:top;">
+                {!! $document->companyProfile->logo() !!}<br>
+                <span class="info">{{ $document->companyProfile->company }}</span><br>
+                {!! $document->companyProfile->formatted_address !!}<br>
+                {{ $document->companyProfile->phone ?? ''}}<br>
+                @if ($document->companyProfile->email)
+                    <a href="mailto:{{ $document->companyProfile->email }}">{{ $document->companyProfile->email }}</a>
+                    <br>
+                @endif
+                @if($document->module_type == 'Workorder')
+                    <br>
+                    <span class="info">{{ 'Job Date: ' }}</span>{{ $document->formatted_job_date }}<br>
+                    <span class="info">{{ 'Start Time: ' }}</span>{{ $document->formatted_start_time }}<br>
+                    <span class="info">{{ 'Estimated Hours: ' }}</span>{{ $document->formatted_job_length }}<br>
+                    <span class="info">
                 <strong>Client Pickup: {{ $document->will_call ? __('bt.yes') : __('bt.no')  }}</strong>
-                    @endif
-                </td>
+                @endif
+            </td>
         </tr>
     </table>
 @endif

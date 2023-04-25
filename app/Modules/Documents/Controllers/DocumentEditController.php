@@ -43,7 +43,7 @@ class DocumentEditController extends Controller
             ->with('taxRates', TaxRate::getList())
             ->with('customFields', CustomField::forTable($document->view_directory_name)->get())
             ->with('returnUrl', $this->getReturnUrl())
-            ->with('templates', DocumentTemplates::lists())
+            ->with('templates', DocumentTemplates::lists($document->module_type))
             ->with('frequencies', Frequency::lists())
             ->with('groups', Group::getList())
             ->with('itemCount', count($document->documentItems));
@@ -97,7 +97,7 @@ class DocumentEditController extends Controller
             ->with('taxRates', TaxRate::getList())
             ->with('customFields', CustomField::forTable($document->view_directory_name)->get())
             ->with('returnUrl', $this->getReturnUrl())
-            ->with('templates', DocumentTemplates::lists())
+            ->with('templates', DocumentTemplates::lists($document->module_type))
             ->with('frequencies', Frequency::lists())
             ->with('groups', Group::getList())
             ->with('itemCount', count($document->documentItems));

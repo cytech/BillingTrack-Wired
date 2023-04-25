@@ -86,7 +86,7 @@
 @if($document->module_type == 'Purchaseorder')
     <table>
         <tr>
-            <td style="width: 50%; vertical-align:top;">
+            <td style="width: 33%; vertical-align:top;">
                 <h1>{{ mb_strtoupper(trans('bt.purchaseorder')) }}</h1>
                 <span class="info">{{ mb_strtoupper(trans('bt.purchaseorder')) }} #</span>{{ $document->number }}<br>
                 <span class="info">{{ mb_strtoupper(trans('bt.issued')) }}</span> {{ $document->formatted_created_at }}
@@ -122,7 +122,7 @@
 @else
     <table>
         <tr>
-            <td style="width: 50%; vertical-align:top;">
+            <td style="width: 33%; vertical-align:top;">
                 <h1>{{ mb_strtoupper(trans('bt.'. strtolower($document->module_type))) }}</h1>
                 <span class="info">{{ mb_strtoupper(trans('bt.'. strtolower($document->module_type))) }} #</span>{{ $document->number }}
                 <br>
