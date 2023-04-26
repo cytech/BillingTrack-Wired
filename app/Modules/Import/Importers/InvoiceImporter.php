@@ -14,7 +14,7 @@ namespace BT\Modules\Import\Importers;
 use BT\Modules\Clients\Models\Client;
 use BT\Modules\CompanyProfiles\Models\CompanyProfile;
 use BT\Modules\Groups\Models\Group;
-use BT\Modules\Invoices\Models\Invoice;
+use BT\Modules\Documents\Models\Invoice;
 use Illuminate\Support\Facades\Validator;
 
 class InvoiceImporter extends AbstractImporter
@@ -22,7 +22,7 @@ class InvoiceImporter extends AbstractImporter
     public function getFields()
     {
         return [
-            'invoice_date'    => '* ' . trans('bt.date'),
+            'document_date'    => '* ' . trans('bt.date'),
             'company_profile' => '* ' . trans('bt.company_profile'),
             'client_name'     => '* ' . trans('bt.client_name'),
             'number'          => '* ' . trans('bt.invoice_number'),
@@ -36,7 +36,7 @@ class InvoiceImporter extends AbstractImporter
     public function getMapRules()
     {
         return [
-            'invoice_date'    => 'required',
+            'document_date'    => 'required',
             'company_profile' => 'required',
             'client_name'     => 'required',
             'number'          => 'required',
@@ -112,9 +112,9 @@ class InvoiceImporter extends AbstractImporter
                 unset($record['company_profile']);
 
                 // Format the invoice date
-                if (strtotime($record['invoice_date']))
+                if (strtotime($record['document_date']))
                 {
-                    $record['invoice_date'] = date('Y-m-d', strtotime($record['invoice_date']));
+                    $record['document_date'] = date('Y-m-d', strtotime($record['document_date']));
                 }
 
                 // Attempt to format this date if it exists.

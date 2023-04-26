@@ -11,7 +11,7 @@
 
 namespace BT\Modules\Import\Importers;
 
-use BT\Modules\Invoices\Models\Invoice;
+use BT\Modules\Documents\Models\Invoice;
 use BT\Modules\PaymentMethods\Models\PaymentMethod;
 use BT\Modules\Payments\Models\Payment;
 use Illuminate\Support\Facades\Validator;

@@ -11,29 +11,29 @@
 
 namespace BT\Modules\Exports\Support\Results;
 
-use BT\Modules\Quotes\Models\Quote;
+use BT\Modules\Documents\Models\Quote;
 
 class Quotes implements SourceInterface
 {
     public function getResults($params = [])
     {
-        $quote = Quote::select('quotes.number', 'quotes.created_at', 'quotes.updated_at', 'quotes.expires_at',
-            'quotes.terms', 'quotes.footer', 'quotes.url_key', 'quotes.currency_code', 'quotes.exchange_rate',
-            'quotes.template', 'quotes.summary', 'groups.name AS group', 'clients.name AS client_name',
+        $quote = Quote::select('documents.number', 'documents.created_at', 'documents.updated_at', 'documents.action_date',
+            'documents.terms', 'documents.footer', 'documents.url_key', 'documents.currency_code', 'documents.exchange_rate',
+            'documents.template', 'documents.summary', 'groups.name AS group', 'clients.name AS client_name',
             'clients.email AS client_email', 'clients.address AS client_address', 'clients.city AS client_city',
             'clients.state AS client_state', 'clients.zip AS client_zip', 'clients.country AS client_country',
             'users.name AS user_name', 'users.email AS user_email',
             'company_profiles.company AS company', 'company_profiles.address AS company_address',
             'company_profiles.city AS company_city', 'company_profiles.state AS company_state',
             'company_profiles.zip AS company_zip', 'company_profiles.country AS company_country',
-            'quote_amounts.subtotal', 'quote_amounts.tax', 'quote_amounts.total')
-            ->join('quote_amounts', 'quote_amounts.quote_id', '=', 'quotes.id')
-            ->join('clients', 'clients.id', '=', 'quotes.client_id')
-            ->join('groups', 'groups.id', '=', 'quotes.group_id')
-            ->join('users', 'users.id', '=', 'quotes.user_id')
-            ->join('company_profiles', 'company_profiles.id', '=', 'quotes.company_profile_id')
+            'document_amounts.subtotal', 'document_amounts.tax', 'document_amounts.total')
+            ->join('document_amounts', 'document_amounts.document_id', '=', 'documents.id')
+            ->join('clients', 'clients.id', '=', 'documents.client_id')
+            ->join('groups', 'groups.id', '=', 'documents.group_id')
+            ->join('users', 'users.id', '=', 'documents.user_id')
+            ->join('company_profiles', 'company_profiles.id', '=', 'documents.company_profile_id')
             ->orderBy('number');
 
-        return $quote->get()->makeHidden(['formatted_quote_date', 'formatted_expires_at','status_text', 'formatted_summary'])->toArray();
+        return $quote->get()->makeHidden(['formatted_document_date', 'formatted_action_date','status_text', 'formatted_summary'])->toArray();
     }
 }

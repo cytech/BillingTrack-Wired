@@ -11,8 +11,8 @@
 
 namespace BT\Modules\Import\Importers;
 
-use BT\Events\QuoteModified;
-use BT\Modules\Quotes\Models\Quote;
+use BT\Events\DocumentModified;
+use BT\Modules\Documents\Models\Quote;
 use BT\Modules\TaxRates\Models\TaxRate;
 use Illuminate\Support\Facades\Validator;
 
@@ -21,7 +21,7 @@ class QuoteItemImporter extends AbstractImporter
     public function getFields()
     {
         return [
-            'quote_id'      => '* ' . trans('bt.quote_number'),
+            'document_id'      => '* ' . trans('bt.quote_number'),
             'name'          => '* ' . trans('bt.product'),
             'quantity'      => '* ' . trans('bt.quantity'),
             'price'         => '* ' . trans('bt.price'),
@@ -34,7 +34,7 @@ class QuoteItemImporter extends AbstractImporter
     public function getMapRules()
     {
         return [
-            'quote_id' => 'required',
+            'document_id' => 'required',
             'name'     => 'required',
             'quantity' => 'required',
             'price'    => 'required',
@@ -44,7 +44,7 @@ class QuoteItemImporter extends AbstractImporter
     public function getValidator($input)
     {
         return Validator::make($input, [
-                'quote_id' => 'required',
+                'document_id' => 'required',
                 'name'     => 'required',
                 'quantity' => 'required|numeric',
                 'price'    => 'required|numeric',
@@ -88,11 +88,11 @@ class QuoteItemImporter extends AbstractImporter
                     $record[$field] = $data[$key];
                 }
 
-                $quote = Quote::where('number', $record['quote_id'])->first();
+                $quote = Quote::where('number', $record['document_id'])->first();
 
                 if ($quote)
                 {
-                    $record['quote_id'] = $quote->id;
+                    $record['document_id'] = $quote->id;
 
                     if (!isset($record['tax_rate_id']))
                     {
@@ -134,7 +134,7 @@ class QuoteItemImporter extends AbstractImporter
 
                         $quote->items()->create($record);
 
-                        event(new QuoteModified($quote));
+                        event(new DocumentModified($quote));
                     }
                 }
             }

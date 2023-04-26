@@ -11,8 +11,8 @@
 
 namespace BT\Modules\Import\Importers;
 
-use BT\Events\InvoiceModified;
-use BT\Modules\Invoices\Models\Invoice;
+use BT\Events\DocumentModified;
+use BT\Modules\Documents\Models\Invoice;
 use BT\Modules\TaxRates\Models\TaxRate;
 use Illuminate\Support\Facades\Validator;
 
@@ -21,7 +21,7 @@ class InvoiceItemImporter extends AbstractImporter
     public function getFields()
     {
         return [
-            'invoice_id'    => '* ' . trans('bt.invoice_number'),
+            'document_id'    => '* ' . trans('bt.invoice_number'),
             'name'          => '* ' . trans('bt.product'),
             'quantity'      => '* ' . trans('bt.quantity'),
             'price'         => '* ' . trans('bt.price'),
@@ -34,7 +34,7 @@ class InvoiceItemImporter extends AbstractImporter
     public function getMapRules()
     {
         return [
-            'invoice_id' => 'required',
+            'document_id' => 'required',
             'name'       => 'required',
             'quantity'   => 'required',
             'price'      => 'required',
@@ -44,7 +44,7 @@ class InvoiceItemImporter extends AbstractImporter
     public function getValidator($input)
     {
         return Validator::make($input, [
-                'invoice_id' => 'required',
+                'document_id' => 'required',
                 'name'       => 'required',
                 'quantity'   => 'required|numeric',
                 'price'      => 'required|numeric',
@@ -88,11 +88,11 @@ class InvoiceItemImporter extends AbstractImporter
                     $record[$field] = $data[$key];
                 }
 
-                $invoice = Invoice::where('number', $record['invoice_id'])->first();
+                $invoice = Invoice::where('number', $record['document_id'])->first();
 
                 if ($invoice)
                 {
-                    $record['invoice_id'] = $invoice->id;
+                    $record['document_id'] = $invoice->id;
 
                     if (!isset($record['tax_rate_id']))
                     {
@@ -134,7 +134,7 @@ class InvoiceItemImporter extends AbstractImporter
 
                         $invoice->items()->create($record);
 
-                        event(new InvoiceModified($invoice));
+                        event(new DocumentModified($invoice));
                     }
                 }
             }

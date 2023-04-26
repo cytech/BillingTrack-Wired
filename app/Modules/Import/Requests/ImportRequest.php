@@ -24,7 +24,7 @@ class ImportRequest extends FormRequest
     {
         return [
             'import_type' => 'required',
-            'import_file' => 'required|mimes:txt',
+            'import_file' => 'required|mimes:txt,csv',
         ];
     }
 }

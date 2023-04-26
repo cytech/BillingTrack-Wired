@@ -82,6 +82,8 @@ return new class extends Migration {
 
         Schema::table('expenses', function (Blueprint $table) {
             $table->dropForeign('fk_expenses_invoices1_idx');
+            $table->dropForeign('expenses_category_id_index');
+            $table->dropIndex('expenses_category_id_index');
         });
 
         Schema::disableForeignKeyConstraints();

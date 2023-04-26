@@ -14,7 +14,7 @@ namespace BT\Modules\Import\Importers;
 use BT\Modules\Clients\Models\Client;
 use BT\Modules\CompanyProfiles\Models\CompanyProfile;
 use BT\Modules\Groups\Models\Group;
-use BT\Modules\Quotes\Models\Quote;
+use BT\Modules\Documents\Models\Quote;
 use Illuminate\Support\Facades\Validator;
 
 class QuoteImporter extends AbstractImporter
@@ -22,12 +22,12 @@ class QuoteImporter extends AbstractImporter
     public function getFields()
     {
         return [
-            'quote_date'      => '* ' . trans('bt.date'),
+            'document_date'      => '* ' . trans('bt.date'),
             'company_profile' => '* ' . trans('bt.company_profile'),
             'client_name'     => '* ' . trans('bt.client_name'),
             'number'          => '* ' . trans('bt.quote_number'),
             'group_id'        => trans('bt.group'),
-            'expires_at'      => trans('bt.expires'),
+            'action_date'      => trans('bt.expires'),
             'summary'         => trans('bt.summary'),
             'terms'           => trans('bt.terms_and_conditions'),
         ];
@@ -36,7 +36,7 @@ class QuoteImporter extends AbstractImporter
     public function getMapRules()
     {
         return [
-            'quote_date'      => 'required',
+            'document_date'      => 'required',
             'company_profile' => 'required',
             'client_name'     => 'required',
             'number'          => 'required',
@@ -112,15 +112,15 @@ class QuoteImporter extends AbstractImporter
                 unset($record['company_profile']);
 
                 // Format the created at date
-                if (strtotime($record['quote_date']))
+                if (strtotime($record['document_date']))
                 {
-                    $record['quote_date'] = date('Y-m-d', strtotime($record['quote_date']));
+                    $record['document_date'] = date('Y-m-d', strtotime($record['document_date']));
                 }
 
                 // Attempt to format this date if it exists.
-                if (isset($record['expires_at']) and strtotime($record['expires_at']))
+                if (isset($record['action_date']) and strtotime($record['action_date']))
                 {
-                    $record['expires_at'] = date('Y-m-d', strtotime($record['expires_at']));
+                    $record['action_date'] = date('Y-m-d', strtotime($record['action_date']));
                 }
 
                 // Attempt to convert the group name to an id if it exists.

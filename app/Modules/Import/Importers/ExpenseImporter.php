@@ -11,7 +11,10 @@
 
 namespace BT\Modules\Import\Importers;
 
+use BT\Modules\Categories\Models\Category;
+use BT\Modules\Clients\Models\Client;
 use BT\Modules\Expenses\Models\Expense;
+use BT\Modules\Vendors\Models\Vendor;
 use Illuminate\Support\Facades\Validator;
 
 class ExpenseImporter extends AbstractImporter
@@ -93,6 +96,11 @@ class ExpenseImporter extends AbstractImporter
 
                 if ($this->validateRecord($record))
                 {
+                    $record['category_id'] = Category::firstOrCreate(['name' => $record['category_name']])->id;
+                    $record['client_id'] = Client::firstOrCreate(['name' => $record['client_name']])->id;
+                    $record['vendor_id'] = Vendor::firstOrCreate(['name' => $record['vendor_name']])->id;
+                    $record['company_profile_id'] = config('bt.defaultCompanyProfile');
+
                     Expense::create($record);
                 }
             }
