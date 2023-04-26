@@ -11,12 +11,12 @@
 
 namespace BT\Modules\API\Controllers;
 
-use BT\Events\QuoteModified;
+use BT\Events\DocumentModified;
 use BT\Modules\API\Requests\APIQuoteItemRequest;
 use BT\Modules\API\Requests\APIQuoteStoreRequest;
 use BT\Modules\Clients\Models\Client;
-use BT\Modules\Quotes\Models\Quote;
-use BT\Modules\Quotes\Models\QuoteItem;
+use BT\Modules\Documents\Models\Quote;
+use BT\Modules\Documents\Models\DocumentItem;
 use BT\Modules\Users\Models\User;
 
 class ApiQuoteController extends ApiController
@@ -54,9 +54,9 @@ class ApiQuoteController extends ApiController
     {
         $input = $request->except('key', 'signature', 'timestamp', 'endpoint');
 
-        QuoteItem::create($input);
-        $quote = Quote::find(request('quote_id'));
-        event(new QuoteModified($quote));
+        DocumentItem::create($input);
+        $quote = Quote::find(request('document_id'));
+        event(new DocumentModified($quote));
     }
 
     public function delete()

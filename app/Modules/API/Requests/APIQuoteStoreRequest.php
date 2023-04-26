@@ -11,9 +11,9 @@
 
 namespace BT\Modules\API\Requests;
 
-use BT\Modules\Quotes\Requests\QuoteStoreRequest;
+use BT\Modules\Documents\Requests\DocumentStoreRequest;
 
-class APIQuoteStoreRequest extends QuoteStoreRequest
+class APIQuoteStoreRequest extends DocumentStoreRequest
 {
     public function rules()
     {

@@ -13,9 +13,9 @@
 
 namespace BT\Modules\API\Requests;
 
-use BT\Modules\Workorders\Requests\WorkorderStoreRequest;
+use BT\Modules\Documents\Requests\DocumentStoreRequest;
 
-class APIWorkorderStoreRequest extends WorkorderStoreRequest
+class APIWorkorderStoreRequest extends DocumentStoreRequest
 {
     public function rules()
     {

@@ -11,12 +11,12 @@
 
 namespace BT\Modules\API\Controllers;
 
-use BT\Events\InvoiceModified;
+use BT\Events\DocumentModified;
 use BT\Modules\API\Requests\APIInvoiceStoreRequest;
 use BT\Modules\API\Requests\APIInvoiceItemRequest;
 use BT\Modules\Clients\Models\Client;
-use BT\Modules\Invoices\Models\Invoice;
-use BT\Modules\Invoices\Models\InvoiceItem;
+use BT\Modules\Documents\Models\Invoice;
+use BT\Modules\Documents\Models\DocumentItem;
 use BT\Modules\Users\Models\User;
 
 class ApiInvoiceController extends ApiController
@@ -54,9 +54,9 @@ class ApiInvoiceController extends ApiController
     {
         $input = $request->except('key', 'signature', 'timestamp', 'endpoint');
 
-        InvoiceItem::create($input);
-        $invoice = Invoice::find(request('invoice_id'));
-        event(new InvoiceModified($invoice));
+        DocumentItem::create($input);
+        $invoice = Invoice::find(request('document_id'));
+        event(new DocumentModified($invoice));
     }
 
     public function delete()

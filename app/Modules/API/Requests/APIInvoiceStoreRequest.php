@@ -11,9 +11,9 @@
 
 namespace BT\Modules\API\Requests;
 
-use BT\Modules\Invoices\Requests\InvoiceStoreRequest;
+use BT\Modules\Documents\Requests\DocumentStoreRequest;
 
-class APIInvoiceStoreRequest extends InvoiceStoreRequest
+class APIInvoiceStoreRequest extends DocumentStoreRequest
 {
     public function rules()
     {

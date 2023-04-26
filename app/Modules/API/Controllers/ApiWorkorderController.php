@@ -10,12 +10,12 @@
 
 namespace BT\Modules\API\Controllers;
 
-use BT\Events\WorkorderModified;
+use BT\Events\DocumentModified;
 use BT\Modules\API\Requests\APIWorkorderItemRequest;
 use BT\Modules\API\Requests\APIWorkorderStoreRequest;
 use BT\Modules\Clients\Models\Client;
-use BT\Modules\Workorders\Models\Workorder;
-use BT\Modules\Workorders\Models\WorkorderItem;
+use BT\Modules\Documents\Models\Workorder;
+use BT\Modules\Documents\Models\DocumentItem;
 use BT\Modules\Users\Models\User;
 
 class ApiWorkorderController extends ApiController
@@ -53,9 +53,9 @@ class ApiWorkorderController extends ApiController
     {
         $input = $request->except('key', 'signature', 'timestamp', 'endpoint');
 
-        WorkorderItem::create($input);
-        $workorder = Workorder::find(request('workorder_id'));
-        event(new WorkorderModified($workorder));
+        DocumentItem::create($input);
+        $workorder = Workorder::find(request('document_id'));
+        event(new DocumentModified($workorder));
     }
 
     public function delete()

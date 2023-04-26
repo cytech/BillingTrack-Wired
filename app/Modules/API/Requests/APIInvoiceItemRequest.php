@@ -43,7 +43,7 @@ class APIInvoiceItemRequest extends FormRequest
     public function rules()
     {
         return [
-            'invoice_id' => 'required',
+            'document_id' => 'required',
             'name'       => 'required_with:price,quantity',
             'quantity'   => 'required_with:price,name|numeric',
             'price'      => 'required_with:name,quantity|numeric',

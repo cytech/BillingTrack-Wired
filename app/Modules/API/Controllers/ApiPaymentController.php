@@ -11,7 +11,7 @@
 
 namespace BT\Modules\API\Controllers;
 
-use BT\Modules\Invoices\Models\Invoice;
+use BT\Modules\Documents\Models\Invoice;
 use BT\Modules\Payments\Models\Payment;
 use BT\Modules\Payments\Requests\PaymentRequest;
 
