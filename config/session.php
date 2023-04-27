@@ -70,6 +70,7 @@ return [
     |
     */
 
+//    'connection' => env('SESSION_CONNECTION'),
     'connection' => null,
 
     /*
@@ -96,6 +97,7 @@ return [
     |
     */
 
+//    'store' => env('SESSION_STORE'),
     'store' => null,
 
     /*
@@ -192,6 +194,7 @@ return [
     |
     */
 
+//    'same_site' => 'lax',
     'same_site' => null,
 
 ];
