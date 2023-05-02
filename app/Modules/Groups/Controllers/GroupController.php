@@ -78,7 +78,11 @@ class GroupController extends Controller
 
     public function delete($id)
     {
-        Group::destroy($id);
+        if (in_array($id, Group::getDefaultList())) {
+            return redirect()->route('groups.index')
+                ->with('error', trans('bt.cannot_delete_group'));
+        } else
+            Group::destroy($id);
 
         return redirect()->route('groups.index')
             ->with('alert', trans('bt.record_successfully_deleted'));

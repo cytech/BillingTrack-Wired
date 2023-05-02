@@ -29,7 +29,7 @@ class DocumentStoreRequest extends FormRequest
             'user_id'            => trans('bt.user'),
             'summary'            => trans('bt.summary'),
             'document_date'         => trans('bt.date'),
-            'due_at'             => trans('bt.due'),
+            'action_date'             => trans('bt.due'),
             'number'             => trans('bt.invoice_number'),
             'document_status_id'    => trans('bt.status'),
             'exchange_rate'      => trans('bt.exchange_rate'),

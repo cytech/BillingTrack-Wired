@@ -40,8 +40,15 @@ class CreateDocumentItemsTable extends Migration
             $table->tinyInteger('rec_status_id')->default('0');
 
             $table->index(["display_order"], 'document_items_display_order_index');
+
+            $table->index(["document_id"], 'fk_document_items_documents1_idx');
             $table->softDeletes();
             $table->nullableTimestamps();
+
+            $table->foreign('document_id', 'fk_document_items_documents1_idx')
+                ->references('id')->on('documents')
+                ->onDelete('cascade')
+                ->onUpdate('restrict');
         });
     }
 

@@ -3,7 +3,19 @@ Release Notes
 ---
 
 ### BillingTrack 7.0.0
-- Merged core modules
+- merged core modules
+- **BREAKING CHANGES**
+- This update combines the core modules (Quote, Workorder, Invoice, Recurringinvoice, and Purchaseorder) database tables into a single documents table.
+- User defined custom templates (in the custom/templates directory) will be affected by this change.
+- Note that the existing "custom.blade.php" file in each module directory will be overwritten by the upgrade. If you have modified it directly (without copying it to a new name first) you will need to BACK IT UP prior to upgrade.
+- This "custom.blade.php" file is meant to be a starting point for creating your own custom template.
+- During Migration, existing custom templates will be copied to a new file prefixed with "copy_V6_".
+- The migration will then modify the original custom templates and change all occurrences of ($quote, $workorder, $invoice, and $purchaseorder) to $document.
+- It will also modify any references to ${module}->formatted_due_at or ${module}->formatted_expires_at to ${module}->formatted_action_date.
+- ANY TEMPLATE CUSTOMIZATIONS OUTSIDE OF THESE PARAMETERS WILL HAVE TO BE CHANGED BY THE USER.
+- Users will also need to manually modify any customizations to email templates under Admin - System Settings - Email - Templates.
+- The API has also changed so if you are using it you will need to upgrade the API and any code you have referencing it.
+- The new API and examples are located in this repository, resources/misc/billingtrack-api-v7.zip
 
 ### BillingTrack 6.1.0 (2023-04-01)
 - Upgrade to Laravel 10

@@ -28,6 +28,7 @@ Route::middleware(['web', 'auth.admin'])
             Route::name('trashprior.database')->get('trashprior/database', [BackupController::class, 'trashPrior']);
             Route::name('deleteprior.database')->get('deleteprior/database', [BackupController::class, 'deletePrior']);
             Route::name('clientprior.database')->get('clientprior/database', [BackupController::class, 'clientInactivePrior']);
+            Route::name('removeorphans.database')->get('removeorphans/database', [BackupController::class, 'removeOrphanedModules']);
         }
 
     });

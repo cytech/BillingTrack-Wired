@@ -25,22 +25,22 @@
             <div class="col-sm-12 align-items-center">
                 <div class="fs-3 float-start">{{__('bt.view_client') . ' - ' . $client->name}}</div>
                 <div class="btn-group float-end">
-                    <a class="btn btn-secondary rounded me-1" href="#" id="btn-create-quote"
+                    <a class="btn btn-primary rounded me-1" href="#" id="btn-create-quote"
                        {{--                   params 3 thru ... mount(,,$modulefullname, $moduleop, $resource_id = null, $module_id = null, $readonly = null)--}}
                        onclick="window.livewire.emit('showModal', 'modals.create-module-modal', '{{ addslashes(get_class($client->quotes()->getRelated())) }}', 'Quote', 'create', {{ $client->id }}, null, true)">
-                        @lang('bt.create_quote')</a>
-                    <a class="btn btn-secondary rounded me-1" href="#" id="btn-create-workorder"
+                        <i class="fa fa-plus"></i> @lang('bt.create_quote')</a>
+                    <a class="btn btn-primary rounded me-1" href="#" id="btn-create-workorder"
                        {{--                   params 3 thru ... mount(,,$modulefullname, $moduleop, $resource_id = null, $module_id = null, $readonly = null)--}}
                        onclick="window.livewire.emit('showModal', 'modals.create-module-modal', '{{ addslashes(get_class($client->workorders()->getRelated())) }}', 'Workorder', 'create', {{ $client->id }}, null, true)">
-                        @lang('bt.create_workorder')</a>
-                    <a class="btn btn-secondary rounded me-1" href="#" id="btn-create-invoice"
+                        <i class="fa fa-plus"></i> @lang('bt.create_workorder')</a>
+                    <a class="btn btn-primary rounded me-1" href="#" id="btn-create-invoice"
                        {{--                   params 3 thru ... mount(,,$modulefullname, $moduleop, $resource_id = null, $module_id = null, $readonly = null)--}}
                        onclick="window.livewire.emit('showModal', 'modals.create-module-modal', '{{ addslashes(get_class($client->invoices()->getRelated())) }}', 'Invoice', 'create', {{ $client->id }}, null, true)">
-                        @lang('bt.create_invoice')</a>
-                    <a href="{{ $returnUrl }}" class="btn btn-secondary rounded me-1"><i class="fa fa-backward"></i> @lang('bt.back')
+                        <i class="fa fa-plus"></i> @lang('bt.create_invoice')</a>
+                    <a href="{{ $returnUrl }}" class="btn btn-green rounded me-1"><i class="fa fa-backward"></i> @lang('bt.back')
                     </a>
-                    <a href="{{ route('clients.edit', [$client->id]) }}" class="btn btn-secondary rounded me-1">@lang('bt.edit')</a>
-                    <a class="btn btn-secondary rounded me-1" href="#"
+                    <a href="{{ route('clients.edit', [$client->id]) }}" class="btn btn-warning rounded me-1"><i class="fa fa-edit"></i> @lang('bt.edit')</a>
+                    <a class="btn btn-danger rounded me-1" href="#"
                        onclick="swalConfirm('@lang('bt.trash_client_warning')', '@lang('bt.trash_client_warning_msg')', '{{ route('clients.delete', [$client->id]) }}');"><i
                                 class="fa fa-trash"></i> @lang('bt.trash')</a>
                 </div>
@@ -193,18 +193,16 @@
                             </div>
                             <div id="tab-recurring-invoices" class="tab-pane">
                                 <div class="card">
-                                    @include('clients._recurring_invoices_table')
-                                    <div class="card-footer"><p class="text-center"><strong><a
-                                                        href="{{ route('documents.index', ['module_type' => 'Recurringinvoice', 'client' => $client->id]) }}">@lang('bt.view_all')</a></strong>
-                                        </p></div>
+                                    <div class="card-body">
+                                        <livewire:data-tables.module-table :module_type="'Recurringinvoice'" :clientid="$client->id"/>
+                                    </div>
                                 </div>
                             </div>
                             <div id="tab-payments" class="tab-pane">
                                 <div class="card">
-                                    @include('payments._table')
-                                    <div class="card-footer"><p class="text-center"><strong><a
-                                                        href="{{ route('payments.index') }}?client={{ $client->id }}">@lang('bt.view_all')</a></strong>
-                                        </p></div>
+                                    <div class="card-body">
+                                        <livewire:data-tables.module-table :module_type="'Payment'" :clientid="$client->id"/>
+                                    </div>
                                 </div>
                             </div>
                             <div class="tab-pane" id="tab-attachments">

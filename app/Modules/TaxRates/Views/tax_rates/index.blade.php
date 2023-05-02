@@ -17,8 +17,8 @@
         @include('layouts._alerts')
         <div class=" card card-light">
             <div class="card-body">
-                <table class="table table-hover">
-                    <thead>
+                <table class="table table-striped datatable">
+                    <thead class="bg-body lwtable">
                     <tr>
                         <th>{!! Sortable::link('name', trans('bt.name')) !!}</th>
                         <th>{!! Sortable::link('percent', trans('bt.percent')) !!}</th>

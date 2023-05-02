@@ -71,22 +71,22 @@ class CreateDocumentsTable extends Migration
             $table->foreign('client_id', 'documents_client_id_index')
                 ->references('id')->on('clients')
                 ->onDelete('cascade')
-                ->onUpdate('cascade');
+                ->onUpdate('restrict');
 
             $table->foreign('company_profile_id', 'documents_company_profile_id_index')
                 ->references('id')->on('company_profiles')
                 ->onDelete('set null')
-                ->onUpdate('cascade');
+                ->onUpdate('restrict');
 
             $table->foreign('group_id', 'documents_group_id_index')
                 ->references('id')->on('groups')
                 ->onDelete('set null')
-                ->onUpdate('cascade');
+                ->onUpdate('restrict');
 
             $table->foreign('user_id', 'documents_user_id_index')
                 ->references('id')->on('users')
                 ->onDelete('set null')
-                ->onUpdate('cascade');
+                ->onUpdate('restrict');
         });
     }
 

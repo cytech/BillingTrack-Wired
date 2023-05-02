@@ -26,7 +26,7 @@ class Setting extends Model
     public static $modules = [
         'quote' => 1,
         'workorder' => 2,
-        'recurring_invoice' => 4,
+        'recurringinvoice' => 4,
         'expense' => 8,
         'time_tracking' => 16,
         'scheduler' => 32,
@@ -51,7 +51,7 @@ class Setting extends Model
         if (! in_array($entityType, [
             'quote',
             'workorder',
-            'recurring_invoice',
+            'recurringinvoice',
             'expense',
             'time_tracking',
             'scheduler',

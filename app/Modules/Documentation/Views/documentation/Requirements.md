@@ -32,6 +32,7 @@ PHP Extension list from "composer check-platform-reqs"
 -   ext-dom
 -   ext-fileinfo
 -   ext-filter
+-   ext-hash
 -   ext-iconv
 -   ext-json
 -   ext-libxml
@@ -39,6 +40,7 @@ PHP Extension list from "composer check-platform-reqs"
 -   ext-openssl
 -   ext-pcre
 -   ext-phar
+-   ext-session
 -   ext-tokenizer
 -   ext-xml
 -   ext-xmlwriter

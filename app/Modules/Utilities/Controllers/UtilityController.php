@@ -12,6 +12,7 @@
 namespace BT\Modules\Utilities\Controllers;
 
 use BT\Modules\Documents\Models\Invoice;
+use BT\Modules\Documents\Models\Purchaseorder;
 use BT\Modules\Documents\Models\Quote;
 use BT\Modules\Documents\Models\Workorder;
 use BT\Support\FileNames;
@@ -57,6 +58,8 @@ class UtilityController
             $module_model = 'BT\\Modules\\Scheduler\\Models\\' . $module_type;
         } elseif ($module_type == 'TimeTrackingProject') {
             $module_model = 'BT\\Modules\\TimeTracking\\Models\\' . $module_type;
+        } elseif (in_array($module_type, ['Invoice', 'Quote', 'Workorder', 'Purchaseorder', 'Recurringinvoice'])) {
+            $module_model = 'BT\\Modules\\Documents\\Models\\' . $module_type;
         } else {
             $module_model = 'BT\\Modules\\' . $module_type . 's\\Models\\' . $module_type;
         }
@@ -76,6 +79,8 @@ class UtilityController
             $module_model = 'BT\\Modules\\Scheduler\\Models\\' . $module_type;
         } elseif ($module_type == 'TimeTrackingProject') {
             $module_model = 'BT\\Modules\\TimeTracking\\Models\\' . $module_type;
+        } elseif (in_array($module_type, ['Invoice', 'Quote', 'Workorder', 'Purchaseorder', 'Recurringinvoice'])) {
+            $module_model = 'BT\\Modules\\Documents\\Models\\' . $module_type;
         } else {
             $module_model = 'BT\\Modules\\' . $module_type . 's\\Models\\' . $module_type;
         }
@@ -98,17 +103,22 @@ class UtilityController
                     //quotes sent or approved, not converted to workorder or invoice
                     $batchtypes = Quote::whereBetween('document_date', [$start, $end])
                         ->whereBetween('document_status_id', [2, 3])
-                        ->where('invoice_id', 0)->where('workorder_id', 0)->get();
+                        ->where('invoice_id', 0)->orWhereNull('invoice_id')->where('workorder_id', 0)->get();
                     break;
                 case 'workorders':
                     //workorders sent or approved, not converted to invoice
                     $batchtypes = Workorder::whereBetween('job_date', [$start, $end])
                         ->whereBetween('document_status_id', [2, 3])
-                        ->where('invoice_id', 0)->get();
+                        ->where('invoice_id', 0)->orWhereNull('invoice_id')->get();
                     break;
                 case 'invoices':
                     //invoices sent (not paid)
                     $batchtypes = Invoice::whereBetween('document_date', [$start, $end])
+                        ->where('document_status_id', 2)->get();
+                    break;
+                case 'purchaseorders':
+                    //purchaseorders sent (not paid)
+                    $batchtypes = Purchaseorder::whereBetween('document_date', [$start, $end])
                         ->where('document_status_id', 2)->get();
                     break;
             }

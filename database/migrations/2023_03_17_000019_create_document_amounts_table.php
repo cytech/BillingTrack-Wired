@@ -32,8 +32,15 @@ class CreateDocumentAmountsTable extends Migration
             $table->decimal('total', 20, 4)->default('0.0000');
             $table->decimal('paid', 20, 4)->default('0.0000');
             $table->decimal('balance', 20, 4)->default('0.0000');
+
+            $table->index(["document_id"], 'fk_document_amounts_documents1_idx');
             $table->softDeletes();
             $table->nullableTimestamps();
+
+            $table->foreign('document_id', 'fk_document_amounts_documents1_idx')
+                ->references('id')->on('documents')
+                ->onDelete('cascade')
+                ->onUpdate('restrict');
         });
     }
 

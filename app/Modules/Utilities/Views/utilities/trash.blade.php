@@ -13,7 +13,7 @@
         @include('layouts._alerts')
         <div class="card">
                 <div class="card m-2">
-                    <div class="card-header d-flex p-0">
+                    <div class="card-header d-flex p-0 justify-content-center">
                         <ul class="nav nav-pills p-2" id="trash-tabs">
                             <li class="nav-item"><a class="nav-link active show" data-bs-toggle="tab"
                                                     href="#tab-clients">@lang('bt.clients')</a></li>
@@ -24,7 +24,7 @@
                             <li class="nav-item"><a class="nav-link" data-bs-toggle="tab"
                                                     href="#tab-invoices">@lang('bt.invoices')</a></li>
                             <li class="nav-item"><a class="nav-link" data-bs-toggle="tab"
-                                                    href="#tab-recurring_invoices">@lang('bt.recurring_invoices')</a>
+                                                    href="#tab-recurring_invoices">@lang('bt.recurringinvoices')</a>
                             </li>
                             <li class="nav-item"><a class="nav-link" data-bs-toggle="tab"
                                                     href="#tab-purchaseorders">@lang('bt.purchaseorders')</a></li>

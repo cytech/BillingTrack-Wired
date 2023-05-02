@@ -3,6 +3,7 @@
     {!! Form::hidden('stop_date', null, ['id' => 'stop_date']) !!}
     {!! Form::hidden('recurring_frequency', null, ['id' => 'recurring_frequency']) !!}
     {!! Form::hidden('recurring_period', null, ['id' => 'recurring_period']) !!}
+    {!! Form::hidden('group_id', $document->group_id , ['id' => 'group_id']) !!}
     <label>@lang('bt.'.$document->lower_case_baseclass) #</label>
     {!! Form::text('number', $document->number, ['id' => 'number', 'class' =>
     'form-control

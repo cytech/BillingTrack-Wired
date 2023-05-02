@@ -87,7 +87,7 @@
             <span class="info">{{ mb_strtoupper(trans('bt.purchaseorder')) }} #</span>{{ $document->number }}<br>
             <span class="info">{{ mb_strtoupper(trans('bt.issued')) }}</span> {{ $document->formatted_created_at }}
             <br>
-            <span class="info">{{ mb_strtoupper(trans('bt.due_date')) }}</span> {{ $document->formatted_due_at }}
+            <span class="info">{{ mb_strtoupper(trans('bt.due_date')) }}</span> {{ $document->formatted_action_date }}
             <br><br>
             <span class="info">{{ mb_strtoupper(trans('bt.to')) }}</span><br>{{ $document->vendor->name }}<br>
             @if ($document->vendor->address) {!! $document->vendor->formatted_address !!}<br>@endif

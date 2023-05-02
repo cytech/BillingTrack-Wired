@@ -5,9 +5,9 @@
                 <h5 class="text-bold mb-0">@lang('bt.todays_workorders')</h5>
             </div>
             <div class="card-body">
-                <table class="table table-striped">
+                <table class="table table-striped datatable">
                     <tbody>
-                    <thead>
+                    <thead class="bg-body lwtable">
                     <tr>
                         <th>@lang('bt.client')</th>
                         <th>@lang('bt.start_time')</th>
@@ -23,7 +23,7 @@
                             <td>{!! $workorder->formatted_start_time !!}</td>
                             <td>{!! $workorder->formatted_end_time !!}</td>
                             <td>{!! ($workorder->will_call == 1 )?'Yes':'No' !!}</td>
-                            <td><a href="{!! url('/workorders') . '/' . $workorder->id . '/edit' !!}">
+                            <td><a href="{!! url('/documents') . '/' . $workorder->id . '/edit' !!}">
                                     <span class="badge text-bg-success">@lang('bt.link_to_workorder')</span></a></td>
                         </tr>
                     @endforeach

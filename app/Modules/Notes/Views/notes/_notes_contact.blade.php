@@ -1,6 +1,7 @@
 <script type="text/javascript">
     ready(function () {
-        addEvent(document, 'click', "#btn-create-contact-note", (e) => {
+        const cbutton = document.getElementById("btn-create-contact-note");
+        cbutton.addEventListener('click', (e) => {
             if (document.getElementById('note_content_contact').value !== '') {
                 @if (isset($showPrivateCheckbox) and $showPrivateCheckbox == true)
                     showPrivateCheckbox = 1;
@@ -56,9 +57,10 @@
                 <div class="row">
                     <div class="col-sm-12">
                         @if (isset($showPrivateCheckbox) and $showPrivateCheckbox == true)
-                            <label>
-                                <input type="checkbox" name="private" id="private"> @lang('bt.private')
-                            </label>
+                            <div class="form-check form-switch form-switch-md mb-1">
+                                <label class="form-check-label fw-bold ps-1 pt-2" for="private"> @lang('bt.private') </label>
+                                <input type="checkbox" name="private" id="private" class="form-check-input">
+                            </div>
                         @endif
                         <textarea placeholder="@lang('bt.placeholder_type_message')"
                                   class="form-control"

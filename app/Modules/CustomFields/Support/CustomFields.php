@@ -28,7 +28,7 @@ class CustomFields
             'invoices'           => trans('bt.invoices'),
             'workorders'         => trans('bt.workorders'),
             'quotes'             => trans('bt.quotes'),
-            'recurring_invoices' => trans('bt.recurring_invoices'),
+            'recurringinvoices'  => trans('bt.recurringinvoices'),
             'payments'           => trans('bt.payments'),
             'purchaseorders'     => trans('bt.purchaseorders'),
             'users'              => trans('bt.users'),

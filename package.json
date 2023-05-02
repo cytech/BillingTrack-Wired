@@ -12,7 +12,7 @@
         "sass": "^1.53.0",
         "vite": "^4.0.4",
         "laravel-vite-plugin": "^0.7.3",
-        "vite-plugin-static-copy": "^0.13.0"
+        "vite-plugin-static-copy": "^0.15.0"
     },
     "dependencies": {
         "@fullcalendar/core": "^6.0.2",

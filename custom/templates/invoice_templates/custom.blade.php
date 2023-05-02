@@ -85,7 +85,7 @@
             <h1>{{ mb_strtoupper(trans('bt.invoice')) }}</h1>
             <span class="info">{{ mb_strtoupper(trans('bt.invoice')) }} #</span>{{ $document->number }}<br>
             <span class="info">{{ mb_strtoupper(trans('bt.issued')) }}</span> {{ $document->formatted_created_at }}<br>
-            <span class="info">{{ mb_strtoupper(trans('bt.due_date')) }}</span> {{ $document->formatted_due_at }}<br><br>
+            <span class="info">{{ mb_strtoupper(trans('bt.due_date')) }}</span> {{ $document->formatted_action_date }}<br><br>
             <span class="info">{{ mb_strtoupper(trans('bt.bill_to')) }}</span><br>{{ $document->client->name }}<br>
             @if ($document->client->address) {!! $document->client->formatted_address !!}<br>@endif
         </td>

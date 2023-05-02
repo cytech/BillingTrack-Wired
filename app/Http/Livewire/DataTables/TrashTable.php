@@ -18,12 +18,16 @@ class TrashTable extends DataTableComponent
             'default' => true,
             'class'   => 'datatable',
         ]);
-        //replace v1 addAttributes for recurringinvoice -> id 5%, category -> action 10%,  user -> action 10%
+
+        $this->setTheadAttributes([
+            'default' => true,
+            'class'   => 'bg-body lwtable',
+        ]);
+
         $this->setThAttributes(function (Column $column) {
-            if ($column->isLabel()) {
+            if ($column->isField('id') || $column->isLabel()) {
                 return [
                     'default' => true,
-                    //'class' => 'bg-green',
                     'width'   => '8%'
                 ];
             }
@@ -40,7 +44,7 @@ class TrashTable extends DataTableComponent
             $this->module_fullname = 'BT\\Modules\\TimeTracking\\Models\\TimeTrackingProject';
         } elseif ($this->module_type == 'Schedule') {
             $this->module_fullname = 'BT\\Modules\\Scheduler\\Models\\Schedule';
-        } elseif (in_array($this->module_type, ['Invoice', 'Quote', 'Workorder', 'Purchaseorder'])) {
+        } elseif (in_array($this->module_type, ['Invoice', 'Quote', 'Workorder', 'Purchaseorder', 'Recurringinvoice'])) {
             $this->module_fullname = 'BT\\Modules\\Documents\\Models\\' . $this->module_type;
         } else {
             $this->module_fullname = 'BT\\Modules\\' . $this->module_type . 's\\Models\\' . $this->module_type;
@@ -49,7 +53,7 @@ class TrashTable extends DataTableComponent
 
     public function columns(): array
     {
-        if (in_array($this->module_type, ['Invoice', 'Quote', 'Workorder', 'Purchaseorder'])) {
+        if (in_array($this->module_type, ['Invoice', 'Quote', 'Workorder', 'Purchaseorder', 'Recurringinvoice'])) {
             $status_model = 'BT\\Support\\Statuses\\DocumentStatuses';
         } else {
             $status_model = 'BT\\Support\\Statuses\\' . $this->module_type . 'Statuses';
@@ -109,6 +113,8 @@ class TrashTable extends DataTableComponent
             return $this->module_fullname::has('vendor')->with('vendor')->onlyTrashed()->select('documents.*');
         } elseif ($this->module_type == 'Client') {
             return $this->module_fullname::getSelect()->onlyTrashed();
+        } elseif ($this->module_type == 'Payment'){
+            return $this->module_fullname::has('client')->with('client')->select('payments.*')->onlyTrashed();
         } elseif ($this->module_type == 'Expense') {
             return $this->module_fullname::defaultQuery()->onlyTrashed();
         } elseif ($this->module_type == 'TimeTrackingProject') {
@@ -117,10 +123,6 @@ class TrashTable extends DataTableComponent
             return $this->module_fullname::with(['latestOccurrence' => function ($q) {
                 $q->onlyTrashed();
             }, 'category'])->select('schedule.*')->onlyTrashed();
-        } elseif ($this->module_type == 'Recurringinvoice') {
-            return $this->module_fullname::with(['client', 'activities', 'amount.recurringInvoice.currency'])
-                ->select('recurring_invoices.*', 'recurring_invoices.id as number')
-                ->onlyTrashed();
         } else {
             return $this->module_fullname::has('client')->with('client')->onlyTrashed()->select('documents.*');
         }

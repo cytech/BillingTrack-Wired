@@ -46,7 +46,7 @@
                         @endif
                     </div>
                 </div>
-                @if($moduletype <> 'RecurringInvoice')
+                @if($moduletype <> 'Recurringinvoice')
                     <div class="row g-3 mb-3 align-items-center">
                         <div class="col-sm-4 text-end fw-bold">
                         <label class="col-form-label">@lang('bt.date')</label>
@@ -75,7 +75,7 @@
                         ['wire:model' => 'group_id','id' => 'group_id', 'class' => 'form-select']) !!}
                     </div>
                 </div>
-                @if($moduletype == 'RecurringInvoice')
+                @if($moduletype == 'Recurringinvoice')
                     <div class="row g-3 mb-3 align-items-center">
                         <div class="col-sm-4 text-end fw-bold">
                         <label class="col-form-label">@lang('bt.start_date')</label>

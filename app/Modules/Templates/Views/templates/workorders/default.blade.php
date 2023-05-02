@@ -87,7 +87,7 @@
             <span class="info">{{ mb_strtoupper(trans('bt.workorder')) }} #</span>{{ $document->number }}<br>
             <span class="info">{{ mb_strtoupper(trans('bt.issued')) }}</span> {{ $document->formatted_workorder_date }}
             <br>
-            <span class="info">{{ mb_strtoupper(trans('bt.expires')) }}</span> {{ $document->formatted_expires_at }}
+            <span class="info">{{ mb_strtoupper(trans('bt.expires')) }}</span> {{ $document->formatted_action_date }}
             <br><br>
             <span class="info">{{ mb_strtoupper(trans('bt.bill_to')) }}</span><br>{{ $document->client->name }}<br>
             @if ($document->client->address) {!! $document->client->formatted_address !!}<br>@endif

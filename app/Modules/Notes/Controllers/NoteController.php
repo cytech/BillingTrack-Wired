@@ -11,7 +11,6 @@
 
 namespace BT\Modules\Notes\Controllers;
 
-use BT\Events\NoteCreated;
 use BT\Http\Controllers\Controller;
 use BT\Modules\Notes\Models\Note;
 

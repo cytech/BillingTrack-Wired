@@ -67,7 +67,7 @@ trait Sortable
         $indicator  = (request('s') == $col ? (request('o') === 'asc' ? '&uarr;' : '&darr;') : null);
         $parameters = array_merge(request()->all(), ['s' => $col, 'o' => (request('o') === 'asc' ? 'desc' : 'asc')]);
 
-        return link_to_route(request()->route()->getName(), "$title $indicator", $parameters);
+        return link_to_route(request()->route()->getName(), "$title $indicator", $parameters, ['class' => 'link-body-emphasis']);
     }
 
     private function sortIsAllowed()

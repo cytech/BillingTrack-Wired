@@ -40,7 +40,7 @@
                         <p>@lang('bt.invoices')</p>
                     </a>
                 </li>
-                @if(\BT\Modules\Settings\Models\Setting::isModuleEnabled('recurring_invoice'))
+                @if(\BT\Modules\Settings\Models\Setting::isModuleEnabled('recurringinvoice'))
                     <li class="nav-item">
                         <a class="nav-link"
 {{--                           href="{{ route('recurringInvoices.index') }}">--}}

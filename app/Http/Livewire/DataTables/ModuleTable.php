@@ -111,7 +111,6 @@ class ModuleTable extends DataTableComponent
 
     public function columns(): array
     {
-
         if (in_array($this->module_type, ['Invoice', 'Quote', 'Workorder', 'Purchaseorder', 'Recurringinvoice'])) {
             $status_model = 'BT\\Support\\Statuses\\DocumentStatuses';
         } else {

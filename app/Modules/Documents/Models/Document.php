@@ -310,12 +310,13 @@ class Document extends Model
     |--------------------------------------------------------------------------
     */
 
-    // not invoiced is where workorder->invoice_id = 0,
-    // or where invoice()->invoice_status_id = 1 or 5 ('draft' or 'canceled')
+    // not invoiced is where workorder->invoice_id = 0 or null,
+    // or where invoice()->document_status_id = 1 or 5 ('draft' or 'canceled')
     // or invoice is trashed
     public function scopeNotinvoiced($query)
     {
         $query->where('invoice_id', 0)
+            ->orWhereNull('invoice_id')
             ->orWhereHas('invoice', function ($query) {
                 $query->whereIn('document_status_id', [1, 5]);
             })

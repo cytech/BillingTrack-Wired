@@ -21,22 +21,53 @@ return new class extends Migration {
     {
         Schema::disableForeignKeyConstraints();
 
-        Schema::rename('recurring_invoices_custom', 'recurringinvoices_custom');
+        if (!Schema::hasTable('recurringinvoices_custom')) {
+            Schema::rename('recurring_invoices_custom', 'recurringinvoices_custom');
 
-        Schema::table('recurringinvoices_custom', function (Blueprint $table) {
-            $table->renameColumn('recurring_invoice_id', 'recurringinvoice_id');
-        });
+            Schema::table('recurringinvoices_custom', function (Blueprint $table) {
+                $table->dropForeign('recurring_invoices_custom_recurring_invoice_id');
+                $table->renameColumn('recurring_invoice_id', 'recurringinvoice_id');
+                $table->foreign('recurringinvoice_id', 'recurringinvoices_custom_recurringinvoice_id')
+                    ->references('id')->on('documents')
+                    ->onDelete('cascade')
+                    ->onUpdate('restrict');
+            });
+        }
 
 
         $coredoctypes = ['Quote', 'Workorder', 'Invoice', 'Purchaseorder', 'RecurringInvoice'];
 
+        //modify customfield tables
+        foreach ($coredoctypes as $coredoctype) {
+            Schema::whenTableDoesntHaveColumn(strtolower($coredoctype) . 's_custom', strtolower($coredoctype) . '_id_v7',
+                function (Blueprint $table) use ($coredoctype) {
+                    $table->unsignedInteger(strtolower($coredoctype) . '_id_v7')->after(strtolower($coredoctype) . '_id');
+                });
+        }
+
+        //clean orphans
+        //$docs = $modtype::withTrashed()->doesntHave('invoice')->count();
+
         foreach ($coredoctypes as $coredoctype) {
             $modtype = '\\BT\Support\\SixtoSeven\\Models\\' . $coredoctype;
-            $docs = $modtype::withTrashed()->with('amount', 'items.amount', 'custom')->get();
+
+            $docs = $modtype::withTrashed()->with(
+                [
+                    'amount'       => function ($query) {
+                        return $query->withTrashed();
+                    },
+                    'items.amount' => function ($query) {
+                        return $query->withTrashed();
+                    },
+                    'custom'       => function ($query) {
+                        return $query->withTrashed();
+                    }
+                ]
+            )->get();
 
             foreach ($docs as $doc) {
                 $document = new \BT\Modules\Documents\Models\Document();
-                $document->document_type = 'BT\\Modules\\Documents\\Models\\' . ucfirst($coredoctype);
+                $document->document_type = 'BT\\Modules\\Documents\\Models\\' . ucfirst(strtolower($coredoctype));
                 $document->document_id = $doc->id;
                 $document->document_date = $doc->quote_date ?? $doc->workorder_date ?? $doc->invoice_date ?? $doc->purchaseorder_date ?? '0000-00-00';
                 $document->workorder_id = $doc->workorder_id ?? null;
@@ -73,7 +104,8 @@ return new class extends Migration {
 
 
                 $documentamount = new \BT\Modules\Documents\Models\DocumentAmount();
-
+//                $message = $modtype . $doc->id;
+//                Log::error($message);
                 $documentamount->document_id = $document->id;
                 $documentamount->subtotal = $doc->amount->subtotal;
                 $documentamount->discount = $doc->amount->discount;
@@ -87,7 +119,7 @@ return new class extends Migration {
 
                 $documentamount->saveQuietly();
 
-                $custidfield = strtolower($coredoctype) . '_id';
+                $custidfield = strtolower($coredoctype) . '_id_v7';
 
                 if ($doc->custom) {
                     $doc->custom->$custidfield = $document->id;
@@ -134,115 +166,6 @@ return new class extends Migration {
                 }
             }
         }
-        //move invoice status_id to document statuses
-        $invoices = Invoice::get();
-
-        foreach ($invoices as $invoice) {
-            if ($invoice->document_status_id == 3) {
-                $invoice->document_status_id = 6;
-            }
-            if ($invoice->document_status_id == 4) {
-                $invoice->document_status_id = 5;
-            }
-            $invoice->updateQuietly();
-        }
-        //move purchaseorder status_id to document statuses
-        $purchaseorders = Purchaseorder::get();
-
-        foreach ($purchaseorders as $purchaseorder) {
-            if ($purchaseorder->document_status_id == 3) {
-                $purchaseorder->document_status_id = 7;
-            }
-            if ($purchaseorder->document_status_id == 4) {
-                $purchaseorder->document_status_id = 8;
-            }
-            if ($purchaseorder->document_status_id == 5) {
-                $purchaseorder->document_status_id = 6;
-            } elseif ($purchaseorder->document_status_id == 6) {
-                $purchaseorder->document_status_id = 5;
-            }
-            $purchaseorder->updateQuietly();
-        }
-
-        //update quote workorder_id and invoice_id refs to new documents
-        $quotes = Quote::get();
-
-        foreach ($quotes as $quote) {
-            if ($quote->workorder_id > 0 || $quote->invoice_id > 0) {
-                if ($quote->workorder_id > 0) {
-                    $quotedoc = Workorder::where('document_id', $quote->workorder_id)->first();
-                    $quote->workorder_id = $quotedoc->id;
-                }
-                if ($quote->invoice_id > 0) {
-                    $invoicedoc = Invoice::where('document_id', $quote->invoice_id)->first();
-                    $quote->invoice_id = $invoicedoc->id;
-                }
-                $quote->updateQuietly();
-            }
-        }
-
-        //update workorder  invoice_id refs to new documents
-        $workorders = Workorder::get();
-
-        foreach ($workorders as $workorder) {
-            if ($workorder->invoice_id > 0) {
-                $invoicedoc = Invoice::where('document_id', $workorder->invoice_id)->first();
-                $workorder->invoice_id = $invoicedoc->id;
-                $workorder->updateQuietly();
-            }
-        }
-
-        //update payment invoice_id to new documents
-        $payments = Payment::get();
-
-        foreach ($payments as $payment) {
-            if ($payment->invoice_id > 0) {
-                $invoicedoc = Invoice::where('document_id', $payment->invoice_id)->first();
-                $payment->invoice_id = $invoicedoc->id;
-                $payment->updateQuietly();
-            }
-        }
-
-        //update timetrackingtasks invoice_id to new documents
-        $timetrackingtasks = TimeTrackingTask::get();
-
-        foreach ($timetrackingtasks as $timetrackingtask) {
-            if ($timetrackingtask->invoice_id > 0) {
-                $invoicedoc = Invoice::where('document_id', $timetrackingtask->invoice_id)->first();
-                $timetrackingtask->invoice_id = $invoicedoc->id;
-                $timetrackingtask->updateQuietly();
-            }
-        }
-
-        //update expenses invoice_id to new documents
-        $expenses = Expense::get();
-
-        foreach ($expenses as $expense) {
-            if ($expense->invoice_id > 0) {
-                $invoicedoc = Invoice::where('document_id', $expense->invoice_id)->first();
-                $expense->invoice_id = $invoicedoc->id;
-                $expense->updateQuietly();
-            }
-        }
-
-        //create recurringinvoiceGroup and config setting
-        $existinggroups = Group::count();
-        Setting::saveByKey('recurringinvoiceGroup', $existinggroups + 1);
-
-        $maxrinvs = \BT\Support\SixtoSeven\Models\RecurringInvoice::max('id');
-        Group::create(['name' => 'Recurringinvoice Default', 'format' => 'RINV{NUMBER}', 'next_id' => $maxrinvs + 1,
-            'left_pad' => 0, 'reset_number' => 0]);
-
-        $recurringinvoices = \BT\Modules\Documents\Models\Recurringinvoice::get();
-        foreach ($recurringinvoices as $recurringinvoice){
-            $recurringinvoice->number = 'RINV' . $recurringinvoice->document_id;
-            $recurringinvoice->updateQuietly();
-        }
-
-        //remove temporary column
-        Schema::table('documents', function (Blueprint $table) {
-            $table->dropColumn('document_id');
-        });
 
         Schema::enableForeignKeyConstraints();
 

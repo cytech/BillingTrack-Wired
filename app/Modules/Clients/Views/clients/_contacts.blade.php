@@ -37,8 +37,8 @@
 @include('layouts._alerts')
 <div class="row">
     <div class="col-lg-12">
-        <table class="table table-hover">
-            <thead>
+        <table class="table  table-striped datatable">
+            <thead class="bg-body lwtable">
             <tr>
                 <th>@lang('bt.name')</th>
                 <th>@lang('bt.title')</th>

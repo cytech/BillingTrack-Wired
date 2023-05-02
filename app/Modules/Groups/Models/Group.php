@@ -11,6 +11,7 @@
 
 namespace BT\Modules\Groups\Models;
 
+use BT\Modules\Settings\Models\Setting;
 use BT\Traits\Sortable;
 use Illuminate\Database\Eloquent\Model;
 
@@ -94,6 +95,16 @@ class Group extends Model
     public static function getList()
     {
         return self::orderBy('name')->pluck('name', 'id')->all();
+    }
+
+    public static function getDefaultList()
+    {
+        $default_groups = ['invoiceGroup', 'quoteGroup', 'workorderGroup', 'purchaseorderGroup', 'recurringinvoiceGroup'];
+        $default_list = [];
+        foreach ($default_groups as $default) {
+            $default_list[] = Setting::getByKey($default);
+        }
+        return $default_list;
     }
 
     public static function incrementNextId($document)

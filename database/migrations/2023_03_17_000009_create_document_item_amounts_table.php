@@ -31,8 +31,15 @@ class CreateDocumentItemAmountsTable extends Migration
             $table->decimal('tax_2', 20, 4)->default('0.0000');
             $table->decimal('tax', 20, 4)->default('0.0000');
             $table->decimal('total', 20, 4)->default('0.0000');
+
+            $table->index(["item_id"], 'fk_document_item_amounts_document_items1_idx');
             $table->softDeletes();
             $table->nullableTimestamps();
+
+            $table->foreign('item_id', 'fk_document_item_amounts_document_items1_idx')
+                ->references('id')->on('document_items')
+                ->onDelete('cascade')
+                ->onUpdate('restrict');
         });
     }
 

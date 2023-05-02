@@ -108,10 +108,10 @@ class TrashColumnDefs
                 Column::make('Action')
                     ->label(fn($row, Column $column) => view('utilities._actions')->withModel($row)),
             ];
-        } elseif (!$statuses && $module_type == 'Recurringinvoice') { //Recurringinvoice column defs
+        } elseif ($module_type == 'Recurringinvoice') { //Recurringinvoice column defs
             $frequencies = Frequency::lists();
             $default_columns = [
-                Column::make(__('bt.number'), 'id')
+                Column::make(__('bt.number'), 'number')
                     ->sortable(),
                 Column::make(__('bt.client'), 'client.name')
                     ->sortable()

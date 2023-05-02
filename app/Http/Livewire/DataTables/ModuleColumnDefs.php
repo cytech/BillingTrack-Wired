@@ -369,7 +369,14 @@ class ModuleColumnDefs
                 Column::make(__('bt.category'), 'category.name')
                     ->sortable(),
                 Column::make(__('bt.product_type'), 'inventorytype.name')
-                    ->sortable(),
+                    ->sortable()
+                    ->format(function ($value, $row, Column $column) {
+                        $ret = $row->inventorytype->name;
+                        if ($row->is_trackable)
+                            $ret = '<div class="bg-secondary" title="' . __('bt.trackable') . '">' . $row->inventorytype->name . '</div>';
+                        return $ret;
+                    })
+                    ->html(),
                 Column::make(__('bt.product_numstock'), 'numstock')
                     ->sortable(),
                 Column::make(__('bt.tax_1'), 'tax_rate_id')

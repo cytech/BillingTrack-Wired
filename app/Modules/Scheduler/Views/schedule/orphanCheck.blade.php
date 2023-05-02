@@ -51,7 +51,7 @@
                                                    data-route="{{ route('scheduler.getreplace.employee',[ 'item_id' => $resource->id,'name' => $resource->name, 'date' => $resource->workorder->job_date]) }}">
                                                     <i class="fa fa-sync"></i> @lang('bt.replace_employee')</a>
                                                 <a class="dropdown-item"
-                                                   href="{{ route('workorders.edit', [$resource->workorder->id]) }}"><i
+                                                   href="{{ route('documents.edit', [$resource->workorder->id]) }}"><i
                                                             class="fa fa-edit"></i> @lang('bt.edit_workorder')</a>
                                             </div>
                                         </div>

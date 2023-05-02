@@ -31,6 +31,14 @@ class DocumentObserver
         // Increment the next id
         Group::incrementNextId($document);
 
+        // reset recurringinvoice group_id to invoice default
+        // initial recurringinvoiceGroup is only used for group naming
+        // saved group_id is used as the default template when recurring is creating an invoice
+        if ($document->group_id && $document->module_type == 'Recurringinvoice') {
+            $document->group_id = config('bt.invoiceGroup');
+            $document->save();
+        }
+
         // Create the custom document record.
         //$document->custom()->save(new DocumentCustom()); todo
         $customclass = 'BT\\Modules\\CustomFields\\Models\\' . $document->module_type . 'Custom';
@@ -83,12 +91,12 @@ class DocumentObserver
             $document->company_profile_id = config('bt.defaultCompanyProfile');
         }
 
-        if (!$document->group_id) {
-            $document->group_id = config('bt.' . $document->lower_case_baseclass . 'Group');
-        }
-
         if (!$document->number) {
             $document->number = Group::generateNumber($document->group_id);
+        }
+
+        if (!$document->group_id) {
+            $document->group_id = config('bt.' . $document->lower_case_baseclass . 'Group');
         }
 
         if (!isset($document->terms)) {
@@ -100,7 +108,10 @@ class DocumentObserver
         }
 
         if (!$document->document_status_id) {
-            $document->document_status_id = DocumentStatuses::getStatusId('draft');
+            if ($document->module_type == 'Recurringinvoice') {
+                $document->document_status_id = DocumentStatuses::getStatusId('active');
+            } else
+                $document->document_status_id = DocumentStatuses::getStatusId('draft');
         }
 
         if (!$document->currency_code) {

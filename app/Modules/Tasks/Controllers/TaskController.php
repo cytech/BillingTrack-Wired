@@ -62,11 +62,11 @@ class TaskController extends Controller
                     $date = Carbon::now()->addDays($daysFromNow)->format('Y-m-d');
 
                     $invoices = Invoice::with('client')
-                        ->where('invoice_status_id', '=', DocumentStatuses::getStatusId('sent'))
+                        ->where('document_status_id', '=', DocumentStatuses::getStatusId('sent'))
                         ->whereHas('amount', function ($query) {
                             $query->where('balance', '>', '0');
                         })
-                        ->where('due_at', $date)
+                        ->where('action_date', $date)
                         ->get();
 
                     Log::info('BT::MailQueue - Invoices found due ' . $daysFromNow . ' days from now on ' . $date . ': ' . $invoices->count());
@@ -114,11 +114,11 @@ class TaskController extends Controller
                     $date = Carbon::now()->subDays($daysAgo)->format('Y-m-d');
 
                     $invoices = Invoice::with('client')
-                        ->where('invoice_status_id', '=', DocumentStatuses::getStatusId('sent'))
+                        ->where('document_status_id', '=', DocumentStatuses::getStatusId('sent'))
                         ->whereHas('amount', function ($query) {
                             $query->where('balance', '>', '0');
                         })
-                        ->where('due_at', $date)
+                        ->where('action_date', $date)
                         ->get();
 
                     Log::info('BT::MailQueue - Invoices found due ' . $daysAgo . ' days ago on ' . $date . ': ' . $invoices->count());
@@ -172,16 +172,19 @@ class TaskController extends Controller
 
             CustomField::copyCustomFieldValues($recurringInvoice, $invoice);
 
-            foreach ($recurringInvoice->recurringInvoiceItems as $item)
+            foreach ($recurringInvoice->documentItems as $item)
             {
                 $itemData = [
-                    'invoice_id'    => $invoice->id,
+                    'document_id'    => $invoice->id,
                     'name'          => $item->name,
                     'description'   => $item->description,
                     'quantity'      => $item->quantity,
                     'price'         => $item->price,
                     'tax_rate_id'   => $item->tax_rate_id,
                     'tax_rate_2_id' => $item->tax_rate_2_id,
+                    'resource_table'=> $item->resource_table,
+                    'resource_id'   => $item->resource_id,
+                    'is_tracked'    => $item->is_tracked,
                     'display_order' => $item->display_order,
                 ];
 

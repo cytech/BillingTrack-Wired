@@ -81,8 +81,8 @@ class BackupController extends Controller
                 $msg = '0 ' . trans('bt.record_successfully_trashed');
             }
         } else {
-            $className = '\BT\Modules\\' . $module . 's\Models\\' . $module;
-            $datefield = strtolower($module) . '_date';
+            $className = '\BT\Modules\Documents\Models\\' . $module;
+            $datefield = 'document_date';
             $records = $className::where($datefield, '<', $date)->whereNull('deleted_at');
             if ($records) {
                 $msg = $records->count() . ' ' . trans('bt.record_successfully_trashed');
@@ -114,8 +114,8 @@ class BackupController extends Controller
             $className = '\BT\Modules\\' . $module . 's\Models\\' . $module;
             $className::where('created_at', '<', $date)->onlyTrashed()->forceDelete();
         } else {
-            $className = '\BT\Modules\\' . $module . 's\Models\\' . $module;
-            $datefield = strtolower($module) . '_date';
+            $className = '\BT\Modules\Documents\Models\\' . $module;
+            $datefield = 'document_date';
             $className::where($datefield, '<', $date)->onlyTrashed()->forceDelete();
         }
 
@@ -131,9 +131,9 @@ class BackupController extends Controller
 
         $date = $request->clientprior_date;
         // find all clients with activity after $date
-        $active_quote = Quote::distinct('client_id')->where('quote_date', '>=', $date)->pluck('client_id', 'client_id');
-        $active_workorder = Workorder::distinct('client_id')->where('workorder_date', '>=', $date)->pluck('client_id', 'client_id');
-        $active_invoice = Invoice::distinct('client_id')->where('invoice_date', '>=', $date)->pluck('client_id', 'client_id');
+        $active_quote = Quote::distinct('client_id')->where('document_date', '>=', $date)->pluck('client_id', 'client_id');
+        $active_workorder = Workorder::distinct('client_id')->where('document_date', '>=', $date)->pluck('client_id', 'client_id');
+        $active_invoice = Invoice::distinct('client_id')->where('document_date', '>=', $date)->pluck('client_id', 'client_id');
         $active_recurringinvoice = Recurringinvoice::distinct('client_id')->where('next_date', '>=', $date)->pluck('client_id', 'client_id');
         $active_payment = Payment::distinct('client_id')->where('paid_at', '>=', $date)->pluck('client_id', 'client_id');
         $active_expense = Expense::distinct('client_id')->where('expense_date', '>=', $date)->pluck('client_id', 'client_id');
@@ -156,6 +156,110 @@ class BackupController extends Controller
         ini_set('max_execution_time', $maxtime);
 
         return back()->with('alertSuccess', $setinactive->count() . ' Clients set to Inactive');
+
+    }
+
+    // below for database debugging
+    // v6 to v7
+    // v7 migration sanitizes orphans so these should not be necessary
+    // possible backport or addon for V6removeOrphanedModules...
+    public function removeOrphanedModules(){
+        $maxtime = ini_get('max_execution_time');
+        ini_set('max_execution_time', 0);
+        $msg =  '';
+        $className = '\BT\Modules\Documents\Models\DocumentAmount';
+        $records = $className::withTrashed()->whereDoesntHave('document', function ($query) {return $query->withTrashed();});
+        if ($records) {
+//            $msg .= $records->count() . ' ' . trans('bt.orphan_amounts_found') . "<br />";
+            $msg .= $records->count() . ' ' . trans('Orphan Amounts Found') . "<br />";
+//            $records->forceDelete();
+        } else {
+//            $msg .= '0 ' . trans('bt.orphan_amounts_found') . "<br />";
+            $msg .= '0 ' . trans('Orphan Amounts Found') . "<br />";
+        }
+
+        $className = '\BT\Modules\Documents\Models\DocumentItemAmount';
+        $records = $className::withTrashed()->whereDoesntHave('item', function ($query) {return $query->withTrashed();});
+        if ($records) {
+//            $msg .= $records->count() . ' ' . trans('bt.orphan_item_amounts_found') . "<br />";
+            $msg .= $records->count() . ' ' . trans('Orphan ItemAmounts Found') . "<br />";
+//            $records->forceDelete();
+        } else {
+//            $msg .= '0 ' . trans('bt.orphan_item_amounts_found') . "<br />";
+            $msg .= '0 ' . trans('Orphan ItemAmounts Found') . "<br />";
+        }
+
+        $className = '\BT\Modules\Documents\Models\DocumentItem';
+        $records = $className::withTrashed()->whereDoesntHave('document', function ($query) {return $query->withTrashed();});
+        if ($records) {
+//            $msg .= $records->count() . ' ' . trans('bt.orphan_items_found') . "<br />";
+            $msg .= $records->count() . ' ' . trans('Orphan Items Found') . "<br />";
+//            $records->forceDelete();
+        } else {
+//            $msg .= '0 ' . trans('bt.orphan_items_found') . "<br />";
+            $msg .= '0 ' . trans('Orphan Items Found') . "<br />";
+        }
+
+
+        ini_set('max_execution_time', $maxtime);
+
+        return back()->with('error', $msg);
+
+    }
+
+    public function V6removeOrphanedModules()
+    {
+        $maxtime = ini_get('max_execution_time');
+        ini_set('max_execution_time', 0);
+        $coredoctypes = ['Quote', 'Workorder', 'Invoice', 'Purchaseorder', 'RecurringInvoice'];
+
+        $msg = '';
+        foreach ($coredoctypes as $coredoctype) {
+            $modtype = '\\BT\Support\\SixtoSeven\\Models\\' . $coredoctype . 'Amount';
+
+            $records = $modtype::withTrashed()->whereDoesntHave(strtolower($coredoctype), function ($query) {
+                return $query->withTrashed();
+            });
+
+            if ($records) {
+//                $msg .= $records->count() . ' ' . trans('bt.orphan_amounts_found') . "<br />";
+                $msg .= $records->count() . ' ' . $coredoctype . ' Amount orphans found ' . "<br />";
+//            $records->forceDelete();
+            } else {
+//                $msg .= '0 ' . trans('bt.orphan_amounts_found') . "<br />";
+                $msg .= '0 ' . $coredoctype . ' Amount orphans found ' . "<br />";
+            }
+
+            $modtype = '\\BT\Support\\SixtoSeven\\Models\\' . $coredoctype . 'ItemAmount';
+            $records = $modtype::withTrashed()->whereDoesntHave('item', function ($query) {
+                return $query->withTrashed();
+            });
+            if ($records) {
+//                $msg .= $records->count() . ' ' . trans('bt.orphan_item_amounts_found') . "<br />";
+                $msg .= $records->count() . ' ' . $coredoctype . ' Item Amount orphans found ' . "<br />";
+//            $records->forceDelete();
+            } else {
+//                $msg .= '0 ' . trans('bt.orphan_item_amounts_found') . "<br />";
+                $msg .= '0 ' . $coredoctype . ' Item Amount orphans found ' . "<br />";
+            }
+
+            $modtype = '\\BT\Support\\SixtoSeven\\Models\\' . $coredoctype . 'Item';
+            $records = $modtype::withTrashed()->whereDoesntHave(strtolower($coredoctype), function ($query) {
+                return $query->withTrashed();
+            });
+            if ($records) {
+//                $msg .= $records->count() . ' ' . trans('bt.orphan_items_found') . "<br />";
+                $msg .= $records->count() . ' ' . $coredoctype . ' Item orphans found ' . "<br />";
+//            $records->forceDelete();
+            } else {
+//                $msg .= '0 ' . trans('bt.orphan_items_found') . "<br />";
+                $msg .= '0 ' . $coredoctype . ' Item orphans found ' . "<br />";
+            }
+
+        }
+        ini_set('max_execution_time', $maxtime);
+
+        return back()->with('error', $msg);
 
     }
 

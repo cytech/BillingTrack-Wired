@@ -7,6 +7,7 @@
             <div class="card-body">
                 <table class="table table-striped">
                     <tbody>
+                    <thead class="bg-body lwtable">
                     <tr>
                         <th>@lang('bt.client')</th>
                         <th>@lang('bt.date')</th>
@@ -14,11 +15,12 @@
                         <th>@lang('bt.payment_method')</th>
                         <th>@lang('bt.amount')</th>
                     </tr>
+                    </thead>
                     @foreach ($recentPayments as $payment)
                         <tr>
                             <td>{{ $payment->client->name }}</td>
                             <td>{!! $payment->formatted_paid_at !!}</td>
-                            <td><a href="{!! url('/invoices') . '/' .  $payment->invoice->id . '/edit' !!}">
+                            <td><a href="{!! url('/documents') . '/' .  $payment->invoice->id . '/edit' !!}">
                                     {{ $payment->invoice->number }}</a></td>
                             <td>{!! $payment->paymentMethod->name !!}</td>
                             <td>{!! $payment->formatted_amount !!}</td>

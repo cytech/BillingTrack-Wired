@@ -56,13 +56,20 @@ class BeforeMiddleware
             }
 
             // Override the framework mail configuration with the values provided by the application
-            config(['mail.driver' => (config('bt.mailDriver')) ? config('bt.mailDriver') : 'smtp']);
-            config(['mail.host' => config('bt.mailHost')]);
-            config(['mail.port' => config('bt.mailPort') ? config('bt.mailPort') : null]);
-            config(['mail.encryption' => config('bt.mailEncryption')]);
-            config(['mail.username' => config('bt.mailUsername')]);
-            config(['mail.password' => $mailPassword]);
-            config(['mail.sendmail' => config('bt.mailSendmail')]);
+//            config(['mail.driver' => (config('bt.mailDriver')) ? config('bt.mailDriver') : 'smtp']);
+//            config(['mail.host' => config('bt.mailHost')]);
+//            config(['mail.port' => config('bt.mailPort') ? config('bt.mailPort') : null]);
+//            config(['mail.encryption' => config('bt.mailEncryption')]);
+//            config(['mail.username' => config('bt.mailUsername')]);
+//            config(['mail.password' => $mailPassword]);
+//            config(['mail.sendmail' => config('bt.mailSendmail')]);
+            config(['mail.default' => (config('bt.mailDriver')) ? config('bt.mailDriver') : 'smtp']);
+            config(['mail.mailers.smtp.host' => config('bt.mailHost')]);
+            config(['mail.mailers.smtp.port' => config('bt.mailPort') ? config('bt.mailPort') : null]);
+            config(['mail.mailers.smtp.encryption' => config('bt.mailEncryption')]);
+            config(['mail.mailers.smtp.username' => config('bt.mailUsername')]);
+            config(['mail.mailers.smtp.password' => $mailPassword]);
+            config(['mail.mailers.sendmail.path' => config('bt.mailSendmail')]);
 
             if (config('bt.mailAllowSelfSignedCertificate'))
             {

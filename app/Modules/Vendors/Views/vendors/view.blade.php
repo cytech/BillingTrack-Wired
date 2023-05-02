@@ -31,6 +31,7 @@
                 </div>
                 <div class="clearfix"></div>
             </div>
+        </div>
     </section>
     <section class="content">
         @include('layouts._alerts')

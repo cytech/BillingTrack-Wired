@@ -112,6 +112,8 @@
                             <li class="nav-item"><a class="nav-link" data-bs-toggle="tab"
                                                     href="#tab-invoices">@lang('bt.invoices')</a></li>
                             <li class="nav-item"><a class="nav-link" data-bs-toggle="tab"
+                                                    href="#tab-recurringinvoices">@lang('bt.recurringinvoices')</a></li>
+                            <li class="nav-item"><a class="nav-link" data-bs-toggle="tab"
                                                     href="#tab-purchaseorders">@lang('bt.purchaseorders')</a></li>
                             <li class="nav-item"><a class="nav-link" data-bs-toggle="tab"
                                                     href="#tab-taxes">@lang('bt.taxes')</a></li>
@@ -137,6 +139,9 @@
                         </div>
                         <div id="tab-invoices" class="tab-pane">
                             @include('settings._invoices')
+                        </div>
+                        <div id="tab-recurringinvoices" class="tab-pane">
+                            @include('settings._recurringinvoices')
                         </div>
                         <div id="tab-purchaseorders" class="tab-pane">
                             @include('settings._purchaseorders')
