@@ -62,8 +62,7 @@
                     <label class="col-form-label">@lang('bt.company_profile')</label>
                     </div>
                     <div class="col-sm-7">
-                        {!! Form::select('company_profile_id', $companyProfiles, null,
-                        ['wire:model' => 'company_profile_id','id' => 'company_profile_id', 'class' => 'form-select']) !!}
+                        {{ html()->select('company_profile_id', $companyProfiles, null)->attributes(['wire:model' => 'company_profile_id','id' => 'company_profile_id'])->class('form-select') }}
                     </div>
                 </div>
                 <div class="row g-3 mb-3 align-items-center">
@@ -71,8 +70,7 @@
                     <label class="col-form-label">@lang('bt.group')</label>
                     </div>
                     <div class="col-sm-7">
-                        {!! Form::select('group_id', $groups, null,
-                        ['wire:model' => 'group_id','id' => 'group_id', 'class' => 'form-select']) !!}
+                        {{ html()->select('group_id', $groups, null)->attributes(['wire:model' => 'group_id','id' => 'group_id'])->class('form-select') }}
                     </div>
                 </div>
                 @if($moduletype == 'Recurringinvoice')
@@ -94,12 +92,10 @@
                         <div class="col-sm-7">
                             <div class="row">
                                 <div class="col-sm-4">
-                                    {!! Form::select('recurring_frequency', array_combine(range(1, 90), range(1, 90)), null,
-                                                    ['wire:model' => 'recurring_frequency', 'id' => 'recurring_frequency', 'class' => 'form-select']) !!}
+                                    {{ html()->select('recurring_frequency', array_combine(range(1, 90), range(1, 90)), null)->attributes( ['wire:model' => 'recurring_frequency', 'id' => 'recurring_frequency'])->class('form-select') }}
                                 </div>
                                 <div class="col-sm-7">
-                                    {!! Form::select('recurring_period', $frequencies, null,
-                                                    ['wire:model' => 'recurring_period', 'id' => 'recurring_period', 'class' => 'form-select']) !!}
+                                    {{ html()->select('recurring_period', $frequencies, null)->attributes(['wire:model' => 'recurring_period', 'id' => 'recurring_period'])->class('form-select') }}
                                 </div>
                             </div>
                         </div>

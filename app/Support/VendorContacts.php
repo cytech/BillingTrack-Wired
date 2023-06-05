@@ -11,7 +11,6 @@
 
 namespace BT\Support;
 
-use Collective\Html\FormFacade;
 use BT\Modules\Vendors\Models\Vendor;
 
 class VendorContacts
@@ -30,7 +29,7 @@ class VendorContacts
         $allContacts      = $this->getAllContacts();
         $selectedContacts = $this->getSelectedContactsTo();
 
-        return FormFacade::select('to', $allContacts, $selectedContacts, ['id' => 'to', 'multiple' => 'multiple', 'class' => 'form-control']);
+        return html()->select('to', $allContacts, $selectedContacts)->multiple()->class('form-control');
     }
 
     public function contactDropdownCc()
@@ -38,7 +37,7 @@ class VendorContacts
         $allContacts      = $this->getAllContacts();
         $selectedContacts = $this->getSelectedContactsCc();
 
-        return FormFacade::select('cc', $allContacts, $selectedContacts, ['id' => 'cc', 'multiple' => 'multiple', 'class' => 'form-control']);
+        return html()->select('cc', $allContacts, $selectedContacts)->multiple()->class('form-control');
     }
 
     public function contactDropdownBcc()
@@ -46,7 +45,7 @@ class VendorContacts
         $allContacts      = $this->getAllContacts();
         $selectedContacts = $this->getSelectedContactsBcc();
 
-        return FormFacade::select('bcc', $allContacts, $selectedContacts, ['id' => 'bcc', 'multiple' => 'multiple', 'class' => 'form-control']);
+        return html()->select('bcc', $allContacts, $selectedContacts)->multiple()->class('form-control');
     }
 
     public function getSelectedContactsTo()

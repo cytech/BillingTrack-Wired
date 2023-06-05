@@ -8,10 +8,10 @@
         });
     </script>
 
-    @if ($editMode == true)
-        {!! Form::model($taxRate, ['route' => ['taxRates.update', $taxRate->id]]) !!}
+    @if ($editMode)
+        {{ html()->modelForm($taxRate, 'POST', route('taxRates.update', $taxRate->id))->open() }}
     @else
-        {!! Form::open(['route' => 'taxRates.store']) !!}
+        {{ html()->form('POST', route('taxRates.store'))->open() }}
     @endif
 
     <section class="app-content-header">
@@ -35,43 +35,43 @@
             <div class="card-body">
                 <div class="mb-3">
                     <label>@lang('bt.tax_rate_name'): </label>
-                    {!! Form::text('name', null, ['id' => 'name', 'class' => 'form-control']) !!}
+                    {{ html()->text('name', null)->class('form-control') }}
                 </div>
                 <div class="mb-3">
                     <label>@lang('bt.tax_rate_percent'): </label>
                     @if ($editMode and $taxRate->in_use)
-                        {!! Form::text('percent', (($editMode) ? $taxRate->formatted_numeric_percent : null),
-                        ['id' => 'percent', 'class' => 'form-control', 'readonly' => 'readonly']) !!}
+                        {{ html()->text('percent', (($editMode) ? $taxRate->formatted_numeric_percent : null))->class('form-control')->isReadonly() }}
                     @else
-                        {!! Form::text('percent', (($editMode) ? $taxRate->formatted_numeric_percent : null),
-                        ['id' => 'percent', 'class' => 'form-control']) !!}
+                        {{ html()->text('percent', (($editMode) ? $taxRate->formatted_numeric_percent : null))->class('form-control') }}
                     @endif
                 </div>
                 <div class="mb-3">
                     <label>@lang('bt.calculate_as_vat_gst'):</label>
                     @if ($editMode and $taxRate->in_use)
-                        {!! Form::select('calculate_vat', ['0' => trans('bt.no'), '1' => trans('bt.yes')],
-                        null, ['class' => 'form-select', 'readonly' => 'readonly', 'disabled' =>
-                        'disabled']) !!}
+                        {{ html()->select('calculate_vat', ['0' => trans('bt.no'), '1' => trans('bt.yes')],
+                        null)->class('form-select')->disabled()->isReadonly() }}
                     @else
-                        {!! Form::select('calculate_vat', ['0' => trans('bt.no'), '1' => trans('bt.yes')],
-                        null, ['class' => 'form-select']) !!}
+                        {{ html()->select('calculate_vat', ['0' => trans('bt.no'), '1' => trans('bt.yes')],
+                        null)->class('form-select') }}
                     @endif
                 </div>
                 <div class="mb-3">
                     <label>@lang('bt.compound'):</label>
                     @if ($editMode and $taxRate->in_use)
-                        {!! Form::select('is_compound', ['0' => trans('bt.no'), '1' => trans('bt.yes')],
-                        null, ['class' => 'form-select', 'readonly' => 'readonly', 'disabled' =>
-                        'disabled']) !!}
+                        {{ html()->select('is_compound', ['0' => trans('bt.no'), '1' => trans('bt.yes')],
+                        null)->class('form-select')->disabled()->isReadonly() }}
                     @else
-                        {!! Form::select('is_compound', ['0' => trans('bt.no'), '1' => trans('bt.yes')],
-                        null, ['class' => 'form-select']) !!}
+                        {{ html()->select('is_compound', ['0' => trans('bt.no'), '1' => trans('bt.yes')],
+                        null)->class('form-select') }}
                     @endif
                     <span class="form-text text-muted">@lang('bt.compound_tax_note')</span>
                 </div>
             </div>
         </div>
     </section>
-    {!! Form::close() !!}
+    @if ($editMode)
+        {{ html()->closeModelForm() }}
+    @else
+        {{ html()->form()->close() }}
+    @endif
 @stop

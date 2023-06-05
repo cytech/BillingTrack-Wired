@@ -51,7 +51,7 @@
                     <div class="col-sm-4 text-end fw-bold">
                         <label class="col-form-label">@lang('bt.category')</label></div>
                     <div class="col-sm-7">
-                        {!! Form::select('category_id',$categories,null, ['wire:model' => 'category_id', 'id' => 'category', 'class'=> 'form-select']) !!}
+                        {{ html()->select('category_id',$categories,null)->attributes( ['wire:model' => 'category_id', 'id' => 'category'])->class('form-select') }}
                     </div>
                 </div>
                 <hr>

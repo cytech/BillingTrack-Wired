@@ -29,27 +29,27 @@
     <div class="col-md-4">
         <div class="mb-3">
             <label class="form-label fw-bold">@lang('bt.paper_size'): </label>
-            {!! Form::select('setting[paperSize]', $paperSizes, config('bt.paperSize'), ['class' => 'form-select']) !!}
+            {{ html()->select('setting[paperSize]', $paperSizes, config('bt.paperSize'))->class('form-select') }}
         </div>
     </div>
     <div class="col-md-4">
         <div class="mb-3">
             <label class="form-label fw-bold">@lang('bt.paper_orientation'): </label>
-            {!! Form::select('setting[paperOrientation]', $paperOrientations, config('bt.paperOrientation'), ['class' => 'form-select']) !!}
+            {{ html()->select('setting[paperOrientation]', $paperOrientations, config('bt.paperOrientation'))->class('form-select') }}
         </div>
     </div>
     <div class="col-md-4">
         <div class="mb-3">
             <label class="form-label fw-bold">@lang('bt.pdf_disposition'): </label>
-            {!! Form::select('setting[pdfDisposition]', $pdfDisposition, config('bt.pdfDisposition'), ['class' => 'form-select']) !!}
+            {{ html()->select('setting[pdfDisposition]', $pdfDisposition, config('bt.pdfDisposition'))->class('form-select') }}
         </div>
     </div>
 </div>
 <div class="mb-3">
     <label class="form-label fw-bold">@lang('bt.pdf_driver'): </label>
-    {!! Form::select('setting[pdfDriver]', $pdfDrivers, config('bt.pdfDriver'), ['id' => 'pdfDriver', 'class' => 'form-select']) !!}
+    {{ html()->select('setting[pdfDriver]', $pdfDrivers, config('bt.pdfDriver'))->class('form-select')->attribute('id', 'pdfDriver') }}
 </div>
 <div class="mb-3 wkhtmltopdf-option">
     <label class="form-label fw-bold">@lang('bt.binary_path'): </label>
-    {!! Form::text('setting[pdfBinaryPath]', config('bt.pdfBinaryPath'), ['class' => 'form-control']) !!}
+    {{ html()->text('setting[pdfBinaryPath]', config('bt.pdfBinaryPath'))->class('form-control') }}
 </div>

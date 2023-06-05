@@ -4,8 +4,7 @@
     <!--basic form starts-->
     @include('layouts._alerts')
     <section class="app-content-header">
-        {!! Form::model($categories, array('route' => array('categories.update', $categories->id),
-                                                       'id'=>'categories_form','action'=>'#','method' => 'PUT', 'class'=>'form-horizontal')) !!}
+        {{ html()->modelForm($categories, 'PUT', route('categories.update', $categories->id))->class('form-horizontal')->open() }}
 
         <div class="card card-light">
             <div class="card-header">
@@ -26,11 +25,11 @@
                            for="name">@lang('bt.category_name')</label>
                     </div>
                     <div class="col-md-8">
-                        {!! Form::text('name',$categories->name,['id'=>'name', 'class'=>'form-control']) !!}
+                        {{ html()->text('name', $categories->name)->class('form-control') }}
                     </div>
                 </div>
             </div>
         </div>
-        {!! Form::close() !!}
+        {{ html()->closeModelForm() }}
     </section>
 @stop

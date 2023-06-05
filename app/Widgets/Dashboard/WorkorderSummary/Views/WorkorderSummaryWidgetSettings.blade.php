@@ -17,7 +17,7 @@
 </script>
 <div class="mb-3">
     <label>@lang('bt.dashboard_totals_option'): </label>
-    {!! Form::select('setting[widgetWorkorderSummaryDashboardTotals]', $dashboardTotalOptions, config('bt.widgetWorkorderSummaryDashboardTotals'), ['class' => 'form-control', 'id' => 'workorder-dashboard-total-setting']) !!}
+    {{ html()->select('setting[widgetWorkorderSummaryDashboardTotals]', $dashboardTotalOptions, config('bt.widgetWorkorderSummaryDashboardTotals'))->attribute('id', 'workorder-dashboard-total-setting')->class('form-select') }}
 </div>
 <div class="row" id="div-workorder-dashboard-totals-date-range">
     <div class="col-md-4">

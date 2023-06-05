@@ -82,7 +82,7 @@ class ProductController extends Controller
         $products->price = $request->price ?: 0;
         $products->active = is_null($request->active) ? 0 : $request->active;
         $products->cost = $request->cost ?: 0;
-        $products->inventorytype_id = $request->type <> 1 ?: 3;
+        $products->inventorytype_id = $request->type;// <> 1 ?: 3;
         $products->numstock = $request->numstock ?: 0;
         $products->tax_rate_id = $request->tax_rate_id;
         $products->tax_rate_2_id = $request->tax_rate_2_id;
@@ -106,6 +106,7 @@ class ProductController extends Controller
     {
         //pass tracked types to select box highlighted
         $invtracked = [];
+        $inventorytypes = InventoryType::pluck('name', 'id');
         $invs = InventoryType::where('tracked', 1)->get();
         foreach ($invs as $inv) {
             $invtracked[$inv->id] = ['style' => 'background-color:lightgray'];
@@ -116,7 +117,7 @@ class ProductController extends Controller
         return view('products.edit', compact('products'))
             ->with('vendors', Vendor::pluck('name', 'id'))
             ->with('categories', Category::pluck('name', 'id'))
-            ->with('inventorytypes', InventoryType::pluck('name', 'id'))
+            ->with('inventorytypes', $inventorytypes)
             ->with('taxRates', TaxRate::getList())
             ->with('optionAttributes', $invtracked)
             ->with('returnUrl', $this->getReturnUrl());
@@ -150,7 +151,7 @@ class ProductController extends Controller
         $products->price = $request->price ?: 0;
         $products->active = is_null($request->active) ? 0 : $request->active;
         $products->cost = $request->cost ?: 0;
-        $products->inventorytype_id = $request->type <> 1 ?: 3;
+        $products->inventorytype_id = $request->type;// <> 1 ?: 3;
         $products->numstock = $request->numstock ?: 0;
         $products->tax_rate_id = $request->tax_rate_id;
         $products->tax_rate_2_id = $request->tax_rate_2_id;

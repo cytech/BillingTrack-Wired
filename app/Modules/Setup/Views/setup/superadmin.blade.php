@@ -11,7 +11,7 @@
         <h3>@lang('acl.setup6')</h3>
     </section>
     <section class="content">
-        {!! Form::open(['route' => 'setup.postAccount', 'class' => 'form-install', 'autocomplete' => 'off']) !!}
+        {{ html()->form('POST', route('setup.postAccount'))->class('form-install')->attribute('autocomplete', 'off')->open() }}
         <div class="row">
             <div class="col-md-12">
                 <div class=" card card-light">
@@ -75,6 +75,6 @@
                 </div>
             </div>
         </div>
-        {!! Form::close() !!}
+        {{ html()->form()->close() }}
     </section>
 @stop

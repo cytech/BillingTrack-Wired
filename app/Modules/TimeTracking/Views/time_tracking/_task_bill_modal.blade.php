@@ -46,19 +46,18 @@
             </div>
             <div class="modal-body">
                 <div class="mb-3">
-                    {!! Form::select('how_to_bill', ['new' => trans('bt.bill_to_new_invoice'), 'existing' => trans('bt.bill_to_existing_invoice')], null, ['id' => 'how_to_bill', 'class' => 'form-control']) !!}
+                    {{ html()->select('how_to_bill', ['new' => trans('bt.bill_to_new_invoice'), 'existing' => trans('bt.bill_to_existing_invoice')], null)->class('form-select') }}
                 </div>
                 <div id="div-bill-new" style="display: none;">
                     <div class="mb-3">
                         <label>@lang('bt.group'):</label>
-                        {!! Form::select('group_id', $groups, config('bt.invoiceGroup'),
-                        ['id' => 'group_id', 'class' => 'form-control']) !!}
+                        {{ html()->select('group_id', $groups, config('bt.invoiceGroup'))->class('form-select') }}
                     </div>
                 </div>
                 <div id="div-bill-existing" style="display: none;">
                     <div class="mb-3">
                         <label>@lang('bt.choose_invoice_to_bill'):</label>
-                        {!! Form::select('invoice_id', $invoices, null, ['class' => 'form-control', 'id' => 'invoice_id']) !!}
+                        {{ html()->select('invoice_id', $invoices, null)->class('form-select') }}
                     </div>
                 </div>
             </div>

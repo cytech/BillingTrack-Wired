@@ -1,6 +1,7 @@
 @section('javaScript')
 
-    {!! Html::style('plugins/bootstrap-icons/font/bootstrap-icons.css') !!}
+{{--    {!! Html::style('plugins/bootstrap-icons/font/bootstrap-icons.css') !!}--}}
+    <link rel="stylesheet" href="/plugins/bootstrap-icons/font/bootstrap-icons.css">
 
     <style>
         .fc-day-today {

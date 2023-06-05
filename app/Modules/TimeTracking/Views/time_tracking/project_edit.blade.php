@@ -294,11 +294,11 @@
                     <div class="card-body" id="create-project">
                         <div class="mb-3">
                             <label>@lang('bt.project_name'):</label>
-                            {!! Form::text('project_name', $project->name, ['id' => 'project_name', 'class' => 'form-control form-control-sm']) !!}
+                            {{ html()->text('project_name', $project->name)->class('form-control form-control-sm') }}
                         </div>
                         <div class="mb-3">
                             <label>@lang('bt.company_profile'):</label>
-                            {!! Form::select('company_profile_id', $companyProfiles, $project->company_profile_id, ['id' => 'company_profile_id', 'class' => 'form-select form-select-sm']) !!}
+                            {{ html()->select('company_profile_id', $companyProfiles, $project->company_profile_id)->class('form-select form-select-sm') }}
                         </div>
                         <div class="mb-3">
                             <label>* @lang('bt.client'):</label>
@@ -323,11 +323,11 @@
                         </div>
                         <div class="mb-3">
                             <label>@lang('bt.hourly_rate'):</label>
-                            {!! Form::text('hourly_rate', $project->hourly_rate, ['id' => 'hourly_rate', 'class' => 'form-control form-control-sm']) !!}
+                            {{ html()->text('hourly_rate', $project->hourly_rate)->class('form-control form-control-sm') }}
                         </div>
                         <div class="mb-3">
                             <label>@lang('bt.status'):</label>
-                            {!! Form::select('status_id', $statuses, $project->status_id, ['id' => 'status_id', 'class' => 'form-select form-select-sm']) !!}
+                            {{ html()->select('status_id', $statuses, $project->status_id)->class('form-select form-select-sm') }}
                         </div>
                     </div>
                 </div>

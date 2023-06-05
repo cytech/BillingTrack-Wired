@@ -14,7 +14,7 @@ namespace BT\Modules\Products\Models;
 use BT\Modules\Documents\Models\DocumentItem;
 use BT\Modules\Documents\Models\Purchaseorder;
 //use BT\Modules\RecurringInvoices\Models\RecurringInvoiceItem;
-use BT\Modules\Scheduler\Models\Category;
+use BT\Modules\Categories\Models\Category;
 use BT\Modules\TaxRates\Models\TaxRate;
 use BT\Modules\Vendors\Models\Vendor;
 use BT\Support\CurrencyFormatter;

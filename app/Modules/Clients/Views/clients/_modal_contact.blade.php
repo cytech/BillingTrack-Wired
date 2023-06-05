@@ -45,19 +45,19 @@
                         <div class="col-md-4">
                             <div class="mb-3">
                                 <label>@lang('bt.first_name'):</label>
-                                {!! Form::text('contact_first_name', ($editMode) ? $contact->first_name : null, ['class' => 'form-control', 'id' => 'contact_first_name']) !!}
+                                {{ html()->text('contact_first_name', ($editMode) ? $contact->first_name : null)->class('form-control') }}
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="mb-3">
                                 <label>@lang('bt.last_name'):</label>
-                                {!! Form::text('contact_last_name', ($editMode) ? $contact->last_name : null, ['class' => 'form-control', 'id' => 'contact_last_name']) !!}
+                                {{ html()->text('contact_last_name', ($editMode) ? $contact->last_name : null)->class('form-control') }}
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="mb-3">
                                 <label>@lang('bt.name'):</label>
-                                {!! Form::text('contact_name', ($editMode) ? $contact->name : null, ['class' => 'form-control', 'id' => 'contact_name']) !!}
+                                {{ html()->text('contact_name', ($editMode) ? $contact->name : null)->class('form-control') }}
                             </div>
                         </div>
                         <script>
@@ -72,19 +72,19 @@
                         <div class="col-md-4">
                             <div class="mb-3">
                                 <label>@lang('bt.title'):</label>
-                                {!! Form::select('contact_title_id', $titles, ($editMode) ? $contact->title_id : 1 , ['id' => 'contact_title_id', 'class' => 'form-select']) !!}
+                                {{ html()->select('contact_title_id', $titles, ($editMode) ? $contact->title_id : 1)->class('form-select') }}
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="mb-3">
                                 <label>@lang('bt.is_primary'):</label>
-                                {!! Form::select('contact_is_primary', ['0' => __('bt.no'), '1' => __('bt.yes')], ($editMode) ? $contact->is_primary : 0 , ['id' => 'contact_is_primary', 'class' => 'form-select']) !!}
+                                {{ html()->select('contact_is_primary', ['0' => __('bt.no'), '1' => __('bt.yes')], ($editMode) ? $contact->is_primary : 0)->class('form-select') }}
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="mb-3">
                                 <label>@lang('bt.optin'):</label>
-                                {!! Form::select('contact_optin', ['0' => __('bt.no'), '1' => __('bt.yes')], ($editMode) ? $contact->optin : 1, ['id' => 'contact_optin', 'class' => 'form-select']) !!}
+                                {{ html()->select('contact_optin', ['0' => __('bt.no'), '1' => __('bt.yes')], ($editMode) ? $contact->optin : 1)->class('form-select') }}
                             </div>
                         </div>
                     </div>
@@ -92,25 +92,25 @@
                         <div class="col-md-3">
                             <div class="mb-3">
                                 <label>@lang('bt.phone_number'): </label>
-                                {!! Form::text('contact_phone', ($editMode) ? $contact->phone : null, ['id' => 'contact_phone', 'class' => 'form-control']) !!}
+                                {{ html()->text('contact_phone', ($editMode) ? $contact->phone : null)->class('form-control') }}
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="mb-3">
                                 <label>@lang('bt.fax_number'): </label>
-                                {!! Form::text('contact_fax', ($editMode) ? $contact->fax : null, ['id' => 'contact_fax', 'class' => 'form-control']) !!}
+                                {{ html()->text('contact_fax', ($editMode) ? $contact->fax : null)->class('form-control') }}
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="mb-3">
                                 <label>@lang('bt.mobile_number'): </label>
-                                {!! Form::text('contact_mobile', ($editMode) ? $contact->mobile : null, ['id' => 'contact_mobile', 'class' => 'form-control']) !!}
+                                {{ html()->text('contact_mobile', ($editMode) ? $contact->mobile : null)->class('form-control') }}
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="mb-3">
                                 <label>@lang('bt.email'):</label>
-                                {!! Form::text('contact_email', ($editMode) ? $contact->email : null, ['class' => 'form-control', 'id' => 'contact_email']) !!}
+                                {{ html()->text('contact_email', ($editMode) ? $contact->email : null)->class('form-control') }}
                             </div>
                         </div>
                     </div>

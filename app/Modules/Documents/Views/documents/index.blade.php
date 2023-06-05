@@ -7,9 +7,9 @@
                 <div class="fs-3 float-start">@lang('bt.' . strtolower($module_type) . 's')</div>
                 <div class="btn-group float-end">
                     <div class="btn-group">
-                        {!! Form::open(['method' => 'GET', 'id' => 'filter']) !!}
-                            {!! Form::hidden('client', request('client')) !!}
-                        {!! Form::close() !!}
+                        {{ html()->form('GET', route('documents.index'))->attribute('id', 'filter')->open() }}
+                            {{ html()->hidden('client', request('client')) }}
+                        {{ html()->form()->close() }}
                     </div>
                     @if($module_type != 'Recurringinvoice')
                     <a class="btn btn-secondary rounded border" href="{{ route('utilities.batchprint', ['module' => strtolower($module_type) . 's']) }}" title="Batch Print by DateRange"><i

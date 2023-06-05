@@ -25,7 +25,7 @@
                             <label class="form-label">@lang('bt.group')</label>
                         </div>
                         <div class="col-sm-6">
-                            {!! Form::select('group_id', $groups, config('bt.invoiceGroup'), ['id' => 'to_invoice_group_id', 'class' => 'form-select']) !!}
+                            {{ html()->select('group_id', $groups, config('bt.invoiceGroup'))->class('form-select')->attribute('id', 'to_invoice_group_id') }}
                         </div>
                     </div>
                 </form>

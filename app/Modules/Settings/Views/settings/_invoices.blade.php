@@ -2,25 +2,25 @@
     <div class="col-md-3">
         <div class="mb-3">
             <label class="form-label fw-bold">@lang('bt.default_invoice_template'): </label>
-            {!! Form::select('setting[invoiceTemplate]', $invoiceTemplates, config('bt.invoiceTemplate'), ['class' => 'form-select']) !!}
+            {{ html()->select('setting[invoiceTemplate]', $invoiceTemplates, config('bt.invoiceTemplate'))->class('form-select') }}
         </div>
     </div>
     <div class="col-md-3">
         <div class="mb-3">
             <label class="form-label fw-bold">@lang('bt.default_group'): </label>
-            {!! Form::select('setting[invoiceGroup]', $groups, config('bt.invoiceGroup'), ['class' => 'form-select']) !!}
+            {{ html()->select('setting[invoiceGroup]', $groups, config('bt.invoiceGroup'))->class('form-select') }}
         </div>
     </div>
     <div class="col-md-3">
         <div class="mb-3">
             <label class="form-label fw-bold">@lang('bt.invoices_due_after'): </label>
-            {!! Form::text('setting[invoicesDueAfter]', config('bt.invoicesDueAfter'), ['class' => 'form-control']) !!}
+            {{ html()->text('setting[invoicesDueAfter]', config('bt.invoicesDueAfter'))->class('form-control') }}
         </div>
     </div>
     <div class="col-md-3">
         <div class="mb-3">
             <label class="form-label fw-bold">@lang('bt.default_status_filter'): </label>
-            {!! Form::select('setting[invoiceStatusFilter]', $invoiceStatuses, config('bt.invoiceStatusFilter'), ['class' => 'form-select']) !!}
+            {{ html()->select('setting[invoiceStatusFilter]', $invoiceStatuses, config('bt.invoiceStatusFilter'))->class('form-select') }}
         </div>
     </div>
 </div>
@@ -28,41 +28,41 @@
     <div class="col-md-3">
         <div class="mb-3">
             <label class="form-label fw-bold">@lang('bt.update_inv_products'): </label>
-            {!! Form::select('setting[updateInvProductsDefault]', ['0' => trans('bt.no'), '1' => trans('bt.yes')], config('bt.updateInvProductsDefault'), ['class' => 'form-select']) !!}
+            {{ html()->select('setting[updateInvProductsDefault]', ['0' => trans('bt.no'), '1' => trans('bt.yes')], config('bt.updateInvProductsDefault'))->class('form-select') }}
         </div>
     </div>
 </div>
 <div class="mb-3">
     <label class="form-label fw-bold">@lang('bt.default_terms'): </label>
-    {!! Form::textarea('setting[invoiceTerms]', config('bt.invoiceTerms'), ['class' => 'form-control', 'rows' => 2]) !!}
+    {{ html()->textarea('setting[invoiceTerms]', config('bt.invoiceTerms'))->rows(2)->class('form-control') }}
 </div>
 <div class="mb-3">
     <label class="form-label fw-bold">@lang('bt.default_footer'): </label>
-    {!! Form::textarea('setting[invoiceFooter]', config('bt.invoiceFooter'), ['class' => 'form-control', 'rows' => 2]) !!}
+    {{ html()->textarea('setting[invoiceFooter]', config('bt.invoiceFooter'))->rows(2)->class('form-control') }}
 </div>
 <div class="row">
     <div class="col-md-3">
         <div class="mb-3">
             <label class="form-label fw-bold">@lang('bt.automatic_email_on_recur'): </label>
-            {!! Form::select('setting[automaticEmailOnRecur]', ['0' => trans('bt.no'), '1' => trans('bt.yes')], config('bt.automaticEmailOnRecur'), ['class' => 'form-select']) !!}
+            {{ html()->select('setting[automaticEmailOnRecur]', ['0' => trans('bt.no'), '1' => trans('bt.yes')], config('bt.automaticEmailOnRecur'))->class('form-select') }}
         </div>
     </div>
     <div class="col-md-3">
         <div class="mb-3">
             <label class="form-label fw-bold">@lang('bt.automatic_email_payment_receipts'): </label>
-            {!! Form::select('setting[automaticEmailPaymentReceipts]', ['0' => trans('bt.no'), '1' => trans('bt.yes')], config('bt.automaticEmailPaymentReceipts'), ['class' => 'form-select']) !!}
+            {{ html()->select('setting[automaticEmailPaymentReceipts]', ['0' => trans('bt.no'), '1' => trans('bt.yes')], config('bt.automaticEmailPaymentReceipts'))->class('form-select') }}
         </div>
     </div>
     <div class="col-md-3">
         <div class="mb-3">
             <label class="form-label fw-bold">@lang('bt.online_payment_method'): </label>
-            {!! Form::select('setting[onlinePaymentMethod]', $paymentMethods, config('bt.onlinePaymentMethod'), ['class' => 'form-select']) !!}
+            {{ html()->select('setting[onlinePaymentMethod]', $paymentMethods, config('bt.onlinePaymentMethod'))->class('form-select') }}
         </div>
     </div>
     <div class="col-md-3">
         <div class="mb-3">
             <label class="form-label fw-bold">@lang('bt.allow_payments_without_balance'): </label>
-            {!! Form::select('setting[allowPaymentsWithoutBalance]', $yesNoArray, config('bt.allowPaymentsWithoutBalance'), ['class' => 'form-select']) !!}
+            {{ html()->select('setting[allowPaymentsWithoutBalance]', $yesNoArray, config('bt.allowPaymentsWithoutBalance'))->class('form-select') }}
         </div>
     </div>
 </div>
@@ -70,7 +70,7 @@
     <div class="col-md-3">
         <div class="mb-3">
             <label class="form-label fw-bold">@lang('bt.if_invoice_is_emailed_while_draft'): </label>
-            {!! Form::select('setting[resetInvoiceDateEmailDraft]', $invoiceWhenDraftOptions, config('bt.resetInvoiceDateEmailDraft'), ['class' => 'form-select']) !!}
+            {{ html()->select('setting[resetInvoiceDateEmailDraft]', $invoiceWhenDraftOptions, config('bt.resetInvoiceDateEmailDraft'))->class('form-select') }}
         </div>
     </div>
     <div class="col-md-6"></div>

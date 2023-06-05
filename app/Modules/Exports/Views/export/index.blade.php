@@ -33,74 +33,74 @@
                     </div>
                     <div class="tab-content m-2">
                         <div id="tab-clients" class="tab-pane active">
-                            {!! Form::open(['route' => ['export.export', 'Clients'], 'id' => 'client-export-form', 'target' => '_blank']) !!}
+                            {{ html()->form('POST', route('export.export', 'Clients'))->attribute('id', 'client-export-form')->target('_blank')->open() }}
                             <div class="mb-3">
                                 <label>@lang('bt.format'):</label>
-                                {!! Form::select('writer', $writers, null, ['class' => 'form-select']) !!}
+                                {{ html()->select('writer', $writers, null)->class('form-select') }}
                             </div>
                             <button class="btn btn-primary"><i
                                         class="fa fa-download"></i> @lang('bt.export_clients')</button>
-                            {!! Form::close() !!}
+                            {{ html()->form()->close() }}
                         </div>
                         <div id="tab-quotes" class="tab-pane">
-                            {!! Form::open(['route' => ['export.export', 'Quotes'], 'id' => 'quote-export-form', 'target' => '_blank']) !!}
+                            {{ html()->form('POST', route('export.export', 'Quotes'))->attribute('id', 'quote-export-form')->target('_blank')->open() }}
                             <div class="mb-3">
                                 <label>@lang('bt.format'):</label>
-                                {!! Form::select('writer', $writers, null, ['class' => 'form-select']) !!}
+                                {{ html()->select('writer', $writers, null)->class('form-select') }}
                             </div>
                             <button class="btn btn-primary"><i
                                         class="fa fa-download"></i> @lang('bt.export_quotes')</button>
-                            {!! Form::close() !!}
+                            {{ html()->form()->close() }}
                         </div>
                         <div id="tab-quote-items" class="tab-pane">
-                            {!! Form::open(['route' => ['export.export', 'QuoteItems'], 'id' => 'quote-item-export-form', 'target' => '_blank']) !!}
+                            {{ html()->form('POST', route('export.export', 'QuoteItems'))->attribute('id', 'quote-item-export-form')->target('_blank')->open() }}
                             <div class="mb-3">
                                 <label>@lang('bt.format'):</label>
-                                {!! Form::select('writer', $writers, null, ['class' => 'form-select']) !!}
+                                {{ html()->select('writer', $writers, null)->class('form-select') }}
                             </div>
                             <button class="btn btn-primary"><i
                                         class="fa fa-download"></i> @lang('bt.export_quote_items')</button>
-                            {!! Form::close() !!}
+                            {{ html()->form()->close() }}
                         </div>
                         <div id="tab-invoices" class="tab-pane">
-                            {!! Form::open(['route' => ['export.export', 'Invoices'], 'id' => 'invoice-export-form', 'target' => '_blank']) !!}
+                            {{ html()->form('POST', route('export.export', 'Invoices'))->attribute('id', 'invoice-export-form')->target('_blank')->open() }}
                             <div class="mb-3">
                                 <label>@lang('bt.format'):</label>
-                                {!! Form::select('writer', $writers, null, ['class' => 'form-select']) !!}
+                                {{ html()->select('writer', $writers, null)->class('form-select') }}
                             </div>
                             <button class="btn btn-primary"><i
                                         class="fa fa-download"></i> @lang('bt.export_invoices')</button>
-                            {!! Form::close() !!}
+                            {{ html()->form()->close() }}
                         </div>
                         <div id="tab-invoice-items" class="tab-pane">
-                            {!! Form::open(['route' => ['export.export', 'InvoiceItems'], 'id' => 'invoice-item-export-form', 'target' => '_blank']) !!}
+                            {{ html()->form('POST', route('export.export', 'InvoiceItems'))->attribute('id', 'invoice-item-export-form')->target('_blank')->open() }}
                             <div class="mb-3">
                                 <label>@lang('bt.format'):</label>
-                                {!! Form::select('writer', $writers, null, ['class' => 'form-select']) !!}
+                                {{ html()->select('writer', $writers, null)->class('form-select') }}
                             </div>
                             <button class="btn btn-primary"><i
                                         class="fa fa-download"></i> @lang('bt.export_invoice_items')</button>
-                            {!! Form::close() !!}
+                            {{ html()->form()->close() }}
                         </div>
                         <div id="tab-payments" class="tab-pane">
-                            {!! Form::open(['route' => ['export.export', 'Payments'], 'id' => 'payment-export-form', 'target' => '_blank']) !!}
+                            {{ html()->form('POST', route('export.export', 'Payments'))->attribute('id', 'payment-export-form')->target('_blank')->open() }}
                             <div class="mb-3">
                                 <label>@lang('bt.format'):</label>
-                                {!! Form::select('writer', $writers, null, ['class' => 'form-select']) !!}
+                                {{ html()->select('writer', $writers, null)->class('form-select') }}
                             </div>
                             <button class="btn btn-primary"><i
                                         class="fa fa-download"></i> @lang('bt.export_payments')</button>
-                            {!! Form::close() !!}
+                            {{ html()->form()->close() }}
                         </div>
                         <div id="tab-expenses" class="tab-pane">
-                            {!! Form::open(['route' => ['export.export', 'Expenses'], 'id' => 'export-export-form', 'target' => '_blank']) !!}
+                            {{ html()->form('POST', route('export.export', 'Expenses'))->attribute('id', 'expense-export-form')->target('_blank')->open() }}
                             <div class="mb-3">
                                 <label>@lang('bt.format'):</label>
-                                {!! Form::select('writer', $writers, null, ['class' => 'form-select']) !!}
+                                {{ html()->select('writer', $writers, null)->class('form-select') }}
                             </div>
                             <button class="btn btn-primary"><i
                                         class="fa fa-download"></i> @lang('bt.export_expenses')</button>
-                            {!! Form::close() !!}
+                            {{ html()->form()->close() }}
                         </div>
                     </div>
                 </div>

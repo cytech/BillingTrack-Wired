@@ -2,13 +2,13 @@
     <div class="col-md-6">
         <div class="mb-3">
             <label class="form-label fw-bold">@lang('bt.past_days')</label>
-            {!! Form::text('setting[schedulerPastdays]', config('bt.schedulerPastdays'), ['class' => 'form-control']) !!}
+            {{ html()->text('setting[schedulerPastdays]', config('bt.schedulerPastdays'))->class('form-control') }}
         </div>
     </div>
     <div class="col-md-6">
         <div class="mb-3">
             <label class="form-label fw-bold">@lang('bt.event_limit')</label>
-            {!! Form::text('setting[schedulerEventLimit]', config('bt.schedulerEventLimit'), ['class' => 'form-control']) !!}
+            {{ html()->text('setting[schedulerEventLimit]', config('bt.schedulerEventLimit'))->class('form-control') }}
         </div>
     </div>
 </div>
@@ -16,31 +16,31 @@
     <div class="col-md-6">
         <div class="mb-3">
             <label class="form-label fw-bold">@lang('bt.enable_cwo')</label>
-            {!! Form::select('setting[schedulerCreateWorkorder]', ['0' => 'No', '1' => 'Yes'], config('bt.schedulerCreateWorkorder'), ['class' => 'form-select']) !!}
+            {{ html()->select('setting[schedulerCreateWorkorder]', ['0' => 'No', '1' => 'Yes'], config('bt.schedulerCreateWorkorder'))->class('form-select') }}
         </div>
     </div>
     <div class="col-md-3">
         <div class="mb-3">
             <label class="form-label fw-bold">@lang('bt.fc_themesystem')</label>
-            {!! Form::select('setting[schedulerFcThemeSystem]', ['standard' => 'Standard', 'bootstrap5' => 'Bootstrap5'], config('bt.schedulerFcThemeSystem'), ['class' => 'form-select']) !!}
+            {{ html()->select('setting[schedulerFcThemeSystem]', ['standard' => 'Standard', 'bootstrap5' => 'Bootstrap5'], config('bt.schedulerFcThemeSystem'))->class('form-select') }}
         </div>
     </div>
     <div id='cp3' class="mb-3 col-md-3">
         <label class="form-label fw-bold">@lang('bt.fc_todaybgcolor')</label>
-        {!! Form::color('setting[schedulerFcTodaybgColor]', config('bt.schedulerFcTodaybgColor'), ['class' => 'form-control']) !!}
+        {{ html()->input('color', 'setting[schedulerFcTodaybgColor]', config('bt.schedulerFcTodaybgColor'))->class('form-control') }}
     </div>
 </div>
 <div class="row">
     <div class="col-md-6">
         <div class="mb-3">
             <label class="form-label fw-bold">@lang('bt.timestep')</label>
-            {!! Form::select('setting[schedulerTimestep]',['60' => '60', '30' => '30', '15' => '15', '10' => '10','5' => '5','1' => '1'], config('bt.schedulerTimestep'), ['class' => 'form-select' ]) !!}
+            {{ html()->select('setting[schedulerTimestep]',['60' => '60', '30' => '30', '15' => '15', '10' => '10','5' => '5','1' => '1'], config('bt.schedulerTimestep'))->class('form-select') }}
         </div>
     </div>
     <div class="col-md-6">
         <div class="mb-3">
             <label class="form-label fw-bold">@lang('bt.fc_aspectratio')</label>
-            {!! Form::number('setting[schedulerFcAspectRatio]', config('bt.schedulerFcAspectRatio'), ['min'=>'1', 'max'=>'2','step'=>'.05','class' => 'form-control' ]) !!}
+            {{ html()->number('setting[schedulerFcAspectRatio]', config('bt.schedulerFcAspectRatio'), '1', '2', '.05')->class('form-control') }}
         </div>
     </div>
 </div>
@@ -64,7 +64,7 @@
     <div class="col-md-4">
         <div class="mb-3">
             <label class="form-label fw-bold">@lang('bt.show_invoiced')</label>
-            {!! Form::select('setting[schedulerDisplayInvoiced]', ['0' => 'No', '1' => 'Yes'], config('bt.schedulerDisplayInvoiced'), ['class' => 'form-select']) !!}
+            {{ html()->select('setting[schedulerDisplayInvoiced]', ['0' => 'No', '1' => 'Yes'], config('bt.schedulerDisplayInvoiced'))->class('form-select') }}
         </div>
     </div>
     <div class="col-md-5">

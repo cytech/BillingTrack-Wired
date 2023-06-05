@@ -1,13 +1,13 @@
 @extends('layouts.master')
 
 @section('content')
-    @if ($editMode == true)
-        {!! Form::model($expense, ['route' => ['expenses.update', $expense->id], 'files' => true]) !!}
+    @if ($editMode)
+        {{ html()->modelForm($expense, 'POST', route('expenses.update', $expense->id))->acceptsFiles()->open() }}
     @else
-        {!! Form::open(['route' => 'expenses.store', 'files' => true]) !!}
+        {{ html()->form('POST', route('expenses.store'))->acceptsFiles()->open() }}
     @endif
 
-    {!! Form::hidden('user_id', auth()->user()->id) !!}
+    {{ html()->hidden('user_id', auth()->user()->id) }}
 
     <section class="app-content-header">
         <h3 class="float-start px-3">
@@ -30,7 +30,7 @@
                             <div class="col-md-4">
                                 <div class="mb-3">
                                     <label>* @lang('bt.company_profile'): </label>
-                                    {!! Form::select('company_profile_id', $companyProfiles, (($editMode) ? $expense->company_profile_id : config('bt.defaultCompanyProfile')), ['id' => 'company_profile_id', 'class' => 'form-control']) !!}
+                                    {{ html()->select('company_profile_id', $companyProfiles, (($editMode) ? $expense->company_profile_id : config('bt.defaultCompanyProfile')))->class('form-select') }}
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -46,7 +46,7 @@
                             <div class="col-md-4">
                                 <div class="mb-3">
                                     <label>* @lang('bt.category'): </label>
-                                    {!! Form::text('category_name', null, ['id' => 'category_name', 'class' => 'form-control','list'=>'catlistid']) !!}
+                                    {{ html()->text('category_name', null)->class('form-control')->attribute('list', 'catlistid') }}
                                     <datalist id='catlistid'>
                                         @foreach($categories as $category)
                                             <option>{!! $category !!}</option>
@@ -59,13 +59,13 @@
                             <div class="col-md-2">
                                 <div class="mb-3">
                                     <label>* @lang('bt.amount'): </label>
-                                    {!! Form::text('amount', (($editMode) ? $expense->formatted_numeric_amount : null), ['id' => 'amount', 'class' => 'form-control']) !!}
+                                    {{ html()->text('amount', (($editMode) ? $expense->formatted_numeric_amount : null))->class('form-control') }}
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="mb-3">
                                     <label>@lang('bt.tax'): </label>
-                                    {!! Form::text('tax', (($editMode) ? $expense->formatted_numeric_tax : null), ['id' => 'amount', 'class' => 'form-control']) !!}
+                                    {{ html()->text('tax', (($editMode) ? $expense->formatted_numeric_tax : null))->class('form-control') }}
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -100,17 +100,21 @@
                         </div>
                         <div class="mb-3">
                             <label>@lang('bt.description'): </label>
-                            {!! Form::textarea('description', null, ['id' => 'description', 'rows' => '5', 'class' => 'form-control']) !!}
+                            {{ html()->textarea('description', null)->rows(5)->class('form-control') }}
                         </div>
                         @if ($customFields->count())
-                            @include('custom_fields._custom_fields')
+                            @if ($editMode)
+                                @include('custom_fields._custom_fields', ['object' => $expense])
+                            @else
+                                @include('custom_fields._custom_fields')
+                            @endif
                         @endif
 
                         @if (!$editMode)
                             @if (!config('app.demo'))
                                 <div class="mb-3">
                                     <label>@lang('bt.attach_files'): </label>
-                                    {!! Form::file('attachments[]', ['id' => 'attachments', 'class' => 'form-control', 'multiple' => 'multiple']) !!}
+                                    {{ html()->file('attachments[]')->multiple()->attribute('id', 'attachments')->class('form-control') }}
                                 </div>
                             @endif
                         @else
@@ -121,5 +125,9 @@
             </div>
         </div>
     </section>
-    {!! Form::close() !!}
+    @if ($editMode)
+        {{ html()->closeModelForm() }}
+    @else
+        {{ html()->form()->close() }}
+    @endif
 @stop

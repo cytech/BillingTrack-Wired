@@ -55,23 +55,23 @@
                 <div class="row mb-3">
                     <div class="col-md-3">
                         <label class="form-label fw-bold">@lang('bt.company_profile'):</label>
-                        {!! Form::select('company_profile_id', $companyProfiles, null, ['id' => 'company_profile_id', 'class' => 'form-select'])  !!}
+                        {{ html()->select('company_profile_id', $companyProfiles, null)->class('form-select') }}
                     </div>
                 </div>
                 <div class="row mb-3">
                     <div class="col-md-3">
                         <label class="form-label fw-bold">@lang('bt.date_range'):</label>
-                        {!! Form::hidden('from_date', null, ['id' => 'from_date']) !!}
-                        {!! Form::hidden('to_date', null, ['id' => 'to_date']) !!}
+                        {{ html()->hidden('from_date', null) }}
+                        {{ html()->hidden('to_date', null) }}
                         <div class="input-group">
-                            {!! Form::text('date_range', null, ['id' => 'date_range', 'class' => 'form-control', 'readonly' => 'readonly']) !!}
+                            {{ html()->text('date_range', null)->class('form-control')->isReadonly() }}
                             <span class="input-group-text"><i class="fas fa-calendar-alt"></i> </span>
                         </div>                    </div>
                 </div>
                 <div class="row mb-3">
                     <div class="col-md-3">
                         <label class="form-label fw-bold">@lang('bt.exclude_unpaid_invoices'):</label>
-                        {!! Form::select('exclude_unpaid_invoices', ['0' => trans('bt.no'), '1' => trans('bt.yes')], null, ['id' => 'exclude_unpaid_invoices', 'class' => 'form-select'])  !!}
+                        {{ html()->select('exclude_unpaid_invoices', ['0' => trans('bt.no'), '1' => trans('bt.yes')], null)->class('form-select') }}
                     </div>
                 </div>
                 <div class="row">

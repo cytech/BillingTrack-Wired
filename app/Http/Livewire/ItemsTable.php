@@ -124,6 +124,7 @@ class ItemsTable extends Component
 
             $this->module_items->push($add_item);
         }
+        $this->clearItem();
     }
 
     public function addItem()
@@ -159,8 +160,10 @@ class ItemsTable extends Component
                 'message'     => __('bt.trash_record_warning'),
                 'index'       => $index,
                 'id'          => $this->module_items[$index]->id,
-                'route'       => route(lcfirst($this->module_type) . 'Item.delete'),
-                'totalsRoute' => route(lcfirst($this->module_type) . 's.' . lcfirst($this->module_type) . 'Edit.refreshTotals'),
+//                'route'       => route(lcfirst($this->module_type) . 'Item.delete'),
+                'route'       => route('documentItem.delete'),
+//                'totalsRoute' => route(lcfirst($this->module_type) . 's.' . lcfirst($this->module_type) . 'Edit.refreshTotals'),
+                'totalsRoute' => route('documents.documentEdit.refreshTotals'),
                 'entityID'    => $this->module->id
             ];
             $this->dispatchBrowserEvent('swal:deleteConfirm', $swaldata);

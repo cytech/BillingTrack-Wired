@@ -19,17 +19,17 @@
     @if (!config('app.demo'))
         <div class="mb-3 col-md-4">
             <label class="form-label fw-bold">Application URL: </label>
-            {!! Form::text('app_url',config('app.url'), ['class' => 'form-control', 'readonly']) !!}
+            {{ html()->text('app_url',config('app.url'))->class('form-control')->isReadonly() }}
             <label class="form-label fw-bold">Debug Enabled? </label>
-            {!! Form::select('debug', ['0' => 'No', '1' => 'Yes'], config('app.debug'), ['class' => 'form-select', 'disabled']) !!}
+            {{ html()->select('debug', ['0' => 'No', '1' => 'Yes'], config('app.debug'))->class('form-select')->disabled() }}
             <label class="form-label fw-bold">Database Driver: </label>
-            {!! Form::text('db_driver',config('database.connections.mysql.driver'), ['class' => 'form-control', 'readonly']) !!}
+            {{ html()->text('db_driver',config('database.connections.mysql.driver'))->class('form-control')->isReadonly() }}
             <label class="form-label fw-bold">Database Host: </label>
-            {!! Form::text('db_host',env('DB_HOST', 'empty'), ['class' => 'form-control', 'readonly']) !!}
+            {{ html()->text('db_host',env('DB_HOST', 'empty'))->class('form-control')->isReadonly() }}
             <label class="form-label fw-bold">Database: </label>
-            {!! Form::text('db_database',env('DB_DATABASE','empty'), ['class' => 'form-control', 'readonly']) !!}
+            {{ html()->text('db_database',env('DB_DATABASE','empty'))->class('form-control')->isReadonly() }}
             <label class="form-label fw-bold">Database UserName: </label>
-            {!! Form::text('db_username',env('DB_USERNAME', 'empty'), ['class' => 'form-control', 'readonly']) !!}
+            {{ html()->text('db_username',env('DB_USERNAME', 'empty'))->class('form-control')->isReadonly() }}
         </div>
     @endif
 </div>

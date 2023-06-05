@@ -21,9 +21,7 @@
                             <label>@lang('bt.replace_modal_desc', ['short_name' => $inactive_employee->short_name])</label>
                         </div>
                     </div>
-
-                    {!! Form::select('aemployee', $available_employees, null, ['id' => 'aemployee','placeholder' => 'Select Available Employee','class'=>'form-control']) !!}
-
+                    {{ html()->select('aemployee', $available_employees, null)->placeholder('Select Available Employee')->class('form-select') }}
                 </form>
 
             </div>

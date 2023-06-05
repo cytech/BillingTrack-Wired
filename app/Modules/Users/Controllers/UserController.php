@@ -141,7 +141,7 @@ class UserController extends Controller
     {
 
         // submitted roles / permissions
-        $roles = $request->get('roles', []);
+        $roles = $request->get('roles', [4]);//4 = client, not set by form
         $permissions = $request->get('permissions', []);
 
         // Get the roles

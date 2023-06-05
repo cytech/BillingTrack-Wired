@@ -3,9 +3,9 @@
 @section('content')
     <section class="app-content-header">
         @if ($editMode)
-            {!! Form::model($vendor, ['route' => ['vendors.update', $vendor->id]]) !!}
+            {{ html()->modelForm($vendor, 'POST', route('vendors.update', $vendor->id))->open() }}
         @else
-            {!! Form::open(['route' => 'vendors.store']) !!}
+            {{ html()->form('POST', route('vendors.store'))->open() }}
         @endif
         <h3 class="float-start px-3">@lang('bt.vendor_form')</h3>
         <div class="float-end">
@@ -58,5 +58,9 @@
             </div>
         </div>
     </section>
-    {!! Form::close() !!}
+    @if ($editMode)
+        {{ html()->closeModelForm() }}
+    @else
+        {{ html()->form()->close() }}
+    @endif
 @stop

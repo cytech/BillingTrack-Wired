@@ -17,7 +17,7 @@
 </script>
 <div class="mb-3">
     <label>@lang('bt.dashboard_totals_option'): </label>
-    {!! Form::select('setting[widgetInvoiceSummaryDashboardTotals]', $dashboardTotalOptions, config('bt.widgetInvoiceSummaryDashboardTotals'), ['class' => 'form-control', 'id' => 'invoice-dashboard-total-setting']) !!}
+    {{ html()->select('setting[widgetInvoiceSummaryDashboardTotals]', $dashboardTotalOptions, config('bt.widgetInvoiceSummaryDashboardTotals'))->attribute('id', 'invoice-dashboard-total-setting')->class('form-select') }}
 </div>
 <div class="row" id="div-invoice-dashboard-totals-date-range">
     <div class="col-md-4">

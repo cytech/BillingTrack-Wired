@@ -5,10 +5,10 @@
         <div class="container-fluid">
             <div class="col-sm-12">
                 @if ($editMode)
-                    {!! Form::model($client, ['route' => ['clients.update', $client->id]]) !!}
+                    {{ html()->modelForm($client, 'POST', route('clients.update', $client->id))->open() }}
                     <div class=" fs-3 float-start">@lang('bt.client_form') - @lang('bt.edit')</div>
                 @else
-                    {!! Form::open(['route' => 'clients.store']) !!}
+                    {{ html()->form('POST', route('clients.store'))->open() }}
                     <div class="fs-3 float-start">@lang('bt.client_form') - @lang('bt.create')</div>
                 @endif
                 <div class="float-end">
@@ -67,5 +67,9 @@
             </div>
         </div>
     </section>
-    {!! Form::close() !!}
+    @if ($editMode)
+        {{ html()->closeModelForm() }}
+    @else
+        {{ html()->form()->close() }}
+    @endif
 @stop

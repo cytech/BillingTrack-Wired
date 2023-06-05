@@ -18,8 +18,7 @@
                         <label for="company_profile_id" class="col-form-label">@lang('bt.company_profile')</label>
                     </div>
                     <div class="col-sm-7">
-                        {!! Form::select('company_profile_id', $companyProfiles, config('bt.defaultCompanyProfile'),
-                        ['id' => 'company_profile_id', 'class' => 'form-select']) !!}
+                        {{ html()->select('company_profile_id', $companyProfiles, config('bt.defaultCompanyProfile'))->class('form-select') }}
                     </div>
                 </div>
                 <div class="row g-3 mb-3 align-items-center">
@@ -81,7 +80,7 @@
                         <label class="form-check-label" for="will_call">@lang('bt.will_call')</label>
                     </div>
                     <div class="col-sm-2 form-check form-switch form-switch-md">
-                        {!! Form::checkbox('will_call', 1, null, ['wire:model.defer' => 'will_call', 'id' => 'will_call', 'class' => 'form-check-input']) !!}
+                        {{ html()->checkbox('will_call', null, 1)->attribute('wire:model.defer', 'will_call')->class('form-check-input') }}
                     </div>
                 </div>
                 <div class="row">

@@ -8,7 +8,7 @@
         })
     </script>
 
-    {!! Form::open(['route' => 'timeTracking.projects.store']) !!}
+    {{ html()->form('POST', route('timeTracking.projects.store'))->open() }}
 
     <section class="app-content-header">
         <h3 class="float-start px-3">
@@ -29,13 +29,12 @@
                     <div class="card-body" id="create-project">
                         <div class="mb-3">
                             <label>* @lang('bt.project_name'): </label>
-                            {!! Form::text('name', null, ['id' => 'name', 'class' => 'form-control']) !!}
+                            {{ html()->text('name', null)->class('form-control') }}
                         </div>
                         <div class="row">
                             <div class="col-md-4">
                                 <label>* @lang('bt.company_profile'):</label>
-                                {!! Form::select('company_profile_id', $companyProfiles, config('bt.defaultCompanyProfile'),
-                                ['id' => 'company_profile_id', 'class' => 'form-control']) !!}
+                                {{ html()->select('company_profile_id', $companyProfiles, config('bt.defaultCompanyProfile'))->class('form-select') }}
                             </div>
                             <div class="col-md-4">
                                 <label>* @lang('bt.client'):</label>
@@ -63,7 +62,7 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <label>* @lang('bt.hourly_rate'):</label>
-                                {!! Form::text('hourly_rate', null, ['id' => 'hourly_rate', 'class' => 'form-control']) !!}
+                                {{ html()->text('hourly_rate', null)->class('form-control') }}
                             </div>
                         </div>
                     </div>
@@ -71,5 +70,5 @@
             </div>
         </div>
     </section>
-    {!! Form::close() !!}
+    {{ html()->form()->close() }}
 @stop

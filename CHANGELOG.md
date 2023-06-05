@@ -6,6 +6,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## 7.0.0
 - merged core modules
+- replace laravelcollective/html with spatie/laravel-html
 - **BREAKING CHANGES**
 - This update combines the core modules (Quote, Workorder, Invoice, Recurringinvoice, and Purchaseorder) database tables into a single documents table.
 - User defined custom templates (in the custom/templates directory) will be affected by this change.

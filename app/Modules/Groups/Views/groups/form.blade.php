@@ -8,10 +8,10 @@
         })
     </script>
 
-    @if ($editMode == true)
-        {!! Form::model($group, ['route' => ['groups.update', $group->id]]) !!}
+    @if ($editMode)
+        {{ html()->modelForm($group, 'POST', route('groups.update', $group->id))->open() }}
     @else
-        {!! Form::open(['route' => 'groups.store']) !!}
+        {{ html()->form('POST', route('groups.store'))->open() }}
     @endif
 
     <section class="app-content-header">
@@ -32,28 +32,33 @@
             <div class="card-body">
                 <div class="mb-3">
                     <label>@lang('bt.name'): </label>
-                    {!! Form::text('name', null, ['id' => 'name', 'class' => 'form-control']) !!}
+                    {{ html()->text('name', null)->class(['form-control']) }}
                 </div>
                 <div class="mb-3">
                     <label>@lang('bt.format'): </label>
-                    {!! Form::text('format', null, ['id' => 'format', 'class' => 'form-control']) !!}
+                    {{ html()->text('format', null)->class(['form-control']) }}
                     <span class="form-text text-muted">@lang('bt.available_fields'): {NUMBER} {YEAR} {MONTH} {MONTHSHORTNAME} {WEEK}</span>
                 </div>
                 <div class="mb-3">
                     <label>@lang('bt.next_number'): </label>
-                    {!! Form::text('next_id', isset($group->next_id) ? $group->next_id : 1, ['id' => 'next_id', 'class' => 'form-control']) !!}
+                    {{ html()->text('next_id', isset($group->next_id) ? $group->next_id : 1)->class(['form-control']) }}
                 </div>
                 <div class="mb-3">
                     <label>@lang('bt.left_pad'): </label>
-                    {!! Form::text('left_pad', isset($group->left_pad) ? $group->left_pad : 0, ['id' => 'left_pad', 'class' => 'form-control']) !!}
+                    {{ html()->text('left_pad', isset($group->left_pad) ? $group->left_pad : 0)->class(['form-control']) }}
                     <span class="form-text text-muted">@lang('bt.left_pad_description')</span>
                 </div>
                 <div class="mb-3">
                     <label>@lang('bt.reset_number'): </label>
-                    {!! Form::select('reset_number', $resetNumberOptions, null, ['id' => 'reset_number', 'class' => 'form-select']) !!}
+                    {{ html()->select('reset_number', $resetNumberOptions, null)->class(['form-select'])}}
                 </div>
             </div>
         </div>
     </section>
-    {!! Form::close() !!}
+
+    @if ($editMode)
+        {{ html()->closeModelForm() }}
+    @else
+        {{ html()->form()->close() }}
+    @endif
 @stop

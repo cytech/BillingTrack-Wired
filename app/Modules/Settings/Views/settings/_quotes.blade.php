@@ -2,49 +2,49 @@
     <div class="col-md-3">
         <div class="mb-3">
             <label class="form-label fw-bold">@lang('bt.default_quote_template'): </label>
-            {!! Form::select('setting[quoteTemplate]', $quoteTemplates, config('bt.quoteTemplate'), ['class' => 'form-select']) !!}
+            {{ html()->select('setting[quoteTemplate]', $quoteTemplates, config('bt.quoteTemplate'))->class('form-select') }}
         </div>
     </div>
     <div class="col-md-3">
         <div class="mb-3">
             <label class="form-label fw-bold">@lang('bt.default_group'): </label>
-            {!! Form::select('setting[quoteGroup]', $groups, config('bt.quoteGroup'), ['class' => 'form-select']) !!}
+            {{ html()->select('setting[quoteGroup]', $groups, config('bt.quoteGroup'))->class('form-select') }}
         </div>
     </div>
     <div class="col-md-3">
         <div class="mb-3">
             <label class="form-label fw-bold">@lang('bt.quotes_expire_after'): </label>
-            {!! Form::text('setting[quotesExpireAfter]', config('bt.quotesExpireAfter'), ['class' => 'form-control']) !!}
+            {{ html()->text('setting[quotesExpireAfter]', config('bt.quotesExpireAfter'))->class('form-control') }}
         </div>
     </div>
     <div class="col-md-3">
         <div class="mb-3">
             <label class="form-label fw-bold">@lang('bt.default_status_filter'): </label>
-            {!! Form::select('setting[quoteStatusFilter]', $quoteStatuses, config('bt.quoteStatusFilter'), ['class' => 'form-select']) !!}
+            {{ html()->select('setting[quoteStatusFilter]', $quoteStatuses, config('bt.quoteStatusFilter'))->class('form-select') }}
         </div>
     </div>
 </div>
 <div class="mb-3">
     <label class="form-label fw-bold">@lang('bt.convert_quote_when_approved'): </label>
-    {!! Form::select('setting[convertQuoteWhenApproved]', $yesNoArray, config('bt.convertQuoteWhenApproved'), ['class' => 'form-select']) !!}
+    {{ html()->select('setting[convertQuoteWhenApproved]', $yesNoArray, config('bt.convertQuoteWhenApproved'))->class('form-select') }}
 </div>
 <div class="mb-3">
     <label class="form-label fw-bold">@lang('bt.convert_quote_setting'): </label>
-    {!! Form::select('setting[convertQuoteTerms]', $convertQuoteOptions, config('bt.convertQuoteTerms'), ['class' => 'form-select']) !!}
+    {{ html()->select('setting[convertQuoteTerms]', $convertQuoteOptions, config('bt.convertQuoteTerms'))->class('form-select') }}
 </div>
 <div class="mb-3">
     <label class="form-label fw-bold">@lang('bt.default_terms'): </label>
-    {!! Form::textarea('setting[quoteTerms]', config('bt.quoteTerms'), ['class' => 'form-control', 'rows' => 2]) !!}
+    {{ html()->textarea('setting[quoteTerms]', config('bt.quoteTerms'))->rows(2)->class('form-control') }}
 </div>
 <div class="mb-3">
     <label class="form-label fw-bold">@lang('bt.default_footer'): </label>
-    {!! Form::textarea('setting[quoteFooter]', config('bt.quoteFooter'), ['class' => 'form-control', 'rows' => 2]) !!}
+    {{ html()->textarea('setting[quoteFooter]', config('bt.quoteFooter'))->rows(2)->class('form-control') }}
 </div>
 <div class="row">
     <div class="col-md-3">
         <div class="mb-3">
             <label class="form-label fw-bold">@lang('bt.if_quote_is_emailed_while_draft'): </label>
-            {!! Form::select('setting[resetQuoteDateEmailDraft]', $quoteWhenDraftOptions, config('bt.resetQuoteDateEmailDraft'), ['class' => 'form-select']) !!}
+            {{ html()->select('setting[resetQuoteDateEmailDraft]', $quoteWhenDraftOptions, config('bt.resetQuoteDateEmailDraft'))->class('form-select') }}
         </div>
     </div>
     <div class="col-md-6"></div>

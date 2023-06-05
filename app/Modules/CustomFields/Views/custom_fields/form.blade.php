@@ -2,10 +2,10 @@
 
 @section('content')
 
-    @if ($editMode == true)
-        {!! Form::model($customField, ['route' => ['customFields.update', $customField->id]]) !!}
+    @if ($editMode)
+        {{ html()->modelForm($customField, 'POST', route('customFields.update', $customField->id))->open() }}
     @else
-        {!! Form::open(['route' => 'customFields.store']) !!}
+        {{ html()->form('POST', route('customFields.store'))->open() }}
     @endif
 
     <section class="app-content-header">
@@ -26,27 +26,31 @@
             <div class="card-body">
                 <div class="mb-3">
                     <label>@lang('bt.table_name'): </label>
-                    @if ($editMode == true)
-                        {!! Form::text('tbl_name', $tableNames[$customField->tbl_name], ['id' => 'tbl_name', 'readonly' => 'readonly', 'class' => 'form-control']) !!}
+                    @if ($editMode)
+                        {{ html()->text('tbl_name', $tableNames[$customField->tbl_name])->class(['form-control'])->isReadonly() }}
                     @else
-                        {!! Form::select('tbl_name', $tableNames, null, ['id' => 'tbl_name', 'class' => 'form-select']) !!}
+                        {{ html()->select('tbl_name', $tableNames, null)->class(['form-select'])}}
                     @endif
                 </div>
                 <div class="mb-3">
                     <label>@lang('bt.field_label'): </label>
-                    {!! Form::text('field_label', null, ['id' => 'field_label', 'class' => 'form-control']) !!}
+                    {{ html()->text('field_label', null)->class(['form-control']) }}
                 </div>
                 <div class="mb-3">
                     <label>@lang('bt.field_type'): </label>
-                    {!! Form::select('field_type', $fieldTypes, null, ['id' => 'field_type', 'class' => 'form-select']) !!}
+                    {{ html()->select('field_type', $fieldTypes, null)->class(['form-select'])}}
                 </div>
                 <div class="mb-3">
                     <label>@lang('bt.field_meta'): </label>
-                    {!! Form::text('field_meta', null, ['id' => 'field_meta', 'class' => 'form-control']) !!}
+                    {{ html()->text('field_meta', null)->class(['form-control']) }}
                     <span class="form-text text-muted">@lang('bt.field_meta_description')</span>
                 </div>
             </div>
         </div>
     </section>
-    {!! Form::close() !!}
+    @if ($editMode)
+        {{ html()->closeModelForm() }}
+    @else
+        {{ html()->form()->close() }}
+    @endif
 @stop

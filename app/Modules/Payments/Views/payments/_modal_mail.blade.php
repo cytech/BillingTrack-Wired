@@ -12,38 +12,38 @@
                 <div id="modal-status-placeholder"></div>
                 <form>
                     <div class="mb-3 d-flex align-items-center">
-                        <label class="form-label col-sm-2 fs-5 fw-bold text-end me-2">@lang('bt.to')</label>
+                        <label class="form-label col-sm-2 fw-bold text-end me-2">@lang('bt.to')</label>
                         <div class="col-sm-10">
                             {!! $contactDropdownTo !!}
                         </div>
                     </div>
                     <div class="mb-3 d-flex align-items-center">
-                        <label class="form-label col-sm-2 fs-5 fw-bold text-end me-2">@lang('bt.cc')</label>
+                        <label class="form-label col-sm-2 fw-bold text-end me-2">@lang('bt.cc')</label>
                         <div class="col-sm-10">
                             {!! $contactDropdownCc !!}
                         </div>
                     </div>
                     <div class="mb-3 d-flex align-items-center">
-                        <label class="form-label col-sm-2 fs-5 fw-bold text-end me-2">@lang('bt.bcc')</label>
+                        <label class="form-label col-sm-2 fw-bold text-end me-2">@lang('bt.bcc')</label>
                         <div class="col-sm-10">
                             {!! $contactDropdownBcc !!}
                         </div>
                     </div>
                     <div class="mb-3 d-flex align-items-center">
-                        <label class="form-label col-sm-2 fs-5 fw-bold text-end me-2">@lang('bt.subject')</label>
+                        <label class="form-label col-sm-2 fw-bold text-end me-2">@lang('bt.subject')</label>
                         <div class="col-sm-10">
-                            {!! Form::text('subject', $subject, ['id' => 'subject', 'class' => 'form-control']) !!}
+                            {{ html()->text('subject', $subject)->class('form-control') }}
                         </div>
                     </div>
                     <div class="mb-3 d-flex align-items-center">
-                        <label class="form-label col-sm-2 fs-5 fw-bold text-end me-2">@lang('bt.body')</label>
+                        <label class="form-label col-sm-2 fw-bold text-end me-2">@lang('bt.body')</label>
                         <div class="col-sm-10">
-                            {!! Form::textarea('body', $body, ['id' => 'body', 'class' => 'form-control']) !!}
+                            {{ html()->textarea('body', $body)->class('form-control') }}
                         </div>
                     </div>
                     <div class="ms-5 form-check form-switch form-switch-md">
-                        {{ Form::checkbox('attach_pdf', 1, config('bt.attachPdf'), ['id' => 'attach_pdf', 'class' => 'form-check-input']) }}
-                        {{ Form::label('attach_pdflabel', trans('bt.attach_pdf'), ['class' => 'form-check-label fw-bold ps-3 pt-1', 'for' => 'attach_pdf']) }}
+                        {{ html()->checkbox('attach_pdf', config('bt.attachPdf'), 1)->class('form-check-input') }}
+                        {{ html()->label(__('bt.attach_pdf'), 'attach_pdf')->class('form-check-label fw-bold ps-3 pt-1') }}
                     </div>
                 </form>
             </div>

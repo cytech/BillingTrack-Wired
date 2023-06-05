@@ -31,14 +31,13 @@
                     <div class="col-md-12">
                         <h3>@lang('bt.set_clients_inactive')</h3>
                         @if (!config('app.demo'))
-                            {!! Form::open(['route' => 'utilities.clientprior.database','method' => 'get', 'id' => 'clientprior']) !!}
+                            {{ html()->form('GET', route('utilities.clientprior.database'))->attribute('id', 'clientprior')->open() }}
                             <div class="col-md-6 mb-3">@lang('bt.set_clients_inactive_msg')</div>
                             <div class="row align-items-center">
                                 <div class="col-md-2">
                                     <label class="form-label fw-bold">@lang('bt.set_clients_inactive_date')</label>
                                     <div class="input-group">
-                                        {!! Form::text('clientprior_date', Carbon\Carbon::parse('first day of january')->subYears(2)->format('m/d/Y'),
-                                         ['id' => 'clientprior_date', 'class' => 'form-control ']) !!}
+                                        {{ html()->text('clientprior_date', Carbon\Carbon::parse('first day of january')->subYears(2)->format('m/d/Y'))->class(['form-control']) }}
                                         <span class="input-group-text"><i class="fas fa-calendar-alt"></i> </span>
                                     </div>
                                 </div>
@@ -48,7 +47,7 @@
                                     </button>
                                 </div>
                             </div>
-                            {!! Form::close() !!}
+                            {{ html()->form()->close() }}
                         @else
                             <p>Database clientinactive not available in demo.</p>
                         @endif
@@ -59,7 +58,7 @@
                     <div class="col-md-12">
                         <h3>@lang('bt.database_entities_trash')</h3>
                         @if (!config('app.demo'))
-                            {!! Form::open(['route' => 'utilities.trashprior.database','method' => 'get', 'id' => 'tprior']) !!}
+                            {{ html()->form('GET', route('utilities.trashprior.database'))->attribute('id', 'tprior')->open() }}
                             {{--            quotes workorders invoices payments purchaseorders schedule--}}
                             <div class="col-md-6 mb-3">
                                 @lang('bt.database_entities_trash_msg')
@@ -67,17 +66,16 @@
                             <div class="col-md-2 mb-3">
                                 <label class="form-label fw-bold">@lang('bt.trash_before_date')</label>
                                 <div class="input-group">
-                                    {!! Form::text('trashprior_date', Carbon\Carbon::parse('first day of january')->subYears(2)->format('m/d/Y'),
-                                     ['id' => 'trashprior_date', 'class' => 'form-control ']) !!}
+                                    {{ html()->text('trashprior_date', Carbon\Carbon::parse('first day of january')->subYears(2)->format('m/d/Y'))->class(['form-control']) }}
                                     <span class="input-group-text"><i class="fas fa-calendar-alt"></i> </span>
                                 </div>
                             </div>
                             <div class="row align-items-center">
                                 <div class="col-md-2">
                                     <label class="form-label fw-bold">@lang('bt.module_to_trash')</label>
-                                    {!! Form::select('trashprior_module', ['Quote'=>'Quotes', 'Workorder'=>'Workorders',
+                                    {{ html()->select('trashprior_module', ['Quote'=>'Quotes', 'Workorder'=>'Workorders',
                                      'Invoice'=>'Invoices', 'Purchaseorder'=>'Purchaseorders',
-                                      'Schedule'=>'Schedule', 'Payment' => 'Payments'], null, ['class' => 'form-select']) !!}
+                                      'Schedule'=>'Schedule', 'Payment' => 'Payments'], null)->class(['form-select'])}}
                                 </div>
                                 <div class="col-md-4">
                                     <button type="button" id="btnSubmitTrash" class="btn btn-danger float-end"><i
@@ -85,7 +83,7 @@
                                     </button>
                                 </div>
                             </div>
-                            {!! Form::close() !!}
+                            {{ html()->form()->close() }}
                         @else
                             <p>Database trashprior not available in demo.</p>
                         @endif
@@ -106,7 +104,7 @@
                     <div class="col-md-12">
                         <h3>@lang('bt.database_entities_delete_trash')</h3>
                         @if (!config('app.demo'))
-                            {!! Form::open(['route' => 'utilities.deleteprior.database','method' => 'get', 'id' => 'dprior']) !!}
+                            {{ html()->form('GET', route('utilities.deleteprior.database'))->attribute('id', 'dprior')->open() }}
                             {{--            quotes workorders invoices payments purchaseorders schedule--}}
                             <div class="col-md-6 mb-3">
                                 @lang('bt.database_entities_delete_trash_msg')
@@ -114,17 +112,16 @@
                             <div class="col-md-2 mb-3">
                                 <label class="form-label fw-bold">@lang('bt.delete_before_date')</label>
                                 <div class="input-group">
-                                    {!! Form::text('deleteprior_date', Carbon\Carbon::parse('first day of january')->subYears(2)->format('m/d/Y'),
-                                     ['id' => 'deleteprior_date', 'class' => 'form-control form-control-sm']) !!}
+                                    {{ html()->text('deleteprior_date', Carbon\Carbon::parse('first day of january')->subYears(2)->format('m/d/Y'))->class(['form-control form-control-sm']) }}
                                     <span class="input-group-text"><i class="fas fa-calendar-alt"></i> </span>
                                 </div>
                             </div>
                             <div class="row align-items-center">
                                 <div class="col-md-2">
                                     <label class="form-label fw-bold">@lang('bt.trashed_module_delete')</label>
-                                    {!! Form::select('deleteprior_module', ['Quote'=>'Quotes', 'Workorder'=>'Workorders',
+                                    {{ html()->select('deleteprior_module', ['Quote'=>'Quotes', 'Workorder'=>'Workorders',
                                      'Invoice'=>'Invoices', 'Purchaseorder'=>'Purchaseorders',
-                                      'Schedule'=>'Schedule', 'Payment' => 'Payments'], null, ['class' => 'form-select']) !!}
+                                      'Schedule'=>'Schedule', 'Payment' => 'Payments'], null)->class(['form-select'])}}
                                 </div>
                                 <div class="col-md-4">
                                     <button type="button" id="btnSubmitDelete" class="btn btn-danger float-end"><i

@@ -1,5 +1,5 @@
 @include('vendors._js_subedit')
-{!! Form::model($vendor, ['route' => ['vendors.ajax.modalUpdate', $vendor->id], 'id' => 'form-edit-vendor']) !!}
+{{ html()->modelForm($vendor, 'POST', route('vendors.ajax.modalUpdate', $vendor->id))->open() }}
 <div class="modal" id="modal-edit-vendor">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
@@ -17,4 +17,4 @@
         </div>
     </div>
 </div>
-{!! Form::close() !!}
+{{ html()->closeModelForm() }}

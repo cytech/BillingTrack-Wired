@@ -4,7 +4,7 @@
     @include('layouts._alerts')
     <section class="app-content-header">
         <div class="container-fluid m-2">
-            {!! Form::model($schedule,['route' => ['scheduler.updaterecurringevent', $schedule->id],'id' => 'recurringevent', 'accept-charset' => 'utf-8']) !!}
+            {{ html()->modelForm($schedule, 'POST', route('scheduler.updaterecurringevent', $schedule->id))->attribute('id', 'recurringevent')->open() }}
             <div class="card card-light">
                 <div class="card-header">
                     <h3 class="card-title"><i
@@ -17,7 +17,7 @@
                 </div>
                 <div class="card-body">
                     <div class="mb-3 d-flex align-items-center">
-                        {!! Form::label('title',trans('bt.title'),['class'=>'col-sm-2 text-end fw-bold pe-3']) !!}
+                        {{ html()->label(__('bt.title'), 'title')->class('col-sm-2 text-end fw-bold pe-3') }}
                         <div class="col-sm-6">
                             <livewire:employee-search
                                     {{-- module base name, adds hidden fields with _id and _name --}}
@@ -34,19 +34,19 @@
                     <div class="mb-3 d-flex align-items-center">
                         <label for="location" class="col-sm-2 text-end fw-bold pe-3">@lang('bt.location')</label>
                         <div class="col-sm-6">
-                            {!! Form::text('location_str',null,['class'=>'form-control']) !!}
+                            {{ html()->text('location_str',null)->class('form-control') }}
                         </div>
                     </div>
                     <div class="mb-3 d-flex align-items-center">
-                        {!! Form::label('description',trans('bt.description'),['class'=>'col-sm-2 text-end fw-bold pe-3']) !!}
+                        {{ html()->label(__('bt.description'), 'description')->class('col-sm-2 text-end fw-bold pe-3') }}
                         <div class="col-sm-6">
-                            {!! Form::text('description',null,['class'=>'form-control']) !!}
+                            {{ html()->text('description',null)->class('form-control') }}
                         </div>
                     </div>
                     <div class="mb-3 d-flex align-items-center">
-                        {!! Form::label('category_id',trans('bt.category'),['class'=>'col-sm-2 text-end fw-bold pe-3']) !!}
+                        {{ html()->label(__('bt.category'), 'category_id')->class('col-sm-2 text-end fw-bold pe-3') }}
                         <div class="col-sm-3">
-                            {!! Form::select('category_id',$categories,null, ['id' => 'category_id','class'=>'form-control']) !!}
+                            {{ html()->select('category_id',$categories,null)->class('form-select') }}
                         </div>
                     </div>
                     <div class="row g-3 mb-3 align-items-center ">
@@ -69,7 +69,7 @@
                 </div>
             </div>
         </div>
-        {!! Form::close() !!}
+        {{ html()->closeModelForm() }}
     </section>
 @stop
 @section('javaScript')

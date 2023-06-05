@@ -4,7 +4,7 @@
     @include('layouts._alerts')
     <!--basic form starts-->
     <section class="app-content-header">
-        {!! Form::open(['route' => 'scheduler.categories.store', 'class'=>'form-horizontal']) !!}
+        {{ html()->form('POST', route('scheduler.categories.store'))->class('form-horizontal')->open() }}
 
         <div class="card card-light">
             <div class="card-header">
@@ -20,26 +20,26 @@
             <div class="card-body">
                 <!-- Name input-->
                 <div class="mb-3">
-                    {!! Form::label('name',trans('bt.category_name'),['class'=>'col-sm-2 col-form-label']) !!}
+                    {{ html()->label(trans('bt.category_name'), 'name')->class('col-sm-2 col-form-label') }}
                     <div class="col-md-6">
-                        {!! Form::text('name',old('name'),['id'=>'name', 'placeholder'=>'Category Name', 'class'=>'form-control', 'autocomplete' => 'off']) !!}
+                        {{ html()->text('name',old('name'))->class('form-control')->placeholder('Category Name')->attribute('autocomplete', 'off') }}
                     </div>
                 </div>
                 <div id="cp1" class="mb-3">
-                    {!! Form::label('text_color',trans('bt.category_text_color'),['class'=>'col-sm-2 col-form-label']) !!}
+                    {{ html()->label(trans('bt.category_text_color'), 'text_color')->class('col-sm-2 col-form-label') }}
                     <div class="col-md-3">
-                     {!! Form::color('text_color',Request::old('text_color') ?? '#ffffff',['id'=>'text_color', 'placeholder'=>'Text Color', 'class'=>'form-control', 'autocomplete' => 'off']) !!}
+                     {{ html()->input('color', 'text_color',Request::old('text_color') ?? '#ffffff')->placeholder('Text Color')->class('form-control')->attribute('autocomplete', 'off') }}
                     </div>
                 </div>
                 <!-- text_color input-->
                 <div id="cp2" class="mb-3">
-                    {!! Form::label('bg_color',trans('bt.category_bg_color'),['class'=>'col-sm-2 col-form-label']) !!}
+                    {{ html()->label(trans('bt.category_bg_color'), 'bg_color')->class('col-sm-2 col-form-label') }}
                     <div class="col-md-3">
-                    {!! Form::color('bg_color',Request::old('bg_color') ?? '#000000',['id'=>'bg_color', 'placeholder'=>'Background Color', 'class'=>'form-control', 'autocomplete' => 'off']) !!}
+                        {{ html()->input('color', 'bg_color',Request::old('bg_color') ?? '#000000')->placeholder('Background Color')->class('form-control')->attribute('autocomplete', 'off') }}
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    {!! Form::close() !!}
+    {{ html()->form()->close() }}
 @stop

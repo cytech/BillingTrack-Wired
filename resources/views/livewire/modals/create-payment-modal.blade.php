@@ -54,7 +54,7 @@
                     <div class="col-sm-4 text-end fw-bold">
                         <label class="col-form-label">@lang('bt.amount')</label></div>
                     <div class="col-sm-7">
-                        {!! Form::text('payment_amount', null, ['wire:model' => 'amount', 'id' => 'payment_amount', 'class' => 'form-control', 'placeholder' => 'xxx.xx']) !!}
+                        {{ html()->text('payment_amount', null)->attribute('wire:model', 'amount')->placeholder('xxx.xx')->class('form-control') }}
                         @error('amount') <span class="text-sm text-danger">{{ $message }}</span> @enderror
                     </div>
                 </div>
@@ -76,14 +76,14 @@
                     <div class="col-sm-4 text-end fw-bold">
                         <label class="col-form-label">@lang('bt.payment_method')</label></div>
                     <div class="col-sm-7">
-                        {!! Form::select('payment_method_id', $paymentmethods, null, ['wire:model' => 'payment_method_id','id' => 'payment_method_id', 'class' => 'form-select']) !!}
+                        {{ html()->select('payment_method_id', $paymentmethods, null)->attribute('wire:model', 'payment_method_id')->class('form-select') }}
                     </div>
                 </div>
                 <div class="row g-3 mb-3 align-items-center">
                     <div class="col-sm-4 text-end fw-bold">
                         <label class="col-form-label">@lang('bt.note')</label></div>
                     <div class="col-sm-7">
-                        {!! Form::textarea('payment_note', null, ['wire:model' => 'payment_note', 'id' => 'payment_note', 'class' => 'form-control', 'rows' => 4]) !!}
+                        {{ html()->textarea('payment_note', null)->rows(4)->attribute('wire:model', 'payment_note')->class('form-control') }}
                     </div>
                 </div>
                 {{--@if (config('bt.mailConfigured') and $client->email)--}}
@@ -93,7 +93,7 @@
                         <div class="col-sm-7 text-end fw-bold">
                             <label class="form-check-label">@lang('bt.email_payment_receipt')</label></div>
                         <div class="form-check form-switch form-switch-md col-sm-4 ms-2">
-                            {!! Form::checkbox('email_payment_receipt', 1, (bool)$email_payment_receipt, ['wire:model' => 'email_payment_receipt', 'id' => 'email_payment_receipt', 'class' => "form-check-input" ]) !!}
+                            {{ html()->checkbox('email_payment_receipt', (bool)$email_payment_receipt, 1)->attribute('wire:model', 'email_payment_receipt')->class('form-check-input') }}
                         </div>
                     </div>
                 @endif
@@ -105,9 +105,11 @@
                                     <label class="col-form-label">{{ $value->field_label }}</label></div>
                                 <div class="col-sm-7">
                                     @if ($value->field_type == 'dropdown')
-                                        {!! Form::select('custom[' . $value->column_name . ']', array_combine(array_merge([''], explode(',', $value->field_meta)), array_merge([''], explode(',', $value->field_meta))), null, ['wire:model' => 'custom_data.' . $value->column_name .'', 'class' => 'custom-form-field form-select', 'data-' . $value->tbl_name . '-field-name' => $value->column_name]) !!}
+{{--                                        {!! Form::select('custom[' . $value->column_name . ']', array_combine(array_merge([''], explode(',', $value->field_meta)), array_merge([''], explode(',', $value->field_meta))), null, ['wire:model' => 'custom_data.' . $value->column_name .'', 'class' => 'custom-form-field form-select', 'data-' . $value->tbl_name . '-field-name' => $value->column_name]) !!}--}}
+                                        {{ html()->select('custom[' . $value->column_name . ']', array_combine(array_merge([''], explode(',', $value->field_meta)), array_merge([''], explode(',', $value->field_meta))), (isset($object->custom->{$value->column_name}) ? $object->custom->{$value->column_name} : null))->attribute('wire:model', 'custom_data.' . $value->column_name .'')->class(['custom-form-field form-select'])->attribute('data-' . $value->tbl_name . '-field-name', $value->column_name)}}
                                     @else
-                                        {!! call_user_func_array('Form::' . $value->field_type, ['custom[' . $value->column_name . ']', null, ['wire:model' => 'custom_data.' . $value->column_name .'','class' => 'custom-form-field form-control', 'data-' . $value->tbl_name . '-field-name' => $value->column_name]]) !!}
+{{--                                        {!! call_user_func_array('Form::' . $value->field_type, ['custom[' . $value->column_name . ']', null, ['wire:model' => 'custom_data.' . $value->column_name .'','class' => 'custom-form-field form-control', 'data-' . $value->tbl_name . '-field-name' => $value->column_name]]) !!}--}}
+                                        {{ html()->{$value->field_type}('custom[' . $value->column_name . ']', (isset($object->custom->{$value->column_name}) ? $object->custom->{$value->column_name} : null))->attribute('wire:model', 'custom_data.' . $value->column_name .'')->class(['custom-form-field form-control'])->attribute('data-' . $value->tbl_name . '-field-name', $value->column_name)}}
                                     @endif
                                 </div>
                             </div>

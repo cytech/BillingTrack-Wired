@@ -1,5 +1,6 @@
 @include('clients._js_subedit')
-{!! Form::model($client, ['route' => ['clients.ajax.modalUpdate', $client->id], 'id' => 'form-edit-client']) !!}
+{{ html()->modelForm($client, 'POST', route('clients.ajax.modalUpdate', $client->id))->attribute('id', 'form-edit-client')->open() }}
+
 <div class="modal fade" id="modal-edit-client">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
@@ -17,4 +18,4 @@
         </div>
     </div>
 </div>
-{!! Form::close() !!}
+{{ html()->closeModelForm() }}

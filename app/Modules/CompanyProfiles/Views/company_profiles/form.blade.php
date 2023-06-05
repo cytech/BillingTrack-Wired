@@ -3,8 +3,8 @@
 @section('content')
     <script type="text/javascript">
         ready(function () {
-            document.getElementById('name').focus()
-            @if ($editMode == true)
+            // document.getElementById('name').focus()
+            @if ($editMode)
             addEvent(document, 'click', '#btn-delete-logo', (e) => {
                 axios.post("{{ route('companyProfiles.deleteLogo', [$companyProfile->id]) }}").then(function () {
                     document.getElementById('div-logo').innerHTML = ''
@@ -14,10 +14,10 @@
         });
     </script>
 
-    @if ($editMode == true)
-        {!! Form::model($companyProfile, ['route' => ['companyProfiles.update', $companyProfile->id], 'files' => true]) !!}
+    @if ($editMode)
+        {{ html()->modelForm($companyProfile, 'POST', route('companyProfiles.update', $companyProfile->id))->acceptsFiles()->open() }}
     @else
-        {!! Form::open(['route' => 'companyProfiles.store', 'files' => true]) !!}
+        {{ html()->form('POST', route('companyProfiles.store'))->acceptsFiles()->open() }}
     @endif
 
     <section class="app-content-header">
@@ -39,5 +39,9 @@
             </div>
         </div>
     </section>
-    {!! Form::close() !!}
+    @if ($editMode)
+        {{ html()->closeModelForm() }}
+    @else
+        {{ html()->form()->close() }}
+    @endif
 @stop

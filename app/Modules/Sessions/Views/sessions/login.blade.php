@@ -40,7 +40,7 @@
             <div class="card">
                 <div class="card-header">{{ __('bt.account_login') }}</div>
                 <div class="card-body">
-                    {!! Form::open() !!}
+                    {{ html()->form('POST', route('session.attempt'))->open() }}
                     @csrf
                     <div class="form-group row mb-3">
                         <label for="email"
@@ -91,7 +91,7 @@
                             </button>
                         </div>
                     </div>
-                    {!! Form::close() !!}
+                    {{ html()->form()->close() }}
                     @if(config('app.demo'))
                         <div class="row justify-content-center mt-5">
                             <b>Demo Login - Admin</b>

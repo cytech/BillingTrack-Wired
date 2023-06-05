@@ -4,7 +4,7 @@
     <!--basic form starts-->
     @include('layouts._alerts')
     <section class="app-content-header">
-        {!! Form::open(['route' => 'employees.store', 'class'=>'form-horizontal']) !!}
+        {{ html()->form('POST', route('employees.store'))->class('form-horizontal')->open() }}
         <div class="card card-light">
             <div class="card-header">
                 <div class="card-title h4 mt-2">
@@ -22,7 +22,7 @@
                                for="number">@lang('bt.employee_number')</label>
                     </div>
                     <div class="col-md-8">
-                        {!! Form::text('number',old('number'),['id'=>'number', 'class'=>'form-control']) !!}
+                        {{ html()->text('number',old('number'))->class('form-control') }}
                     </div>
                 </div>
                 <!-- First Name input-->
@@ -32,7 +32,7 @@
                                for="first_name">@lang('bt.employee_first_name')</label>
                     </div>
                     <div class="col-md-8">
-                        {!! Form::text('first_name',old('first_name'),['id'=>'first_name', 'class'=>'form-control']) !!}
+                        {{ html()->text('first_name',old('first_name'))->class('form-control') }}
                     </div>
                 </div>
                 <!-- Last Name input-->
@@ -42,7 +42,7 @@
                                for="last_name">@lang('bt.employee_last_name')</label>
                     </div>
                     <div class="col-md-8">
-                        {!! Form::text('last_name',old('last_name'),['id'=>'last_name', 'class'=>'form-control']) !!}
+                        {{ html()->text('last_name',old('last_name'))->class('form-control') }}
                     </div>
                 </div>
                 <!-- Title input-->
@@ -52,7 +52,7 @@
                                for="title">@lang('bt.employee_title')</label>
                     </div>
                     <div class="col-md-8">
-                        {!! Form::text('title',old('title'),['id'=>'title', 'class'=>'form-control','list'=>'listid']) !!}
+                        {{ html()->text('title',old('title'))->class('form-control')->attribute('list', 'listid') }}
                         <datalist id='listid'>
                             @foreach($titles as $title)
                                 <option>{!! $title !!}</option>
@@ -67,7 +67,7 @@
                                for="type_id">@lang('bt.type')</label>
                     </div>
                     <div class="col-md-8">
-                        {!! Form::select('type_id', $types, null , ['id' => 'type_id', 'class' => 'form-select']) !!}
+                        {{ html()->select('type_id', $types, null)->class('form-select') }}
                     </div>
                 </div>
                 <!-- Expected Termination Date input-->
@@ -77,7 +77,7 @@
                                for="term_date">@lang('bt.term_date')</label>
                     </div>
                     <div class="col-md-8">
-                        {!! Form::date('term_date',old('term_date'),['id'=>'term_date', 'class'=>'form-control']) !!}
+                        {{ html()->date('term_date', old('term_date'))->class('form-control') }}
                     </div>
                 </div>
                 <!-- Billing Rate input-->
@@ -87,7 +87,7 @@
                                for="billing_rate">@lang('bt.employee_billing_rate')</label>
                     </div>
                     <div class="col-md-8">
-                        {!! Form::text('billing_rate',old('billing_rate'),['id'=>'billing_rate', 'class'=>'form-control']) !!}
+                        {{ html()->text('billing_rate',old('billing_rate'))->class('form-control') }}
                     </div>
                 </div>
                 <!-- Schedule Checkbox-->
@@ -97,7 +97,7 @@
                                for="schedule">@lang('bt.scheduleable')</label>
                     </div>
                     <div class="col-md-8 form-check form-switch form-switch-md ps-5">
-                        {!! Form::checkbox('schedule',1,old('schedule'),['id'=>'schedule', 'class'=>'form-check-input']) !!}
+                        {{ html()->checkbox('schedule', old('schedule'), 1)->class('form-check-input') }}
                     </div>
                 </div>
                 <!-- Active Checkbox-->
@@ -107,7 +107,7 @@
                                for="active">@lang('bt.employee_active')</label>
                     </div>
                     <div class="col-md-8 form-check form-switch form-switch-md ps-5">
-                        {!! Form::checkbox('active',1,old('active'),['id'=>'active', 'class'=>'form-check-input']) !!}
+                        {{ html()->checkbox('active', old('active'), 1)->class('form-check-input') }}
                     </div>
                 </div>
                 <!-- Driver Checkbox-->
@@ -117,11 +117,11 @@
                                for="driver">@lang('bt.employee_driver')</label>
                     </div>
                     <div class="col-md-8 form-check form-switch form-switch-md ps-5">
-                        {!! Form::checkbox('driver',1,old('driver'),['id'=>'driver', 'class'=>'form-check-input']) !!}
+                        {{ html()->checkbox('driver', old('driver'), 1)->class('form-check-input') }}
                     </div>
                 </div>
             </div>
         </div>
-        {!! Form::close() !!}
+        {{ html()->form()->close() }}
     </section>
 @stop

@@ -8,10 +8,10 @@
         })
     </script>
 
-    @if ($editMode == true)
-        {!! Form::model($itemLookup, ['route' => ['itemLookups.update', $itemLookup->id]]) !!}
+    @if ($editMode)
+        {{ html()->modelForm($itemLookup, 'POST', route('itemLookups.update', $itemLookup->id))->open() }}
     @else
-        {!! Form::open(['route' => 'itemLookups.store']) !!}
+        {{ html()->form('POST', route('itemLookups.store'))->open() }}
     @endif
 
     @include('layouts._alerts')
@@ -30,34 +30,38 @@
             <div class="card-body">
                 <div class="mb-3">
                     <label class="">@lang('bt.name'): </label>
-                    {!! Form::text('name', null, ['id' => 'name', 'class' => 'form-control']) !!}
+                    {{ html()->text('name', null)->class('form-control') }}
                 </div>
                 <div class="mb-3">
                     <label class="">@lang('bt.description'): </label>
-                    {!! Form::textarea('description', null, ['id' => 'description', 'rows' => '2', 'class' => 'form-control']) !!}
+                    {{ html()->textarea('description', null)->rows(2)->class('form-control') }}
                 </div>
                 <div class="mb-3">
                     <label class="">@lang('bt.price'): </label>
-                    {!! Form::text('price', (($editMode) ? $itemLookup->formatted_numeric_price: null), ['id' => 'price', 'class' => 'form-control']) !!}
+                    {{ html()->text('price', (($editMode) ? $itemLookup->formatted_numeric_price: null))->class('form-control') }}
                 </div>
                 <div class="mb-3">
                     <label class="">@lang('bt.tax_1'): </label>
-                    {!! Form::select('tax_rate_id', $taxRates, null, ['class' => 'form-control']) !!}
+                    {{ html()->select('tax_rate_id', $taxRates, null)->class('form-control') }}
                 </div>
                 <div class="mb-3">
                     <label class="">@lang('bt.tax_2'): </label>
-                    {!! Form::select('tax_rate_2_id', $taxRates, null, ['class' => 'form-control']) !!}
+                    {{ html()->select('tax_rate_2_id', $taxRates, null)->class('form-control') }}
                 </div>
                 <div class="mb-3">
                     <label class="">@lang('bt.resource_table'): </label>
-                    {!! Form::text('resource_table', (($editMode) ? $itemLookup->resource_table: null), ['class' => 'form-control', 'readonly' => true]) !!}
+                    {{ html()->text('resource_table', (($editMode) ? $itemLookup->resource_table: null))->class('form-control')->isReadonly() }}
                 </div>
                 <div class="mb-3">
                     <label class="">@lang('bt.resource_id'): </label>
-                    {!! Form::text('resource_id', (($editMode) ? $itemLookup->resource_id: null), ['class' => 'form-control', 'readonly' => true]) !!}
+                    {{ html()->text('resource_id', (($editMode) ? $itemLookup->resource_id: null))->class('form-control')->isReadonly() }}
                 </div>
             </div>
         </div>
     </section>
-    {!! Form::close() !!}
+    @if ($editMode)
+        {{ html()->closeModelForm() }}
+    @else
+        {{ html()->form()->close() }}
+    @endif
 @stop

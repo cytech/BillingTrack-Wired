@@ -1,16 +1,16 @@
 @extends('layouts.master')
 
 @section('content')
-    {!! Form::model($payment, ['route' => ['payments.update', $payment->id]]) !!}
-    {!! Form::hidden('invoice_id') !!}
-    {!! Form::hidden('client_id') !!}
+    {{ html()->modelForm($payment, 'POST', route('payments.update', $payment->id))->open() }}
+    {{ html()->hidden('invoice_id', $payment->invoice_id) }}
+    {{ html()->hidden('client_id', $payment->client_id) }}
     <section class="app-content-header">
         <h3 class="float-start px-3">
             @lang('bt.payment_form')
         </h3>
         <div class="float-end">
             <a href="{{ route('payments.index') }}" class="btn btn-secondary">Cancel</a>
-            {!! Form::submit(trans('bt.save'), ['class' => 'btn btn-primary']) !!}
+            {{ html()->submit(__('bt.save'))->class('btn btn-primary') }}
         </div>
         <div class="clearfix"></div>
     </section>
@@ -25,8 +25,7 @@
                         </div>
                         <div class="mb-3">
                             <label>@lang('bt.amount'): </label>
-                            {!! Form::text('amount', $payment->formatted_numeric_amount, ['id' => 'amount',
-                            'class' => 'form-control']) !!}
+                            {{ html()->text('amount', $payment->formatted_numeric_amount)->class('form-control') }}
                         </div>
                         <div class="mb-3">
                             <label>@lang('bt.payment_date'): </label>
@@ -38,22 +37,25 @@
                         </div>
                         <div class="mb-3">
                             <label>@lang('bt.payment_method')</label>
-                            {!! Form::select('payment_method_id', $paymentMethods, null, ['id' =>
-                            'payment_method_id', 'class' => 'form-control']) !!}
+                            {{ html()->select('payment_method_id', $paymentMethods, null)->class('form-select') }}
                         </div>
                         <div class="mb-3">
                             <label>@lang('bt.note')</label>
-                            {!! Form::textarea('note', null, ['id' => 'note', 'rows' => '2', 'class' => 'form-control']) !!}
+                            {{ html()->textarea('note', null)->rows(2)->class('form-control') }}
                         </div>
                         @if ($customFields->count())
-                            @include('custom_fields._custom_fields')
+{{--                            @if ($editMode)--}}
+                                @include('custom_fields._custom_fields', ['object' => $payment])
+{{--                            @else--}}
+{{--                                @include('custom_fields._custom_fields')--}}
+{{--                            @endif--}}
                         @endif
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    {!! Form::close() !!}
+    {{ html()->closeModelForm() }}
     <section class="container-fluid">
         @include('notes._notes', ['object' => $payment, 'model' => 'BT\Modules\Payments\Models\Payment', 'showPrivateCheckbox' => true])
     </section>

@@ -66,13 +66,13 @@
                     <div class="col-md-6">
                         <label>@lang('bt.add_timer')</label>
                         <div class="input-group">
-                            {!! Form::text('date_time_range', null, ['id' => 'date_time_range', 'class' => 'form-control', 'readonly' => 'readonly']) !!}
+                            {{ html()->text('date_time_range', null)->class('form-control')->isReadonly() }}
                             <span class="input-group-text open-daterangetimepicker">
                                 <i class="fa fa-calendar"></i>
                             </span>
                         </div>
-                        {!! Form::hidden('from_date_time', null, ['id' => 'from_date_time']) !!}
-                        {!! Form::hidden('to_date_time', null, ['id' => 'to_date_time']) !!}
+                        {{ html()->hidden('from_date_time', null) }}
+                        {{ html()->hidden('to_date_time', null) }}
                     </div>
                 </div>
                 <div id="task-timer-list">

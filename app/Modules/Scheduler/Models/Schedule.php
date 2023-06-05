@@ -13,7 +13,6 @@ namespace BT\Modules\Scheduler\Models;
 
 use Askedio\SoftCascade\Traits\SoftCascadeTrait;
 use BT\Support\DateFormatter;
-use Collective\Html\Eloquent\FormAccessible;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -29,7 +28,7 @@ use Recurr\Transformer\TextTransformer;
 class Schedule extends Model
 {
 
-    use SoftDeletes, SoftCascadeTrait, FormAccessible;
+    use SoftDeletes, SoftCascadeTrait;//, FormAccessible;
 
     protected $softCascade = ['occurrences', 'resources'];
 
@@ -109,17 +108,6 @@ class Schedule extends Model
     public function formattedDateTrashed(): Attribute
     {
         return new Attribute(get: fn() => Carbon::parse($this->deleted_at)->format('Y-m-d H:i'));
-    }
-
-    //below for form model binding
-    public function formStartDateAttribute()
-    {
-        return Carbon::parse($this->start_date)->format('Y-m-d H:i');
-    }
-
-    public function formEndDateAttribute()
-    {
-        return Carbon::parse($this->end_date)->format('Y-m-d H:i');
     }
 
     //scopes

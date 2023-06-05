@@ -11,7 +11,7 @@
         <section class="container-fluid">
             <div class="col-sm-12 mb-3">
                 <div class="fs-3 float-start">@lang('bt.batchprint')</div>
-                {!! Form::open(['route' => 'utilities.batchprint', 'class'=>'form-horizontal']) !!}
+                {{ html()->form('POST', route('utilities.batchprint'))->class('form-horizontal')->open() }}
                 <div class="btn-group float-end">
                     <button type="submit" class="btn btn-primary float-end"><i
                                 class="fa fa-save"></i> @lang('bt.process') </button>
@@ -28,15 +28,15 @@
                 </div>
                 <div class="card-body">
                     <div class="col-md-4 mb-3">
-                        {!! Form::hidden('batch_type', $module) !!}
+                        {{ html()->hidden('batch_type', $module) }}
                     </div>
 
                     <div class="col-md-4 mb-3">
                         <label class="form-label fw-bold">@lang('bt.date_range'):</label>
-                        {!! Form::hidden('from_date', null, ['id' => 'from_date']) !!}
-                        {!! Form::hidden('to_date', null, ['id' => 'to_date']) !!}
+                        {{ html()->hidden('from_date', null) }}
+                        {{ html()->hidden('to_date', null) }}
                         <div class="input-group">
-                            {!! Form::text('date_range', null, ['id' => 'date_range', 'class' => 'form-control', 'readonly' => 'readonly']) !!}
+                            {{ html()->text('date_range', null)->isReadonly()->class(['form-control']) }}
                             <span class="input-group-text"><i class="fas fa-calendar-alt"></i> </span>
                         </div>
                     </div>
@@ -49,6 +49,6 @@
                     </script>
                 </div>
             </div>
-            {!! Form::close() !!}
+            {{ html()->form()->close() }}
         </section>
 @stop

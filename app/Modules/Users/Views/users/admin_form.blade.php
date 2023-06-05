@@ -20,10 +20,10 @@
         });
     </script>
 
-    @if ($editMode == true)
-        {!! Form::model($user, ['route' => ['users.update', $user->id, 'admin']]) !!}
+    @if ($editMode)
+        {{ html()->modelForm($user, 'POST', route('users.update', [$user->id, 'admin']))->open() }}
     @else
-        {!! Form::open(['route' => ['users.store', 'admin']]) !!}
+        {{ html()->form('POST', route('users.store', 'admin'))->open() }}
     @endif
 
     <section class="app-content-header">
@@ -38,7 +38,6 @@
             </div>
         </div>
     </section>
-
     <section class="container-fluid">
         @include('layouts._alerts')
         <div class=" card card-light">
@@ -47,13 +46,13 @@
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label>@lang('bt.name'): </label>
-                            {!! Form::text('name', null, ['id' => 'name', 'class' => 'form-control']) !!}
+                            {{ html()->text('name', null)->class('form-control') }}
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label>@lang('bt.email'): </label>
-                            {!! Form::text('email', null, ['id' => 'email', 'class' => 'form-control']) !!}
+                            {{ html()->text('email', null)->class('form-control') }}
                         </div>
                     </div>
                 </div>
@@ -61,19 +60,18 @@
 {{--                    <div class="col-md-3">--}}
 {{--                        <div class="mb-3">--}}
 {{--                            <label>@lang('bt.avatar'): </label>--}}
-{{--                            {!! Form::select('avatar', ['Gravatar'=>'Gravatar', 'Custom'=>'Custom'],'Gravatar', ['id' => 'avatar', 'class' => 'form-select']) !!}--}}
+{{--                                {{ html()->select('avatar', ['Gravatar'=>'Gravatar', 'Custom'=>'Custom'],'Gravatar')->class('form-select') }}--}}
 {{--                        </div>--}}
 {{--                    </div>--}}
 {{--                </div>--}}
                 @if (!$editMode)
                     <div class="mb-3">
                         <label>@lang('bt.password'): </label>
-                        {!! Form::password('password', ['id' => 'password', 'class' => 'form-control', 'autocomplete' => 'new-password']) !!}
+                        {{ html()->password('password')->class('form-control')->attribute('autocomplete', 'new-password') }}
                     </div>
                     <div class="mb-3">
                         <label>@lang('bt.password_confirmation'): </label>
-                        {!! Form::password('password_confirmation', ['id' => 'password_confirmation',
-                        'class' => 'form-control']) !!}
+                        {{ html()->password('password_confirmation')->class('form-control') }}
                     </div>
                 @endif
 
@@ -81,13 +79,13 @@
                     <div class="col-md-3">
                         <div class="mb-3">
                             <label>@lang('bt.api_public_key'): </label>
-                            {!! Form::text('api_public_key', null, ['id' => 'api_public_key', 'class' => 'form-control', 'readonly' => 'readonly']) !!}
+                            {{ html()->text('api_public_key', null)->class('form-control')->isReadonly() }}
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="mb-3">
                             <label>@lang('bt.api_secret_key'): </label>
-                            {!! Form::text('api_secret_key', null, ['id' => 'api_secret_key', 'class' => 'form-control', 'readonly' => 'readonly']) !!}
+                            {{ html()->text('api_secret_key', null)->class('form-control')->isReadonly() }}
                         </div>
                     </div>
                 </div>
@@ -104,10 +102,18 @@
                     <h3 class="box-title">@lang('bt.custom_fields')</h3>
                 </div>
                 <div class="card-body">
-                    @include('custom_fields._custom_fields')
+                    @if ($editMode)
+                        @include('custom_fields._custom_fields', ['object' => $user])
+                    @else
+                        @include('custom_fields._custom_fields')
+                    @endif
                 </div>
             </div>
         @endif
     </section>
-    {!! Form::close() !!}
+    @if ($editMode)
+        {{ html()->closeModelForm() }}
+    @else
+        {{ html()->form()->close() }}
+    @endif
 @stop

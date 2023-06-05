@@ -32,15 +32,15 @@
                                     <td>{!! $item->name !!}</td>
                                     <td>{!! $item->quantity !!}</td>
                                     <td>{!! $item->price !!}</td>
-                                    <td>{!! Form::text('rec_qty', $item->quantity - $item->rec_qty, ['id' => 'rec_qty', 'class' => 'form-control']) !!}</td>
-                                    <td>{!! Form::text('rec_cost', $item->price, ['id' => 'rec_cost', 'class' => 'form-control']) !!}</td>
+                                    <td>{{ html()->text('rec_qty', $item->quantity - $item->rec_qty)->class('form-control') }}</td>
+                                    <td>{{ html()->text('rec_cost', $item->price)->class('form-control') }}</td>
                                 </tr>
                             @endforeach
                             </tbody>
                         </table>
                         <div class="ms-3 form-check form-switch form-switch-md">
-                            {{ Form::checkbox('itemrec', 1, config('bt.updateProductsDefault'), ['id' => 'itemrec', 'class' => 'form-check-input']) }}
-                            {{ Form::label('itemrec', trans('bt.update_products'), ['class' => 'form-check-label fw-bold ps-3 pt-1', 'for' => 'itemrec']) }}
+                            {{ html()->checkbox('itemrec', config('bt.updateProductsDefault'), 1)->class('form-check-input') }}
+                            {{ html()->label(__('bt.update_products'), 'itemrec')->class('form-check-label fw-bold ps-3 pt-1') }}
                         </div>
                     </div>
                 </form>

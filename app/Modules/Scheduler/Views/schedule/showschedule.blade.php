@@ -20,7 +20,7 @@
             <div class="col-md-12 col-md-offset-2">
                 <div class="card card-default-default">
                     <div class="card-header h2 d-flex justify-content-center">@lang('bt.employee'){{'/'}}@lang('bt.resource') @lang('bt.schedule')</div>
-                    {!! Form::open(['route' => 'scheduler.showschedule','id' => 'showschedule']) !!}
+                    {{ html()->form('POST', route('scheduler.showschedule'))->attribute('id', 'showschedule')->open() }}
                     <div class="card-body p-1">
                         <div class="card-text d-flex justify-content-center mt-1 mb-3">
                             <input type="hidden" value=" {{ $dates[0] }}" name="sdate">
@@ -247,7 +247,7 @@
                             @endforeach
                         </div>
                     </div>
-                    {!! Form::close() !!}
+                    {{ html()->form()->close() }}
                 </div>
             </div>
         </div>

@@ -50,13 +50,13 @@
                 <div class="row mb-3">
                     <div class="col-md-3">
                         <label class="form-label fw-bold">@lang('bt.company_profile'):</label>
-                        {!! Form::select('company_profile_id', $companyProfiles, null, ['id' => 'company_profile_id', 'class' => 'form-select'])  !!}
+                        {{ html()->select('company_profile_id', $companyProfiles, null)->class('form-select') }}
                     </div>
                 </div>
                 <div class="row mb-3">
                     <div class="col-md-3">
                         <label class="form-label fw-bold">@lang('bt.year'):</label>
-                        {!! Form::select('year', $years, date('Y'), ['id' => 'year', 'class' => 'form-select']) !!}
+                        {{ html()->select('year', $years, date('Y'))->class('form-select') }}
                     </div>
                 </div>
                 <div class="row">

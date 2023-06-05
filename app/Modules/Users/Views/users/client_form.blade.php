@@ -1,10 +1,10 @@
 @extends('layouts.master')
 
 @section('content')
-    @if ($editMode == true)
-        {!! Form::model($user, ['route' => ['users.update', $user->id, 'client']]) !!}
+    @if ($editMode)
+        {{ html()->modelForm($user, 'POST', route('users.update', [$user->id, 'client']))->open() }}
     @else
-        {!! Form::open(['route' => ['users.store', 'client']]) !!}
+        {{ html()->form('POST', route('users.store', 'client'))->open() }}
     @endif
 
     <section class="app-content-header">
@@ -42,14 +42,13 @@
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label>@lang('bt.password'): </label>
-                                {!! Form::password('password', ['id' => 'password', 'class' => 'form-control', 'autocomplete' => 'new-password']) !!}
+                                {{ html()->password('password')->class('form-control')->attribute('autocomplete', 'new-password') }}
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label>@lang('bt.password_confirmation'): </label>
-                                {!! Form::password('password_confirmation', ['id' => 'password_confirmation',
-                                'class' => 'form-control']) !!}
+                                {{ html()->password('password_confirmation')->class('form-control') }}
                             </div>
                         </div>
                     </div>
@@ -58,29 +57,37 @@
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label>@lang('bt.name'): </label>
-                                {!! Form::text('name', null, ['id' => 'name', 'class' => 'form-control', 'readonly' => 'readonly']) !!}
+                                {{ html()->text('name', null)->class('form-control')->isReadonly() }}
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label>@lang('bt.email'): </label>
-                                {!! Form::text('email', null, ['id' => 'email', 'class' => 'form-control', 'readonly' => 'readonly']) !!}
+                                {{ html()->text('email', null)->class('form-control')->isReadonly() }}
                             </div>
                         </div>
                     </div>
                 @endif
             </div>
         </div>
-        @if ($customFields->count())
-            <div class=" card card-light">
-                <div class="box-header">
-                    <h3 class="box-title">@lang('bt.custom_fields')</h3>
-                </div>
-                <div class="card-body">
-                    @include('custom_fields._custom_fields')
-                </div>
-            </div>
-        @endif
+{{--        @if ($customFields->count())--}}
+{{--            <div class=" card card-light">--}}
+{{--                <div class="box-header">--}}
+{{--                    <h3 class="box-title">@lang('bt.custom_fields')</h3>--}}
+{{--                </div>--}}
+{{--                <div class="card-body">--}}
+{{--                    @if ($editMode)--}}
+{{--                        @include('custom_fields._custom_fields', ['object' => $user])--}}
+{{--                    @else--}}
+{{--                        @include('custom_fields._custom_fields')--}}
+{{--                    @endif--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        @endif--}}
     </section>
-    {!! Form::close() !!}
+    @if ($editMode)
+        {{ html()->closeModelForm() }}
+    @else
+        {{ html()->form()->close() }}
+    @endif
 @stop

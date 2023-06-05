@@ -2,7 +2,7 @@
 
 @section('content')
 
-    {!! Form::open(['route' => ['import.map.submit', $importType], 'class' => 'form-horizontal']) !!}
+    {{ html()->form('POST', route('import.map.submit', $importType))->class('form-horizontal')->open() }}
 
     <section class="app-content-header">
         <h3 class="float-start px-3">
@@ -10,7 +10,7 @@
         </h3>
 
         <div class="float-end">
-            {!! Form::submit(trans('bt.submit'), ['class' => 'btn btn-primary']) !!}
+            {{ html()->submit(__('bt.submit'))->class('btn btn-primary') }}
         </div>
         <div class="clearfix"></div>
     </section>
@@ -25,7 +25,7 @@
                     @foreach ($importFields as $key => $field)
                         <tr>
                             <td style="width: 20%;">{{ $field }}</td>
-                            <td>{!! Form::select($key, $fileFields, (is_numeric(array_search($key, $fileFields)) ? array_search($key, $fileFields) : null), ['class' => 'form-control']) !!}
+                            <td>{{ html()->select($key, $fileFields, (is_numeric(array_search($key, $fileFields)) ? array_search($key, $fileFields) : null))->class('form-select') }}
                             </td>
                         </tr>
                     @endforeach
@@ -35,5 +35,5 @@
         </div>
     </section>
 
-    {!! Form::close() !!}
+    {{ html()->form()->close() }}
 @stop

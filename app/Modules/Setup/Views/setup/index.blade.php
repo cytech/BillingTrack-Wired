@@ -5,22 +5,22 @@
         <h1>@lang('bt.license_agreement')</h1>
     </section>
     <section class="content">
-        {!! Form::open() !!}
+        {{ html()->form('POST', route('setup.index'))->open() }}
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <div class=" card card-light">
                     <div class="card-body">
                         <div class="mb-3">
-                            {!! Form::textarea('', $license, ['id' => 'license', 'class' => 'form-control', 'readonly' => 'readonly']) !!}
+                            {{ html()->textarea('license', $license)->class('form-control')->cols(50)->rows(10)->isReadonly() }}
                         </div>
                         <div class="mb-3">
-                            {!! Form::checkbox('accept', 1, null, ['class' => 'form-check-input']) !!} @lang('bt.license_agreement_accept')
+                            {{ html()->checkbox('accept', null, 1)->class('form-check-input') }} @lang('bt.license_agreement_accept')
                         </div>
-                        {!! Form::submit(trans('bt.i_accept'), ['class' => 'btn btn-primary']) !!}
+                        {{ html()->submit(__('bt.i_accept'))->class('btn btn-primary') }}
                     </div>
                 </div>
             </div>
         </div>
-        {!! Form::close() !!}
+        {{ html()->form()->close() }}
     </section>
 @stop

@@ -17,7 +17,7 @@
 </script>
 <div class="mb-3">
     <label>@lang('bt.dashboard_totals_option'): </label>
-    {!! Form::select('setting[widgetQuoteSummaryDashboardTotals]', $dashboardTotalOptions, config('bt.widgetQuoteSummaryDashboardTotals'), ['class' => 'form-control', 'id' => 'quote-dashboard-total-setting']) !!}
+    {{ html()->select('setting[widgetQuoteSummaryDashboardTotals]', $dashboardTotalOptions, config('bt.widgetQuoteSummaryDashboardTotals'))->attribute('id', 'quote-dashboard-total-setting')->class('form-select') }}
 </div>
 <div class="row" id="div-quote-dashboard-totals-date-range">
     <div class="col-md-4">

@@ -122,7 +122,7 @@
                             <h3 class="card-title">@lang('bt.summary')</h3>
                         </div>
                         <div class="card-body">
-                            {!! Form::text('summary', $document->summary, ['id' => 'summary', 'class' => 'form-control']) !!}
+                            {{ html()->text('summary', $document->summary)->class('form-control') }}
                         </div>
                     </div>
                 </div>
@@ -157,7 +157,7 @@
                                 value="{{$document->end_time}}"></x-fp_time>
                     </div>
                     <div class="col-sm-2 ms-5 form-check form-switch form-switch-md">
-                        {!! Form::checkbox('will_call', 1, $document->will_call, ['id' => 'will_call', 'class' => 'form-check-input']) !!}
+                        {{ html()->checkbox('will_call', $document->will_call, 1)->class('form-check-input') }}
                         <label class="form-check-label fw-bold ps-3 pt-1" for="will_call">@lang('bt.will_call')</label>
                     </div>
                 </div>
@@ -183,13 +183,13 @@
                                         <div class="col-lg-6">
                                             <div class="mb-3">
                                                 <label>@lang('bt.terms_and_conditions')</label>
-                                                {!! Form::textarea('terms', $document->terms, ['id' => 'terms', 'class' => 'form-control', 'rows' => 5]) !!}
+                                                {{ html()->textarea('terms', $document->terms)->rows(5)->class('form-control') }}
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="mb-3">
                                                 <label>@lang('bt.footer')</label>
-                                                {!! Form::textarea('footer', $document->footer, ['id' => 'footer', 'class' => 'form-control', 'rows' => 5]) !!}
+                                                {{ html()->textarea('footer', $document->footer)->rows(5)->class('form-control') }}
                                             </div>
                                         </div>
                                     </div>

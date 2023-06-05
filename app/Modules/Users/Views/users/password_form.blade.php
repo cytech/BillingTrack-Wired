@@ -7,7 +7,7 @@
         });
     </script>
 
-    {!! Form::open(['route' => ['users.password.update', $user->id]]) !!}
+    {{ html()->form('POST', route('users.password.update', $user->id))->open() }}
 
     <section class="app-content-header">
         <h3 class="float-start px-3">
@@ -26,14 +26,14 @@
             <div class="card-body">
                 <div class="mb-3">
                     <label>@lang('bt.password'): </label>
-                    {!! Form::password('password', ['id' => 'password', 'class' => 'form-control']) !!}
+                    {{ html()->password('password')->class('form-control') }}
                 </div>
                 <div class="mb-3">
                     <label>@lang('bt.password_confirmation'): </label>
-                    {!! Form::password('password_confirmation', ['id' => 'password_confirmation', 'class' => 'form-control']) !!}
+                    {{ html()->password('password_confirmation')->class('form-control') }}
                 </div>
             </div>
         </div>
     </section>
-    {!! Form::close() !!}
+    {{ html()->form()->close() }}
 @stop

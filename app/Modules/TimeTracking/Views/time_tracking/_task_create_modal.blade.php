@@ -35,7 +35,7 @@
                 <div id="modal-status-placeholder"></div>
                 <div class="mb-3">
                     <label class="col-form-label">@lang('bt.task'):</label>
-                    {!! Form::text('name', null, ['id' => 'add_task_name', 'class' => 'form-control']) !!}
+                    {{ html()->text('name', null)->class('form-control')->attribute('id', 'add_task_name') }}
                 </div>
             </div>
             <div class="modal-footer">

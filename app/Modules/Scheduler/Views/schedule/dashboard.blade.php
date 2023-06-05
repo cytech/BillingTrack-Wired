@@ -171,7 +171,8 @@
     </section>
 @stop
 @section('javaScript')
-    {!! Html::script('plugins/chart.js/chart.umd.js') !!}
+{{--    {!! Html::script('plugins/chart.js/chart.umd.js') !!}--}}
+    <script defer src="{{ asset('plugins/chart.js/chart.umd.js') }}"></script>
 
     <script>
         var monthEvents = [

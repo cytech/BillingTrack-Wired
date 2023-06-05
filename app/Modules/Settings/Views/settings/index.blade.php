@@ -74,7 +74,7 @@
 
 @section('content')
     <section class="app-content-header">
-        {!! Form::open(['route' => 'settings.update', 'files' => true, 'id' => 'form-settings']) !!}
+        {{ html()->form('POST', route('settings.update'))->acceptsFiles()->attribute('id', 'form-settings')->open() }}
         <div class="container-fluid">
             <div class="col-sm-12">
                 <div class="fs-3 float-start">@lang('bt.system_settings')</div>
@@ -173,6 +173,6 @@
                     </div>
                 </div>
         </div>
-        {!! Form::close() !!}
+        {{ html()->form()->close() }}
     </section>
 @stop

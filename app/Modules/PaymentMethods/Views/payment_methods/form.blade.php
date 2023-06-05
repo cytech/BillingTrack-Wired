@@ -8,10 +8,10 @@
         })
     </script>
 
-    @if ($editMode == true)
-        {!! Form::model($paymentMethod, ['route' => ['paymentMethods.update', $paymentMethod->id]]) !!}
+    @if ($editMode)
+        {{ html()->modelForm($paymentMethod, 'POST', route('paymentMethods.update', $paymentMethod->id))->open() }}
     @else
-        {!! Form::open(['route' => 'paymentMethods.store']) !!}
+        {{ html()->form('POST', route('paymentMethods.store'))->open() }}
     @endif
 
     <section class="app-content-header">
@@ -32,10 +32,14 @@
             <div class="card-body">
                 <div class="control-group">
                     <label>@lang('bt.payment_method'): </label>
-                    {!! Form::text('name', null, ['id' => 'name', 'class' => 'form-control']) !!}
+                    {{ html()->text('name', null)->class('form-control') }}
                 </div>
             </div>
         </div>
     </section>
-    {!! Form::close() !!}
+    @if ($editMode)
+        {{ html()->closeModelForm() }}
+    @else
+        {{ html()->form()->close() }}
+    @endif
 @stop

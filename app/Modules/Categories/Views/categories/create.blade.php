@@ -4,7 +4,7 @@
     <!--basic form starts-->
     @include('layouts._alerts')
     <section class="app-content-header">
-        {!! Form::open(['route' => 'categories.store', 'class'=>'form-horizontal']) !!}
+        {{ html()->form('POST', route('categories.store'))->class('form-horizontal')->open() }}
 
         <div class="card card-light">
             <div class="card-header">
@@ -24,12 +24,11 @@
                            for="name">@lang('bt.name')</label>
                     </div>
                     <div class="col-md-8">
-                        {!! Form::text('name',old('name'),['id'=>'name', 'class'=>'form-control']) !!}
+                        {{ html()->text('name')->class('form-control') }}
                     </div>
                 </div>
             </div>
         </div>
-
-        {!! Form::close() !!}
+        {{ html()->form()->close() }}
     </section>
 @stop
