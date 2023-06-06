@@ -20,10 +20,10 @@
                 <table class="table table-striped datatable">
                     <thead class="bg-body lwtable">
                     <tr>
-                        <th>{!! Sortable::link('tbl_name', trans('bt.table_name')) !!}</th>
-                        <th>{!! Sortable::link('column_name', trans('bt.column_name')) !!}</th>
-                        <th>{!! Sortable::link('field_label', trans('bt.field_label')) !!}</th>
-                        <th>{!! Sortable::link('field_type', trans('bt.field_type')) !!}</th>
+                        <th>{!! trans('bt.table_name') !!}</th>
+                        <th>{!! trans('bt.column_name') !!}</th>
+                        <th>{!! trans('bt.field_label') !!}</th>
+                        <th>{!! trans('bt.field_type') !!}</th>
                         <th>@lang('bt.options')</th>
                     </tr>
                     </thead>

@@ -42,11 +42,11 @@
                 </div>
                 <div class="mb-3">
                     <label class="">@lang('bt.tax_1'): </label>
-                    {{ html()->select('tax_rate_id', $taxRates, null)->class('form-control') }}
+                    {{ html()->select('tax_rate_id', $taxRates, null)->class('form-select') }}
                 </div>
                 <div class="mb-3">
                     <label class="">@lang('bt.tax_2'): </label>
-                    {{ html()->select('tax_rate_2_id', $taxRates, null)->class('form-control') }}
+                    {{ html()->select('tax_rate_2_id', $taxRates, null)->class('form-select') }}
                 </div>
                 <div class="mb-3">
                     <label class="">@lang('bt.resource_table'): </label>

@@ -22,11 +22,11 @@
                 <table class="table table-striped datatable">
                     <thead class="bg-body lwtable">
                     <tr>
-                        <th>{!! Sortable::link('name', trans('bt.name')) !!}</th>
-                        <th>{!! Sortable::link('format', trans('bt.format')) !!}</th>
-                        <th>{!! Sortable::link('next_id', trans('bt.next_number')) !!}</th>
-                        <th>{!! Sortable::link('left_pad', trans('bt.left_pad')) !!}</th>
-                        <th>{!! Sortable::link('reset_number', trans('bt.reset_number')) !!}</th>
+                        <th>{!! trans('bt.name') !!}</th>
+                        <th>{!! trans('bt.format') !!}</th>
+                        <th>{!! trans('bt.next_number') !!}</th>
+                        <th>{!! trans('bt.left_pad') !!}</th>
+                        <th>{!! trans('bt.reset_number') !!}</th>
                         <th>@lang('bt.options')</th>
                     </tr>
                     </thead>

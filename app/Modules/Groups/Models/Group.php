@@ -12,16 +12,13 @@
 namespace BT\Modules\Groups\Models;
 
 use BT\Modules\Settings\Models\Setting;
-use BT\Traits\Sortable;
 use Illuminate\Database\Eloquent\Model;
 
 class Group extends Model
 {
-    use Sortable;
 
     protected $guarded = ['id'];
 
-    protected $sortable = ['name', 'format', 'next_id', 'left_pad', 'reset_number'];
 
     /*
     |--------------------------------------------------------------------------

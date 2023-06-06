@@ -24,7 +24,7 @@ class PaymentMethodController extends Controller
     {
         $this->setReturnUrl();
 
-        $paymentMethods = PaymentMethod::sortable(['name' => 'asc'])->paginate(config('bt.resultsPerPage'));
+        $paymentMethods = PaymentMethod::paginate(config('bt.resultsPerPage'));
 
         return view('payment_methods.index')
             ->with('paymentMethods', $paymentMethods);

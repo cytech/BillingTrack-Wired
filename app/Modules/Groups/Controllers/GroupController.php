@@ -32,7 +32,7 @@ class GroupController extends Controller
     {
         $this->setReturnUrl();
 
-        $groups = Group::sortable(['name' => 'asc'])->paginate(config('bt.resultsPerPage'));
+        $groups = Group::paginate(config('bt.resultsPerPage'));
 
         return view('groups.index')
             ->with('groups', $groups)

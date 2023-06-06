@@ -20,7 +20,7 @@
                 <table class="table table-striped datatable">
                     <thead class="bg-body lwtable">
                     <tr>
-                        <th>{!! Sortable::link('name', trans('bt.payment_method')) !!}</th>
+                        <th>{!! __('bt.payment_method') !!}</th>
                         <th>@lang('bt.options')</th>
                     </tr>
                     </thead>

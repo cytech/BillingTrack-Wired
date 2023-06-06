@@ -11,17 +11,14 @@
 
 namespace BT\Modules\CustomFields\Models;
 
-use BT\Traits\Sortable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Schema;
 
 class CustomField extends Model
 {
-    use Sortable;
 
     protected $guarded = ['id'];
 
-    protected $sortable = ['tbl_name', 'column_name', 'field_label', 'field_type'];
 
     /*
     |--------------------------------------------------------------------------

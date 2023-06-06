@@ -60,6 +60,6 @@ class TimeTrackingTimer extends Model
         if (!$this->formatted_end_at) {
             return new Attribute(get: fn() => '');
         }
-        return new Attribute(get: fn() => $this->hours);
+        return new Attribute(get: fn() => $this->attributes['hours']);
     }
 }

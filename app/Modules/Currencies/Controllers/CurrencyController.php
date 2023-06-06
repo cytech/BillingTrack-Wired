@@ -26,7 +26,7 @@ class CurrencyController extends Controller
     {
         $this->setReturnUrl();
 
-        $currencies = Currency::sortable(['name' => 'asc'])->paginate(config('bt.resultsPerPage'));
+        $currencies = Currency::paginate(config('bt.resultsPerPage'));
 
         return view('currencies.index')
             ->with('currencies', $currencies)

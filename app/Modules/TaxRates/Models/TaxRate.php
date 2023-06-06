@@ -14,21 +14,17 @@ namespace BT\Modules\TaxRates\Models;
 use BT\Modules\Documents\Models\DocumentItem;
 //use BT\Modules\RecurringInvoices\Models\RecurringInvoiceItem;
 use BT\Support\NumberFormatter;
-use BT\Traits\Sortable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 
 class TaxRate extends Model
 {
-    use Sortable;
 
     /**
      * Guarded properties
      * @var array
      */
     protected $guarded = ['id'];
-
-    protected $sortable = ['name', 'percent', 'is_compound'];
 
     /*
     |--------------------------------------------------------------------------

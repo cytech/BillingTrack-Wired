@@ -14,17 +14,14 @@ namespace BT\Modules\Currencies\Models;
 use BT\Modules\Clients\Models\Client;
 use BT\Modules\Documents\Models\Invoice;
 use BT\Modules\Documents\Models\Quote;
-use BT\Traits\Sortable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 
 class Currency extends Model
 {
-    use Sortable;
 
     protected $table = 'currencies';
 
-    protected $sortable = ['code', 'name', 'symbol', 'placement', 'decimal', 'thousands'];
 
     /**
      * Guarded properties

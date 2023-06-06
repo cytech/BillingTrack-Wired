@@ -19,7 +19,7 @@
                     <a class="btn btn-secondary rounded me-1" href="#" id="btn-create-purchaseorder"
                        {{--                   params 3 thru ... mount(,,$modulefullname, $moduleop, $resource_id = null, $module_id = null, $readonly = null)--}}
                        onclick="window.livewire.emit('showModal', 'modals.create-module-modal',
-                               '{{ addslashes(get_class($vendor->purchaseorders()->getRelated())) }}', 'create', {{ $vendor->id }}, null, true)">
+                               '{{ addslashes(get_class($vendor->purchaseorders()->getRelated())) }}', 'Purchaseorder', 'create', {{ $vendor->id }}, null, true)">
                         <i class="far fa-file-alt"></i> @lang('bt.create_purchaseorder')</a>
                     <a href="{{ $returnUrl }}" class="btn btn-secondary rounded me-1"><i
                                 class="fa fa-backward"></i> @lang('bt.back')</a>

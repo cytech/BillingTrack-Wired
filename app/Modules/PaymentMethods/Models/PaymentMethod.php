@@ -11,12 +11,10 @@
 
 namespace BT\Modules\PaymentMethods\Models;
 
-use BT\Traits\Sortable;
 use Illuminate\Database\Eloquent\Model;
 
 class PaymentMethod extends Model
 {
-    use Sortable;
 
     protected $guarded = ['id'];
 

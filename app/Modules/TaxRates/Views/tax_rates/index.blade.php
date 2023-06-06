@@ -20,9 +20,9 @@
                 <table class="table table-striped datatable">
                     <thead class="bg-body lwtable">
                     <tr>
-                        <th>{!! Sortable::link('name', trans('bt.name')) !!}</th>
-                        <th>{!! Sortable::link('percent', trans('bt.percent')) !!}</th>
-                        <th>{!! Sortable::link('is_compound', trans('bt.compound')) !!}</th>
+                        <th>{!! trans('bt.name') !!}</th>
+                        <th>{!! trans('bt.percent') !!}</th>
+                        <th>{!! trans('bt.compound') !!}</th>
                         <th>@lang('bt.options')</th>
                     </tr>
                     </thead>

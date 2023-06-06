@@ -254,17 +254,17 @@
                         <i class="end fa fa-angle-right"></i>
                     </a>
                     <ul class="nav nav-treeview ps-3">
-                        <li class="nav-item"><a class="nav-link" href="{{ route('customFields.index') }}"><i
-                                        class="fas fa-table fa-fw"></i>
-                                <p></p>@lang('bt.custom_fields')</p></a>
+                        <li class="nav-item"><a class="nav-link" href="{{ route('settings.index') }}"><i
+                                        class="fas fa-gear fa-fw"></i>
+                                <p>@lang('bt.system_settings')</p></a>
                         </li>
                         <li class="nav-item"><a class="nav-link" href="{{ route('users.index') }}"><i
                                         class="fas fa-users fa-fw"></i>
                                 <p>@lang('bt.user_accounts')</p></a>
                         </li>
-                        <li class="nav-item"><a class="nav-link" href="{{ route('settings.index') }}"><i
-                                        class="fas fa-gear fa-fw"></i>
-                                <p>@lang('bt.system_settings')</p></a>
+                        <li class="nav-item"><a class="nav-link" href="{{ route('customFields.index') }}"><i
+                                        class="fas fa-table fa-fw"></i>
+                                <p></p>@lang('bt.custom_fields')</p></a>
                         </li>
                         <li class="nav-item"><a class="nav-link" href="{{ route('utilities.manage_trash') }}"><i
                                         class="fas fa-trash fa-fw"></i>

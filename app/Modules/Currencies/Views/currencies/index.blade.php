@@ -20,12 +20,12 @@
                 <table class="table table-striped datatable">
                     <thead class="bg-body lwtable">
                     <tr>
-                        <th>{!! Sortable::link('name', trans('bt.name')) !!}</th>
-                        <th>{!! Sortable::link('code', trans('bt.code')) !!}</th>
-                        <th>{!! Sortable::link('symbol', trans('bt.symbol')) !!}</th>
-                        <th>{!! Sortable::link('placement', trans('bt.symbol_placement')) !!}</th>
-                        <th>{!! Sortable::link('decimal', trans('bt.decimal_point')) !!}</th>
-                        <th>{!! Sortable::link('thousands', trans('bt.thousands_separator')) !!}</th>
+                        <th>{!! trans('bt.name') !!}</th>
+                        <th>{!! trans('bt.code') !!}</th>
+                        <th>{!! trans('bt.symbol') !!}</th>
+                        <th>{!! trans('bt.symbol_placement') !!}</th>
+                        <th>{!! trans('bt.decimal_point') !!}</th>
+                        <th>{!! trans('bt.thousands_separator') !!}</th>
                         <th>@lang('bt.options')</th>
                     </tr>
                     </thead>
