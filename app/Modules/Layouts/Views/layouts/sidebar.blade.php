@@ -60,7 +60,7 @@
                     </li>
                 @endif
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('payments.index') }}">
+                    <a class="nav-link" href="{{ route('payments.index', ['status' => 1]) }}">
                         <i class="nav-icon fas fa-credit-card fa-fw"></i>
                         <p>@lang('bt.payments')</p>
                     </a>

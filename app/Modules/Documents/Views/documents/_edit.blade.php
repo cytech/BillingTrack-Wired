@@ -50,7 +50,7 @@
                 @lang('bt.other')
             </button>
             <div class="dropdown-menu dropdown-menu-end" role="menu">
-                @if ($document->module_type == 'Invoice' and ($document->isPayable or config('bt.allowPaymentsWithoutBalance')))
+                @if (($document->module_type == 'Invoice' or $document->module_type == 'Purchaseorder') and ($document->isPayable or config('bt.allowPaymentsWithoutBalance')))
                     <button class="dropdown-item"
                             type="button"
                             onclick="window.livewire.emit('showModal', 'modals.create-payment-modal', '{{  addslashes(get_class($document)) }}', {{ $document->id }}, true )"

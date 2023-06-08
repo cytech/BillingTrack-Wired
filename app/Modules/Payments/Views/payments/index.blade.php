@@ -19,11 +19,26 @@
             <div class="col-sm-12">
                 <div class="fs-3 float-start">@lang('bt.payments')</div>
                 <div class="btn-group float-end">
+                    <div class="btn-group">
+                        {{ html()->form('GET', route('payments.index'))->attribute('id', 'filter')->open() }}
+                        <div class="input-group">
+                            {{ html()->select('status', $statuses, request('status'))->class('filter_options form-select w-auto me-1') }}
+                        </div>
+                        {{ html()->form()->close() }}
+                    </div>
+                    @if(request('status') == 1)
                     <button class="btn btn-primary rounded border"
                             type="button"
                             onclick="window.livewire.emit('showModal', 'modals.create-payment-modal')"
                     ><i class="fa fa-credit-card"></i> @lang('bt.enter_payment')
                     </button>
+                    @else
+                        <button class="btn btn-secondary rounded border"
+                                type="button"
+                                disabled
+                        > @lang('bt.enter_thru_purchaseorder')
+                        </button>
+                    @endif
                 </div>
                 <div class="clearfix"></div>
             </div>

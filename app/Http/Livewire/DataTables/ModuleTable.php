@@ -222,7 +222,7 @@ class ModuleTable extends DataTableComponent
     public function builder(): Builder
     {
         if ($this->module_type == 'Payment') {
-            return $this->module_fullname::has('client')->has('invoice')
+            return $this->module_fullname::statusId(request('status'))
                 ->select(lcfirst($this->module_type) . 's.*');
         } elseif ($this->module_type == 'Expense') {
             return $this->module_fullname::select(lcfirst($this->module_type) . 's.*')

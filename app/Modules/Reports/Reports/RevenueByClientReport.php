@@ -20,7 +20,7 @@ class RevenueByClientReport
     {
         $results = [];
 
-        $payments = Payment::select('payments.*')
+        $payments = Payment::select('payments.*')->whereHas('Invoice')
             ->with(['invoice.client'])
             ->year($year)
             ->join('documents', 'documents.id', '=', 'payments.invoice_id')

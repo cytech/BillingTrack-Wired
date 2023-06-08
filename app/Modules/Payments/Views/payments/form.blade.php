@@ -9,7 +9,7 @@
             @lang('bt.payment_form')
         </h3>
         <div class="float-end">
-            <a href="{{ route('payments.index') }}" class="btn btn-secondary">Cancel</a>
+            <a href="{{ route('payments.index', ['status' => 1]) }}" class="btn btn-secondary">Cancel</a>
             {{ html()->submit(__('bt.save'))->class('btn btn-primary') }}
         </div>
         <div class="clearfix"></div>

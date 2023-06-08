@@ -112,7 +112,7 @@ class TimeSheetReport {
 		                   ->join( 'document_items', 'document_items.document_id', '=', 'documents.id' )
 		                   ->join( 'clients', 'clients.id', '=', 'documents.client_id' )
 		                   ->join( 'employees', 'employees.id', '=', 'document_items.resource_id' )
-		                   ->whereBetween( '`document_date`', [ $fromDate, $toDate ] )
+		                   ->whereBetween( 'document_date', [ $fromDate, $toDate ] )
 		                   ->where( 'document_items.resource_table', 'employees' )
 		                   ->orderBy( 'EMP', 'ASC' )
 		                   ->orderBy( 'DATE', 'ASC' );

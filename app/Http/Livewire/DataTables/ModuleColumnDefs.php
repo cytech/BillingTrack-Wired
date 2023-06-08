@@ -16,54 +16,54 @@ class ModuleColumnDefs
         if ($statuses && in_array($module_type, $doc_modules)) {
             switch ($module_type) {
                 case 'Purchaseorder':
-                    $col_client_vendor = Column::make(trans('bt.vendor'), 'vendor.name')
+                    $col_client_vendor = Column::make(__('bt.vendor'), 'vendor.name')
                         ->searchable()
                         ->sortable()
                         ->format(fn($value, $row, Column $column) => '<a href="/vendors/' . $row->vendor->id . '">' . $value . '</a>')
                         ->html();
                     $col_invoice_id = null;
-                    $col_title_date_due = trans('bt.due');
+                    $col_title_date_due = __('bt.due');
                     $col_formatted_balance = Column::make(__('bt.balance'), 'amount.balance')
                         ->format(fn($value, $row, Column $column) => $row->amount->formatted_balance);
                     break;
                 case 'Invoice':
-                    $col_client_vendor = Column::make(trans('bt.client'), 'client.name')
+                    $col_client_vendor = Column::make(__('bt.client'), 'client.name')
                         ->searchable()
                         ->sortable()
                         ->format(fn($value, $row, Column $column) => '<a href="/clients/' . $row->client->id . '">' . $value . '</a>')
                         ->html();
                     $col_invoice_id = null;
-                    $col_title_date_due = trans('bt.due');
+                    $col_title_date_due = __('bt.due');
                     $col_formatted_balance = Column::make(__('bt.balance'), 'amount.balance')
                         ->format(fn($value, $row, Column $column) => $row->amount->formatted_balance);
                     break;
                 default: //quote or workorder
-                    $col_client_vendor = Column::make(trans('bt.client'), 'client.name')
+                    $col_client_vendor = Column::make(__('bt.client'), 'client.name')
                         ->searchable()
                         ->sortable()
                         ->format(fn($value, $row, Column $column) => '<a href="/clients/' . $row->client->id . '">' . $value . '</a>')
                         ->html();
-                    $col_invoice_id = Column::make(trans('bt.converted'), 'invoice_id')
+                    $col_invoice_id = Column::make(__('bt.converted'), 'invoice_id')
                         ->format(function ($value, $row, Column $column) {
                             $ret = '';
                             if ($row->invoice_id)
                                 if ($row->invoice->trashed()) {
-                                    $ret .= ' <span class="badge bg-danger" title="Trashed">' . trans('bt.invoice');
+                                    $ret .= ' <span class="badge bg-danger" title="Trashed">' . __('bt.invoice');
                                 } else {
-                                    $ret .= '<a href="' . route('documents.edit', [$row->invoice_id]) . '">' . trans('bt.invoice') . '</a>';
+                                    $ret .= '<a href="' . route('documents.edit', [$row->invoice_id]) . '">' . __('bt.invoice') . '</a>';
                                 }
                             elseif ($row->workorder_id)
                                 if ($row->workorder->trashed()) {
-                                    $ret .= ' <span class="badge bg-danger" title="Trashed">' . trans('bt.workorder');
+                                    $ret .= ' <span class="badge bg-danger" title="Trashed">' . __('bt.workorder');
                                 } else {
-                                    $ret .= '<a href="' . route('documents.edit', [$row->workorder_id]) . '">' . trans('bt.workorder') . '</a>';
+                                    $ret .= '<a href="' . route('documents.edit', [$row->workorder_id]) . '">' . __('bt.workorder') . '</a>';
                                 }
                             else
-                                $ret .= trans('bt.no');
+                                $ret .= __('bt.no');
                             return $ret;
                         })
                         ->html();
-                    $col_title_date_due = trans('bt.expires');
+                    $col_title_date_due = __('bt.expires');
                     $col_formatted_balance = null;
             }
             $default_columns = [
@@ -71,18 +71,18 @@ class ModuleColumnDefs
                     ->format(function ($value, $row, Column $column) use ($statuses) {
                         $ret = '<span class="badge badge-' . strtolower($statuses[$row->status_text]) . '">' . $statuses[$row->status_text] . '</span>';
                         if ($row->viewed)
-                            $ret .= '<span class="badge bg-success">' . trans('bt.viewed') . '</span>';
+                            $ret .= '<span class="badge bg-success">' . __('bt.viewed') . '</span>';
                         else
-                            $ret .= '<span class="badge bg-secondary">' . trans('bt.not_viewed') . '</span>';
+                            $ret .= '<span class="badge bg-secondary">' . __('bt.not_viewed') . '</span>';
                         return $ret;
                     })
                     ->html(),
-                Column::make(trans('bt.' . lcfirst($module_type)), 'number')
+                Column::make(__('bt.' . lcfirst($module_type)), 'number')
                     ->searchable()
                     ->sortable()
                     ->format(fn($value, $row, Column $column) => '<a href="/documents/' . $row->id . '/edit">' . $value . '</a>')
                     ->html(),
-                Column::make(trans('bt.date'), 'document_date')
+                Column::make(__('bt.date'), 'document_date')
                     ->sortable()
                     ->format(fn($value, $row, Column $column) => $row->{'formatted_document_date'}),
                 Column::make($col_title_date_due, 'action_date')
@@ -90,7 +90,7 @@ class ModuleColumnDefs
                     ->format(fn($value, $row, Column $column) => $row->isOverdue ? '<div style="color: red; font-weight: bold;">' . $row->formatted_action_date . '</div>' : $row->formatted_action_date)
                     ->html(),
                 $col_client_vendor,
-                Column::make(trans('bt.summary'), 'summary')
+                Column::make(__('bt.summary'), 'summary')
                     ->sortable(),
                 Column::make(__('bt.total'), 'amount.total')
                     ->format(fn($value, $row, Column $column) => $row->amount->formatted_total),
@@ -106,10 +106,10 @@ class ModuleColumnDefs
                     ->sortable()
                     ->format(fn($value, $row, Column $column) => '<div title="' . $row->unique_name . '"><a href="/clients/' . $row->id . '">' . $value . '</a>')
                     ->html(),
-                Column::make(trans('bt.email_address'), 'email')
+                Column::make(__('bt.email_address'), 'email')
                     ->searchable()
                     ->sortable(),
-                Column::make(trans('bt.phone_number'), 'phone')
+                Column::make(__('bt.phone_number'), 'phone')
                     ->searchable()
                     ->sortable(),
                 Column::make(__('bt.balance'), 'id') //dummy
@@ -117,7 +117,7 @@ class ModuleColumnDefs
                     ->format(fn($value, $row, Column $column) => $row->formatted_balance),
                 BooleanColumn::make(__('bt.active'), 'active')
                     ->yesNo(),
-                Column::make(trans('bt.created'), 'created_at')
+                Column::make(__('bt.created'), 'created_at')
                     ->sortable()
                     ->format(fn($value, $row, Column $column) => $row->formatted_created_at),
                 Column::make('Action')
@@ -135,18 +135,19 @@ class ModuleColumnDefs
                         $ret = '<span class="badge badge-' . strtolower($statuses[$row->status_text]) . '">' . $statuses[$row->status_text] . '</span>';
                         return $ret;
                     })
-                    ->html(),                Column::make(__('bt.client'), 'client.name')
+                    ->html(),
+                Column::make(__('bt.client'), 'client.name')
                     ->searchable()
                     ->sortable()
                     ->format(fn($value, $row, Column $column) => '<a href="/clients/' . $row->client->id . '">' . $value . '</a>')
                     ->html(),
-                Column::make(trans('bt.summary'), 'summary')
+                Column::make(__('bt.summary'), 'summary')
                     ->sortable()
                     ->format(fn($value, $row, Column $column) => $row->formatted_summary),
-                Column::make(trans('bt.next_date'), 'next_date')
+                Column::make(__('bt.next_date'), 'next_date')
                     ->sortable()
                     ->format(fn($value, $row, Column $column) => $row->formatted_next_date),
-                Column::make(trans('bt.stop_date'), 'stop_date')
+                Column::make(__('bt.stop_date'), 'stop_date')
                     ->sortable()
                     ->format(fn($value, $row, Column $column) => $row->formatted_stop_date),
                 Column::make(__('bt.every'), 'recurring_frequency')
@@ -161,21 +162,25 @@ class ModuleColumnDefs
                 Column::make(__('bt.payment_date'), 'paid_at')
                     ->sortable()
                     ->format(fn($value, $row, Column $column) => $row->formatted_paid_at),
-                Column::make(trans('bt.invoice'), 'invoice.number')
+                Column::make(__('bt.document'), 'document.number')
                     ->sortable()
                     ->format(fn($value, $row, Column $column) => '<a href="/documents/' . $row->invoice_id . '/edit">' . $value . '</a>')
                     ->html(),
-                Column::make(trans('bt.invoice_date'), 'invoice.document_date')
+                Column::make(__('bt.document_date'), 'document.document_date')
                     ->sortable()
-                    ->format(fn($value, $row, Column $column) => $row->invoice->formatted_document_date),
-                Column::make(__('bt.client'), 'client.name')
+                    ->format(fn($value, $row, Column $column) => $row->invoice ?
+                        $row->invoice->formatted_document_date :
+                        $row->purchaseorder->formatted_document_date),
+                Column::make(__('bt.client_vendor'), 'client.name')
                     ->searchable()
                     ->sortable()
-                    ->format(fn($value, $row, Column $column) => '<a href="/clients/' . $row->client->id . '">' . $value . '</a>')
+                    ->format(fn($value, $row, Column $column) => $row->invoice ?
+                        '<a href="/clients/' . $row->client->id . '">' . $row->client->name . '</a>' :
+                        '<a href="/vendors/' . $row->vendor->id . '">' . $row->vendor->name . '</a>')
                     ->html(),
-                Column::make(trans('bt.summary'), 'invoice.summary')
+                Column::make(__('bt.summary'), 'invoice.summary')
                     ->sortable(),
-                Column::make(trans('bt.amount'), 'amount')
+                Column::make(__('bt.amount'), 'amount')
                     ->sortable()
                     ->format(fn($value, $row, Column $column) => $row->formatted_amount),
                 Column::make(__('bt.payment_method'), 'paymentMethod.name')
@@ -190,7 +195,7 @@ class ModuleColumnDefs
                 Column::make(__('bt.date'), 'expense_date')
                     ->sortable()
                     ->format(fn($value, $row, Column $column) => $row->formatted_expense_date),
-                Column::make(trans('bt.category'), 'category.name')
+                Column::make(__('bt.category'), 'category.name')
                     ->sortable()
                     ->format(function ($value, $row, Column $column) {
                         $ret = $row->category->name;
@@ -199,7 +204,7 @@ class ModuleColumnDefs
                         return $ret;
                     })
                     ->html(),
-                Column::make(trans('bt.description'), 'description')
+                Column::make(__('bt.description'), 'description')
                     ->searchable()
                     ->sortable(),
                 Column::make(__('bt.amount'), 'amount')
@@ -209,15 +214,14 @@ class ModuleColumnDefs
                         if ($row->is_billable)
                             if ($row->has_been_billed) {
                                 if ($row->invoice_id == 0) {
-                                    $ret .= '<br><span class="badge bg-danger" title="Invoice Deleted">' . trans('bt.billed') . '</span></a>';
+                                    $ret .= '<br><span class="badge bg-danger" title="Invoice Deleted">' . __('bt.billed') . '</span></a>';
                                 } else {
-                                    $ret .= '<br><a href="' . route('documents.edit', [$row->invoice_id]) . '"><span class="badge bg-success">' . trans('bt.billed') . '</span></a>';
+                                    $ret .= '<br><a href="' . route('documents.edit', [$row->invoice_id]) . '"><span class="badge bg-success">' . __('bt.billed') . '</span></a>';
                                 }
-                            }
-                            else
-                                $ret .= '<br><span class="badge bg-info">' . trans('bt.not_billed') . '</span>';
+                            } else
+                                $ret .= '<br><span class="badge bg-info">' . __('bt.not_billed') . '</span>';
                         else
-                            $ret .= '<br><span class="badge bg-secondary">' . trans('bt.not_billable') . '</span>';
+                            $ret .= '<br><span class="badge bg-secondary">' . __('bt.not_billable') . '</span>';
                         if ($row->client)
                             $ret .= '<br><span class="text-muted">' . $row->client->name . '</span>';
 
@@ -237,19 +241,19 @@ class ModuleColumnDefs
                     ->sortable()
                     ->format(fn($value, $row, Column $column) => '<a href="/clients/' . $row->client->id . '">' . $value . '</a>')
                     ->html(),
-                Column::make(trans('bt.status'), 'status_id')
+                Column::make(__('bt.status'), 'status_id')
                     ->format(fn($value, $row, Column $column) => $statuses[$row->status_text]),
-                Column::make(trans('bt.created'), 'created_at')
+                Column::make(__('bt.created'), 'created_at')
                     ->sortable()
                     ->format(fn($value, $row, Column $column) => $row->formatted_created_at),
-                Column::make(trans('bt.due_date'), 'due_at')
+                Column::make(__('bt.due_date'), 'due_at')
                     ->sortable()
                     ->format(fn($value, $row, Column $column) => $row->formatted_due_at),
-                Column::make(trans('bt.unbilled_hours'))
+                Column::make(__('bt.unbilled_hours'))
                     ->label(fn($row, Column $column) => $row->unbilled_hours),
-                Column::make(trans('bt.billed_hours'))
+                Column::make(__('bt.billed_hours'))
                     ->label(fn($row, Column $column) => $row->billed_hours),
-                Column::make(trans('bt.total_hours'))
+                Column::make(__('bt.total_hours'))
                     ->label(fn($row, Column $column) => $row->hours),
                 Column::make('Action')
                     ->label(fn($row, Column $column) => view('time_tracking._actions')->withModel($row)),
@@ -259,19 +263,19 @@ class ModuleColumnDefs
                 Column::make(__('bt.title'), 'title')
                     ->searchable()
                     ->sortable(),
-                Column::make(trans('bt.location'), 'location_str')
+                Column::make(__('bt.location'), 'location_str')
                     ->searchable()
                     ->sortable(),
-                Column::make(trans('bt.description'), 'description')
+                Column::make(__('bt.description'), 'description')
                     ->searchable()
                     ->sortable(),
-                Column::make(trans('bt.start_date'), 'latestOccurrence.start_date')
+                Column::make(__('bt.start_date'), 'latestOccurrence.start_date')
                     ->sortable()
                     ->format(fn($value, $row, Column $column) => $row->latestOccurrence->formatted_start_date),
                 Column::make(__('bt.end_date'), 'latestOccurrence.end_date')
                     ->sortable()
                     ->format(fn($value, $row, Column $column) => $row->latestOccurrence->formatted_end_date),
-                Column::make(trans('bt.category'), 'category.name')
+                Column::make(__('bt.category'), 'category.name')
                     ->sortable(),
                 Column::make('Action')
                     ->label(fn($row, Column $column) => view('partials._actions')->withModel($row)),
@@ -281,14 +285,14 @@ class ModuleColumnDefs
                 Column::make(__('bt.title'), 'title')
                     ->searchable()
                     ->sortable(),
-                Column::make(trans('bt.location'), 'location_str')
+                Column::make(__('bt.location'), 'location_str')
                     ->searchable()
                     ->sortable(),
-                Column::make(trans('bt.start_date'), 'formatted_rule_start')
+                Column::make(__('bt.start_date'), 'formatted_rule_start')
                     ->label(fn($row, Column $column) => $row->formatted_rule_start),
                 Column::make(__('bt.frequency'), 'text_trans')
                     ->label(fn($row, Column $column) => $row->text_trans),
-                Column::make(trans('bt.category'), 'category.name')
+                Column::make(__('bt.category'), 'category.name')
                     ->sortable(),
                 Column::make('Action')
                     ->label(fn($row, Column $column) => view('partials._actions_recurr')->withModel($row)),
@@ -297,9 +301,9 @@ class ModuleColumnDefs
             $default_columns = [
                 Column::make(__('bt.id'), 'id')
                     ->sortable(),
-                Column::make(trans('bt.name'), 'name')
+                Column::make(__('bt.name'), 'name')
                     ->sortable(),
-                Column::make(trans('bt.category_text_color'), 'text_color')
+                Column::make(__('bt.category_text_color'), 'text_color')
                     ->format(fn($value, $row, Column $column) => $row->text_color . '   <i class="fa fa-square fa-border" style="color:' . $row->text_color . '"></i>')
                     ->html(),
                 Column::make(__('bt.category_bg_color'), 'bg_color')

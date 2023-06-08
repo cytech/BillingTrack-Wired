@@ -14,11 +14,13 @@ namespace BT\Modules\Payments\Models;
 use Askedio\SoftCascade\Traits\SoftCascadeTrait;
 use BT\Modules\Clients\Models\Client;
 use BT\Modules\CustomFields\Models\PaymentCustom;
+use BT\Modules\Documents\Models\Document;
 use BT\Modules\Documents\Models\Invoice;
 use BT\Modules\Documents\Models\Purchaseorder;
 use BT\Modules\MailQueue\Models\MailQueue;
 use BT\Modules\Notes\Models\Note;
 use BT\Modules\PaymentMethods\Models\PaymentMethod;
+use BT\Modules\Vendors\Models\Vendor;
 use Carbon\Carbon;
 use BT\Support\CurrencyFormatter;
 use BT\Support\DateFormatter;
@@ -62,9 +64,19 @@ class Payment extends Model
         return $this->belongsTo(Client::class);
     }
 
+    public function vendor(): BelongsTo
+    {
+        return $this->belongsTo(Vendor::class, 'client_id');
+    }
+
     public function custom(): HasOne
     {
         return $this->hasOne(PaymentCustom::class);
+    }
+
+    public function document(): BelongsTo
+    {
+        return $this->belongsTo(Document::class, 'invoice_id');
     }
 
     public function invoice(): BelongsTo
@@ -211,6 +223,17 @@ class Payment extends Model
             $query->whereHas('invoice', function ($query) use ($invoiceNumber) {
                 $query->where('number', $invoiceNumber);
             });
+        }
+
+        return $query;
+    }
+
+    public function scopeStatusId($query, $statusId = null)
+    {
+        if ($statusId == 1) {
+            $query->whereHas('Invoice');
+        } else {
+            $query->whereHas('Purchaseorder');
         }
 
         return $query;

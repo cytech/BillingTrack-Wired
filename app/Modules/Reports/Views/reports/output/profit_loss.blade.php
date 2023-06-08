@@ -18,6 +18,10 @@
             <td class="amount" style="font-weight: bold;">{{ $results['income'] }}</td>
         </tr>
         <tr>
+            <td style="font-weight: bold;">@lang('bt.vendor_payments')</td>
+            <td class="amount" style="font-weight: bold; color: red;">{{ $results['vendor_payments'] }}</td>
+        </tr>
+        <tr>
             <td style="font-weight: bold;">@lang('bt.expenses')</td>
             <td></td>
         </tr>
@@ -29,11 +33,13 @@
         @endforeach
         <tr>
             <td style="font-weight: bold;">@lang('bt.total_expenses')</td>
-            <td class="amount" style="font-weight: bold;">{{ $results['total_expenses'] }}</td>
+            <td class="amount" style="font-weight: bold; color: red;">{{ $results['total_expenses'] }}</td>
         </tr>
         <tr>
             <td style="font-weight: bold;">@lang('bt.net_income')</td>
-            <td class="amount" style="font-weight: bold;">{{ $results['net_income'] }}</td>
+            <td class="amount" style="font-weight: bold;
+            @if($results['net_income'] < 0)  color: red; @endif
+            ">{{ \BT\Support\CurrencyFormatter::format($results['net_income']) }}</td>
         </tr>
         </tbody>
     </table>

@@ -4,7 +4,8 @@ Release Notes
 
 ### BillingTrack 7.0.0
 - merged core modules
-- replace laravelcollective/html with spatie/laravel-html 
+- replace laravelcollective/html with spatie/laravel-html
+- added vendor payments
 - **BREAKING CHANGES**
 - This update combines the core modules (Quote, Workorder, Invoice, Recurringinvoice, and Purchaseorder) database tables into a single documents table.
 - User defined custom templates (in the custom/templates directory) will be affected by this change.
