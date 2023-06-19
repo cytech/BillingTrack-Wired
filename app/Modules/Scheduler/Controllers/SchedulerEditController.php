@@ -28,6 +28,12 @@ class SchedulerEditController extends Controller
     //recurring event create or edit
     public function editRecurringEvent($id = null)
     {
+        $days = [0 => 'MO', 1 => 'TU', 2 => 'WE', 3 => 'TH', 4 => 'FR', 5 => 'SA', 6 => 'SU'];
+        $months = [];
+        for ($i = 0; $i < 12; $i++ ){
+            $months[$i] = $i +1;
+        }
+
         if ($id) { //if edit route called with id parameter
             $schedule = Schedule::find($id);
             $schedule->employee_id = $schedule->resource->resource_id ?? null;
@@ -45,13 +51,41 @@ class SchedulerEditController extends Controller
                 "count"      => $rule->getCount(),
                 "interval"   => $rule->getInterval(),
                 "wkst"       => $rule->getWeekStart(),
-                "byday"      => $rule->getByDay(),
                 "bysetpos"   => $rule->getBySetPosition(),
                 "bymonthday" => $rule->getByMonthDay(),
                 "byyearday"  => $rule->getByYearDay(),
                 "byweekno"   => $rule->getByWeekNumber(),
-                "bymonth"    => $rule->getByMonth(),
             ];
+
+            // remap days and months to populate checkboxes....
+            $setdays = $rule->getByDay();
+            $checkeddays = [];
+
+            if ($setdays) {
+                foreach ($setdays as $value) {
+                    $data_key = array_search($value, $days);
+                    if ($data_key !== false) {
+                        $checkeddays[$data_key] = $value;
+                    }
+                }
+            }
+
+            $rrule['byday'] = $checkeddays;
+
+            $setmonths = $rule->getByMonth();
+            $checkedmonths = [];
+
+            if ($setmonths) {
+                foreach ($setmonths as $value) {
+                    $data_key = array_search($value, $months);
+                    if ($data_key !== false) {
+                        $checkedmonths[$data_key] = $value;
+                    }
+                }
+            }
+
+            $rrule['bymonth'] = $checkedmonths;
+            // end remap
 
             $data = [
                 'schedule'   => $schedule,
@@ -60,6 +94,8 @@ class SchedulerEditController extends Controller
                 'title'      => 'update_recurring_event',
                 'message'    => 'recurring_event_updated',
                 'rrule'      => $rrule,
+                'days'       => $days,
+                'months'     => $months
             ];
 
             return view('schedule.recurringEventEdit', $data)
@@ -79,7 +115,9 @@ class SchedulerEditController extends Controller
                 'url'        => 'schedule\edit_event',
                 'title'      => 'create_recurring_event',
                 'message'    => 'recurring_event_created',
-                'categories' => Category::pluck('name', 'id')
+                'categories' => Category::pluck('name', 'id'),
+                'days'       => $days,
+                'months'     => $months
             ];
             //defaults
             $schedule['category_id'] = 3;

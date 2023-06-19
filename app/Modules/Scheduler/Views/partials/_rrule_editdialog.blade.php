@@ -75,67 +75,39 @@
     {{ html()->label(__('bt.week_start'), 'wkst')->class('col-sm-2 text-end fw-bold pe-3')->attribute('title', 'The week start day. Must be one of the "RRule.MO", "RRule.TU", "RRule.WE" constants, or an integer, specifying the first day of the week. This will affect recurrences based on weekly periods. The default week start is "RRule.MO".') }}
     <div class="mb-3">
         <label class="btn btn-primary ">
-            {{ html()->radio('wkst', null, 'MO') }}<span> @lang('bt.day_short_monday')</span></label>
-       <label class="btn btn-warning">
-           {{ html()->radio('wkst', null, 'TU') }}<span> @lang('bt.day_short_tuesday')</span></label>
-       <label class="btn btn-warning">
-           {{ html()->radio('wkst', null, 'WE') }}<span> @lang('bt.day_short_wednesday')</span></label>
-       <label class="btn btn-warning">
-           {{ html()->radio('wkst', null, 'TH') }}<span> @lang('bt.day_short_thursday')</span></label>
-       <label class="btn btn-warning">
-           {{ html()->radio('wkst', null, 'FR') }}<span> @lang('bt.day_short_friday')</span></label>
-       <label class="btn btn-warning">
-           {{ html()->radio('wkst', null, 'SA') }}<span> @lang('bt.day_short_saturday')</span></label>
-       <label class="btn btn-warning">
-           {{ html()->radio('wkst', null, 'SU') }}<span> @lang('bt.day_short_sunday')</span></label>
-   </div>
+            {{ html()->radio('wkst', null, 'MO') }}<span> @lang('bt.day_short_mo')</span></label>
+        <label class="btn btn-warning">
+            {{ html()->radio('wkst', null, 'TU') }}<span> @lang('bt.day_short_tu')</span></label>
+        <label class="btn btn-warning">
+            {{ html()->radio('wkst', null, 'WE') }}<span> @lang('bt.day_short_we')</span></label>
+        <label class="btn btn-warning">
+            {{ html()->radio('wkst', null, 'TH') }}<span> @lang('bt.day_short_th')</span></label>
+        <label class="btn btn-warning">
+            {{ html()->radio('wkst', null, 'FR') }}<span> @lang('bt.day_short_fr')</span></label>
+        <label class="btn btn-warning">
+            {{ html()->radio('wkst', null, 'SA') }}<span> @lang('bt.day_short_sa')</span></label>
+        <label class="btn btn-warning">
+            {{ html()->radio('wkst', null, 'SU') }}<span> @lang('bt.day_short_su')</span></label>
+    </div>
 </div>
 <div class="mb-3 d-flex align-items-center">
     {{ html()->label(__('bt.week_days'), 'byday')->class('col-sm-2 text-end fw-bold pe-3')->attribute('title', 'If given, it must be either an integer ("0 == RRule.MO"), a sequence of integers, one of the weekday constants ("RRule.MO", "RRule.TU", etc), or a sequence of these constants. When given, these variables will define the weekdays where the recurrence will be applied. It is also possible to use an argument n for the weekday instances, which will mean the nth occurrence of this weekday in the period. For example, with "RRule.MONTHLY", or with "RRule.YEARLY" and "BYMONTH", using "RRule.FR.clone(+1)" in "byweekday" will specify the first friday of the month where the recurrence happens. Notice that the RFC documentation, this is specified as "BYDAY", but was renamed to avoid the ambiguity of that argument.') }}
-   <div class="mb-3">
-       <label class="btn btn-primary">
-           {{ html()->checkbox('byday[]', null, 'MO')->class('byday form-check-input') }}<span> @lang('bt.day_short_monday')</span></label>
-        <label class="btn btn-primary">
-            {{ html()->checkbox('byday[]', null, 'TU')->class('byday form-check-input') }}<span> @lang('bt.day_short_tuesday')</span></label>
-        <label class="btn btn-primary">
-            {{ html()->checkbox('byday[]', null, 'WE')->class('byday form-check-input') }}<span> @lang('bt.day_short_wednesday')</span></label>
-        <label class="btn btn-primary">
-            {{ html()->checkbox('byday[]', null, 'TH')->class('byday form-check-input') }}<span> @lang('bt.day_short_thursday')</span></label>
-        <label class="btn btn-primary">
-            {{ html()->checkbox('byday[]', null, 'FR')->class('byday form-check-input') }}<span> @lang('bt.day_short_friday')</span></label>
-        <label class="btn btn-primary">
-            {{ html()->checkbox('byday[]', null, 'SA')->class('byday form-check-input') }}<span> @lang('bt.day_short_saturday')</span></label>
-        <label class="btn btn-primary">
-            {{ html()->checkbox('byday[]', null, 'SU')->class('byday form-check-input') }}<span> @lang('bt.day_short_sunday')</span></label>
+    <div class="mb-3">
+        @foreach($days as $key => $value)
+            <label class="btn btn-primary">
+                {{ html()->checkbox('byday[]', isset($rrule['byday'][$key]) ? 1 : null, $value)->class('byday form-check-input') }}
+                <span> @lang('bt.day_short_' . strtolower($value))</span></label>
+        @endforeach
     </div>
 </div>
 <div class="mb-3 d-flex align-items-center">
     {{ html()->label(__('bt.months_sp'), 'bymonth')->class('col-sm-2 text-end fw-bold pe-3')->attribute('title', 'If given, it must be either an integer, or a sequence of integers, meaning the months to apply the recurrence to.') }}
     <div class="mb-3">
-        <label class="btn btn-primary">
-            {{ html()->checkbox('bymonth[]', null, '1')->class('bymonth form-check-input') }}<span> @lang('bt.month_short_january')</span></label>
-        <label class="btn btn-primary">
-            {{ html()->checkbox('bymonth[]', null, '2')->class('bymonth form-check-input') }}<span> @lang('bt.month_short_february')</span></label>
-        <label class="btn btn-primary">
-            {{ html()->checkbox('bymonth[]', null, '3')->class('bymonth form-check-input') }}<span> @lang('bt.month_short_march')</span></label>
-        <label class="btn btn-primary">
-            {{ html()->checkbox('bymonth[]', null, '4')->class('bymonth form-check-input') }}<span> @lang('bt.month_short_april')</span></label>
-        <label class="btn btn-primary">
-            {{ html()->checkbox('bymonth[]', null, '5')->class('bymonth form-check-input') }}<span> @lang('bt.month_short_may')</span></label>
-        <label class="btn btn-primary">
-            {{ html()->checkbox('bymonth[]', null, '6')->class('bymonth form-check-input') }}<span> @lang('bt.month_short_june')</span></label>
-        <label class="btn btn-primary">
-            {{ html()->checkbox('bymonth[]', null, '7')->class('bymonth form-check-input') }}<span> @lang('bt.month_short_july')</span></label>
-        <label class="btn btn-primary">
-            {{ html()->checkbox('bymonth[]', null, '8')->class('bymonth form-check-input') }}<span> @lang('bt.month_short_august')</span></label>
-        <label class="btn btn-primary">
-            {{ html()->checkbox('bymonth[]', null, '9')->class('bymonth form-check-input') }}<span> @lang('bt.month_short_september')</span></label>
-        <label class="btn btn-primary">
-            {{ html()->checkbox('bymonth[]', null, '10')->class('bymonth form-check-input') }}<span> @lang('bt.month_short_october')</span></label>
-        <label class="btn btn-primary">
-            {{ html()->checkbox('bymonth[]', null, '11')->class('bymonth form-check-input') }}<span> @lang('bt.month_short_november')</span></label>
-        <label class="btn btn-primary">
-            {{ html()->checkbox('bymonth[]', null, '12')->class('bymonth form-check-input') }}<span> @lang('bt.month_short_december')</span></label>
+        @foreach($months as $key => $value)
+            <label class="btn btn-primary">
+                {{ html()->checkbox('bymonth[]', isset($rrule['bymonth'][$key]) ? 1 : null, $value)->class('bymonth form-check-input') }}
+                <span> @lang('bt.month_short_' . $value)</span></label>
+        @endforeach
     </div>
 </div>
 <div class="mb-3 d-flex align-items-center">
@@ -181,7 +153,7 @@
     {{--{!! Form::close() !!}--}}
     <script>
         function showhuman() {
-            axios.post('{!! route("scheduler.gethuman") !!}',{
+            axios.post('{!! route("scheduler.gethuman") !!}', {
                 'title': 'Show Proposed',
                 'freq': document.querySelector('input[name="freq"]:checked').value,
                 'start_date': document.querySelector("#eventfrom").value,
@@ -196,18 +168,18 @@
                 'bymonth': Array.from(document.querySelectorAll(".bymonth:checked")).map(function (e) {
                     return e.value.toString();
                 }).join(","),
-                'bysetpos':document.querySelector("#bysetpos").value,
-                'bymonthday':document.querySelector("#bymonthday").value,
+                'bysetpos': document.querySelector("#bysetpos").value,
+                'bymonthday': document.querySelector("#bymonthday").value,
                 'byyearday': document.querySelector("#byyearday").value,
                 'byweekno': document.querySelector("#byweekno").value,
             }).then(function (response) {
-                    Swal.fire({
-                        title: 'Proposed Occurrence',
-                        text: 'Frequency to text is  ' + response.data.result,
-                        icon: 'info',
-                        showConfirmButton: false,
-                        timer: 5000
-                    });
+                Swal.fire({
+                    title: 'Proposed Occurrence',
+                    text: 'Frequency to text is  ' + response.data.result,
+                    icon: 'info',
+                    showConfirmButton: false,
+                    timer: 5000
+                });
             }).catch(function (error) {
                 if (error.response) {
                     notify(error.response.data.message, 'error')

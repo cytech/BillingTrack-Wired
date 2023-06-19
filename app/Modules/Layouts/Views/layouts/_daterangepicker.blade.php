@@ -19,13 +19,13 @@
                         format: "{{ strtoupper(config('bt.datepickerFormat')) }}",
                         customRangeLabel: "@lang('bt.custom')",
                         daysOfWeek: [
-                            "@lang('bt.day_short_sunday')",
-                            "@lang('bt.day_short_monday')",
-                            "@lang('bt.day_short_tuesday')",
-                            "@lang('bt.day_short_wednesday')",
-                            "@lang('bt.day_short_thursday')",
-                            "@lang('bt.day_short_friday')",
-                            "@lang('bt.day_short_saturday')"
+                            "@lang('bt.day_short_su')",
+                            "@lang('bt.day_short_mo')",
+                            "@lang('bt.day_short_tu')",
+                            "@lang('bt.day_short_we')",
+                            "@lang('bt.day_short_th')",
+                            "@lang('bt.day_short_fr')",
+                            "@lang('bt.day_short_sa')"
                         ],
                         monthNames: [
                             "@lang('bt.month_january')",
