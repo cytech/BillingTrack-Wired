@@ -46,8 +46,6 @@ class User extends Authenticatable
 
     protected $hidden = ['password', 'remember_token', 'api_public_key', 'api_secret_key'];
 
-//    protected $appends = ['user_type', 'user_role'];
-
     /*
     |--------------------------------------------------------------------------
     | Relationships

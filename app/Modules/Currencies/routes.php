@@ -20,5 +20,4 @@ Route::middleware(['web', 'auth.admin'])
         Route::name('edit')->get('{id}/edit', [CurrencyController::class, 'edit']);
         Route::name('update')->post('{id}', [CurrencyController::class, 'update']);
         Route::name('delete')->get('{id}/delete', [CurrencyController::class, 'delete']);
-//        Route::name('getExchangeRate')->post('get-exchange-rate', [CurrencyController::class, 'getExchangeRate']);
     });

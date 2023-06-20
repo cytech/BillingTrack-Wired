@@ -191,8 +191,8 @@
     <tbody>
     @foreach ($document->items as $item)
         <tr>
-            <td>{!! $item->name !!}</td>
-            <td>{!! $item->formatted_description !!}</td>
+            <td>{{ $item->name }}</td>
+            <td>{{ $item->formatted_description }}</td>
             @if($document->module_type == 'Workorder')
                 <td nowrap
                     class="amount">{{ $item->formatted_quantity <> '0.00' ? $item->formatted_quantity : "________" }}</td>

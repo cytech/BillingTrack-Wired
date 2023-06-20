@@ -26,7 +26,6 @@
                         </p>
                     </li>
                     <li class="user-footer">
-                        {{--                        <a href="#" class="btn btn-default btn-flat">Profile</a>--}}
                         <div class="d-flex justify-content-between">
                             @if (!config('app.demo'))
                                 <a class="btn btn-default btn-flat"

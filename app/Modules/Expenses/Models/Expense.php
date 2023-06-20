@@ -43,8 +43,6 @@ class Expense extends Model
 
     protected $casts = ['deleted_at' => 'datetime'];
 
-//    protected $appends = ['formatted_description', 'formatted_expense_date', 'formatted_amount', 'is_billable', 'has_been_billed'];
-
     /*
     |--------------------------------------------------------------------------
     | Relationships

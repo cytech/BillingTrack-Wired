@@ -36,7 +36,6 @@ Route::middleware(['web', 'auth.admin'])->group(function () {
         Route::name('documentEdit.refreshTotals')->post('edit/refresh_totals', [DocumentEditController::class, 'refreshTotals']);
         Route::name('documentEdit.refreshTo')->post('edit/refresh_to', [DocumentEditController::class, 'refreshTo']);
         Route::name('documentEdit.refreshFrom')->post('edit/refresh_from', [DocumentEditController::class, 'refreshFrom']);
-        //Route::name('documentEdit.updateClient')->post('edit/update_client', [DocumentEditController::class, 'updateClient']);
         Route::name('documentEdit.updateCompanyProfile')->post('edit/update_company_profile', [DocumentEditController::class, 'updateCompanyProfile']);
 
         Route::name('recalculate')->post('recalculate', [DocumentRecalculateController::class, 'recalculate']);

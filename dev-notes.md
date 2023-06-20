@@ -4,8 +4,8 @@ It works in Firefox.
 ~~known issue with alpha admin-lte-v4 setting sidebar to collapsed mode in system settings.~~
 
 --------
-known issue dompdf fail with text containing < (less than character)  
-(  1234<wdrwer  in item description will fail pdf)
+~~known issue dompdf fail with text containing < (less than character)  
+(  1234<wdrwer  in item description will fail pdf)~~
 
 ------------
 -------------------------------

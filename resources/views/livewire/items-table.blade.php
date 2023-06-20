@@ -8,7 +8,6 @@
                             {{--                                     params 3 thru ...> mount(,,$modulefullname, $module_id = null, $resource_type)--}}
                             onclick="window.livewire.emit('showModal', 'modals.add-resource-modal', '{{  addslashes(get_class($module)) }}', {{$module->id}}, 'Product')">
                         <i class="fa fa-plus"></i> @lang('bt.add_product')</button>
-                    {{--                    @if($module_type != 'Purchaseorder')--}}
                     @if($module->module_type != 'Purchaseorder')
                         <button class="btn btn-primary btn-sm"
                                 {{--                                     params 3 thru ...> mount(,,$modulefullname, $module_id = null, $resource_type)--}}
@@ -40,7 +39,6 @@
                     <tbody id="new-tbody">
                     <tr class="todo-list new-item" id="tr-new-item">
                         <td style="width: 20%;">
-                            {{--                            @if($module_type == 'Purchaseorder')--}}
                             @if($module->module_type == 'Purchaseorder')
                                 <livewire:product-search
                                         {{--module base name, adds hidden fields with _id and _name--}}
@@ -72,7 +70,6 @@
                                            name="save_item_as"
                                            id="save_item_as"
                                            tabindex="999">
-                                    {{--                                    @if($module_type == 'Purchaseorder')--}}
                                     @if($module->module_type == 'Purchaseorder')
                                         @lang('bt.save_item_as_product')
                                     @else

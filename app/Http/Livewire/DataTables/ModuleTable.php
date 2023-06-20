@@ -263,7 +263,7 @@ class ModuleTable extends DataTableComponent
                     ->role(['admin', 'user', 'client']);
             }
         } else { //quotes, workorders, invoices, purchaseorders, recurringinvoices
-            if ($this->reqstatus) $this->setFilter(snake_case(__('bt.status')), $this->reqstatus);
+            if ($this->reqstatus) $this->setFilter(snake_case(__('bt.status')), DocumentStatuses::getStatusId($this->reqstatus));
             return $this->module_fullname::
             select('documents.*')->where('document_type', $this->module_fullname)
                 ->clientId($this->clientid)

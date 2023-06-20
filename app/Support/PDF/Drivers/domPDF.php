@@ -26,7 +26,7 @@ class domPDF extends PDFAbstract
         $options->setFontCache(storage_path('/'));
         $options->setLogOutputFile(storage_path('dompdf_log'));
         $options->setIsRemoteEnabled(true);
-        $options->setIsHtml5ParserEnabled(true);
+//        $options->setIsHtml5ParserEnabled(true);
         $options->setIsFontSubsettingEnabled(true);
 
         $pdf = new PDF($options);

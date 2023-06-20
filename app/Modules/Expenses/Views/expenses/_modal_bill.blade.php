@@ -44,9 +44,7 @@
                         </div>
 
                         <div class="mb-3">
-{{--                            <label class="col-form-label">{!! Form::radio('add_line_item', 1, true, ['class' => 'add-line-item', 'id' => 'add-line-item']) !!} @lang('bt.add_line_item_to_invoice')</label><br>--}}
                             <label class="col-form-label">{{ html()->radio('add_line_item', true, 1)->class('add-line-item') }} @lang('bt.add_line_item_to_invoice')</label><br>
-{{--                            <label class="col-form-label">{!! Form::radio('add_line_item', 0, false, ['class' => 'add-line-item', 'id' => 'no-add-line-item']) !!} @lang('bt.do_not_add_line_item_to_invoice')</label>--}}
                             <label class="col-form-label">{{ html()->radio('add_line_item')->class('add-line-item') }} @lang('bt.do_not_add_line_item_to_invoice')</label>
                         </div>
 

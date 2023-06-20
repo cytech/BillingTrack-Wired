@@ -56,8 +56,6 @@ class Client extends Model
 
     protected $hidden = ['password', 'remember_token'];
 
-//    protected $appends = ['formatted_balance', 'formatted_createdat'];
-
     /*
     |--------------------------------------------------------------------------
     | Static Methods

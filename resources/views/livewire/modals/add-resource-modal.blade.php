@@ -11,7 +11,6 @@
                         wire:click.prevent="addItems()">@lang('bt.submit')</button>
             </div>
         </div>
-{{--        @if(class_basename($module) == 'Purchaseorder')--}}
         @if($module->module_type == 'Purchaseorder')
             <div class="modal-header pt-2 pb-1">
                 <label>
@@ -54,7 +53,6 @@
                                 <td @if($resource->is_trackable) class="bg-secondary"
                                     title="@lang('bt.trackable')" @endif>{!!  \BT\Support\NumberFormatter::format($resource->numstock,null,2) ?? 0 !!}
                             @endif
-{{--                            @if(class_basename($module) == 'Purchaseorder')--}}
                             @if($module->module_type == 'Purchaseorder')
                                 <td>{!!  $resource->formatted_cost  !!}</td>
                             @else

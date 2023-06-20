@@ -278,43 +278,7 @@
                     setInnerHTML(document.getElementById('modal-placeholder'), response.data)
                 })
         })
-/*        // email quote
-        addEvent(document, 'click', '.email-quote', (e) => {
-            {{--axios.post('{{ route('quoteMail.create') }} ', {--}}
-            axios.post('{{ route('documentMail.create') }} ', {
-                quote_id: e.target.dataset.quoteId,
-                redirectTo: e.target.dataset.redirectTo
-            }).then(response => {
-                setInnerHTML(document.getElementById('modal-placeholder'), response.data)
-            }).catch((response) => {
-                notify('@lang('bt.problem_with_email_template')', 'error')
-            })
-        })
 
-        //email invoice
-        addEvent(document, 'click', '.email-invoice', (e) => {
-            {{--axios.post('{{ route('invoiceMail.create') }} ', {--}}
-            axios.post('{{ route('documentMail.create') }} ', {
-                invoice_id: e.target.dataset.invoiceId,
-                redirectTo: e.target.dataset.redirectTo
-            }).then(response => {
-                setInnerHTML(document.getElementById('modal-placeholder'), response.data)
-            }).catch((response) => {
-                notify('@lang('bt.problem_with_email_template')', 'error')
-            })
-        })
-        //email purchaseorder
-        addEvent(document, 'click', '.email-purchaseorder', (e) => {
-            {{--axios.post('{{ route('purchaseorderMail.create') }} ', {--}}
-            axios.post('{{ route('documentMail.create') }} ', {
-                purchaseorder_id: e.target.dataset.purchaseorderId,
-                redirectTo: e.target.dataset.redirectTo
-            }).then(response => {
-                setInnerHTML(document.getElementById('modal-placeholder'), response.data)
-            }).catch((response) => {
-                notify('@lang('bt.problem_with_email_template')', 'error')
-            })
-        })*/
         //email document
         addEvent(document, 'click', '.email-document', (e) => {
             axios.post('{{ route('documentMail.create') }} ', {
@@ -326,6 +290,7 @@
                 notify('@lang('bt.problem_with_email_template')', 'error')
             })
         })
+
         //scroll to top - START
         document.addEventListener("scroll", handleScroll);
         var scrollToTopBtn = document.querySelector(".back-to-top");

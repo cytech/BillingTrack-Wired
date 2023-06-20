@@ -123,8 +123,8 @@
     <tbody>
     @foreach ($document->items as $item)
         <tr>
-            <td>{!! $item->name !!}</td>
-            <td>{!! $item->formatted_description !!}</td>
+            <td>{{ $item->name }}</td>
+            <td>{{ $item->formatted_description }}</td>
             <td nowrap class="amount">{{ $item->formatted_quantity }}</td>
             <td nowrap class="amount">{{ $item->formatted_cost }}</td>
             <td nowrap class="amount">{{ $item->amount->formatted_subtotal }}</td>

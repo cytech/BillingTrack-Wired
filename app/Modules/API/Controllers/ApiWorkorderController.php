@@ -25,7 +25,6 @@ class ApiWorkorderController extends ApiController
         $workorders = Workorder::select('workorders.*')
             ->with(['items.amount', 'client', 'amount', 'currency'])
             ->status(request('status'))
-            //->sortable(['job_date' => 'desc', 'LENGTH(number)' => 'desc', 'number' => 'desc'])
             ->paginate(config('bt.resultsPerPage'));
 
         return response()->json($workorders);

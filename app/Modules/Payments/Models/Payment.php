@@ -51,8 +51,6 @@ class Payment extends Model
 
     protected $casts = ['paid_at' => 'datetime', 'deleted_at' => 'datetime'];
 
-//    protected $appends = ['formatted_paid_at','formatted_amount'];
-
     /*
     |--------------------------------------------------------------------------
     | Relationships

@@ -121,11 +121,6 @@ class DocumentEditController extends Controller
             ->with('document', Document::find(request('id')));
     }
 
-   /* public function updateClient()
-    {
-        Document::where('id', request('id'))->update(['client_id' => request('client_id')]);
-    }*/
-
     public function updateCompanyProfile()
     {
         Document::where('id', request('id'))->update(['company_profile_id' => request('company_profile_id')]);

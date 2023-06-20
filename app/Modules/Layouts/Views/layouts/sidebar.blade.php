@@ -43,7 +43,6 @@
                 @if(\BT\Modules\Settings\Models\Setting::isModuleEnabled('recurringinvoice'))
                     <li class="nav-item">
                         <a class="nav-link"
-{{--                           href="{{ route('recurringInvoices.index') }}">--}}
                             href="{{ route('documents.index', [ 'module_type' => 'Recurringinvoice']) }}">
                             <i class="nav-icon fas fa-sync-alt fa-fw"></i>
                             <p>@lang('bt.recurringinvoices')</p>
