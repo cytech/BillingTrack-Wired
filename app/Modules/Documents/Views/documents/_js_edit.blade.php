@@ -82,7 +82,7 @@
                 job_date: document.getElementById('job_date') ? document.getElementById('job_date').value : null,
                 start_time: document.getElementById('start_time') ? document.getElementById('start_time').value : null,
                 end_time: document.getElementById('end_time') ? document.getElementById('end_time').value : null,
-                will_call: document.getElementById('will_call') ? document.getElementById('will_call').value : null,
+                will_call: document.getElementById('will_call') ? document.getElementById('will_call').checked : null,
                 next_date: document.getElementById('next_date') ? document.getElementById('next_date').value : null,
                 stop_date: document.getElementById('stop_date') ? document.getElementById('stop_date').value : null,
                 recurring_frequency: document.getElementById('recurring_frequency') ? document.getElementById('recurring_frequency').value : null,

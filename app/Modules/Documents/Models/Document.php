@@ -21,6 +21,7 @@ use BT\Modules\Groups\Models\Group;
 use BT\Modules\MailQueue\Models\MailQueue;
 use BT\Modules\Notes\Models\Note;
 use BT\Modules\Users\Models\User;
+use BT\Modules\Vendors\Models\Vendor;
 use BT\Observers\DocumentObserver;
 use BT\Support\CurrencyFormatter;
 use BT\Support\DateFormatter;
@@ -112,6 +113,11 @@ class Document extends Model
     public function client(): BelongsTo
     {
         return $this->belongsTo(Client::class);
+    }
+
+    public function vendor(): BelongsTo
+    {
+        return $this->belongsTo(Vendor::class);
     }
 
     public function clientAttachments(): MorphMany

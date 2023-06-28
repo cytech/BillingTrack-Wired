@@ -40,7 +40,7 @@
             <a href="{{ route('documents.pdf', [$document->id]) }}" target="_blank" id="btn-pdf-document"
                class="btn btn-secondary"><i class="fa fa-print"></i> @lang('bt.pdf')</a>
         @endif
-        @if (config('bt.mailConfigured'))
+        @if (config('bt.mailConfigured') && $document->module_type != 'Recurringinvoice')
             <a href="javascript:void(0)" id="btn-email-document" class="btn btn-secondary email-document"
                data-document-id="{{ $document->id }}" data-redirect-to="{{ route('documents.edit', [$document->id]) }}"><i
                         class="fa fa-envelope"></i> @lang('bt.email')</a>

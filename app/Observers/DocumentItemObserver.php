@@ -17,14 +17,6 @@ class DocumentItemObserver
     {
         $item = $documentItem;
 
-        $applyExchangeRate = $item->apply_exchange_rate;
-        unset($item->apply_exchange_rate);
-
-        if ($applyExchangeRate == true)
-        {
-            $item->price = $item->price * $item->document->exchange_rate;
-        }
-
         if (!$item->display_order)
         {
             $displayOrder = DocumentItem::where('document_id', $item->document_id)->max('display_order');

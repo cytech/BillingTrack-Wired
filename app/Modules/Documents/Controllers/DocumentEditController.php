@@ -62,13 +62,16 @@ class DocumentEditController extends Controller
         $document->custom->update($request->input('custom', []));
         // Save the items.
         foreach ($request->input('items') as $item) {
-            $item['apply_exchange_rate'] = $request->input('apply_exchange_rate');
+
+            if ($request->input('apply_exchange_rate')) {
+                $item['price'] = $item['price'] * $document->exchange_rate;
+            }
 
             if (!isset($item['id']) or (!$item['id'])) {
                 //if item_lookup and item_lookup has resource, remap item to resource
-                if ($item['resource_table'] == 'item_lookups'){
+                if ($item['resource_table'] == 'item_lookups') {
                     $il = ItemLookup::find($item['resource_id']);
-                    if ($il->resource_table){
+                    if ($il->resource_table) {
                         $item['resource_table'] = $il->resource_table;
                         $item['resource_id'] = $il->resource_id;
                     }

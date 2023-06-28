@@ -14,7 +14,7 @@
         <a class="dropdown-item" href="{{ route('documents.pdf', [$model->id]) }}" target="_blank"
            id="btn-pdf-document"><i class="fa fa-print"></i> @lang('bt.pdf')</a>
         @endif
-        @if (config('bt.mailConfigured'))
+        @if (config('bt.mailConfigured') && $model->module_type != 'Recurringinvoice')
             <a class="dropdown-item email-document" href="javascript:void(0)" data-document-id="{{ $model->id }}"
                data-redirect-to="{{ request()->fullUrl() }}"><i
                         class="fa fa-envelope"></i> @lang('bt.email')</a>

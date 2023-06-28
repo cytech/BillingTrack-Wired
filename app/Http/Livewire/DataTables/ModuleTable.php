@@ -245,7 +245,7 @@ class ModuleTable extends DataTableComponent
         } elseif ($this->module_type == 'Employee') {
             return $this->module_fullname::select('employees.*')->status(request('status'));
         } elseif ($this->module_type == 'Vendor') {
-            return $this->module_fullname::select('vendors.*')->status(request('status'));
+            return $this->module_fullname::getSelect()->status(request('status'));
         } elseif ($this->module_type == 'Product') {
             return $this->module_fullname::select('products.*')->status(request('status'));
         } elseif ($this->module_type == 'Category') {

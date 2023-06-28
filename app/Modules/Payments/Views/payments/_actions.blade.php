@@ -5,7 +5,7 @@
     <div class="dropdown-menu dropdown-menu-end" role="menu">
         <a class="dropdown-item" href ="{{ route('payments.edit', [$model->id]) }}"><i class="fa fa-edit"></i> @lang('bt.edit')</a>
         <a class="dropdown-item" href ="{{ route('documents.pdf', [$model->document->id]) }}" target="_blank" id="btn-pdf-invoice"><i class="fa fa-print"></i> @lang('bt.document')</a>
-        @if (config('bt.mailConfigured'))
+        @if (config('bt.mailConfigured') && request('status') == 1)
             <a class="dropdown-item email-payment-receipt" href ="javascript:void(0)" data-payment-id="{{ $model->id }}" data-redirect-to="{{ request()->fullUrl() }}"><i class="fa fa-envelope"></i> @lang('bt.email_payment_receipt')</a>
         @endif
         <div class="dropdown-divider"></div>

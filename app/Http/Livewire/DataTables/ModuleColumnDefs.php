@@ -353,6 +353,9 @@ class ModuleColumnDefs
                 Column::make(__('bt.phone_number'), 'phone')
                     ->sortable()
                     ->searchable(),
+                Column::make(__('bt.balance'), 'id') //dummy
+                    ->sortable(fn(Builder $query, string $direction) => $query->orderBy('balance', $direction))
+                    ->format(fn($value, $row, Column $column) => $row->formatted_balance),
                 BooleanColumn::make(__('bt.active'), 'active')
                     ->yesNo(),
                 Column::make('Action')

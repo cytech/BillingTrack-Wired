@@ -57,6 +57,20 @@ class Purchaseorder extends Document
         return new Attribute(get: fn() => $this->status_text <> 'canceled' and $this->amount->balance > 0);
     }
 
+    public function getIsOverdueAttribute()
+    {
+        // Only purchaseorders in Sent, Received or Partial status, with a balance qualify to be overdue
+        if ($this->action_date < date('Y-m-d')
+            and
+            ($this->document_status_id == DocumentStatuses::getStatusId('sent')
+                or $this->document_status_id == DocumentStatuses::getStatusId('received')
+                or $this->document_status_id == DocumentStatuses::getStatusId('partial'))
+            and $this->amount->balance <> 0)
+            return 1;
+
+        return 0;
+    }
+
 
     //scopes
     public function scopeVendorId($query, $vendorId = null)

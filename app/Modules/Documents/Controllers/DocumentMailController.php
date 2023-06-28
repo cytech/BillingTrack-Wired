@@ -19,6 +19,7 @@ use BT\Modules\Documents\Models\Document;
 use BT\Requests\SendEmailRequest;
 use BT\Support\Contacts;
 use BT\Support\Parser;
+use BT\Support\VendorContacts;
 
 class DocumentMailController extends Controller
 {
@@ -33,7 +34,11 @@ class DocumentMailController extends Controller
     {
         $document = Document::find(request('document_id'));
 
-        $contacts = new Contacts($document->client);
+        if ($document->module_type == 'Purchaseorder'){
+            $contacts = new VendorContacts($document->vendor);
+        } else {
+            $contacts = new Contacts($document->client);
+        }
 
         $parser = new Parser($document);
 

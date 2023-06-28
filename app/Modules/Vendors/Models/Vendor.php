@@ -18,6 +18,7 @@ use BT\Modules\CustomFields\Models\VendorCustom;
 use BT\Modules\Documents\Models\Purchaseorder;
 use BT\Modules\Expenses\Models\Expense;
 use BT\Modules\Notes\Models\Note;
+use BT\Modules\Payments\Models\Payment;
 use BT\Modules\PaymentTerms\Models\PaymentTerm;
 use BT\Modules\Users\Models\User;
 use BT\Support\CurrencyFormatter;
@@ -103,6 +104,11 @@ class Vendor extends Model
     public function custom(): HasOne
     {
         return $this->hasOne(VendorCustom::class);
+    }
+
+    public function payments(): HasMany
+    {
+        return $this->hasMany(Payment::class);
     }
 
     public function notes(): MorphMany
