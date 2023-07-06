@@ -17,6 +17,12 @@ return new class extends Migration {
      */
     public function up(): void
     {
+        // delete orphaned custom records
+        $custom_tables = ['quote', 'workorder', 'invoice', 'purchaseorder', 'recurringinvoice' ];
+        foreach ($custom_tables as $ct) {
+            DB::table($ct . 's_custom')->where($ct . '_id_v7', 0)->delete();
+        }
+
         Schema::table('quotes_custom', function (Blueprint $table) {
             $table->dropForeign('quotes_custom_quote_id');
         });

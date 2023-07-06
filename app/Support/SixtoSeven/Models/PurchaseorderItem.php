@@ -14,7 +14,7 @@ namespace BT\Support\SixtoSeven\Models;
 use Askedio\SoftCascade\Traits\SoftCascadeTrait;
 use BT\Support\CurrencyFormatter;
 use BT\Support\NumberFormatter;
-use BT\Support\Statuses\PurchaseorderItemStatuses;
+use BT\Support\SixtoSeven\Statuses\PurchaseorderItemStatuses;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 

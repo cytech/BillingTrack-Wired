@@ -17,7 +17,7 @@ use BT\Support\DateFormatter;
 use BT\Support\FileNames;
 use BT\Support\HTML;
 use BT\Support\NumberFormatter;
-use BT\Support\Statuses\WorkorderStatuses;
+use BT\Support\SixtoSeven\Statuses\WorkorderStatuses;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\SoftDeletes;

@@ -18,7 +18,7 @@ use BT\Support\DateFormatter;
 use BT\Support\FileNames;
 use BT\Support\HTML;
 use BT\Support\NumberFormatter;
-use BT\Support\Statuses\InvoiceStatuses;
+use BT\Support\SixtoSeven\Statuses\InvoiceStatuses;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
