@@ -143,7 +143,7 @@ class CreatePaymentModal extends Component
             return redirect($this->currentUrl)
                 ->with('alertSuccess', trans('bt.record_successfully_created'));
         }else {
-            return redirect()->route('payments.index')
+            return redirect()->route('payments.index', ['status' => 1])
                 ->with('alertSuccess', trans('bt.record_successfully_created'));
         }
     }

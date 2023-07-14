@@ -201,7 +201,7 @@
                             <div id="tab-payments" class="tab-pane">
                                 <div class="card">
                                     <div class="card-body">
-                                        <livewire:data-tables.module-table :module_type="'Payment'" :clientid="$client->id"/>
+                                        <livewire:data-tables.module-table :module_type="'Payment'" :clientid="$client->id" :status="1"/>
                                     </div>
                                 </div>
                             </div>

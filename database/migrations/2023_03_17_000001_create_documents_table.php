@@ -67,12 +67,6 @@ class CreateDocumentsTable extends Migration
             $table->softDeletes();
             $table->nullableTimestamps();
 
-
-            $table->foreign('client_id', 'documents_client_id_index')
-                ->references('id')->on('clients')
-                ->onDelete('cascade')
-                ->onUpdate('restrict');
-
             $table->foreign('company_profile_id', 'documents_company_profile_id_index')
                 ->references('id')->on('company_profiles')
                 ->onDelete('set null')

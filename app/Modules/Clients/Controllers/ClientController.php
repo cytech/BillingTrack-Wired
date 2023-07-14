@@ -16,7 +16,6 @@ use BT\Modules\Clients\Models\Client;
 use BT\Modules\Clients\Requests\ClientStoreRequest;
 use BT\Modules\Clients\Requests\ClientUpdateRequest;
 use BT\Modules\CustomFields\Models\CustomField;
-use BT\Modules\Payments\Models\Payment;
 use BT\Modules\PaymentTerms\Models\PaymentTerm;
 use BT\Support\Frequency;
 use BT\Traits\ReturnUrl;
@@ -62,37 +61,8 @@ class ClientController extends Controller
     {
         $client = Client::getSelect()->find($clientId);
 
-        $invoices = $client->invoices()
-            ->with(['client', 'activities', 'amount.document.currency'])
-            ->orderBy('created_at', 'desc')
-            ->orderBy('id', 'desc')
-            ->take(config('bt.resultsPerPage'))->get();
-
-        $quotes = $client->quotes()
-            ->with(['client', 'activities', 'amount.document.currency'])
-            ->orderBy('created_at', 'desc')
-            ->orderBy('id', 'desc')
-            ->take(config('bt.resultsPerPage'))->get();
-
-        $workorders = $client->workorders()
-            ->with(['client', 'activities', 'amount.document.currency'])
-            ->orderBy('created_at', 'desc')
-            ->orderBy('id', 'desc')
-            ->take(config('bt.resultsPerPage'))->get();
-
-        $recurringInvoices = $client->recurringInvoices()
-            ->with(['client', 'amount.recurringInvoice.currency'])
-            ->orderBy('next_date', 'desc')
-            ->orderBy('id', 'desc')
-            ->take(config('bt.resultsPerPage'))->get();
-
         return view('clients.view')
             ->with('client', $client)
-            ->with('invoices', $invoices)
-            ->with('quotes', $quotes)
-            ->with('workorders', $workorders)
-            ->with('payments', Payment::clientId($clientId)->orderBy('paid_at', 'desc')->take(config('bt.resultsPerPage'))->get())
-            ->with('recurringInvoices', $recurringInvoices)
             ->with('customFields', CustomField::forTable('clients')->get())
             ->with('frequencies', Frequency::lists())
             ->with('returnUrl', $this->getReturnUrl());

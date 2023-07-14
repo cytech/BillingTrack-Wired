@@ -2,7 +2,6 @@
 
 namespace BT\Http\Livewire\DataTables;
 
-use BT\Modules\Clients\Models\Client;
 use BT\Modules\CompanyProfiles\Models\CompanyProfile;
 use BT\Modules\Vendors\Models\Vendor;
 use BT\Support\Statuses\DocumentStatuses;
@@ -13,7 +12,7 @@ use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class ModuleTable extends DataTableComponent
 {
-    public $module_type, $module_fullname, $keyedStatuses, $reqstatus, $clientid;
+    public $module_type, $module_fullname, $keyedStatuses, $reqstatus, $clientid, $status;
 
     public function configure(): void
     {
@@ -22,15 +21,10 @@ class ModuleTable extends DataTableComponent
         $this->setSearchDebounce(500);
         //$this->setFilterLayoutSlideDown();
         $this->setFilterLayoutPopover();
-        if ($this->clientid) {
-            if ($this->module_type == 'Purchaseorder') {
-                $clientname = Vendor::find($this->clientid);
-                $this->setSearch($clientname->name);
-            } else {
-                $clientname = Client::find($this->clientid);
-                $this->setSearch($clientname->name);
-            }
-        }
+
+        // remove search box on client/vendor view tabs
+        if ($this->clientid) $this->setSearchDisabled();
+
         if (request('vendor')) {
             $vendorname = Vendor::find(request('vendor'));
             $this->setSearch($vendorname->name);
@@ -91,6 +85,8 @@ class ModuleTable extends DataTableComponent
             $this->setDefaultSort('name');
             $this->module_fullname = 'BT\\Modules\\Clients\\Models\\Client';
         } elseif ($this->module_type == 'Payment') {
+            // set $status from payment type (client/vendor) livewire variable or request
+            $this->status ?: $this->status = request('status');
             $this->setDefaultSort('paid_at', 'desc');
             $this->module_fullname = 'BT\\Modules\\Payments\\Models\\Payment';
         } else { //quote, workorder, invoice, purchaseorder, recurringinvoice
@@ -117,6 +113,9 @@ class ModuleTable extends DataTableComponent
             $status_model = 'BT\\Support\\Statuses\\' . $this->module_type . 'Statuses';
         }
         $statuses = class_exists($status_model) ? $status_model::listsAllFlat() + ['overdue' => trans('bt.overdue')] : null;
+        // send $status (client/vendor) to payment for column selection
+        if ($this->module_type == 'Payment') $statuses = $this->status;
+
         return ModuleColumnDefs::columndefs($statuses, $this->module_type);
     }
 
@@ -204,6 +203,10 @@ class ModuleTable extends DataTableComponent
             $route = route('timeTracking.projects.bulk.delete');
         } elseif ($this->module_type == 'Schedule' || $this->module_type == 'RecurringEvent') {
             $route = route('scheduler.bulk.delete');
+        } elseif ($this->module_type == 'Payment') {
+            $route = route('payments.bulk.delete');
+        } elseif ($this->module_type == 'Expense') {
+            $route = route('expenses.bulk.delete');
         } else {
             $route = route('documents.bulk.delete');
         }
@@ -222,8 +225,14 @@ class ModuleTable extends DataTableComponent
     public function builder(): Builder
     {
         if ($this->module_type == 'Payment') {
-            return $this->module_fullname::statusId(request('status'))
-                ->select(lcfirst($this->module_type) . 's.*');
+            if ($this->clientid) {
+                return $this->module_fullname::statusId($this->status)
+                    ->select(lcfirst($this->module_type) . 's.*')
+                    ->where('payments.client_id', $this->clientid);
+            } else {
+                return $this->module_fullname::statusId($this->status)
+                    ->select(lcfirst($this->module_type) . 's.*');
+            }
         } elseif ($this->module_type == 'Expense') {
             return $this->module_fullname::select(lcfirst($this->module_type) . 's.*')
                 ->categoryId(request('category'))
@@ -263,7 +272,15 @@ class ModuleTable extends DataTableComponent
                     ->role(['admin', 'user', 'client']);
             }
         } else { //quotes, workorders, invoices, purchaseorders, recurringinvoices
-            if ($this->reqstatus) $this->setFilter(snake_case(__('bt.status')), DocumentStatuses::getStatusId($this->reqstatus));
+            // filter status passed through dashboard widget
+            if ($this->reqstatus) {
+                if ($this->reqstatus != 'overdue') {
+                    $this->setFilter(snake_case(__('bt.status')), DocumentStatuses::getStatusId($this->reqstatus));
+                } else {
+                    $this->setFilter(snake_case(__('bt.status')), 'overdue');
+                }
+            }
+
             return $this->module_fullname::
             select('documents.*')->where('document_type', $this->module_fullname)
                 ->clientId($this->clientid)

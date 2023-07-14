@@ -21,6 +21,12 @@ return new class extends Migration {
     {
         Schema::disableForeignKeyConstraints();
 
+        // drop client_id foreign on payments (for client vendor share..)
+
+        Schema::table('payments', function (Blueprint $table){
+            $table->dropForeign('fk_payments_clients1_idx');
+        });
+
         if (!Schema::hasTable('recurringinvoices_custom')) {
             Schema::rename('recurring_invoices_custom', 'recurringinvoices_custom');
 

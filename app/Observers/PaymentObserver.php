@@ -72,10 +72,10 @@ class PaymentObserver
 
     public function deleted(Payment $payment): void
     {
-        if ($payment->invoice)
-        {
+        if ($payment->invoice) {
             event(new DocumentModified($payment->invoice));
-        }
+        } else
+            event(new DocumentModified($payment->purchaseorder));
     }
 
     public function restoring(Payment $payment): void

@@ -15,7 +15,11 @@ class HTML
 {
     public static function document($document)
     {
-        app()->setLocale($document->client->language);
+        if ($document->module_type == 'Purchaseorder'){
+            app()->setLocale($document->vendor->language);
+        }else {
+            app()->setLocale($document->client->language);
+        }
 
         config(['bt.baseCurrency' => $document->currency_code]);
 

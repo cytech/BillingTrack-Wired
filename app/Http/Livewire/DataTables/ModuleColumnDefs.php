@@ -154,30 +154,51 @@ class ModuleColumnDefs
                     ->sortable()
                     ->format(fn($value, $row, Column $column) => $value . ' ' . $frequencies[$row->recurring_period]),
                 Column::make('Action')
-//                    ->label(fn($row, Column $column) => view('recurring_invoices._actions')->withModel($row)),
                     ->label(fn($row, Column $column) => view('documents._actions')->withModel($row)),
             ];
         } elseif ($module_type == 'Payment') { //Payment column defs
+            if ($statuses == 2) {
+                $col_client_vendor = Column::make(__('bt.client_vendor'), 'vendor.name')
+                    ->searchable()
+                    ->sortable()
+                    ->format(fn($value, $row, Column $column) => '<a href="/vendors/' . $row->vendor->id . '">' . $row->vendor->name . '</a>')
+                    ->html();
+            } else {
+                $col_client_vendor = Column::make(__('bt.client_vendor'), 'client.name')
+                    ->searchable()
+                    ->sortable()
+                    ->format(fn($value, $row, Column $column) => '<a href="/clients/' . $row->client->id . '">' . $row->client->name . '</a>')
+                    ->html();
+            }
             $default_columns = [
                 Column::make(__('bt.payment_date'), 'paid_at')
                     ->sortable()
                     ->format(fn($value, $row, Column $column) => $row->formatted_paid_at),
                 Column::make(__('bt.document'), 'document.number')
                     ->sortable()
-                    ->format(fn($value, $row, Column $column) => '<a href="/documents/' . $row->invoice_id . '/edit">' . $value . '</a>')
+                    ->format(function ($value, $row, Column $column) {
+                        $ret = '';
+                        if ($row->invoice_id)
+                            if ($row->invoice) {
+                                if ($row->invoice->trashed()) {
+                                    $ret .= ' <span class="badge bg-danger" title="Trashed">' . __('bt.invoice');
+                                } else {
+                                    $ret .= '<a href="' . route('documents.edit', [$row->invoice_id]) . '">' . $value . '</a>';
+                                }
+                            } elseif ($row->purchaseorder) {
+                                if ($row->purchaseorder->trashed()) {
+                                    $ret .= ' <span class="badge bg-danger" title="Trashed">' . __('bt.purchaseorder');
+                                } else {
+                                    $ret .= '<a href="' . route('documents.edit', [$row->invoice_id]) . '">' . $value . '</a>';
+                                }
+                            }
+                        return $ret;
+                    })
                     ->html(),
                 Column::make(__('bt.document_date'), 'document.document_date')
                     ->sortable()
-                    ->format(fn($value, $row, Column $column) => $row->invoice ?
-                        $row->invoice->formatted_document_date :
-                        $row->purchaseorder->formatted_document_date),
-                Column::make(__('bt.client_vendor'), 'client.name')
-                    ->searchable()
-                    ->sortable()
-                    ->format(fn($value, $row, Column $column) => $row->invoice ?
-                        '<a href="/clients/' . $row->client->id . '">' . $row->client->name . '</a>' :
-                        '<a href="/vendors/' . $row->vendor->id . '">' . $row->vendor->name . '</a>')
-                    ->html(),
+                    ->format(fn($value, $row, Column $column) => $row->document->formatted_document_date),
+                $col_client_vendor,
                 Column::make(__('bt.summary'), 'invoice.summary')
                     ->sortable(),
                 Column::make(__('bt.amount'), 'amount')
@@ -354,7 +375,7 @@ class ModuleColumnDefs
                     ->sortable()
                     ->searchable(),
                 Column::make(__('bt.balance'), 'id') //dummy
-                    ->sortable(fn(Builder $query, string $direction) => $query->orderBy('balance', $direction))
+                ->sortable(fn(Builder $query, string $direction) => $query->orderBy('balance', $direction))
                     ->format(fn($value, $row, Column $column) => $row->formatted_balance),
                 BooleanColumn::make(__('bt.active'), 'active')
                     ->yesNo(),

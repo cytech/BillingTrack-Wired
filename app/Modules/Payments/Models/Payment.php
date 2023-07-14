@@ -72,19 +72,20 @@ class Payment extends Model
         return $this->hasOne(PaymentCustom::class);
     }
 
+    // setting withTrashed below 3 relations because if invoice is trashed, we do not delete the payment
     public function document(): BelongsTo
     {
-        return $this->belongsTo(Document::class, 'invoice_id');
+        return $this->belongsTo(Document::class, 'invoice_id')->withTrashed();
     }
 
     public function invoice(): BelongsTo
     {
-        return $this->belongsTo(Invoice::class, 'invoice_id');
+        return $this->belongsTo(Invoice::class, 'invoice_id')->withTrashed();
     }
 
     public function purchaseorder(): BelongsTo
     {
-        return $this->belongsTo(Purchaseorder::class, 'invoice_id');
+        return $this->belongsTo(Purchaseorder::class, 'invoice_id')->withTrashed();
     }
 
     public function mailQueue(): MorphMany
@@ -228,10 +229,11 @@ class Payment extends Model
 
     public function scopeStatusId($query, $statusId = null)
     {
+        //$statusId = 1 for client, 2 for vendor. For Payments lookup
         if ($statusId == 1) {
-            $query->whereHas('Invoice');
-        } else {
-            $query->whereHas('Purchaseorder');
+            return $query->whereHas('Invoice');
+        } elseif ($statusId == 2) {
+            return $query->whereHas('Purchaseorder');
         }
 
         return $query;

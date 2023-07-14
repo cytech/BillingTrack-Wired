@@ -115,6 +115,7 @@ class DocumentObserver
         }
 
         if (!$document->currency_code) {
+            $document->module_type == 'Purchaseorder' ? $document->currency_code = $document->vendor->currency_code:
             $document->currency_code = $document->client->currency_code;
         }
 

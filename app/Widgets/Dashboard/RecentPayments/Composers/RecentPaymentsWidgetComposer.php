@@ -9,6 +9,7 @@ class RecentPaymentsWidgetComposer
     public function compose($view)
     {
         $recentPayments = Payment::with('client')
+            ->whereHas('invoice')
             ->orderBy('paid_at', 'DESC')
             ->take(10)
             ->get();

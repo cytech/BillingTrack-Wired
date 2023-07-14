@@ -92,7 +92,7 @@
                             <p>@lang('bt.payments_collected')</p>
                         </div>
                         <div class="small-box-faicon"><i class="fa fa-heart"></i></div>
-                        <a class="small-box-footer" href="{{ route('payments.index') }}">
+                        <a class="small-box-footer" href="{{ route('payments.index', ['status' => '1']) }}">
                             @lang('bt.view_payments') <i class="fa fa-arrow-circle-right"></i>
                         </a>
                     </div>

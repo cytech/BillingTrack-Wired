@@ -59,7 +59,9 @@
                 @endif
                 <a class="dropdown-item" href="#" id="btn-copy-document"
                    {{--                   params 3 thru ... mount(,,$modulefullname, $module_type, $moduleop, $resource_id = null, $module_id = null, $readonly = null)--}}
-                   onclick="window.livewire.emit('showModal', 'modals.create-module-modal', '{{  addslashes(get_class($document)) }}', '{{$document->module_type}}', 'copy', {{ $document->client->id }}, {{ $document->id }})">
+                   onclick="window.livewire.emit('showModal', 'modals.create-module-modal',
+                   '{{  addslashes(get_class($document)) }}', '{{$document->module_type}}', 'copy',
+                    {{ $document->module_type == 'Purchaseorder' ? $document->vendor->id: $document->client->id }}, {{ $document->id }})">
                     <i class="fa fa-copy"></i> @lang('bt.copy_'.$document->lower_case_baseclass)</a>
                 @if($document->module_type == 'Quote')
                     <a class="dropdown-item" href="javascript:void(0)" id="btn-document-to-workorder"><i

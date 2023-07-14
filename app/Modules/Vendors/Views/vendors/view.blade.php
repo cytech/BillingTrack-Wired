@@ -45,6 +45,8 @@
                             <li class="nav-item "><a class="nav-link" data-bs-toggle="tab"
                                                      href="#tab-purchaseorders">@lang('bt.purchaseorders')</a></li>
                             <li class="nav-item "><a class="nav-link" data-bs-toggle="tab"
+                                                     href="#tab-payments">@lang('bt.payments')</a></li>
+                            <li class="nav-item "><a class="nav-link" data-bs-toggle="tab"
                                                      href="#tab-attachments">@lang('bt.attachments')</a></li>
                             <li class="nav-item "><a class="nav-link" data-bs-toggle="tab"
                                                      href="#tab-notes">@lang('bt.notes')</a></li>
@@ -134,12 +136,15 @@
                             </div>
                             <div id="tab-purchaseorders" class="tab-pane">
                                 <div class="card">
-{{--                                    @include('purchaseorders._table')--}}
-{{--                                    <div class="card-footer"><p class="text-center"><strong><a--}}
-{{--                                                        href="{{ route('purchaseorders.index') }}?vendor={{ $vendor->id }}">@lang('bt.view_all')</a></strong>--}}
-{{--                                        </p></div>--}}
                                     <div class="card-body">
                                         <livewire:data-tables.module-table :module_type="'Purchaseorder'" :clientid="$vendor->id"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="tab-payments" class="tab-pane">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <livewire:data-tables.module-table :module_type="'Payment'" :clientid="$vendor->id" :status="2"/>
                                     </div>
                                 </div>
                             </div>
