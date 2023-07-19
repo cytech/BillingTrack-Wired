@@ -13,6 +13,7 @@ namespace BT\Modules\Documents\Models;
 
 use BT\Modules\Expenses\Models\Expense;
 use BT\Modules\Payments\Models\Payment;
+use BT\Modules\TimeTracking\Models\TimeTrackingTask;
 use BT\Support\Statuses\DocumentStatuses;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -49,6 +50,11 @@ class Invoice extends Document
     public function payments(): HasMany
     {
         return $this->hasMany(Payment::class, 'invoice_id', 'id');
+    }
+
+    public function timetrackingtasks(): HasMany
+    {
+        return $this->hasMany(TimeTrackingTask::class, 'invoice_id', 'id');
     }
 
     // accessors

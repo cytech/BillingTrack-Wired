@@ -105,18 +105,15 @@ return new class extends Migration {
 
         Schema::table('time_tracking_tasks', function (Blueprint $table) {
             $table->dropForeign('time_tracking_tasks_invoice_id_index');
-            $table->foreign('invoice_id', 'time_tracking_tasks_invoice_id_index')
-                ->references('id')->on('documents')
-                ->onDelete('cascade')
-                ->onUpdate('restrict');
+            $table->dropIndex('time_tracking_tasks_invoice_id_index');
         });
 
         Schema::table('payments', function (Blueprint $table) {
             $table->dropForeign('payments_invoice_id_index');
-            $table->foreign('invoice_id', 'payments_invoice_id_index')
-                ->references('id')->on('documents')
-                ->onDelete('cascade')
-                ->onUpdate('restrict');
+        });
+
+        Schema::table('payments', function (Blueprint $table) {
+            $table->integer('invoice_id')->nullable()->default(null)->change();
         });
 
         Schema::table('expenses', function (Blueprint $table) {

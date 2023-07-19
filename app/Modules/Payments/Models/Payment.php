@@ -59,7 +59,7 @@ class Payment extends Model
 
     public function client(): BelongsTo
     {
-        return $this->belongsTo(Client::class);
+        return $this->belongsTo(Client::class, 'client_id');
     }
 
     public function vendor(): BelongsTo
@@ -231,9 +231,9 @@ class Payment extends Model
     {
         //$statusId = 1 for client, 2 for vendor. For Payments lookup
         if ($statusId == 1) {
-            return $query->whereHas('Invoice');
+            return $query->whereHas('Invoice')->orWhere('payments.invoice_id', 0); // 0 = deleted invoice
         } elseif ($statusId == 2) {
-            return $query->whereHas('Purchaseorder');
+            return $query->whereHas('Purchaseorder')->orWhere('payments.invoice_id', -1); // -1 = deleted purchaseorder
         }
 
         return $query;

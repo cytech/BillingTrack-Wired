@@ -27,9 +27,7 @@ class VendorPaymentsReport
         ];
 
         $payments = Payment::select('payments.*')
-            ->whereHas('purchaseorder')
-            ->with(['purchaseorder.vendor', 'paymentMethod'])
-            ->join('documents', 'documents.id', '=', 'payments.invoice_id')
+            ->whereHas('purchaseorder')->orWhere('payments.invoice_id', -1) // 0 = deleted purchaseorder
             ->dateRange($fromDate, $toDate);
 
         if ($companyProfileId)
@@ -42,15 +40,17 @@ class VendorPaymentsReport
         foreach ($payments as $payment)
         {
             $results['payments'][] = [
-                'client_name'    => $payment->purchaseorder->vendor->name,
-                'invoice_number' => $payment->purchaseorder->number,
-                'payment_method' => isset($payment->paymentMethod->name) ? $payment->paymentMethod->name : '',
+                'client_name'    => $payment->vendor->name,
+                'invoice_number' => $payment->purchaseorder->number ?? __('bt.deleted'),
+                'payment_method' => $payment->paymentMethod->name ?? '',
                 'note'           => $payment->note,
                 'date'           => $payment->formatted_paid_at,
-                'amount'         => CurrencyFormatter::format($payment->amount / $payment->purchaseorder->exchange_rate),
+                'amount'         => $payment->purchaseorder ? CurrencyFormatter::format($payment->amount / $payment->purchaseorder->exchange_rate) :
+                                    CurrencyFormatter::format($payment->amount),
             ];
 
-            $results['total'] += $payment->amount / $payment->purchaseorder->exchange_rate;
+            $results['total'] += $payment->purchaseorder ? $payment->amount / $payment->purchaseorder->exchange_rate :
+                                 $payment->amount;
         }
 
         $results['total'] = CurrencyFormatter::format($results['total']);

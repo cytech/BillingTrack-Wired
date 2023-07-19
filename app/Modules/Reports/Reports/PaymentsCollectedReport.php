@@ -27,9 +27,7 @@ class PaymentsCollectedReport
         ];
 
         $payments = Payment::select('payments.*')
-            ->whereHas('invoice')
-            ->with(['invoice.client', 'paymentMethod'])
-            ->join('documents', 'documents.id', '=', 'payments.invoice_id')
+            ->whereHas('invoice')->orWhere('payments.invoice_id', 0) // 0 = deleted invoice
             ->dateRange($fromDate, $toDate);
 
         if ($companyProfileId)
@@ -42,15 +40,17 @@ class PaymentsCollectedReport
         foreach ($payments as $payment)
         {
             $results['payments'][] = [
-                'client_name'    => $payment->invoice->client->name,
-                'invoice_number' => $payment->invoice->number,
-                'payment_method' => isset($payment->paymentMethod->name) ? $payment->paymentMethod->name : '',
+                'client_name'    => $payment->client->name,
+                'invoice_number' => $payment->invoice->number ?? __('bt.deleted'),
+                'payment_method' => $payment->paymentMethod->name ?? '',
                 'note'           => $payment->note,
                 'date'           => $payment->formatted_paid_at,
-                'amount'         => CurrencyFormatter::format($payment->amount / $payment->invoice->exchange_rate),
+                'amount'         => $payment->invoice ? CurrencyFormatter::format($payment->amount / $payment->invoice->exchange_rate) :
+                                    CurrencyFormatter::format($payment->amount ),
             ];
 
-            $results['total'] += $payment->amount / $payment->invoice->exchange_rate;
+            $results['total'] += $payment->invoice ? $payment->amount / $payment->invoice->exchange_rate :
+                                 $payment->amount;
         }
 
         $results['total'] = CurrencyFormatter::format($results['total']);

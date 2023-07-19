@@ -159,19 +159,38 @@ class DocumentObserver
             ($document->isForceDeleting()) ? $note->onlyTrashed()->forceDelete() : $note->delete();
         }
 
-        // set invoice_id ref in quote, workorder and expense to 0, denoting deleted
+        // invoice set invoice_id ref in quote, workorder, payment, expense and timetrackingtask to 0, denoting deleted
         if ($document->module_type == 'Invoice' && $document->isForceDeleting()) {
-            if ($document->workorder) $document->workorder->update(['invoice_id' => 0]);
-            if ($document->quote) $document->quote->update(['invoice_id' => 0]);
-            if ($document->expenses && $document->isForceDeleting()){
+            if ($document->workorder) $document->workorder->updateQuietly(['invoice_id' => 0]);
+            if ($document->quote) $document->quote->updateQuietly(['invoice_id' => 0]);
+            if ($document->payments){
+                foreach ($document->payments as $payment) {
+                    $payment->updateQuietly(['invoice_id' => 0]);
+                }
+            }
+            if ($document->expenses){
                 foreach ($document->expenses as $expense) {
-                    $expense->update(['invoice_id' => 0]);
+                    $expense->updateQuietly(['invoice_id' => 0]);
+                }
+            }
+            if ($document->timetrackingtasks){
+                foreach ($document->timetrackingtasks as $timetrackingtask) {
+                    $timetrackingtask->updateQuietly(['invoice_id' => 0]);
                 }
             }
         }
 
         if ($document->module_type == 'Workorder' && $document->isForceDeleting()) {
-            if($document->quote) $document->quote->update(['workorder_id' => 0]);
+            if($document->quote) $document->quote->updateQuietly(['workorder_id' => 0]);
+        }
+
+        // purchaseorder set invoice_id ref in payment to -1, denoting deleted purchaseorder
+        if ($document->module_type == 'Purchaseorder' && $document->isForceDeleting()) {
+            if ($document->payments){
+                foreach ($document->payments as $payment) {
+                    $payment->updateQuietly(['invoice_id' => -1]);
+                }
+            }
         }
 
         //this gets messy with soft deletes...

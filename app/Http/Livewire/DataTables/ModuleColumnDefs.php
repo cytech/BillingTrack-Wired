@@ -48,13 +48,13 @@ class ModuleColumnDefs
                             $ret = '';
                             if ($row->invoice_id)
                                 if ($row->invoice->trashed()) {
-                                    $ret .= ' <span class="badge bg-danger" title="Trashed">' . __('bt.invoice');
+                                    $ret .= ' <span class="badge bg-danger" title="' . __('bt.trashed') . '">' . __('bt.invoice');
                                 } else {
                                     $ret .= '<a href="' . route('documents.edit', [$row->invoice_id]) . '">' . __('bt.invoice') . '</a>';
                                 }
                             elseif ($row->workorder_id)
                                 if ($row->workorder->trashed()) {
-                                    $ret .= ' <span class="badge bg-danger" title="Trashed">' . __('bt.workorder');
+                                    $ret .= ' <span class="badge bg-danger" title="' . __('bt.trashed') . '">' . __('bt.workorder');
                                 } else {
                                     $ret .= '<a href="' . route('documents.edit', [$row->workorder_id]) . '">' . __('bt.workorder') . '</a>';
                                 }
@@ -178,26 +178,40 @@ class ModuleColumnDefs
                     ->sortable()
                     ->format(function ($value, $row, Column $column) {
                         $ret = '';
-                        if ($row->invoice_id)
+                        if (!is_null($row->invoice_id))
                             if ($row->invoice) {
                                 if ($row->invoice->trashed()) {
-                                    $ret .= ' <span class="badge bg-danger" title="Trashed">' . __('bt.invoice');
+                                    $ret .= ' <span class="badge bg-danger" title="' . __('bt.trashed') . '">' . __('bt.invoice');
                                 } else {
                                     $ret .= '<a href="' . route('documents.edit', [$row->invoice_id]) . '">' . $value . '</a>';
                                 }
                             } elseif ($row->purchaseorder) {
                                 if ($row->purchaseorder->trashed()) {
-                                    $ret .= ' <span class="badge bg-danger" title="Trashed">' . __('bt.purchaseorder');
+                                    $ret .= ' <span class="badge bg-danger" title="' . __('bt.trashed') . '">' . __('bt.purchaseorder');
                                 } else {
                                     $ret .= '<a href="' . route('documents.edit', [$row->invoice_id]) . '">' . $value . '</a>';
                                 }
+                            } elseif($row->invoice_id == 0){
+                                $ret .= ' <span class="badge bg-danger" title="' . __('bt.deleted') . '">' . __('bt.invoice');
+                            } elseif($row->invoice_id == -1){
+                                $ret .= ' <span class="badge bg-danger" title="' . __('bt.deleted') . '">' . __('bt.purchaseorder');
                             }
                         return $ret;
                     })
                     ->html(),
                 Column::make(__('bt.document_date'), 'document.document_date')
                     ->sortable()
-                    ->format(fn($value, $row, Column $column) => $row->document->formatted_document_date),
+                    ->format(function ($value, $row, Column $column) {
+                        $ret = '';
+                        if ($row->invoice_id == 0){
+                            $ret .= ' <span class="badge bg-danger" title="' . __('bt.deleted') . '">' . __('bt.invoice');
+                        } elseif ($row->invoice_id == -1){
+                            $ret .= ' <span class="badge bg-danger" title="' . __('bt.deleted') . '">' . __('bt.purchaseorder');
+                        } elseif (!is_null($row->invoice_id)) {
+                            $ret = $row->document->formatted_document_date;
+                        }
+                        return $ret;
+                })->html(),
                 $col_client_vendor,
                 Column::make(__('bt.summary'), 'invoice.summary')
                     ->sortable(),
@@ -235,7 +249,7 @@ class ModuleColumnDefs
                         if ($row->is_billable)
                             if ($row->has_been_billed) {
                                 if ($row->invoice_id == 0) {
-                                    $ret .= '<br><span class="badge bg-danger" title="Invoice Deleted">' . __('bt.billed') . '</span></a>';
+                                    $ret .= '<br><span class="badge bg-danger" title="' . __('bt.deleted') . '">' . __('bt.billed') . '</span></a>';
                                 } else {
                                     $ret .= '<br><a href="' . route('documents.edit', [$row->invoice_id]) . '"><span class="badge bg-success">' . __('bt.billed') . '</span></a>';
                                 }
