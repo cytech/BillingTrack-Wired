@@ -10,6 +10,10 @@ class SizeSeeder extends Seeder
 {
     public function run()
     {
+        if (Size::exists()){
+            return;
+        }
+
         Eloquent::unguard();
 
         $sizes = [

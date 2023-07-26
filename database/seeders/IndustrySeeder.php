@@ -10,6 +10,10 @@ class IndustrySeeder extends Seeder
 {
     public function run()
     {
+        if (Industry::exists()){
+            return;
+        }
+
         Eloquent::unguard();
 
         $industries = [

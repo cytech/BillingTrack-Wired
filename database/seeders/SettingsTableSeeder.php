@@ -2,7 +2,9 @@
 
 namespace Database\Seeders;
 
+use BT\Modules\Scheduler\Models\Category;
 use BT\Modules\Settings\Models\Setting;
+use Eloquent;
 use Illuminate\Database\Seeder;
 use DB;
 
@@ -15,7 +17,7 @@ class SettingsTableSeeder extends Seeder
      */
     public function run()
     {
-        if (count(Setting::all())){
+        if (Setting::exists()){
             return;
         }
 
@@ -113,17 +115,33 @@ class SettingsTableSeeder extends Seeder
         //new core
         Setting::saveByKey('pdfDisposition', 'inline');
         //insert scheduler categories settings
-        DB::table('schedule_categories')->insert(['id' => 1,'name' => 'Worker Schedule', 'text_color' => '#000000', 'bg_color' => '#aaffaa']);
-        DB::table('schedule_categories')->insert(['id' => 2,'name' => 'General Appointment', 'text_color' => '#000000', 'bg_color' => '#5656ff']);
-        DB::table('schedule_categories')->insert(['id' => 3,'name' => 'Employee Appointment', 'text_color' => '#000000', 'bg_color' => '#d4aaff']);
-        DB::table('schedule_categories')->insert(['id' => 4, 'name' => 'Quote', 'text_color' => '#ffffff', 'bg_color' => '#716cb1']);
-        DB::table('schedule_categories')->insert(['id' => 5, 'name' => 'Workorder', 'text_color' => '#000000', 'bg_color' => '#aaffaa']);
-        DB::table('schedule_categories')->insert(['id' => 6, 'name' => 'Invoice', 'text_color' => '#ffffff', 'bg_color' => '#377eb8']);
-        DB::table('schedule_categories')->insert(['id' => 7, 'name' => 'Payment', 'text_color' => '#ffffff', 'bg_color' => '#5fa213']);
-        DB::table('schedule_categories')->insert(['id' => 8, 'name' => 'Expense', 'text_color' => '#ffffff', 'bg_color' => '#d95d02']);
-        DB::table('schedule_categories')->insert(['id' => 9, 'name' => 'Project', 'text_color' => '#ffffff', 'bg_color' => '#676767']);
-        DB::table('schedule_categories')->insert(['id' => 10, 'name' => 'Task', 'text_color' => '#ffffff', 'bg_color' => '#a87821']);
+//        DB::table('schedule_categories')->insert(['id' => 1,'name' => 'Worker Schedule', 'text_color' => '#000000', 'bg_color' => '#aaffaa']);
+//        DB::table('schedule_categories')->insert(['id' => 2,'name' => 'General Appointment', 'text_color' => '#000000', 'bg_color' => '#5656ff']);
+//        DB::table('schedule_categories')->insert(['id' => 3,'name' => 'Employee Appointment', 'text_color' => '#000000', 'bg_color' => '#d4aaff']);
+//        DB::table('schedule_categories')->insert(['id' => 4, 'name' => 'Quote', 'text_color' => '#ffffff', 'bg_color' => '#716cb1']);
+//        DB::table('schedule_categories')->insert(['id' => 5, 'name' => 'Workorder', 'text_color' => '#000000', 'bg_color' => '#aaffaa']);
+//        DB::table('schedule_categories')->insert(['id' => 6, 'name' => 'Invoice', 'text_color' => '#ffffff', 'bg_color' => '#377eb8']);
+//        DB::table('schedule_categories')->insert(['id' => 7, 'name' => 'Payment', 'text_color' => '#ffffff', 'bg_color' => '#5fa213']);
+//        DB::table('schedule_categories')->insert(['id' => 8, 'name' => 'Expense', 'text_color' => '#ffffff', 'bg_color' => '#d95d02']);
+//        DB::table('schedule_categories')->insert(['id' => 9, 'name' => 'Project', 'text_color' => '#ffffff', 'bg_color' => '#676767']);
+//        DB::table('schedule_categories')->insert(['id' => 10, 'name' => 'Task', 'text_color' => '#ffffff', 'bg_color' => '#a87821']);
 
+        if (Category::exists()){
+            return;
+        }
+        Eloquent::unguard();
 
+        Category::create(['id' => 1,'name' => 'Worker Schedule', 'text_color' => '#000000', 'bg_color' => '#aaffaa']);
+        Category::create(['id' => 2,'name' => 'General Appointment', 'text_color' => '#000000', 'bg_color' => '#5656ff']);
+        Category::create(['id' => 3,'name' => 'Employee Appointment', 'text_color' => '#000000', 'bg_color' => '#d4aaff']);
+        Category::create(['id' => 4, 'name' => 'Quote', 'text_color' => '#ffffff', 'bg_color' => '#716cb1']);
+        Category::create(['id' => 5, 'name' => 'Workorder', 'text_color' => '#000000', 'bg_color' => '#aaffaa']);
+        Category::create(['id' => 6, 'name' => 'Invoice', 'text_color' => '#ffffff', 'bg_color' => '#377eb8']);
+        Category::create(['id' => 7, 'name' => 'Payment', 'text_color' => '#ffffff', 'bg_color' => '#5fa213']);
+        Category::create(['id' => 8, 'name' => 'Expense', 'text_color' => '#ffffff', 'bg_color' => '#d95d02']);
+        Category::create(['id' => 9, 'name' => 'Project', 'text_color' => '#ffffff', 'bg_color' => '#676767']);
+        Category::create(['id' => 10, 'name' => 'Task', 'text_color' => '#ffffff', 'bg_color' => '#a87821']);
+
+        Eloquent::reguard();
     }
 }

@@ -10,6 +10,10 @@ class TitleSeeder extends Seeder
 {
     public function run()
     {
+        if (Title::exists()){
+            return;
+        }
+
         Eloquent::unguard();
 
         $titles = [

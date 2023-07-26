@@ -10,6 +10,10 @@ class EmployeeTypeSeeder extends Seeder
 {
     public function run()
     {
+        if (EmployeeType::exists()){
+            return;
+        }
+
         Eloquent::unguard();
 
         $types = [

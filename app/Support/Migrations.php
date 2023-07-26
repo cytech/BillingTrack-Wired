@@ -2,6 +2,7 @@
 
 namespace BT\Support;
 
+use Artisan;
 use Illuminate\Support\Facades\File;
 
 class Migrations
@@ -19,14 +20,16 @@ class Migrations
 
         $this->migrator = app('migrator');
 
-        try
-        {
-            $this->migrator->run($path);
+        try {
+            // if fresh install, run migrate to use schema instead of old migrations
+            if (!$migrationRepository->getRan()) {
+                Artisan::call('migrate');
+            } else {
+                $this->migrator->run($path);
+            }
 
             return true;
-        }
-        catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             $this->exception = $e;
 
             return false;

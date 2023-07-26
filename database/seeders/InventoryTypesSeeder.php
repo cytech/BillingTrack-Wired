@@ -10,6 +10,10 @@ class InventoryTypesSeeder extends Seeder
 {
     public function run()
     {
+        if (InventoryType::exists()){
+            return;
+        }
+
         Eloquent::unguard();
 
         $inventorytypes = [

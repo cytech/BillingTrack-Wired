@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Eloquent;
 use Illuminate\Database\Seeder;
 use BT\Modules\PaymentMethods\Models\PaymentMethod;
 use DB;
@@ -16,12 +17,23 @@ class PaymentMethodsTableSeeder extends Seeder
      */
     public function run()
     {
-        if (count(PaymentMethod::all())){ return; }
+//        if (count(PaymentMethod::all())){ return; }
+        if (PaymentMethod::exists()){
+            return;
+        }
 
-        DB::table('payment_methods')->insert(['id' => 1,'name' => 'Cash']);
-        DB::table('payment_methods')->insert(['id' => 2,'name' => 'Check']);
-        DB::table('payment_methods')->insert(['id' => 3,'name' => 'Credit Card']);
-        DB::table('payment_methods')->insert(['id' => 4,'name' => 'Online Payment']);
+        Eloquent::unguard();
 
+//        DB::table('payment_methods')->insert(['id' => 1,'name' => 'Cash']);
+//        DB::table('payment_methods')->insert(['id' => 2,'name' => 'Check']);
+//        DB::table('payment_methods')->insert(['id' => 3,'name' => 'Credit Card']);
+//        DB::table('payment_methods')->insert(['id' => 4,'name' => 'Online Payment']);
+
+        PaymentMethod::create(['id' => 1,'name' => 'Cash']);
+        PaymentMethod::create(['id' => 2,'name' => 'Check']);
+        PaymentMethod::create(['id' => 3,'name' => 'Credit Card']);
+        PaymentMethod::create(['id' => 4,'name' => 'Online Payment']);
+
+        Eloquent::reguard();
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Eloquent;
 use Illuminate\Database\Seeder;
 use phpDocumentor\Reflection\Types\Static_;
 use Spatie\Permission\Models\Permission;
@@ -41,6 +42,11 @@ class PermissionsTableSeeder extends Seeder
      */
     public function run()
     {
+        if (Permission::exists()){
+            return;
+        }
+
+        Eloquent::unguard();
 
         $perms = [
             ['name' => 'view_roles', 'description' => 'View Roles', 'group' => 'ACL.Roles', 'guard_name' => 'web'],
@@ -78,5 +84,6 @@ class PermissionsTableSeeder extends Seeder
             $permission->save();
         }
 
+        Eloquent::reguard();
     }
 }
