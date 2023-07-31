@@ -108,6 +108,24 @@ class TrashColumnDefs
                 Column::make('Action')
                     ->label(fn($row, Column $column) => view('utilities._actions')->withModel($row)),
             ];
+        } elseif (!$statuses && $module_type == 'Vendor') { //Vendor column defs
+            $default_columns = [
+                Column::make(__('bt.vendor'), 'name')
+                    ->sortable(),
+                Column::make(trans('bt.email_address'), 'email')
+                    ->sortable(),
+                Column::make(trans('bt.phone_number'), 'phone')
+                    ->sortable(),
+                Column::make(__('bt.balance'))
+                    ->label(fn($row, Column $column) => $row->formatted_balance),
+                BooleanColumn::make(__('bt.active'), 'active')
+                    ->yesNo(),
+                Column::make(trans('bt.created'), 'created_at')
+                    ->sortable()
+                    ->format(fn($value, $row, Column $column) => DateFormatter::format($row->created_at)),
+                Column::make('Action')
+                    ->label(fn($row, Column $column) => view('utilities._actions')->withModel($row)),
+            ];
         } elseif ($module_type == 'Recurringinvoice') { //Recurringinvoice column defs
             $frequencies = Frequency::lists();
             $default_columns = [
@@ -137,16 +155,68 @@ class TrashColumnDefs
                 Column::make(__('bt.payment_date'), 'paid_at')
                     ->sortable()
                     ->format(fn($value, $row, Column $column) => DateFormatter::format($row->paid_at)),
-                Column::make(trans('bt.invoice'), 'invoice.number')
+                Column::make(trans('bt.document'), 'invoice.number')
                     ->sortable()
-                    ->format(fn($value, $row, Column $column) => '<a href="/documents/' . $row->invoice_id . '/edit">' . $value . '</a>')
+//                    ->format(fn($value, $row, Column $column) => '<a href="/documents/' . $row->invoice_id . '/edit">' . $value . '</a>')
+                    ->format(function($value, $row, Column $column){
+                        $ret = '';
+                        if (!is_null($row->invoice_id))
+                            if ($row->invoice) {
+                                if ($row->invoice->trashed()) {
+                                    $ret .= ' <span class="badge bg-danger" title="' . __('bt.trashed') . '">' . __('bt.invoice');
+                                } else {
+                                    $ret .= '<a href="' . route('documents.edit', [$row->invoice_id]) . '">' . $value . '</a>';
+                                }
+                            } elseif ($row->purchaseorder) {
+                                if ($row->purchaseorder->trashed()) {
+                                    $ret .= ' <span class="badge bg-danger" title="' . __('bt.trashed') . '">' . __('bt.purchaseorder');
+                                } else {
+                                    $ret .= '<a href="' . route('documents.edit', [$row->invoice_id]) . '">' . $value . '</a>';
+                                }
+                            } elseif ($row->invoice_id == 0) {
+                                $ret .= ' <span class="badge bg-danger" title="' . __('bt.deleted') . '">' . __('bt.invoice');
+                            } elseif ($row->invoice_id == -1) {
+                                $ret .= ' <span class="badge bg-danger" title="' . __('bt.deleted') . '">' . __('bt.purchaseorder');
+                            }
+                        return $ret;
+                })
                     ->html(),
-                Column::make(trans('bt.invoice_date'), 'invoice.document_date')
+                Column::make(trans('bt.document_date'), 'invoice.document_date')
                     ->sortable()
                     ->format(fn($value, $row, Column $column) => DateFormatter::format($row->paid_at)),
                 Column::make(__('bt.client'), 'client.name')
                     ->sortable()
-                    ->format(fn($value, $row, Column $column) => '<a href="/clients/' . $row->client->id . '">' . $value . '</a>')
+//                    ->format(fn($value, $row, Column $column) => '<a href="/clients/' . $row->client->id . '">' . $value . '</a>')
+                    ->format(function ($value, $row, Column $column) {
+                        $ret = '';
+                        if (!$row->purchaseorder && $row->client) {
+                            if ($row->client->trashed()) {
+                                $ret .= ' <span class="badge bg-danger" title="' . __('bt.trashed') . '">' . __('bt.client');
+                            } else {
+                                $ret .= '<a href="/clients/' . $row->client->id . '">' . $row->client->name . '</a>';
+                            }
+                        } elseif (!$row->purchaseorder && $row->client_id == 0) {
+                            $ret .= ' <span class="badge bg-danger" title="' . __('bt.deleted') . '">' . __('bt.client');
+                        }
+                        return $ret;
+                    })
+                    ->html(),
+                Column::make(__('bt.vendor'), 'vendor.name')
+                    ->sortable()
+//                    ->format(fn($value, $row, Column $column) => '<a href="/clients/' . $row->client->id . '">' . $value . '</a>')
+                    ->format(function ($value, $row, Column $column) {
+                        $ret = '';
+                        if ($row->purchaseorder && $row->vendor) {
+                            if ($row->vendor->trashed()) {
+                                $ret .= ' <span class="badge bg-danger" title="' . __('bt.trashed') . '">' . __('bt.vendor');
+                            } else {
+                                $ret .= '<a href="/vendors/' . $row->vendor->id . '">' . $row->vendor->name . '</a>';
+                            }
+                        } elseif ($row->purchaseorder && $row->client_id == -1) {
+                            $ret .= ' <span class="badge bg-danger" title="' . __('bt.deleted') . '">' . __('bt.vendor');
+                        }
+                        return $ret;
+                    })
                     ->html(),
                 Column::make(trans('bt.summary'), 'invoice.summary')
                     ->sortable(),

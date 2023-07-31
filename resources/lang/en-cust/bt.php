@@ -914,7 +914,7 @@ return [
     'trash'                                    => 'Trash',
     'trash_before_date'                        => 'Trash Before Date',
     'trash_client_warning'                     => 'Are you sure you want to trash this customer?',
-    'trash_client_warning_msg'                 => 'If you trash this customer you will also trash any contacts, custom fields, invoices, recurring invoices, quotes, payments and projects related to this customer.',
+    'trash_client_warning_msg'                 => 'If you trash this customer you will also trash any contacts, custom fields, invoices, recurring invoices, quotes, workorders, payments and projects related to this customer.',
     'trash_deletesingle_warning'               => 'Are you sure you want to permanently delete this Trash?',
     'trash_invoice_warning_assoc_msg'          => 'This invoice is converted from a quote or workorder.<br>If trashed the link will be broken unless restored.<br>Also note that trashing an invoice will NOT update Product Table Quantities.<br>Consider setting the invoice status to canceled instead.',
     'trash_invoice_warning_msg'                => 'Note that trashing an invoice will NOT update Product Table Quantities.<br>Consider setting the invoice status to canceled instead.',

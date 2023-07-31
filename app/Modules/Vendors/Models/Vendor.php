@@ -108,7 +108,7 @@ class Vendor extends Model
 
     public function payments(): HasMany
     {
-        return $this->hasMany(Payment::class);
+        return $this->hasMany(Payment::class, 'client_id');
     }
 
     public function notes(): MorphMany

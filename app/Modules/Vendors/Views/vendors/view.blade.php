@@ -6,6 +6,15 @@
             addEvent(document, 'click', '#btn-add-contact', (e) => {
                 loadModal('{{ route('vendors.contacts.create', [$vendor->id]) }}')
             });
+
+            addEvent(document, 'click', "#vendorview-tabs a", (e) => {
+                const tabId = e.target.getAttribute('href').slice(1)
+                axios.post("{{ route('vendors.saveTab') }}", {vendorviewTabId: tabId});
+            })
+
+            let stid = '{{ session('vendorviewTabId') }}' ? '{{ session('vendorviewTabId') }}' : 'tab-details'
+            var triggerEl = new bootstrap.Tab(document.querySelector('#vendorview-tabs a[href="#' + stid + '"]'))
+            triggerEl.show() // Select tab by name
         })
     </script>
 @stop
@@ -16,19 +25,20 @@
             <div class="col-sm-12 align-items-center">
                 <div class="fs-3 float-start">{{__('bt.view_vendor') . ' - ' . $vendor->name}}</div>
                 <div class="btn-group float-end">
-                    <a class="btn btn-secondary rounded me-1" href="#" id="btn-create-purchaseorder"
+                    <a class="btn btn-primary rounded me-1" href="#" id="btn-create-purchaseorder"
                        {{--                   params 3 thru ... mount(,,$modulefullname, $moduleop, $resource_id = null, $module_id = null, $readonly = null)--}}
                        onclick="window.livewire.emit('showModal', 'modals.create-module-modal',
                                '{{ addslashes(get_class($vendor->purchaseorders()->getRelated())) }}', 'Purchaseorder', 'create', {{ $vendor->id }}, null, true)">
-                        <i class="far fa-file-alt"></i> @lang('bt.create_purchaseorder')</a>
-                    <a href="{{ $returnUrl }}" class="btn btn-secondary rounded me-1"><i
+                        <i class="far fa-plus"></i> @lang('bt.create_purchaseorder')</a>
+                    <a href="{{ $returnUrl }}" class="btn btn-green rounded me-1"><i
                                 class="fa fa-backward"></i> @lang('bt.back')</a>
                     <a href="{{ route('vendors.edit', [$vendor->id]) }}"
-                       class="btn btn-secondary rounded me-1">@lang('bt.edit')</a>
-{{--                    <a class="btn btn-secondary rounded me-1" href="#"--}}
-{{--                       onclick="swalConfirm('@lang('bt.trash_vendor_warning')', '@lang('bt.trash_vendor_warning_msg')', '{{ route('vendors.delete', [$vendor->id]) }}');"><i--}}
-{{--                                class="fa fa-trash"></i> @lang('bt.trash')</a>--}}
+                       class="btn btn-warning rounded me-1"><i class="fa fa-edit"></i>@lang('bt.edit')</a>
+                    <a class="btn btn-danger rounded me-1" href="#"
+                       onclick="swalConfirm('@lang('bt.trash_vendor_warning')', '@lang('bt.trash_vendor_warning_msg')', '{{ route('vendors.delete', [$vendor->id]) }}');"><i
+                                class="fa fa-trash"></i> @lang('bt.trash')</a>
                 </div>
+
                 <div class="clearfix"></div>
             </div>
         </div>
@@ -39,7 +49,7 @@
             <div class="col-12">
                 <div class="card m-2">
                     <div class="card-header d-flex p-0">
-                        <ul class="nav nav-pills p-2">
+                        <ul class="nav nav-pills p-2" id="vendorview-tabs">
                             <li class="nav-item "><a class="nav-link active show" data-bs-toggle="tab"
                                                      href="#tab-details">@lang('bt.details')</a></li>
                             <li class="nav-item "><a class="nav-link" data-bs-toggle="tab"

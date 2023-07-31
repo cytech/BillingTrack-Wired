@@ -161,13 +161,37 @@ class ModuleColumnDefs
                 $col_client_vendor = Column::make(__('bt.client_vendor'), 'vendor.name')
                     ->searchable()
                     ->sortable()
-                    ->format(fn($value, $row, Column $column) => '<a href="/vendors/' . $row->vendor->id . '">' . $row->vendor->name . '</a>')
+                    ->format(function ($value, $row, Column $column) {
+                        $ret = '';
+                        if ($row->vendor) {
+                            if ($row->vendor->trashed()) {
+                                $ret .= ' <span class="badge bg-danger" title="' . __('bt.trashed') . '">' . __('bt.vendor');
+                            } else {
+                                $ret .= '<a href="/vendors/' . $row->vendor->id . '">' . $row->vendor->name . '</a>';
+                            }
+                        } elseif ($row->client_id == -1) {
+                            $ret .= ' <span class="badge bg-danger" title="' . __('bt.deleted') . '">' . __('bt.vendor');
+                        }
+                        return $ret;
+                    })
                     ->html();
             } else {
                 $col_client_vendor = Column::make(__('bt.client_vendor'), 'client.name')
                     ->searchable()
                     ->sortable()
-                    ->format(fn($value, $row, Column $column) => '<a href="/clients/' . $row->client->id . '">' . $row->client->name . '</a>')
+                    ->format(function ($value, $row, Column $column) {
+                        $ret = '';
+                        if ($row->client) {
+                            if ($row->client->trashed()) {
+                                $ret .= ' <span class="badge bg-danger" title="' . __('bt.trashed') . '">' . __('bt.client');
+                            } else {
+                                $ret .= '<a href="/clients/' . $row->client->id . '">' . $row->client->name . '</a>';
+                            }
+                        } elseif ($row->client_id == 0) {
+                            $ret .= ' <span class="badge bg-danger" title="' . __('bt.deleted') . '">' . __('bt.client');
+                        }
+                        return $ret;
+                    })
                     ->html();
             }
             $default_columns = [
@@ -191,9 +215,9 @@ class ModuleColumnDefs
                                 } else {
                                     $ret .= '<a href="' . route('documents.edit', [$row->invoice_id]) . '">' . $value . '</a>';
                                 }
-                            } elseif($row->invoice_id == 0){
+                            } elseif ($row->invoice_id == 0) {
                                 $ret .= ' <span class="badge bg-danger" title="' . __('bt.deleted') . '">' . __('bt.invoice');
-                            } elseif($row->invoice_id == -1){
+                            } elseif ($row->invoice_id == -1) {
                                 $ret .= ' <span class="badge bg-danger" title="' . __('bt.deleted') . '">' . __('bt.purchaseorder');
                             }
                         return $ret;
@@ -203,15 +227,15 @@ class ModuleColumnDefs
                     ->sortable()
                     ->format(function ($value, $row, Column $column) {
                         $ret = '';
-                        if ($row->invoice_id == 0){
+                        if ($row->invoice_id == 0) {
                             $ret .= ' <span class="badge bg-danger" title="' . __('bt.deleted') . '">' . __('bt.invoice');
-                        } elseif ($row->invoice_id == -1){
+                        } elseif ($row->invoice_id == -1) {
                             $ret .= ' <span class="badge bg-danger" title="' . __('bt.deleted') . '">' . __('bt.purchaseorder');
                         } elseif (!is_null($row->invoice_id)) {
                             $ret = $row->document->formatted_document_date;
                         }
                         return $ret;
-                })->html(),
+                    })->html(),
                 $col_client_vendor,
                 Column::make(__('bt.summary'), 'invoice.summary')
                     ->sortable(),

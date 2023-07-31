@@ -641,7 +641,7 @@ DROP TABLE IF EXISTS `payments`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `payments` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `client_id` int unsigned NOT NULL DEFAULT '0',
+  `client_id` int NOT NULL DEFAULT '0',
   `invoice_id` int DEFAULT NULL,
   `payment_method_id` int unsigned DEFAULT NULL,
   `paid_at` date NOT NULL,

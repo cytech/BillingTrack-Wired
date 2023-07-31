@@ -56,6 +56,12 @@ class VendorObserver
             ($vendor->isForceDeleting()) ? $attachment->onlyTrashed()->forceDelete() : $attachment->delete();
         }
 
+        if ($vendor->isForceDeleting()){
+            foreach ($vendor->payments as $payment){
+                $payment->updateQuietly(['client_id' => -1]);
+            }
+        }
+
     }
 
     /**

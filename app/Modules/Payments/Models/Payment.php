@@ -59,12 +59,12 @@ class Payment extends Model
 
     public function client(): BelongsTo
     {
-        return $this->belongsTo(Client::class, 'client_id');
+        return $this->belongsTo(Client::class, 'client_id')->withTrashed();
     }
 
     public function vendor(): BelongsTo
     {
-        return $this->belongsTo(Vendor::class, 'client_id');
+        return $this->belongsTo(Vendor::class, 'client_id')->withTrashed();
     }
 
     public function custom(): HasOne

@@ -27,6 +27,8 @@
                                                     href="#tab-recurring_invoices">@lang('bt.recurringinvoices')</a>
                             </li>
                             <li class="nav-item"><a class="nav-link" data-bs-toggle="tab"
+                                                    href="#tab-vendors">@lang('bt.vendors')</a></li>
+                            <li class="nav-item"><a class="nav-link" data-bs-toggle="tab"
                                                     href="#tab-purchaseorders">@lang('bt.purchaseorders')</a></li>
                             <li class="nav-item"><a class="nav-link" data-bs-toggle="tab"
                                                     href="#tab-payments">@lang('bt.payments')</a></li>
@@ -53,6 +55,9 @@
                         </div>
                         <div id="tab-recurring_invoices" class="tab-pane">
                             <livewire:data-tables.trash-table :module_type="'Recurringinvoice'"/>
+                        </div>
+                        <div id="tab-vendors" class="tab-pane">
+                            <livewire:data-tables.trash-table :module_type="'Vendor'"/>
                         </div>
                         <div id="tab-purchaseorders" class="tab-pane">
                             <livewire:data-tables.trash-table :module_type="'Purchaseorder'"/>

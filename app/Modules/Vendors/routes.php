@@ -25,6 +25,7 @@ Route::middleware(['web', 'auth.admin'])
         Route::name('ajax.modalEdit')->post('ajax/modal_edit', [VendorController::class, 'ajaxModalEdit']);
         Route::name('ajax.modalUpdate')->post('ajax/modal_update/{id}', [VendorController::class, 'ajaxModalUpdate']);
         Route::name('bulk.status')->post('bulk/status', [VendorController::class, 'bulkStatus']);
+        Route::name('saveTab')->post('save_tab', [VendorController::class, 'saveTab']);
 
 
         Route::prefix('{vendorId}/contacts')->group(function () {

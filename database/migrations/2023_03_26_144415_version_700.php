@@ -116,6 +116,10 @@ return new class extends Migration {
             $table->integer('invoice_id')->nullable()->default(null)->change();
         });
 
+        Schema::table('payments', function (Blueprint $table) {
+            $table->integer('client_id')->default(0)->change();
+        });
+
         Schema::table('expenses', function (Blueprint $table) {
             $table->dropForeign('fk_expenses_invoices1_idx');
             $table->dropForeign('expenses_category_id_index');

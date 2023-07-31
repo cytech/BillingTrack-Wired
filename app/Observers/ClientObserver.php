@@ -51,6 +51,12 @@ class ClientObserver
         {
             ($client->isForceDeleting()) ? $expense->onlyTrashed()->forceDelete() : $expense->delete();
         }
+
+        if ($client->isForceDeleting()){
+            foreach ($client->payments as $payment){
+                $payment->updateQuietly(['client_id' => 0]);
+            }
+        }
     }
     /**
      * Listen to the Client saving event.

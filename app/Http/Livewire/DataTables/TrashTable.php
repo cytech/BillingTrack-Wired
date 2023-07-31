@@ -113,6 +113,8 @@ class TrashTable extends DataTableComponent
             return $this->module_fullname::has('vendor')->with('vendor')->onlyTrashed()->select('documents.*');
         } elseif ($this->module_type == 'Client') {
             return $this->module_fullname::getSelect()->onlyTrashed();
+        } elseif ($this->module_type == 'Vendor'){
+            return $this->module_fullname::getSelect()->onlyTrashed();
         } elseif ($this->module_type == 'Payment'){
             return $this->module_fullname::has('client')->with('client')->select('payments.*')->onlyTrashed();
         } elseif ($this->module_type == 'Expense') {

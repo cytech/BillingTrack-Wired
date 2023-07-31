@@ -177,4 +177,9 @@ class VendorController extends Controller
 
     }
 
+    public function saveTab()
+    {
+        session(['vendorviewTabId' => request('vendorviewTabId')]);
+    }
+
 }

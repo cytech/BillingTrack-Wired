@@ -47,7 +47,7 @@ class Client extends Model
     use SoftDeletes;
     use SoftCascadeTrait;
 
-    protected $softCascade = ['contacts', 'custom', 'invoices', 'workorders', 'quotes', 'projects', 'recurringInvoices',
+    protected $softCascade = ['contacts', 'custom', 'invoices', 'workorders', 'quotes', 'projects', 'recurringinvoices',
         'merchant', 'attachments', 'notes'];
 
     protected $casts = ['deleted_at' => 'datetime'];
@@ -145,7 +145,7 @@ class Client extends Model
 
     public function payments(): HasMany
     {
-        return $this->hasMany(Payment::class);
+        return $this->hasMany(Payment::class, 'client_id');
     }
 
     public function merchant(): HasOne
