@@ -129,6 +129,7 @@
                                     </button>
                                 </div>
                             </div>
+                            {{ html()->form()->close() }}
                         @else
                             <p>Database deleteprior not available in demo.</p>
                         @endif

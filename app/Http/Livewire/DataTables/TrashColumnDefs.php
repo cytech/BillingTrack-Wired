@@ -90,6 +90,19 @@ class TrashColumnDefs
                 Column::make('Action')
                     ->label(fn($row, Column $column) => view('utilities._actions')->withModel($row)),
             ];
+        } elseif (!$statuses && $module_type == 'Orphaned') { //Orphan column defs
+            $default_columns = [
+                Column::make(trans('bt.' . lcfirst($module_type)), 'number'),
+                Column::make(trans('bt.date'), 'document_date')
+                    ->sortable()
+                    ->format(fn($value, $row, Column $column) => DateFormatter::format($row->{'document_date'})),
+                Column::make(trans('bt.summary'), 'summary')
+                    ->sortable(),
+                Column::make(__('bt.total'), 'amount.total')
+                    ->format(fn($value, $row, Column $column) => CurrencyFormatter::format($value, $row->currency)),
+//                Column::make('Action')
+//                    ->label(fn($row, Column $column) => view('utilities._actions')->withModel($row)),
+            ];
         } elseif (!$statuses && $module_type == 'Client') { //Client column defs
             $default_columns = [
                 Column::make(__('bt.client'), 'name')

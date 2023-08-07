@@ -34,6 +34,9 @@ class TrashTable extends DataTableComponent
 
             return [];
         });
+        if ($this->module_type == 'Orphaned'){
+            $this->setBulkActionsDisabled();
+        }
     }
 
     protected $listeners = ['reset_bulk_select' => 'resetBulkSelect'];  //emit from _js_global swal:bulkConfirm
@@ -44,6 +47,8 @@ class TrashTable extends DataTableComponent
             $this->module_fullname = 'BT\\Modules\\TimeTracking\\Models\\TimeTrackingProject';
         } elseif ($this->module_type == 'Schedule') {
             $this->module_fullname = 'BT\\Modules\\Scheduler\\Models\\Schedule';
+        } elseif ($this->module_type == 'Orphaned') {
+            $this->module_fullname = 'BT\\Modules\\Documents\\Models\\Document';
         } elseif (in_array($this->module_type, ['Invoice', 'Quote', 'Workorder', 'Purchaseorder', 'Recurringinvoice'])) {
             $this->module_fullname = 'BT\\Modules\\Documents\\Models\\' . $this->module_type;
         } else {
@@ -125,6 +130,10 @@ class TrashTable extends DataTableComponent
             return $this->module_fullname::with(['latestOccurrence' => function ($q) {
                 $q->onlyTrashed();
             }, 'category'])->select('schedule.*')->onlyTrashed();
+        } elseif ($this->module_type == 'Orphaned'){
+            return $this->module_fullname::whereDoesntHave('trashedvendor')->where('document_type', 'BT\Modules\Documents\Models\Purchaseorder')
+                ->orWhereDoesntHave('trashedclient')->where('document_type', '!=', 'BT\Modules\Documents\Models\Purchaseorder')
+                ->select('documents.*')->onlyTrashed();
         } else {
             return $this->module_fullname::has('client')->with('client')->onlyTrashed()->select('documents.*');
         }

@@ -622,6 +622,8 @@ return [
     'order'                                    => 'Order',
     'order_not_approved'                       => 'Order Not Approved',
     'order_response_error'                     => 'Response does not contain order id',
+    'orphaned'                                 => 'Orphaned',
+    'orphaned_docs'                            => 'Orphaned Documents (trashed documents with no client/vendor)',
     'orphan_check'                             => 'Orphan Check',
     'orphan_list'                              => 'List of employees who are inactive or not scheduleable and are assigned to future workorders',
     'other'                                    => 'Other',

@@ -38,6 +38,8 @@
                                                     href="#tab-projects">@lang('bt.projects')</a></li>
                             <li class="nav-item"><a class="nav-link" data-bs-toggle="tab"
                                                     href="#tab-schedule">@lang('bt.scheduler')</a></li>
+                            <li class="nav-item"><a class="nav-link" data-bs-toggle="tab"
+                                                    href="#tab-orphaned">@lang('bt.orphaned')</a></li>
                         </ul>
                     </div>
                     <div class="tab-content m-2">
@@ -73,6 +75,10 @@
                         </div>
                         <div id="tab-schedule" class="tab-pane">
                             <livewire:data-tables.trash-table :module_type="'Schedule'"/>
+                        </div>
+                        <div id="tab-orphaned" class="tab-pane">
+                            <div class="ms-3 mt-3 fw-bold">{{__('bt.orphaned_docs')}}</div>
+                            <livewire:data-tables.trash-table :module_type="'Orphaned'"/>
                         </div>
                     </div>
                 </div>

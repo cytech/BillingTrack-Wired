@@ -116,7 +116,12 @@ class BackupController extends Controller
         } else {
             $className = '\BT\Modules\Documents\Models\\' . $module;
             $datefield = 'document_date';
-            $className::where($datefield, '<', $date)->onlyTrashed()->forceDelete();
+            // this was deleteing all doc types ()something in parental??....
+            //$className::where($datefield, '<', $date)->onlyTrashed()->forceDelete();
+            $docs = $className::where($datefield, '<', $date)->onlyTrashed()->get();
+            foreach ($docs as $doc){
+                $doc->forceDelete();
+            }
         }
 
         ini_set('max_execution_time', $maxtime);

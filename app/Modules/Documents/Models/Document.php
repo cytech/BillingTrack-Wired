@@ -112,12 +112,22 @@ class Document extends Model
 
     public function client(): BelongsTo
     {
-        return $this->belongsTo(Client::class);
+        return $this->belongsTo(Client::class, 'client_id');
+    }
+
+    public function trashedclient(): BelongsTo
+    {
+        return $this->belongsTo(Client::class, 'client_id')->withTrashed();
     }
 
     public function vendor(): BelongsTo
     {
-        return $this->belongsTo(Vendor::class);
+        return $this->belongsTo(Vendor::class, 'client_id');
+    }
+
+    public function trashedvendor(): BelongsTo
+    {
+        return $this->belongsTo(Vendor::class, 'client_id')->withTrashed();
     }
 
     public function clientAttachments(): MorphMany
