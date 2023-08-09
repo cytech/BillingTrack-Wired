@@ -42,7 +42,7 @@ class ClientStatementReport
 
         $invoices = $client->invoices()
             ->with('items', 'client.currency', 'amount.invoice.currency')
-            ->notCanceled()
+            ->notCanceled()->notDraft()
             ->where('document_date', '>=', $fromDate)
             ->where('document_date', '<=', $toDate)
             ->orderBy('document_date');

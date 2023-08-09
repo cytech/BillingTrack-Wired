@@ -365,6 +365,11 @@ class Document extends Model
         return $query->where('document_status_id', '=', DocumentStatuses::getStatusId('draft'));
     }
 
+    public function scopeNotDraft($query)
+    {
+        return $query->where('document_status_id', '<>', DocumentStatuses::getStatusId('draft'));
+    }
+
     public function scopeSent($query)
     {
         return $query->where('document_status_id', '=', DocumentStatuses::getStatusId('sent'));

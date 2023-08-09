@@ -36,6 +36,7 @@ class ItemSalesReport
             ->join('document_item_amounts', 'document_item_amounts.item_id', '=', 'document_items.id')
             ->join('clients', 'clients.id', '=', 'documents.client_id')
             ->where('documents.document_status_id', '<>', DocumentStatuses::getStatusId('canceled'))
+            ->where('documents.document_status_id', '<>', DocumentStatuses::getStatusId('draft'))
             ->orderBy('document_items.name');
 
         if ($companyProfileId)

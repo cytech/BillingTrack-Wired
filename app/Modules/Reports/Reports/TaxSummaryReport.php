@@ -34,7 +34,8 @@ class TaxSummaryReport
         $invoices = Invoice::with(['items.taxRate', 'items.taxRate2', 'items.amount'])
             ->where('document_date', '>=', $fromDate)
             ->where('document_date', '<=', $toDate)
-            ->where('document_status_id', '<>', DocumentStatuses::getStatusId('canceled'));
+            ->where('document_status_id', '<>', DocumentStatuses::getStatusId('canceled'))
+            ->where('document_status_id', '<>', DocumentStatuses::getStatusId('draft'));
 
         $expenseTax = (Expense::where('expense_date', '>=', $fromDate)
             ->where('expense_date', '<=', $toDate)
