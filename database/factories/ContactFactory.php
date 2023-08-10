@@ -22,15 +22,15 @@ $factory->define(\BT\Modules\Clients\Models\Contact::class, function (Faker $fak
         'client_id' => $company_id,
         'first_name' => $firstname,
         'last_name' => $lastname,
-        'name' => $firstname . ' ' . $lastname,
+        'name' => $firstname.' '.$lastname,
         'phone' => $faker->numerify('(###) ###-####'),
         'fax' => $faker->numerify('(###) ###-####'),
         'mobile' => $faker->numerify('(###) ###-####'),
         'email' => $faker->unique()->safeEmail,
-        'title_id' => $faker->numberBetween(2,17),
+        'title_id' => $faker->numberBetween(2, 17),
         'is_primary' => 1,
         'optin' => 1,
-        'default_to' => 1
+        'default_to' => 1,
 
     ];
 });

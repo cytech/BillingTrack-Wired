@@ -3,9 +3,9 @@
 namespace BT\Modules\Users\Controllers;
 
 use BT\Http\Controllers\Controller;
-use Spatie\Permission\Models\Permission;
-use Illuminate\Http\Request;
 use BT\Traits\ReturnUrl;
+use Illuminate\Http\Request;
+use Spatie\Permission\Models\Permission;
 
 class PermissionsController extends Controller
 {
@@ -35,9 +35,9 @@ class PermissionsController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name'       => 'required|unique:permissions',
-            'group'      => 'required',
-            'guard_name' => 'required'
+            'name' => 'required|unique:permissions',
+            'group' => 'required',
+            'guard_name' => 'required',
         ]);
 
         $permission = new Permission;
@@ -91,5 +91,4 @@ class PermissionsController extends Controller
     {
         //
     }
-
 }

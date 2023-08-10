@@ -12,7 +12,7 @@ class DocumentApprovedListener
 {
     public function __construct(MailQueue $mailQueue, ConvertToModule $documentToInvoice)
     {
-        $this->mailQueue      = $mailQueue;
+        $this->mailQueue = $mailQueue;
         $this->documentToInvoice = $documentToInvoice;
     }
 
@@ -36,22 +36,21 @@ class DocumentApprovedListener
             $parser = new Parser($event->document);
 
             $mail = $this->mailQueue->create($event->document, [
-                'to'         => [$event->document->user->email],
-                'cc'         => [config('bt.mailDefaultCc')],
-                'bcc'        => [config('bt.mailDefaultBcc')],
-                'subject'    => trans('bt.quote_status_change_notification'),
-                'body'       => $parser->parse('quoteApprovedEmailBody'),
+                'to' => [$event->document->user->email],
+                'cc' => [config('bt.mailDefaultCc')],
+                'bcc' => [config('bt.mailDefaultBcc')],
+                'subject' => trans('bt.quote_status_change_notification'),
+                'body' => $parser->parse('quoteApprovedEmailBody'),
                 'attach_pdf' => config('bt.attachPdf'),
             ]);
 
             $this->mailQueue->send($mail->id);
         } elseif ($event->module_type == 'Workorder') {
-            if (config('bt.convertWorkorderWhenApproved'))
-            {
+            if (config('bt.convertWorkorderWhenApproved')) {
                 $this->documentToInvoice->convert(
                     $event->document,
                     date('Y-m-d'),
-                    DateFormatter::incrementDateByDays(date('Y-m-d'),  $event->document->client->client_terms),
+                    DateFormatter::incrementDateByDays(date('Y-m-d'), $event->document->client->client_terms),
                     config('bt.invoiceGroup'),
                     'Invoice'
                 );
@@ -60,12 +59,12 @@ class DocumentApprovedListener
             $parser = new Parser($event->document);
 
             $mail = $this->mailQueue->create($event->document, [
-                'to'         => [$event->document->user->email],
-                'cc'         => [config('bt.mailDefaultCc')],
-                'bcc'        => [config('bt.mailDefaultBcc')],
-                'subject'    => trans('bt.workorder_status_change_notification'),
-                'body'       => $parser->parse('workorderApprovedEmailBody'),
-                'attach_pdf' => config('bt.attachPdf')
+                'to' => [$event->document->user->email],
+                'cc' => [config('bt.mailDefaultCc')],
+                'bcc' => [config('bt.mailDefaultBcc')],
+                'subject' => trans('bt.workorder_status_change_notification'),
+                'body' => $parser->parse('workorderApprovedEmailBody'),
+                'attach_pdf' => config('bt.attachPdf'),
             ]);
 
             $this->mailQueue->send($mail->id);

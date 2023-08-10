@@ -20,23 +20,22 @@ class ClientImporter extends AbstractImporter
     public function getFields()
     {
         $fields = [
-            'name'        => '* ' . trans('bt.name'),
+            'name' => '* '.trans('bt.name'),
             'unique_name' => trans('bt.unique_name'),
-            'address'     => trans('bt.address'),
-            'city'        => trans('bt.city'),
-            'state'       => trans('bt.state'),
-            'zip'         => trans('bt.postal_code'),
-            'country'     => trans('bt.country'),
-            'phone'       => trans('bt.phone'),
-            'fax'         => trans('bt.fax'),
-            'mobile'      => trans('bt.mobile'),
-            'email'       => trans('bt.email'),
-            'web'         => trans('bt.web'),
+            'address' => trans('bt.address'),
+            'city' => trans('bt.city'),
+            'state' => trans('bt.state'),
+            'zip' => trans('bt.postal_code'),
+            'country' => trans('bt.country'),
+            'phone' => trans('bt.phone'),
+            'fax' => trans('bt.fax'),
+            'mobile' => trans('bt.mobile'),
+            'email' => trans('bt.email'),
+            'web' => trans('bt.web'),
         ];
 
-        foreach (CustomField::forTable('clients')->get() as $customField)
-        {
-            $fields['custom_' . $customField->column_name] = $customField->field_label;
+        foreach (CustomField::forTable('clients')->get() as $customField) {
+            $fields['custom_'.$customField->column_name] = $customField->field_label;
         }
 
         return $fields;
@@ -50,7 +49,7 @@ class ClientImporter extends AbstractImporter
     public function getValidator($input)
     {
         return Validator::make($input, [
-            'name'  => 'required',
+            'name' => 'required',
             'email' => 'email',
         ])->setAttributeNames(['name' => trans('bt.name')]);
     }
@@ -59,19 +58,14 @@ class ClientImporter extends AbstractImporter
     {
         $row = 1;
 
-        $fields       = [];
+        $fields = [];
         $customFields = [];
 
-        foreach ($input as $key => $field)
-        {
-            if (is_numeric($field))
-            {
-                if (substr($key, 0, 7) != 'custom_')
-                {
+        foreach ($input as $key => $field) {
+            if (is_numeric($field)) {
+                if (substr($key, 0, 7) != 'custom_') {
                     $fields[$key] = $field;
-                }
-                else
-                {
+                } else {
                     $customFields[substr($key, 7)] = $field;
                 }
             }
@@ -79,34 +73,27 @@ class ClientImporter extends AbstractImporter
 
         $handle = fopen(storage_path('clients.csv'), 'r');
 
-        if (!$handle)
-        {
+        if (! $handle) {
             $this->messages->add('error', 'Could not open the file');
 
             return false;
         }
 
-        while (($data = fgetcsv($handle, 1000, ',')) !== false)
-        {
-            if ($row !== 1)
-            {
+        while (($data = fgetcsv($handle, 1000, ',')) !== false) {
+            if ($row !== 1) {
                 $record = [];
 
                 $customRecord = [];
 
-                foreach ($fields as $field => $key)
-                {
+                foreach ($fields as $field => $key) {
                     $record[$field] = $data[$key];
                 }
 
-                if ($this->validateRecord($record))
-                {
+                if ($this->validateRecord($record)) {
                     $client = Client::create($record);
 
-                    if ($customFields)
-                    {
-                        foreach ($customFields as $field => $key)
-                        {
+                    if ($customFields) {
+                        foreach ($customFields as $field => $key) {
                             $customRecord[$field] = $data[$key];
                         }
 

@@ -19,12 +19,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Currency extends Model
 {
-
     protected $table = 'currencies';
-
 
     /**
      * Guarded properties
+     *
      * @var array
      */
     protected $guarded = ['id'];
@@ -36,23 +35,19 @@ class Currency extends Model
 
     public function getInUseAttribute()
     {
-        if ($this->code == config('bt.baseCurrency'))
-        {
+        if ($this->code == config('bt.baseCurrency')) {
             return true;
         }
 
-        if (Client::where('currency_code', '=', $this->code)->count())
-        {
+        if (Client::where('currency_code', '=', $this->code)->count()) {
             return true;
         }
 
-        if (Quote::where('currency_code', '=', $this->code)->count())
-        {
+        if (Quote::where('currency_code', '=', $this->code)->count()) {
             return true;
         }
 
-        if (Invoice::where('currency_code', '=', $this->code)->count())
-        {
+        if (Invoice::where('currency_code', '=', $this->code)->count()) {
             return true;
         }
 
@@ -61,6 +56,6 @@ class Currency extends Model
 
     public function formattedPlacement(): Attribute
     {
-        return new Attribute(get: fn() => ($this->placement == 'before') ? trans('bt.before_amount') : trans('bt.after_amount'));
+        return new Attribute(get: fn () => ($this->placement == 'before') ? trans('bt.before_amount') : trans('bt.after_amount'));
     }
 }

@@ -23,9 +23,9 @@ class ProfileRequest extends FormRequest
     public function attributes()
     {
         return [
-            'user.name'               => trans('bt.name'),
-            'user.email'              => trans('bt.email'),
-            'user.password'           => trans('bt.password'),
+            'user.name' => trans('bt.name'),
+            'user.email' => trans('bt.email'),
+            'user.password' => trans('bt.password'),
             'company_profile.company' => trans('bt.company_profile'),
         ];
     }
@@ -33,9 +33,9 @@ class ProfileRequest extends FormRequest
     public function rules()
     {
         return [
-            'user.name'               => 'sometimes|required',
-            'user.email'              => 'sometimes|required|email',
-            'user.password'           => 'sometimes|required|confirmed',
+            'user.name' => 'sometimes|required',
+            'user.email' => 'sometimes|required|email',
+            'user.password' => 'sometimes|required|confirmed',
             'company_profile.company' => 'sometimes|required',
         ];
     }

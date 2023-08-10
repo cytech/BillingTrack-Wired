@@ -11,7 +11,7 @@ class MerchantFactory
      */
     public static function create($driver)
     {
-        $driver = 'BT\\Modules\\Merchant\\Support\\Drivers\\' . $driver;
+        $driver = 'BT\\Modules\\Merchant\\Support\\Drivers\\'.$driver;
 
         return new $driver;
     }
@@ -22,14 +22,12 @@ class MerchantFactory
 
         $drivers = [];
 
-        foreach ($files as $file)
-        {
+        foreach ($files as $file) {
             $file = basename($file, '.php');
 
             $driver = self::create($file);
 
-            if (!$enabledOnly or $enabledOnly and $driver->getSetting('enabled'))
-            {
+            if (! $enabledOnly or $enabledOnly and $driver->getSetting('enabled')) {
                 $drivers[$file] = $driver;
             }
         }

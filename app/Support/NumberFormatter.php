@@ -16,14 +16,14 @@ class NumberFormatter
     /**
      * Formats a number accordingly.
      *
-     * @param  float $number
-     * @param  object $currency
-     * @param  integer $decimalPlaces
+     * @param  float  $number
+     * @param  object  $currency
+     * @param  int  $decimalPlaces
      * @return string
      */
     public static function format($number, $currency = null, $decimalPlaces = null)
     {
-        $currency      = ($currency) ?: config('bt.currency');
+        $currency = ($currency) ?: config('bt.currency');
         $decimalPlaces = ($decimalPlaces) ?: config('bt.amountDecimals');
 
         return number_format((float) $number, $decimalPlaces, $currency->decimal, $currency->thousands);
@@ -32,8 +32,8 @@ class NumberFormatter
     /**
      * Unformats a formatted number.
      *
-     * @param  float $number
-     * @param  object $currency
+     * @param  float  $number
+     * @param  object  $currency
      * @return string
      */
     public static function unformat($number, $currency = null)
@@ -42,6 +42,7 @@ class NumberFormatter
 
         $number = str_replace($currency->decimal, 'D', $number);
         $number = str_replace($currency->thousands, '', $number);
+
         return str_replace('D', '.', $number);
     }
 }

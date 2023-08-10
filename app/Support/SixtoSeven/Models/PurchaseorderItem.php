@@ -21,7 +21,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class PurchaseorderItem extends Model
 {
     use SoftDeletes;
-
     use SoftCascadeTrait;
 
     protected $connection = 'mysql'; // necessary for livewire error:Queueing collections with multiple model connections is not supported
@@ -140,8 +139,7 @@ class PurchaseorderItem extends Model
 
     public function scopeStatus($query, $status = null)
     {
-        switch ($status)
-        {
+        switch ($status) {
             case 'open':
                 $query->draft();
                 break;
@@ -164,8 +162,7 @@ class PurchaseorderItem extends Model
 
     public function scopeByDateRange($query, $from, $to)
     {
-        return $query->whereIn('purchaseorder_id', function ($query) use ($from, $to)
-        {
+        return $query->whereIn('purchaseorder_id', function ($query) use ($from, $to) {
             $query->select('id')
                 ->from('purchaseorders')
                 ->where('purchaseorder_date', '>=', $from)

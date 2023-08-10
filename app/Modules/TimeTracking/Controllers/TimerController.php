@@ -11,21 +11,21 @@
 
 namespace BT\Modules\TimeTracking\Controllers;
 
+use BT\Http\Controllers\Controller;
 use BT\Modules\TimeTracking\Models\TimeTrackingTask;
 use BT\Modules\TimeTracking\Models\TimeTrackingTimer;
 use BT\Modules\TimeTracking\Requests\TimerRequest;
 use Carbon\Carbon;
-use BT\Http\Controllers\Controller;
 
 class TimerController extends Controller
 {
     private $timerValidator;
+
     private $timeTrackingTask;
 
     public function __construct(
         TimeTrackingTask $timeTrackingTask
-    )
-    {
+    ) {
         $this->timeTrackingTask = $timeTrackingTask;
     }
 
@@ -34,7 +34,7 @@ class TimerController extends Controller
         if (TimeTrackingTimer::where('time_tracking_task_id', request('task_id'))->where('end_at', null)->count() == 0) {
             $timer = new TimeTrackingTimer([
                 'time_tracking_task_id' => request('task_id'),
-                'start_at'              => date('Y-m-d H:i:s'),
+                'start_at' => date('Y-m-d H:i:s'),
             ]);
 
             $timer->save();

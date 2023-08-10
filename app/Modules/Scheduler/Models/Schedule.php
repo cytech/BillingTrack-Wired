@@ -8,11 +8,11 @@
  * file that was distributed with this source code.
  */
 
-
 namespace BT\Modules\Scheduler\Models;
 
 use Askedio\SoftCascade\Traits\SoftCascadeTrait;
 use BT\Support\DateFormatter;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -20,19 +20,17 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Carbon\Carbon;
 use Recurr\Exception\InvalidRRule;
 use Recurr\Rule;
 use Recurr\Transformer\TextTransformer;
 
 class Schedule extends Model
 {
-
-    use SoftDeletes, SoftCascadeTrait;//, FormAccessible;
+    use SoftDeletes, SoftCascadeTrait; //, FormAccessible;
 
     protected $softCascade = ['occurrences', 'resources'];
 
-//    protected $appends = ['text_trans', 'rule_start', 'formatted_date_trashed'];
+    //    protected $appends = ['text_trans', 'rule_start', 'formatted_date_trashed'];
 
     protected $casts = ['deleted_at' => 'datetime'];
 
@@ -41,7 +39,6 @@ class Schedule extends Model
     protected $table = 'schedule';
 
     public $timestamps = true;
-
 
     public function category(): HasOne
     {
@@ -86,6 +83,7 @@ class Schedule extends Model
         } catch (InvalidRRule $e) {
         }
         $textTransformer = new TextTransformer();
+
         return $textTransformer->transform($rule);
     }
 
@@ -93,6 +91,7 @@ class Schedule extends Model
     {
         if ($this->rrule) {
             $rule = Rule::createFromString($this->rrule);
+
             return $rule->getStartDate()->format('Y-m-d H:i');
         }
     }
@@ -101,13 +100,14 @@ class Schedule extends Model
     {
         if ($this->rrule) {
             $rule = Rule::createFromString($this->rrule);
+
             return DateFormatter::format($rule->getStartDate()->format('Y-m-d H:i'), true);
         }
     }
 
     public function formattedDateTrashed(): Attribute
     {
-        return new Attribute(get: fn() => Carbon::parse($this->deleted_at)->format('Y-m-d H:i'));
+        return new Attribute(get: fn () => Carbon::parse($this->deleted_at)->format('Y-m-d H:i'));
     }
 
     //scopes
@@ -116,5 +116,4 @@ class Schedule extends Model
         $query->leftjoin('schedule_occurrences', 'schedule.id', '=',
             'schedule_occurrences.schedule_id')->select('*', 'schedule.id as id', 'schedule_occurrences.id as oid');
     }
-
 }

@@ -26,7 +26,7 @@
         <div class="col-lg-3">
             <div class="bs-sidebar">
                 <h4>BillingTrack 6.x.x</h4>
-                <p style="padding-start: 15px; font-size: 1em;"><a href="Overview">Overview</a>
+                <p style="padding-left: 15px; font-size: 1em;"><a href="Overview">Overview</a>
                 </p>
 
                 <h4>About BillingTrack</h4>

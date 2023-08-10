@@ -22,14 +22,11 @@ class Parser
 
     public function parse($template)
     {
-        try
-        {
-            return view('app.email_templates.' . $template)
+        try {
+            return view('app.email_templates.'.$template)
                 ->with(strtolower($this->class), $this->object)
                 ->render();
-        }
-        catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             abort(500);
         }
     }

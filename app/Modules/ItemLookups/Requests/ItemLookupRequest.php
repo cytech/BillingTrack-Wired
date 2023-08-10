@@ -24,7 +24,7 @@ class ItemLookupRequest extends FormRequest
     public function attributes()
     {
         return [
-            'name'  => trans('bt.name'),
+            'name' => trans('bt.name'),
             'price' => trans('bt.price'),
         ];
     }
@@ -41,7 +41,7 @@ class ItemLookupRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'  => 'required',
+            'name' => 'required',
             'price' => 'required|numeric',
         ];
     }

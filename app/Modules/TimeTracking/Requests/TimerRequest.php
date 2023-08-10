@@ -24,16 +24,15 @@ class TimerRequest extends FormRequest
     {
         return [
             'start_at' => trans('bt.start_at'),
-            'end_at'   => trans('bt.end_at'),
+            'end_at' => trans('bt.end_at'),
         ];
     }
-
 
     public function rules()
     {
         return [
             'start_at' => 'required',
-            'end_at'   => 'required',
+            'end_at' => 'required',
         ];
     }
 }

@@ -16,7 +16,7 @@ interface PayableInterface
     /**
      * Set the total paid amount.
      *
-     * @param float $totalPaid
+     * @param  float  $totalPaid
      */
     public function setTotalPaid($totalPaid);
 

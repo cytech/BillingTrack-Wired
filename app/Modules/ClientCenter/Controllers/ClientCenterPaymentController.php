@@ -19,8 +19,7 @@ class ClientCenterPaymentController extends Controller
     public function index()
     {
         $payments = Payment::with('invoice.amount.invoice.currency', 'invoice.client')
-            ->whereHas('invoice', function ($invoice)
-            {
+            ->whereHas('invoice', function ($invoice) {
                 $invoice->where('client_id', auth()->user()->client->id);
             })->orderBy('created_at', 'desc')
             ->paginate(config('bt.resultsPerPage'));

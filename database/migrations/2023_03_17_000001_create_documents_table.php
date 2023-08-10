@@ -2,20 +2,22 @@
 
 //namespace Database\Migrations;
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateDocumentsTable extends Migration
 {
     /**
      * Schema table name to migrate
+     *
      * @var string
      */
     public $tableName = 'documents';
 
     /**
      * Run the migrations.
+     *
      * @table documents
      *
      * @return void
@@ -55,15 +57,15 @@ class CreateDocumentsTable extends Migration
             $table->date('next_date')->nullable();
             $table->date('stop_date')->nullable();
 
-            $table->index(["user_id"], 'documents_user_id_index');
+            $table->index(['user_id'], 'documents_user_id_index');
 
-            $table->index(["group_id"], 'documents_group_id_index');
+            $table->index(['group_id'], 'documents_group_id_index');
 
-            $table->index(["number"], 'documents_number_index');
+            $table->index(['number'], 'documents_number_index');
 
-            $table->index(["company_profile_id"], 'documents_company_profile_id_index');
+            $table->index(['company_profile_id'], 'documents_company_profile_id_index');
 
-            $table->index(["client_id"], 'documents_client_id_index');
+            $table->index(['client_id'], 'documents_client_id_index');
             $table->softDeletes();
             $table->nullableTimestamps();
 

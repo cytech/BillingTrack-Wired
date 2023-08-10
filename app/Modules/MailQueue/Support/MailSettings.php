@@ -18,12 +18,12 @@ class MailSettings
      *
      * @return array
      */
-    static function listSendMethods()
+    public static function listSendMethods()
     {
         return [
-            ''         => '',
-            'smtp'     => trans('bt.email_send_method_smtp'),
-            'mail'     => trans('bt.email_send_method_phpmail'),
+            '' => '',
+            'smtp' => trans('bt.email_send_method_smtp'),
+            'mail' => trans('bt.email_send_method_phpmail'),
             'sendmail' => trans('bt.email_send_method_sendmail'),
         ];
     }
@@ -33,10 +33,10 @@ class MailSettings
      *
      * @return array
      */
-    static function listEncryptions()
+    public static function listEncryptions()
     {
         return [
-            '0'   => trans('bt.none'),
+            '0' => trans('bt.none'),
             'ssl' => 'SSL',
             'tls' => 'TLS',
         ];

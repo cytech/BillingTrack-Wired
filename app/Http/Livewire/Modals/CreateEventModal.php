@@ -13,18 +13,42 @@ use Livewire\Component;
 
 class CreateEventModal extends Component
 {
-    public $title, $location, $description, $categories, $category_id;
-    public $module, $start_date, $end_date, $reminder_qty = 0, $reminder_interval, $reminder_interval_id = 'none';
-    public $resource_id, $resource_name, $fromcalendar;
+    public $title;
 
-    protected $listeners = ['resource_idUpdated'   => 'setResourceId',
-                            'descriptionUpdated' => 'setResourceName',];
+    public $location;
+
+    public $description;
+
+    public $categories;
+
+    public $category_id;
+
+    public $module;
+
+    public $start_date;
+
+    public $end_date;
+
+    public $reminder_qty = 0;
+
+    public $reminder_interval;
+
+    public $reminder_interval_id = 'none';
+
+    public $resource_id;
+
+    public $resource_name;
+
+    public $fromcalendar;
+
+    protected $listeners = ['resource_idUpdated' => 'setResourceId',
+        'descriptionUpdated' => 'setResourceName', ];
 
     protected $rules = [
-        'title'      => 'required_without:resource_id',
-        'resource_id'  => 'required_without:title',
+        'title' => 'required_without:resource_id',
+        'resource_id' => 'required_without:title',
         'start_date' => 'required',
-        'end_date'   => 'required|after:start_date',
+        'end_date' => 'required|after:start_date',
     ];
 
     // Schedule array (model from datatable thru modals ends up array), fromcalendar, date from fullcalendar
@@ -34,11 +58,11 @@ class CreateEventModal extends Component
         $this->category_id = 2; //default to general appointment
         $this->reminder_interval = ScheduleOccurrence::reminderinterval();
         if ($date) { //date passed from fullcalendar dateclick
-            $this->start_date = Carbon::parse($date)->format('Y-m-d') . ' 08:00:00';
-            $this->end_date = Carbon::parse($date)->format('Y-m-d') . ' 09:00:00';
+            $this->start_date = Carbon::parse($date)->format('Y-m-d').' 08:00:00';
+            $this->end_date = Carbon::parse($date)->format('Y-m-d').' 09:00:00';
         } else {
-            $this->start_date = date('Y-m-d') . ' 08:00:00';
-            $this->end_date = date('Y-m-d') . ' 09:00:00';
+            $this->start_date = date('Y-m-d').' 08:00:00';
+            $this->end_date = date('Y-m-d').' 09:00:00';
         }
         if ($module) { // module passed from event edit or fullcalendar eventclick
             $this->getModule($module);
@@ -67,8 +91,8 @@ class CreateEventModal extends Component
             if ($employee && $employee->schedule == 1) {
                 $this->resource_id = $employee->id;
                 $this->resource_name = $employee->full_name;
-                $this->emit('refreshSearch', ['searchTerm'  => $this->resource_name, 'value' => $this->resource_id,
-                                              'description' => $this->resource_name, 'optionsValues' => $this->resource_id]);
+                $this->emit('refreshSearch', ['searchTerm' => $this->resource_name, 'value' => $this->resource_id,
+                    'description' => $this->resource_name, 'optionsValues' => $this->resource_id]);
             }
         }
     }
@@ -90,9 +114,9 @@ class CreateEventModal extends Component
     {
         return [
             'title.required_without' => __('bt.validation_title_required'),
-            'start_date.required'    => __('bt.validation_start_datetime_required'),
-            'end_date.required'      => __('bt.validation_end_datetime_required'),
-            'end_date.after'         => __('bt.validation_end_datetime_after'),
+            'start_date.required' => __('bt.validation_start_datetime_required'),
+            'end_date.required' => __('bt.validation_end_datetime_required'),
+            'end_date.after' => __('bt.validation_end_datetime_after'),
         ];
     }
 
@@ -113,7 +137,7 @@ class CreateEventModal extends Component
     {
         $this->validate();
 
-        if (!$this->resource_id && $this->resource_name) {
+        if (! $this->resource_id && $this->resource_name) {
             $this->title = $this->resource_name;
         } else {
             $this->title = Employee::find($this->resource_id)->short_name;

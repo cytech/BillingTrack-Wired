@@ -11,13 +11,12 @@
 
 use BT\Modules\Documents\Controllers\DocumentController;
 use BT\Modules\Documents\Controllers\DocumentEditController;
-use BT\Modules\Employees\Controllers\EmployeeController;
-use BT\Modules\Invoices\Controllers\InvoiceEditController;
 use BT\Modules\Documents\Controllers\DocumentItemController;
 use BT\Modules\Documents\Controllers\DocumentMailController;
 use BT\Modules\Documents\Controllers\DocumentRecalculateController;
 use BT\Modules\Documents\Controllers\DocumentToInvoiceController;
 use BT\Modules\Documents\Controllers\DocumentToWorkorderController;
+use BT\Modules\Employees\Controllers\EmployeeController;
 use BT\Modules\Products\Controllers\ProductController;
 
 Route::middleware(['web', 'auth.admin'])->group(function () {
@@ -61,7 +60,7 @@ Route::middleware(['web', 'auth.admin'])->group(function () {
     });
 });
 Route::middleware(['web', 'auth.admin'])->group(function () {
-//resource and employee force update
+    //resource and employee force update
     Route::get('/forceProductUpdate/{ret}', [ProductController::class, 'forceLUTupdate']);
     Route::get('/forceEmployeeUpdate/{ret}', [EmployeeController::class, 'forceLUTupdate']);
 });

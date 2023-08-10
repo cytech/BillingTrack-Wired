@@ -6,88 +6,88 @@ use stdClass;
 
 class CalendarEventPresenter
 {
-    public function calendarEvent($entity,$type)
+    public function calendarEvent($entity, $type)
     {
         $data = new stdClass();
 
         $data->allDay = true;
 
-        switch ($type){
+        switch ($type) {
             case 'quote':
-                $data->id = ucfirst($type) . ': ' . $entity->number;
+                $data->id = ucfirst($type).': '.$entity->number;
                 $data->url = url("/documents/{$entity->id}/edit");
-                $data->title = trans("bt.{$type}") . ' ' . $entity->number . ' for ' . $entity->client->name;
+                $data->title = trans("bt.{$type}").' '.$entity->number.' for '.$entity->client->name;
                 $data->description = mb_strimwidth(addslashes($entity->summary), 0, 30, '...');
                 $data->start = $entity->action_date ?: $entity->document_date;
                 $data->category_id = 4;
                 break;
             case 'workorder':
-                $data->id = ucfirst($type) . ': ' . $entity->number;
+                $data->id = ucfirst($type).': '.$entity->number;
                 $data->url = url("/documents/{$entity->id}/edit");
-                $data->title = trans("bt.{$type}") . ' ' . $entity->number . ' for ' . $entity->client->name;
-                $data->description = $entity->client->phone . '<br>'
-                    . str_replace(array("\r\n", "\r", "\n"), "", $entity->client->address)
-                    . '<br>' . $entity->client->city . '<br>' . mb_strimwidth(addslashes($entity->summary), 0, 30, '...');
+                $data->title = trans("bt.{$type}").' '.$entity->number.' for '.$entity->client->name;
+                $data->description = $entity->client->phone.'<br>'
+                    .str_replace(["\r\n", "\r", "\n"], '', $entity->client->address)
+                    .'<br>'.$entity->client->city.'<br>'.mb_strimwidth(addslashes($entity->summary), 0, 30, '...');
                 $data->start = $entity->job_date->copy()->modify($entity->start_time);
                 $data->end = $entity->job_date->copy()->modify($entity->end_time);
-                $data->category_id =  5;
+                $data->category_id = 5;
                 $data->will_call = $entity->will_call;
-                foreach ($entity->documentItems as $documentItem){
+                foreach ($entity->documentItems as $documentItem) {
                     if ($documentItem->resource_table == 'employees' && $documentItem->employee) {
-                            if ($documentItem->employee->driver == 1) {
-                                $documentItem->name = '<span style="color:blue">' . $documentItem->employee->short_name . '</span>';
-                            }
+                        if ($documentItem->employee->driver == 1) {
+                            $documentItem->name = '<span style="color:blue">'.$documentItem->employee->short_name.'</span>';
+                        }
                     }
                 }
                 $data->resources = $entity->documentItems;
                 break;
             case 'invoice':
-                $data->id = ucfirst($type) . ': ' . $entity->number;
+                $data->id = ucfirst($type).': '.$entity->number;
                 $data->url = url("/documents/{$entity->id}/edit");
-                $data->title = trans("bt.{$type}") . ' ' . $entity->number . ' for ' . $entity->client->name ;
+                $data->title = trans("bt.{$type}").' '.$entity->number.' for '.$entity->client->name;
                 $data->description = mb_strimwidth(addslashes($entity->summary), 0, 30, '...');
                 $data->start = $entity->action_date ?: $entity->document_date;
-                $data->category_id =  6;
+                $data->category_id = 6;
                 break;
             case 'payment':
-                $data->id = ucfirst($type) . ': ' . $entity->id;
+                $data->id = ucfirst($type).': '.$entity->id;
                 $data->url = url("/payments/{$entity->id}");
-                $data->title = trans("bt.{$type}") . ' for Invoice ' . $entity->invoice_id ;
+                $data->title = trans("bt.{$type}").' for Invoice '.$entity->invoice_id;
                 $data->description = $entity->paymentMethod->name;
                 $data->start = $entity->paid_at;
-                $data->category_id =  7;
+                $data->category_id = 7;
                 break;
             case 'expense':
-                $data->id = ucfirst($type) . ': ' . $entity->id;
+                $data->id = ucfirst($type).': '.$entity->id;
                 $data->url = url("/expenses/{$entity->id}/edit");
-                $data->title = trans("bt.{$type}") . ' for Category ' . $entity->category->name ;
+                $data->title = trans("bt.{$type}").' for Category '.$entity->category->name;
                 $data->description = $entity->description;
                 $data->start = $entity->expense_date;
-                $data->category_id =  8;
+                $data->category_id = 8;
                 break;
             case 'project':
-                $data->id = ucfirst($type) . ': ' . $entity->id;
+                $data->id = ucfirst($type).': '.$entity->id;
                 $data->url = url("/time_tracking/projects/{$entity->id}/edit");
-                $data->title = trans("bt.{$type}") . ' for Client ' . $entity->client->name ;
+                $data->title = trans("bt.{$type}").' for Client '.$entity->client->name;
                 $data->description = '';
                 $data->start = $entity->due_at;
-                $data->category_id =  9;
+                $data->category_id = 9;
                 break;
             case 'task':
-                $data->id = ucfirst($type) . ': ' . $entity->id;
+                $data->id = ucfirst($type).': '.$entity->id;
                 $data->url = url("/time_tracking/projects/{$entity->time_tracking_project_id}/edit");
-                $data->title = trans("bt.{$type}") . ' ' . $entity->name . ' for Project ' . $entity->project->name ;
+                $data->title = trans("bt.{$type}").' '.$entity->name.' for Project '.$entity->project->name;
                 $data->description = '';
                 $data->start = $entity->timers->first()->start_at;
-                $data->category_id =  10;
+                $data->category_id = 10;
                 break;
             case 'purchaseorder':
-                $data->id = ucfirst($type) . ': ' . $entity->number;
+                $data->id = ucfirst($type).': '.$entity->number;
                 $data->url = url("/documents/{$entity->id}/edit");
-                $data->title = trans("bt.{$type}") . ' ' . $entity->number . ' for ' . $entity->vendor->name ;
+                $data->title = trans("bt.{$type}").' '.$entity->number.' for '.$entity->vendor->name;
                 $data->description = mb_strimwidth(addslashes($entity->summary), 0, 30, '...');
                 $data->start = $entity->action_date ?: $entity->document_date;
-                $data->category_id =  8;
+                $data->category_id = 8;
                 break;
             default:
         }

@@ -1,21 +1,23 @@
 <?php
 
-use BT\Modules\Settings\Models\Setting;
 use BT\Modules\Clients\Models\Contact;
-use Illuminate\Support\Facades\Schema;
+use BT\Modules\Settings\Models\Setting;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class Version510 extends Migration
 {
     /**
      * Schema table name to migrate
+     *
      * @var string
      */
     public $set_schema_table = 'clients';
 
     /**
      * Run the migrations.
+     *
      * @table payments_custom
      *
      * @return void
@@ -43,19 +45,18 @@ class Version510 extends Migration
             $table->string('name', 255);
         });
 
-
         //seed industries, sizes, titles and paymentterms
         Artisan::call('db:seed', [
-            '--class' => IndustrySeeder::class
+            '--class' => IndustrySeeder::class,
         ]);
         Artisan::call('db:seed', [
-            '--class' => SizeSeeder::class
+            '--class' => SizeSeeder::class,
         ]);
         Artisan::call('db:seed', [
-            '--class' => TitleSeeder::class
+            '--class' => TitleSeeder::class,
         ]);
         Artisan::call('db:seed', [
-            '--class' => PaymentTermsSeeder::class
+            '--class' => PaymentTermsSeeder::class,
         ]);
 
         //add more client fields
@@ -75,7 +76,6 @@ class Version510 extends Migration
             $table->foreign('industry_id')->references('id')->on('industries')->onDelete('no action')->onUpdate('no action');
             $table->foreign('size_id')->references('id')->on('sizes')->onDelete('no action')->onUpdate('no action');
             $table->foreign('paymentterm_id')->references('id')->on('payment_terms')->onDelete('no action')->onUpdate('no action');
-
 
         });
 
@@ -99,10 +99,9 @@ class Version510 extends Migration
         foreach ($contacts as $contact) {
             $splitName = explode(' ', $contact->name);
             $contact->first_name = array_shift($splitName);
-            $contact->last_name = implode(" ", $splitName);
+            $contact->last_name = implode(' ', $splitName);
             $contact->save();
-            }
-
+        }
 
         deleteTempFiles();
         deleteViewCache();
@@ -125,7 +124,7 @@ class Version510 extends Migration
         Schema::drop('titles');
         Schema::drop('payment_terms');
 
-        Schema::table('clients', function($table) {
+        Schema::table('clients', function ($table) {
             $table->dropColumn('address_2');
             $table->dropColumn('city_2');
             $table->dropColumn('state_2');
@@ -143,7 +142,7 @@ class Version510 extends Migration
 
         });
 
-        Schema::table('contacts', function($table) {
+        Schema::table('contacts', function ($table) {
             $table->dropColumn('first_name');
             $table->dropColumn('last_name');
             $table->dropColumn('phone');
@@ -153,7 +152,6 @@ class Version510 extends Migration
             $table->dropColumn('optin');
             $table->dropForeign('contacts_title_id_foreign');
             $table->dropColumn('title_id');
-
 
         });
 

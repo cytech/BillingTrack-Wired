@@ -19,6 +19,6 @@ class WorkorderStatuses extends AbstractStatuses
         '2' => 'sent',
         '3' => 'approved',
         '4' => 'rejected',
-        '5' => 'canceled'
+        '5' => 'canceled',
     ];
 }

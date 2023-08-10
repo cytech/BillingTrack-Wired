@@ -2,15 +2,15 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use BT\Modules\PaymentTerms\Models\PaymentTerm;
 use Eloquent;
+use Illuminate\Database\Seeder;
 
 class PaymentTermsSeeder extends Seeder
 {
     public function run()
     {
-        if (PaymentTerm::exists()){
+        if (PaymentTerm::exists()) {
             return;
         }
 

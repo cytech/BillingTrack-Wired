@@ -27,12 +27,11 @@ class TaskRequest extends FormRequest
         ];
     }
 
-
     public function rules()
     {
         return [
             'time_tracking_project_id' => 'required',
-            'name'                     => 'required',
+            'name' => 'required',
         ];
     }
 }

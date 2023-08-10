@@ -60,7 +60,7 @@ class Invoice extends Document
     // accessors
     public function isPayable(): Attribute
     {
-        return new Attribute(get: fn() => $this->status_text <> 'canceled' and $this->amount->balance > 0);
+        return new Attribute(get: fn () => $this->status_text != 'canceled' and $this->amount->balance > 0);
     }
 
     public function getIsOverdueAttribute()
@@ -68,8 +68,9 @@ class Invoice extends Document
         // Only invoices in Sent status, with a balance qualify to be overdue
         if ($this->action_date < date('Y-m-d')
             and $this->document_status_id == DocumentStatuses::getStatusId('sent')
-            and $this->amount->balance <> 0)
+            and $this->amount->balance != 0) {
             return 1;
+        }
 
         return 0;
     }

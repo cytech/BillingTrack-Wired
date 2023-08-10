@@ -43,9 +43,7 @@ use Parental\HasChildren;
 class Document extends Model
 {
     use HasChildren;
-
     use SoftDeletes;
-
     use SoftCascadeTrait;
 
     protected static function boot()
@@ -73,7 +71,7 @@ class Document extends Model
 
     public function moduleType(): Attribute
     {
-        return new Attribute(get: fn() => class_basename($this));
+        return new Attribute(get: fn () => class_basename($this));
     }
 
     /*
@@ -139,9 +137,9 @@ class Document extends Model
         } else {
             $relationship->where('client_visibility', 1);
         }
+
         return $relationship;
     }
-
 
     public function companyProfile(): BelongsTo
     {
@@ -155,8 +153,9 @@ class Document extends Model
 
     public function custom(): HasOne
     {
-        $customclass = $this->module_type . 'Custom';
-        return $this->hasOne('BT\Modules\CustomFields\Models\\' . $customclass, strtolower($this->module_type) . '_id');
+        $customclass = $this->module_type.'Custom';
+
+        return $this->hasOne('BT\Modules\CustomFields\Models\\'.$customclass, strtolower($this->module_type).'_id');
     }
 
     public function group(): HasOne
@@ -187,17 +186,17 @@ class Document extends Model
 
     public function viewDirectoryName(): Attribute
     {
-        return new Attribute(get: fn() => strtolower(class_basename($this)) . 's');
+        return new Attribute(get: fn () => strtolower(class_basename($this)).'s');
     }
 
     public function attachmentPath(): Attribute
     {
-        return new Attribute(get: fn() => attachment_path($this->view_directory_name . '/' . $this->id));
+        return new Attribute(get: fn () => attachment_path($this->view_directory_name.'/'.$this->id));
     }
 
     public function attachmentPermissionOptions(): Attribute
     {
-        return new Attribute(get: fn() => [
+        return new Attribute(get: fn () => [
             '0' => trans('bt.not_visible'),
             '1' => trans('bt.visible'),
             '2' => trans('bt.visible_after_payment'),
@@ -206,72 +205,73 @@ class Document extends Model
 
     public function formattedCreatedAt(): Attribute
     {
-        return new Attribute(get: fn() => DateFormatter::format($this->created_at));
+        return new Attribute(get: fn () => DateFormatter::format($this->created_at));
     }
 
     public function formattedDocumentDate(): Attribute
     {
-        return new Attribute(get: fn() => DateFormatter::format($this->document_date));
+        return new Attribute(get: fn () => DateFormatter::format($this->document_date));
     }
 
     public function formattedActionDate(): Attribute
     {
-        return new Attribute(get: fn() => DateFormatter::format($this->action_date));
+        return new Attribute(get: fn () => DateFormatter::format($this->action_date));
     }
 
     public function formattedTerms(): Attribute
     {
-        return new Attribute(get: fn() => nl2br($this->terms));
+        return new Attribute(get: fn () => nl2br($this->terms));
     }
 
     public function formattedFooter(): Attribute
     {
-        return new Attribute(get: fn() => nl2br($this->footer));
+        return new Attribute(get: fn () => nl2br($this->footer));
     }
 
     public function lowerCaseBaseclass(): Attribute
     {
-        return new Attribute(get: fn() => strtolower(class_basename($this)));
+        return new Attribute(get: fn () => strtolower(class_basename($this)));
     }
 
     public function statusText(): Attribute
     {
         $statuses = DocumentStatuses::statuses();
-        return new Attribute(get: fn() => $statuses[$this->document_status_id]);
+
+        return new Attribute(get: fn () => $statuses[$this->document_status_id]);
     }
 
     public function pdfFilename(): Attribute
     {
-        return new Attribute(get: fn() => FileNames::document($this));
+        return new Attribute(get: fn () => FileNames::document($this));
     }
 
     public function publicUrl(): Attribute
     {
-        return new Attribute(get: fn() => route('clientCenter.public.' . strtolower($this->module_type) . '.show', [$this->url_key]));
+        return new Attribute(get: fn () => route('clientCenter.public.'.strtolower($this->module_type).'.show', [$this->url_key]));
     }
 
-//    public function isForeignCurrency(): Attribute
-//    {
-//        if ($this->currency_code == config('bt.baseCurrency'))
-//        {
-//            return new Attribute(get: fn() => False);
-//        }
-//        return new Attribute(get: fn() => True);
-//    }
+    //    public function isForeignCurrency(): Attribute
+    //    {
+    //        if ($this->currency_code == config('bt.baseCurrency'))
+    //        {
+    //            return new Attribute(get: fn() => False);
+    //        }
+    //        return new Attribute(get: fn() => True);
+    //    }
 
     public function html(): Attribute
     {
-        return new Attribute(get: fn() => HTML::document($this));
+        return new Attribute(get: fn () => HTML::document($this));
     }
 
     public function formattedNumericDiscount(): Attribute
     {
-        return new Attribute(get: fn() => NumberFormatter::format($this->discount));
+        return new Attribute(get: fn () => NumberFormatter::format($this->discount));
     }
 
     public function formattedSummary(): Attribute
     {
-        return new Attribute(get: fn() => mb_strimwidth((string)$this->summary, 0, 50, '...'));
+        return new Attribute(get: fn () => mb_strimwidth((string) $this->summary, 0, 50, '...'));
     }
 
     /**
@@ -287,7 +287,7 @@ class Document extends Model
             if ($item->taxRate) {
                 $key = $item->taxRate->name;
 
-                if (!isset($taxes[$key])) {
+                if (! isset($taxes[$key])) {
                     $taxes[$key] = new \stdClass();
                     $taxes[$key]->name = $item->taxRate->name;
                     $taxes[$key]->percent = $item->taxRate->formatted_percent;
@@ -301,7 +301,7 @@ class Document extends Model
             if ($item->taxRate2) {
                 $key = $item->taxRate2->name;
 
-                if (!isset($taxes[$key])) {
+                if (! isset($taxes[$key])) {
                     $taxes[$key] = new \stdClass();
                     $taxes[$key]->name = $item->taxRate2->name;
                     $taxes[$key]->percent = $item->taxRate2->formatted_percent;
@@ -317,7 +317,7 @@ class Document extends Model
             $taxes[$key]->total = CurrencyFormatter::format($tax->total, $this->currency);
         }
 
-        return new Attribute(get: fn() => $taxes);
+        return new Attribute(get: fn () => $taxes);
     }
 
     /*
@@ -349,7 +349,6 @@ class Document extends Model
 
         return $query;
     }
-
 
     public function scopeCompanyProfileId($query, $companyProfileId)
     {
@@ -457,8 +456,8 @@ class Document extends Model
 
     public function scopeYearToDate($query)
     {
-        return $query->where('document_date', '>=', date('Y') . '-01-01')
-            ->where('document_date', '<=', date('Y') . '-12-31');
+        return $query->where('document_date', '>=', date('Y').'-01-01')
+            ->where('document_date', '<=', date('Y').'-12-31');
     }
 
     public function scopeThisQuarter($query)
@@ -478,12 +477,12 @@ class Document extends Model
         if ($keywords) {
             $keywords = strtolower($keywords);
 
-            $query->where(DB::raw('lower(number)'), 'like', '%' . $keywords . '%')
-                ->orWhere('documents.document_date', 'like', '%' . $keywords . '%')
-                ->orWhere('action_date', 'like', '%' . $keywords . '%')
-                ->orWhere('summary', 'like', '%' . $keywords . '%')
+            $query->where(DB::raw('lower(number)'), 'like', '%'.$keywords.'%')
+                ->orWhere('documents.document_date', 'like', '%'.$keywords.'%')
+                ->orWhere('action_date', 'like', '%'.$keywords.'%')
+                ->orWhere('summary', 'like', '%'.$keywords.'%')
                 ->orWhereIn('client_id', function ($query) use ($keywords) {
-                    $query->select('id')->from('clients')->where(DB::raw("CONCAT_WS('^',LOWER(name),LOWER(unique_name))"), 'like', '%' . $keywords . '%');
+                    $query->select('id')->from('clients')->where(DB::raw("CONCAT_WS('^',LOWER(name),LOWER(unique_name))"), 'like', '%'.$keywords.'%');
                 });
         }
 

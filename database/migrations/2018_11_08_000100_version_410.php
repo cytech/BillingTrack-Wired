@@ -5,9 +5,9 @@ use Illuminate\Database\Migrations\Migration;
 
 class Version410 extends Migration
 {
-
     /**
      * Run the migrations.
+     *
      * @table payments_custom
      *
      * @return void
@@ -20,7 +20,7 @@ class Version410 extends Migration
         Setting::saveByKey('jquiTheme', 'cupertino');
         Setting::saveByKey('resultsPerPage', 10);
         Setting::saveByKey('enabledModules', '63');
-        Setting::saveByKey('skin','{"headBackground":"purple","headClass":"dark","sidebarBackground":"white","sidebarClass":"light"}');
+        Setting::saveByKey('skin', '{"headBackground":"purple","headClass":"dark","sidebarBackground":"white","sidebarClass":"light"}');
         Setting::saveByKey('version', '4.1.0');
 
     }
@@ -30,8 +30,8 @@ class Version410 extends Migration
      *
      * @return void
      */
-     public function down()
-     {
-       //
-     }
+    public function down()
+    {
+        //
+    }
 }

@@ -6,8 +6,6 @@
  *  *
  *  * For the full copyright and license information, please view the LICENSE
  *  * file that was distributed with this source code.
- *
- *
  */
 
 namespace BT\Modules\Employees\Requests;
@@ -16,10 +14,10 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class EmployeeRequest extends FormRequest
 {
-	protected $rules = [
-		'first_name' => 'required',
-		'last_name' => 'required',
-	];
+    protected $rules = [
+        'first_name' => 'required',
+        'last_name' => 'required',
+    ];
 
     /**
      * Determine if the user is authorized to make this request.
@@ -36,18 +34,19 @@ class EmployeeRequest extends FormRequest
      *
      * @return array
      */
-	public function rules() {
-			$this->rules['number'] = 'required|integer|unique:employees,number,'.$this->id;
-			return $this->rules;
-	}
+    public function rules()
+    {
+        $this->rules['number'] = 'required|integer|unique:employees,number,'.$this->id;
 
-	public function messages()
-	{
-		return [
-			'number.required' => trans('bt.validation_employee_number_required'),
-			'number.integer' => trans('bt.validation_employee_number_integer'),
-			'number.unique' => trans('bt.validation_employee_number_unique'),
-		];
-	}
+        return $this->rules;
+    }
 
+    public function messages()
+    {
+        return [
+            'number.required' => trans('bt.validation_employee_number_required'),
+            'number.integer' => trans('bt.validation_employee_number_integer'),
+            'number.unique' => trans('bt.validation_employee_number_unique'),
+        ];
+    }
 }

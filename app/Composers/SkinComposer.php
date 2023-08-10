@@ -15,13 +15,13 @@ class SkinComposer
 {
     public function compose($view)
     {
-        $defaultSkin = json_decode('{"headBackground":"purple","headClass":"light","sidebarMode":"open"}',true);
+        $defaultSkin = json_decode('{"headBackground":"purple","headClass":"light","sidebarMode":"open"}', true);
 
-        $skin = (config('bt.skin') ? json_decode(config('bt.skin'),true) : $defaultSkin);
+        $skin = (config('bt.skin') ? json_decode(config('bt.skin'), true) : $defaultSkin);
 
         //default BS5 light and dark color-modes
         if ($skin['headBackground'] != 'light' && $skin['headBackground'] != 'dark') {
-            $skin['headBackground'] = $skin['headBackground'] . '-' . $skin['headClass'];
+            $skin['headBackground'] = $skin['headBackground'].'-'.$skin['headClass'];
         }
 
         if ($skin['sidebarMode'] == 'open') {

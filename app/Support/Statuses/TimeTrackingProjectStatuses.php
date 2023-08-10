@@ -17,6 +17,6 @@ class TimeTrackingProjectStatuses extends AbstractStatuses
         '0' => 'all_statuses',
         '1' => 'active',
         '2' => 'inactive',
-        '3' => 'canceled'
+        '3' => 'canceled',
     ];
 }

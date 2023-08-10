@@ -31,7 +31,7 @@ class ExpenseBillController extends Controller
         $invoices = [];
 
         foreach ($clientInvoices as $invoice) {
-            $invoices[$invoice->id] = $invoice->formatted_created_at . ' - ' . $invoice->number . ' ' . $invoice->summary;
+            $invoices[$invoice->id] = $invoice->formatted_created_at.' - '.$invoice->number.' '.$invoice->summary;
         }
 
         return view('expenses._modal_bill')
@@ -50,11 +50,11 @@ class ExpenseBillController extends Controller
 
         if (request('add_line_item')) {
             $item = [
-                'document_id'  => request('invoice_id'),
-                'name'        => request('item_name'),
+                'document_id' => request('invoice_id'),
+                'name' => request('item_name'),
                 'description' => request('item_description'),
-                'quantity'    => 1,
-                'price'       => $expense->amount,
+                'quantity' => 1,
+                'price' => $expense->amount,
             ];
 
             DocumentItem::create($item);

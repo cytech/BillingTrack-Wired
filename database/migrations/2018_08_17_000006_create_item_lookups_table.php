@@ -1,26 +1,30 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateItemLookupsTable extends Migration
 {
     /**
      * Schema table name to migrate
+     *
      * @var string
      */
     public $set_schema_table = 'item_lookups';
 
     /**
      * Run the migrations.
+     *
      * @table item_lookups
      *
      * @return void
      */
     public function up()
     {
-        if (Schema::hasTable($this->set_schema_table)) return;
+        if (Schema::hasTable($this->set_schema_table)) {
+            return;
+        }
         Schema::create($this->set_schema_table, function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
@@ -32,9 +36,9 @@ class CreateItemLookupsTable extends Migration
             $table->string('resource_table')->nullable()->default(null);
             $table->unsignedInteger('resource_id')->nullable()->default(null);
 
-            $table->index(["tax_rate_id"], 'item_lookups_tax_rate_id_index');
+            $table->index(['tax_rate_id'], 'item_lookups_tax_rate_id_index');
 
-            $table->index(["tax_rate_2_id"], 'item_lookups_tax_rate_2_id_index');
+            $table->index(['tax_rate_2_id'], 'item_lookups_tax_rate_2_id_index');
             $table->softDeletes();
             $table->nullableTimestamps();
         });
@@ -45,8 +49,8 @@ class CreateItemLookupsTable extends Migration
      *
      * @return void
      */
-     public function down()
-     {
-       Schema::dropIfExists($this->set_schema_table);
-     }
+    public function down()
+    {
+        Schema::dropIfExists($this->set_schema_table);
+    }
 }

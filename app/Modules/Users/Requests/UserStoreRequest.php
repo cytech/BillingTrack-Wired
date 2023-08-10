@@ -23,20 +23,20 @@ class UserStoreRequest extends FormRequest
     public function attributes()
     {
         return [
-            'email'    => trans('bt.email'),
+            'email' => trans('bt.email'),
             'password' => trans('bt.password'),
-            'client_name'     => trans('bt.name'),
-            'name'     => trans('bt.name'),
+            'client_name' => trans('bt.name'),
+            'name' => trans('bt.name'),
         ];
     }
 
     public function rules()
     {
         return [
-            'email'    => 'sometimes|required|email|unique:users',
+            'email' => 'sometimes|required|email|unique:users',
             'password' => 'required|confirmed|min:6',
-            'client_name'     => 'sometimes|required',
-            'name'     => 'sometimes|required',
+            'client_name' => 'sometimes|required',
+            'name' => 'sometimes|required',
         ];
     }
 }

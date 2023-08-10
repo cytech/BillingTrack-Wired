@@ -4,15 +4,15 @@ use BT\Modules\Categories\Models\Category;
 use BT\Modules\CustomFields\Models\VendorCustom;
 use BT\Modules\Products\Models\Product;
 use BT\Modules\Vendors\Models\Vendor;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class Version5102 extends Migration
 {
-
     /**
      * Run the migrations.
+     *
      * @table payments_custom
      *
      * @return void
@@ -21,13 +21,12 @@ class Version5102 extends Migration
     {
         Schema::disableForeignKeyConstraints();
 
-
         Schema::rename('expense_categories', 'categories');
         Schema::rename('expense_vendors', 'vendors');
 
         Schema::table('products', function (Blueprint $table) {
             $table->unsignedInteger('category_id')->after('cost')->nullable()->default(null);
-            $table->index(["category_id"], 'products_category_id_index');
+            $table->index(['category_id'], 'products_category_id_index');
             $table->foreign('category_id', 'products_category_id_index')
                 ->references('id')->on('categories')
                 ->onDelete('restrict')
@@ -37,11 +36,11 @@ class Version5102 extends Migration
         $products = Product::all();
         $categories = Category::all();
 
-        foreach ($products as $item){
-            if ($categories->contains('name', $item->category)){
+        foreach ($products as $item) {
+            if ($categories->contains('name', $item->category)) {
                 $item->category_id = $categories->where('name', $item->category)->first()->id;
                 $item->save();
-            }else{
+            } else {
                 $category = new Category();
                 $category->name = $item->category;
                 $category->save();
@@ -78,9 +77,8 @@ class Version5102 extends Migration
             $table->string('vat_number')->nullable()->default(null)->after('id_number');
             $table->unsignedInteger('paymentterm_id')->nullable()->default(1)->after('vat_number');
 
-
-            $table->index(["active"], 'vendors_active_index');
-            $table->index(["name"], 'vendors_name_index');
+            $table->index(['active'], 'vendors_active_index');
+            $table->index(['name'], 'vendors_name_index');
 
             $table->foreign('paymentterm_id')->references('id')->on('payment_terms')->onDelete('no action')->onUpdate('no action');
         });
@@ -103,11 +101,10 @@ class Version5102 extends Migration
             $table->tinyInteger('is_primary')->default(0);
             $table->tinyInteger('optin')->default(1);
 
-            $table->index(["vendor_id"], 'contacts_vendor_id_index');
+            $table->index(['vendor_id'], 'contacts_vendor_id_index');
 
             $table->softDeletes();
             $table->nullableTimestamps();
-
 
             $table->foreign('vendor_id', 'contacts_vendor_id_index')
                 ->references('id')->on('vendors')
@@ -124,7 +121,6 @@ class Version5102 extends Migration
             $table->softDeletes();
             $table->nullableTimestamps();
 
-
             $table->foreign('vendor_id', 'vendors_custom_vendor_id')
                 ->references('id')->on('vendors')
                 ->onDelete('cascade')
@@ -134,15 +130,15 @@ class Version5102 extends Migration
         //create existing vendor custom default record
         $vendors = Vendor::all();
 
-        foreach ($vendors as $vendor){
+        foreach ($vendors as $vendor) {
             $vendor->custom()->save(new VendorCustom());
         }
 
         //copy product cost to price
         $products = Product::all();
 
-        foreach ($products as $product){
-            if (!$product->price || empty($product->price) || is_null($product->price)){
+        foreach ($products as $product) {
+            if (! $product->price || empty($product->price) || is_null($product->price)) {
                 $product->price = $product->cost;
                 $product->save();
             }
@@ -158,8 +154,8 @@ class Version5102 extends Migration
      */
     public function down()
     {
-        Schema::rename('categories','expense_categories');
-        Schema::rename('vendors','expense_vendors');
+        Schema::rename('categories', 'expense_categories');
+        Schema::rename('vendors', 'expense_vendors');
 
     }
 }

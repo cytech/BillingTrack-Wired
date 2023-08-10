@@ -11,16 +11,16 @@
 namespace BT\Support\SixtoSeven\Models;
 
 use Askedio\SoftCascade\Traits\SoftCascadeTrait;
-use Carbon\Carbon;
 use BT\Support\CurrencyFormatter;
 use BT\Support\DateFormatter;
 use BT\Support\FileNames;
 use BT\Support\HTML;
 use BT\Support\NumberFormatter;
 use BT\Support\SixtoSeven\Statuses\WorkorderStatuses;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
 
 class Workorder extends Model
 {
@@ -32,7 +32,7 @@ class Workorder extends Model
 
     protected $appends = ['formatted_workorder_date', 'formatted_expires_at', 'formatted_job_date', 'status_text', 'formatted_summary'];
 
-    protected $casts = ['expires_at' => 'datetime', 'workorder_date' => 'datetime','job_date' => 'datetime', 'deleted_at' => 'datetime'];
+    protected $casts = ['expires_at' => 'datetime', 'workorder_date' => 'datetime', 'job_date' => 'datetime', 'deleted_at' => 'datetime'];
 
     /*
     |--------------------------------------------------------------------------
@@ -141,7 +141,7 @@ class Workorder extends Model
 
     public function getAttachmentPathAttribute()
     {
-        return attachment_path('workorders/' . $this->id);
+        return attachment_path('workorders/'.$this->id);
     }
 
     public function getAttachmentPermissionOptionsAttribute()
@@ -192,7 +192,8 @@ class Workorder extends Model
         $datetime1 = new \DateTime($this->attributes['start_time']);
         $datetime2 = new \DateTime($this->attributes['end_time']);
         $interval = $datetime1->diff($datetime2);
-        return $interval->h+$interval->i/60;//return decimal hours
+
+        return $interval->h + $interval->i / 60; //return decimal hours
 
     }
 
@@ -220,8 +221,7 @@ class Workorder extends Model
 
     public function getIsForeignCurrencyAttribute()
     {
-        if ($this->attributes['currency_code'] == config('bt.baseCurrency'))
-        {
+        if ($this->attributes['currency_code'] == config('bt.baseCurrency')) {
             return false;
         }
 
@@ -238,8 +238,9 @@ class Workorder extends Model
         return NumberFormatter::format($this->attributes['discount']);
     }
 
-    public function  getFormattedSummaryAttribute(){
-        return mb_strimwidth($this->attributes['summary'],0,50,'...');
+    public function getFormattedSummaryAttribute()
+    {
+        return mb_strimwidth($this->attributes['summary'], 0, 50, '...');
     }
 
     /**
@@ -251,47 +252,37 @@ class Workorder extends Model
     {
         $taxes = [];
 
-        foreach ($this->items as $item)
-        {
-            if ($item->taxRate)
-            {
+        foreach ($this->items as $item) {
+            if ($item->taxRate) {
                 $key = $item->taxRate->name;
 
-                if (!isset($taxes[$key]))
-                {
-                    $taxes[$key]              = new \stdClass();
-                    $taxes[$key]->name        = $item->taxRate->name;
-                    $taxes[$key]->percent     = $item->taxRate->formatted_percent;
-                    $taxes[$key]->total       = $item->amount->tax_1;
+                if (! isset($taxes[$key])) {
+                    $taxes[$key] = new \stdClass();
+                    $taxes[$key]->name = $item->taxRate->name;
+                    $taxes[$key]->percent = $item->taxRate->formatted_percent;
+                    $taxes[$key]->total = $item->amount->tax_1;
                     $taxes[$key]->raw_percent = $item->taxRate->percent;
-                }
-                else
-                {
+                } else {
                     $taxes[$key]->total += $item->amount->tax_1;
                 }
             }
 
-            if ($item->taxRate2)
-            {
+            if ($item->taxRate2) {
                 $key = $item->taxRate2->name;
 
-                if (!isset($taxes[$key]))
-                {
-                    $taxes[$key]              = new \stdClass();
-                    $taxes[$key]->name        = $item->taxRate2->name;
-                    $taxes[$key]->percent     = $item->taxRate2->formatted_percent;
-                    $taxes[$key]->total       = $item->amount->tax_2;
+                if (! isset($taxes[$key])) {
+                    $taxes[$key] = new \stdClass();
+                    $taxes[$key]->name = $item->taxRate2->name;
+                    $taxes[$key]->percent = $item->taxRate2->formatted_percent;
+                    $taxes[$key]->total = $item->amount->tax_2;
                     $taxes[$key]->raw_percent = $item->taxRate2->percent;
-                }
-                else
-                {
+                } else {
                     $taxes[$key]->total += $item->amount->tax_2;
                 }
             }
         }
 
-        foreach ($taxes as $key => $tax)
-        {
+        foreach ($taxes as $key => $tax) {
             $taxes[$key]->total = CurrencyFormatter::format($tax->total, $this->currency);
         }
 
@@ -318,8 +309,7 @@ class Workorder extends Model
 
     public function scopeClientId($query, $clientId = null)
     {
-        if ($clientId)
-        {
+        if ($clientId) {
             $query->where('client_id', $clientId);
         }
 
@@ -328,8 +318,7 @@ class Workorder extends Model
 
     public function scopeCompanyProfileId($query, $companyProfileId)
     {
-        if ($companyProfileId)
-        {
+        if ($companyProfileId) {
             $query->where('company_profile_id', $companyProfileId);
         }
 
@@ -354,7 +343,7 @@ class Workorder extends Model
     public function scopeSentOrApproved($query)
     {
         return $query->where('workorder_status_id', '=', WorkorderStatuses::getStatusId('sent'))
-                     ->orWhere('workorder_status_id', '=', WorkorderStatuses::getStatusId('approved'));
+            ->orWhere('workorder_status_id', '=', WorkorderStatuses::getStatusId('approved'));
     }
 
     public function scopeRejected($query)
@@ -369,8 +358,7 @@ class Workorder extends Model
 
     public function scopeStatus($query, $status = null)
     {
-        switch ($status)
-        {
+        switch ($status) {
             case 'draft':
                 $query->draft();
                 break;
@@ -396,8 +384,8 @@ class Workorder extends Model
 
     public function scopeYearToDate($query)
     {
-        return $query->where('workorder_date', '>=', date('Y') . '-01-01')
-            ->where('workorder_date', '<=', date('Y') . '-12-31');
+        return $query->where('workorder_date', '>=', date('Y').'-01-01')
+            ->where('workorder_date', '<=', date('Y').'-12-31');
     }
 
     public function scopeThisQuarter($query)
@@ -414,17 +402,15 @@ class Workorder extends Model
 
     public function scopeKeywords($query, $keywords)
     {
-        if ($keywords)
-        {
+        if ($keywords) {
             $keywords = strtolower($keywords);
 
-            $query->where(DB::raw('lower(number)'), 'like', '%' . $keywords . '%')
-                ->orWhere('workorders.workorder_date', 'like', '%' . $keywords . '%')
-                ->orWhere('expires_at', 'like', '%' . $keywords . '%')
-                ->orWhere('summary', 'like', '%' . $keywords . '%')
-                ->orWhereIn('client_id', function ($query) use ($keywords)
-                {
-                    $query->select('id')->from('clients')->where(DB::raw("CONCAT_WS('^',LOWER(name),LOWER(unique_name))"), 'like', '%' . $keywords . '%');
+            $query->where(DB::raw('lower(number)'), 'like', '%'.$keywords.'%')
+                ->orWhere('workorders.workorder_date', 'like', '%'.$keywords.'%')
+                ->orWhere('expires_at', 'like', '%'.$keywords.'%')
+                ->orWhere('summary', 'like', '%'.$keywords.'%')
+                ->orWhereIn('client_id', function ($query) use ($keywords) {
+                    $query->select('id')->from('clients')->where(DB::raw("CONCAT_WS('^',LOWER(name),LOWER(unique_name))"), 'like', '%'.$keywords.'%');
                 });
         }
 

@@ -14,9 +14,9 @@ namespace BT\Modules\CompanyProfiles\Models;
 use Askedio\SoftCascade\Traits\SoftCascadeTrait;
 use BT\Modules\Currencies\Models\Currency;
 use BT\Modules\CustomFields\Models\CompanyProfileCustom;
-use BT\Modules\Expenses\Models\Expense;
 use BT\Modules\Documents\Models\Invoice;
 use BT\Modules\Documents\Models\Quote;
+use BT\Modules\Expenses\Models\Expense;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -26,7 +26,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class CompanyProfile extends Model
 {
     use SoftDeletes;
-
     use SoftCascadeTrait;
 
     protected $softCascade = ['custom'];
@@ -83,21 +82,21 @@ class CompanyProfile extends Model
 
     public function formattedAddress(): Attribute
     {
-        return new Attribute(get: fn() => nl2br(formatAddress($this)));
+        return new Attribute(get: fn () => nl2br(formatAddress($this)));
     }
 
     public function formattedAddress2(): Attribute
     {
-        return new Attribute(get: fn() => nl2br(formatAddress2($this)));
+        return new Attribute(get: fn () => nl2br(formatAddress2($this)));
     }
-
 
     public function logoUrl(): Attribute
     {
         if ($this->logo) {
-            return new Attribute(get: fn() => route('companyProfiles.logo', [$this->id]));
+            return new Attribute(get: fn () => route('companyProfiles.logo', [$this->id]));
         }
-        return new Attribute(get: fn() => null);
+
+        return new Attribute(get: fn () => null);
     }
 
     public function logo($width = null, $height = null)
@@ -107,13 +106,13 @@ class CompanyProfile extends Model
 
             $style = '';
 
-            if ($width and !$height) {
-                $style = 'width: ' . $width . 'px;';
+            if ($width and ! $height) {
+                $style = 'width: '.$width.'px;';
             } elseif ($width and $height) {
-                $style = 'width: ' . $width . 'px; height: ' . $height . 'px;';
+                $style = 'width: '.$width.'px; height: '.$height.'px;';
             }
 
-            return '<img id="cp-logo" src="data:image/png;base64,' . $logo . '" style="' . $style . '">';
+            return '<img id="cp-logo" src="data:image/png;base64,'.$logo.'" style="'.$style.'">';
         }
 
         return null;

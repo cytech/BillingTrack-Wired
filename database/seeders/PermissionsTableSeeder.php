@@ -4,12 +4,10 @@ namespace Database\Seeders;
 
 use Eloquent;
 use Illuminate\Database\Seeder;
-use phpDocumentor\Reflection\Types\Static_;
 use Spatie\Permission\Models\Permission;
 
 class PermissionsTableSeeder extends Seeder
 {
-
     public static $modules = [
         'Client',
         'Quote',
@@ -42,7 +40,7 @@ class PermissionsTableSeeder extends Seeder
      */
     public function run()
     {
-        if (Permission::exists()){
+        if (Permission::exists()) {
             return;
         }
 
@@ -60,19 +58,19 @@ class PermissionsTableSeeder extends Seeder
             ['name' => 'view_users', 'description' => 'View Users', 'group' => 'ACL.Users', 'guard_name' => 'web'],
             ['name' => 'create_users', 'description' => 'Create Users', 'group' => 'ACL.Users', 'guard_name' => 'web'],
             ['name' => 'edit_users', 'description' => 'Edit Users', 'group' => 'ACL.Users', 'guard_name' => 'web'],
-            ['name' => 'delete_users', 'description' => 'Delete Users', 'group' => 'ACL.Users', 'guard_name' => 'web']
+            ['name' => 'delete_users', 'description' => 'Delete Users', 'group' => 'ACL.Users', 'guard_name' => 'web'],
         ];
 
         foreach (static::$modules as $module) {
             //$perms += ['name' => 'view_' . $module, 'description' => 'View ' . $module . ' Information', 'guard_name' => 'web'];
-            $perms[] = ['name' => 'view_' . $module, 'description' => 'View ' . $module . ' Information', 'group' => 'Modules.' . $module, 'guard_name' => 'web'];
-            $perms[] = ['name' => 'create_' . $module, 'description' => 'Create a new ' . $module, 'group' => 'Modules.' . $module, 'guard_name' => 'web'];
-            $perms[] = ['name' => 'edit_' . $module, 'description' => 'Edit ' . $module . ' Information', 'group' => 'Modules.' . $module, 'guard_name' => 'web'];
-            $perms[] = ['name' => 'delete_' . $module, 'description' => 'Delete a ' . $module, 'group' => 'Modules.' . $module, 'guard_name' => 'web'];
+            $perms[] = ['name' => 'view_'.$module, 'description' => 'View '.$module.' Information', 'group' => 'Modules.'.$module, 'guard_name' => 'web'];
+            $perms[] = ['name' => 'create_'.$module, 'description' => 'Create a new '.$module, 'group' => 'Modules.'.$module, 'guard_name' => 'web'];
+            $perms[] = ['name' => 'edit_'.$module, 'description' => 'Edit '.$module.' Information', 'group' => 'Modules.'.$module, 'guard_name' => 'web'];
+            $perms[] = ['name' => 'delete_'.$module, 'description' => 'Delete a '.$module, 'group' => 'Modules.'.$module, 'guard_name' => 'web'];
         }
 
         foreach (static::$reports as $report) {
-            $perms[] = ['name' => 'view_' . $report, 'description' => 'View ' . $report , 'group' => 'Reports', 'guard_name' => 'web'];
+            $perms[] = ['name' => 'view_'.$report, 'description' => 'View '.$report, 'group' => 'Reports', 'guard_name' => 'web'];
         }
 
         foreach ($perms as $perm) {

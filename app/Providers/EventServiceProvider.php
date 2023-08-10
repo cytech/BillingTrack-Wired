@@ -44,9 +44,9 @@ class EventServiceProvider extends ServiceProvider
             'BT\Events\Listeners\InvoiceCreatedRecurringListener',
         ],
 
-//        'BT\Events\RecurringInvoiceModified' => [
-//            'BT\Events\Listeners\RecurringInvoiceModifiedListener',
-//        ],
+        //        'BT\Events\RecurringInvoiceModified' => [
+        //            'BT\Events\Listeners\RecurringInvoiceModifiedListener',
+        //        ],
     ];
 
     /**

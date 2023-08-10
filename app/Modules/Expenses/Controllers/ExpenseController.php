@@ -12,11 +12,11 @@
 namespace BT\Modules\Expenses\Controllers;
 
 use BT\Http\Controllers\Controller;
+use BT\Modules\Categories\Models\Category;
 use BT\Modules\Clients\Models\Client;
 use BT\Modules\CompanyProfiles\Models\CompanyProfile;
 use BT\Modules\CustomFields\Models\CustomField;
 use BT\Modules\Expenses\Models\Expense;
-use BT\Modules\Categories\Models\Category;
 use BT\Modules\Expenses\Requests\ExpenseRequest;
 use BT\Modules\Vendors\Models\Vendor;
 use BT\Support\NumberFormatter;
@@ -120,7 +120,6 @@ class ExpenseController extends Controller
             ->with('alertSuccess', trans('bt.record_successfully_updated'));
     }
 
-
     public function delete($id)
     {
         Expense::destroy($id);
@@ -132,6 +131,7 @@ class ExpenseController extends Controller
     public function bulkDelete()
     {
         Expense::destroy(request('ids'));
+
         return response()->json(['success' => trans('bt.record_successfully_trashed')], 200);
 
     }

@@ -1,26 +1,30 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreatePurchaseordersTable extends Migration
 {
     /**
      * Schema table name to migrate
+     *
      * @var string
      */
     public $set_schema_table = 'purchaseorders';
 
     /**
      * Run the migrations.
+     *
      * @table purchaseorders
      *
      * @return void
      */
     public function up()
     {
-        if (Schema::hasTable($this->set_schema_table)) return;
+        if (Schema::hasTable($this->set_schema_table)) {
+            return;
+        }
         Schema::create($this->set_schema_table, function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
@@ -44,18 +48,17 @@ class CreatePurchaseordersTable extends Migration
             $table->decimal('discount', 15, 2)->default('0.00');
             $table->unsignedInteger('company_profile_id')->nullable();
 
-            $table->index(["user_id"], 'purchaseorders_user_id_index');
+            $table->index(['user_id'], 'purchaseorders_user_id_index');
 
-            $table->index(["group_id"], 'purchaseorders_purchaseorder_group_id_index');
+            $table->index(['group_id'], 'purchaseorders_purchaseorder_group_id_index');
 
-            $table->index(["vendor_id"], 'purchaseorders_vendor_id_index');
+            $table->index(['vendor_id'], 'purchaseorders_vendor_id_index');
 
-            $table->index(["company_profile_id"], 'purchaseorders_company_profile_id_index');
+            $table->index(['company_profile_id'], 'purchaseorders_company_profile_id_index');
 
-            $table->index(["purchaseorder_status_id"], 'purchaseorders_purchaseorder_status_id_index');
+            $table->index(['purchaseorder_status_id'], 'purchaseorders_purchaseorder_status_id_index');
             $table->softDeletes();
             $table->nullableTimestamps();
-
 
             $table->foreign('vendor_id', 'purchaseorders_vendor_id_index')
                 ->references('id')->on('vendors')
@@ -84,8 +87,8 @@ class CreatePurchaseordersTable extends Migration
      *
      * @return void
      */
-     public function down()
-     {
-       Schema::dropIfExists($this->set_schema_table);
-     }
+    public function down()
+    {
+        Schema::dropIfExists($this->set_schema_table);
+    }
 }

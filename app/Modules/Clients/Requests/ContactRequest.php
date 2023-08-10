@@ -23,7 +23,7 @@ class ContactRequest extends FormRequest
     public function attributes()
     {
         return [
-            'name'  => trans('bt.name'),
+            'name' => trans('bt.name'),
             'email' => trans('bt.email'),
         ];
     }
@@ -31,7 +31,7 @@ class ContactRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'  => 'required',
+            'name' => 'required',
             'email' => 'required|email',
         ];
     }

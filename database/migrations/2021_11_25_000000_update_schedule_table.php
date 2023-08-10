@@ -10,6 +10,7 @@ class UpdateScheduleTable extends Migration
 {
     /**
      * Run the migrations.
+     *
      * @table payments_custom
      *
      * @return void
@@ -20,7 +21,7 @@ class UpdateScheduleTable extends Migration
         // changing resource relation to occurrence instead of schedule
         // remap resource to latest occurrence from schedule
         $resources = ScheduleResource::all();
-        foreach ($resources as $resource){
+        foreach ($resources as $resource) {
             $sched = Schedule::find($resource->schedule_id);
             $resource->schedule_id = $sched->latestOccurrence->oid;
             $resource->save();
@@ -39,7 +40,7 @@ class UpdateScheduleTable extends Migration
 
         $oldreminders = ScheduleReminderLegacy::all();
 
-        foreach ($oldreminders as $movereminder){
+        foreach ($oldreminders as $movereminder) {
             $movereminder->schedule->location_str = $movereminder->reminder_location;
             $movereminder->schedule->occurrence->reminder_date = $movereminder->reminder_date;
             $movereminder->schedule->save();
@@ -70,17 +71,17 @@ class UpdateScheduleTable extends Migration
      *
      * @return void
      */
-     public function down()
-     {
-         //no going back...
-//         Schema::table('schedule', function (Blueprint $table) {
-//             $table->dropColumn('location_str');
-//         });
-//
-//         Schema::table('schedule_occurences', function (Blueprint $table) {
-//             $table->dropColumn('reminder_qty');
-//             $table->dropColumn('reminder_interval');
-//             $table->dropColumn('reminder_date');
-//         });
-     }
+    public function down()
+    {
+        //no going back...
+        //         Schema::table('schedule', function (Blueprint $table) {
+        //             $table->dropColumn('location_str');
+        //         });
+        //
+        //         Schema::table('schedule_occurences', function (Blueprint $table) {
+        //             $table->dropColumn('reminder_qty');
+        //             $table->dropColumn('reminder_interval');
+        //             $table->dropColumn('reminder_date');
+        //         });
+    }
 }

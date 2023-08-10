@@ -23,9 +23,9 @@ use BT\Modules\PaymentTerms\Models\PaymentTerm;
 use BT\Modules\Users\Models\User;
 use BT\Support\CurrencyFormatter;
 use BT\Support\Statuses\DocumentStatuses;
+use DB;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
-use DB;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -57,9 +57,10 @@ class Vendor extends Model
             'id' => $id,
         ]);
 
-        if (!$vendor->id) {
+        if (! $vendor->id) {
             $vendor->name = $name;
             $vendor->save();
+
             return self::find($vendor->id);
         }
 
@@ -78,7 +79,6 @@ class Vendor extends Model
 
         return false;
     }
-
 
     /*
    |--------------------------------------------------------------------------
@@ -139,55 +139,56 @@ class Vendor extends Model
 
     public function attachmentPath(): Attribute
     {
-        return new Attribute(get: fn() => attachment_path('vendors/' . $this->id));
+        return new Attribute(get: fn () => attachment_path('vendors/'.$this->id));
     }
 
     public function attachmentPermissionOptions(): Attribute
     {
-        return new Attribute(get: fn() => ['0' => trans('bt.not_visible')]);
+        return new Attribute(get: fn () => ['0' => trans('bt.not_visible')]);
     }
 
     public function formattedBalance(): Attribute
     {
-        return new Attribute(get: fn() => CurrencyFormatter::format($this->balance, $this->currency));
+        return new Attribute(get: fn () => CurrencyFormatter::format($this->balance, $this->currency));
     }
 
     public function formattedPaid(): Attribute
     {
-        return new Attribute(get: fn() => CurrencyFormatter::format($this->paid, $this->currency));
+        return new Attribute(get: fn () => CurrencyFormatter::format($this->paid, $this->currency));
     }
 
     public function formattedTotal(): Attribute
     {
-        return new Attribute(get: fn() => CurrencyFormatter::format($this->total, $this->currency));
+        return new Attribute(get: fn () => CurrencyFormatter::format($this->total, $this->currency));
     }
 
     public function formattedAddress(): Attribute
     {
-        return new Attribute(get: fn() => nl2br(formatAddress($this)));
+        return new Attribute(get: fn () => nl2br(formatAddress($this)));
     }
 
     public function formattedAddress2(): Attribute
     {
-        return new Attribute(get: fn() => nl2br(formatAddress2($this)));
+        return new Attribute(get: fn () => nl2br(formatAddress2($this)));
     }
 
     public function vendorEmail(): Attribute
     {
-        return new Attribute(get: fn() => $this->email);
+        return new Attribute(get: fn () => $this->email);
     }
 
     public function vendorTerms(): Attribute
     {
         if ($this->paymentterm->id != 1) {
-            return new Attribute(get: fn() => $this->paymentterm->num_days);
-        } else
-            return new Attribute(get: fn() => config('bt.purchaseordersDueAfter'));
+            return new Attribute(get: fn () => $this->paymentterm->num_days);
+        } else {
+            return new Attribute(get: fn () => config('bt.purchaseordersDueAfter'));
+        }
     }
 
     public function formattedActive(): Attribute
     {
-        return new Attribute(get: fn() => $this->active ? trans('bt.yes') : trans('bt.no'));
+        return new Attribute(get: fn () => $this->active ? trans('bt.yes') : trans('bt.no'));
     }
 
     /*
@@ -199,9 +200,9 @@ class Vendor extends Model
     public function scopeGetSelect()
     {
         return self::select('vendors.*',
-            DB::raw('(' . $this->getBalanceSql() . ') as balance'),
-            DB::raw('(' . $this->getPaidSql() . ') AS paid'),
-            DB::raw('(' . $this->getTotalSql() . ') AS total')
+            DB::raw('('.$this->getBalanceSql().') as balance'),
+            DB::raw('('.$this->getPaidSql().') AS paid'),
+            DB::raw('('.$this->getTotalSql().') AS total')
         );
     }
 
@@ -244,7 +245,7 @@ class Vendor extends Model
         return DB::table('document_amounts')->select(DB::raw('sum(balance)'))->whereIn('document_id', function ($q) {
             $q->select('id')
                 ->from('documents')
-                ->where('documents.client_id', '=', DB::raw(DB::getTablePrefix() . 'vendors.id'))
+                ->where('documents.client_id', '=', DB::raw(DB::getTablePrefix().'vendors.id'))
                 ->where('documents.document_status_id', '<>', DB::raw(DocumentStatuses::getStatusId('canceled')))
                 ->whereNull('deleted_at');
         })->toSql();
@@ -254,8 +255,8 @@ class Vendor extends Model
     {
         return DB::table('document_amounts')->select(DB::raw('sum(paid)'))->whereIn('document_id', function ($q) {
             $q->select('id')->from('documents')
-                ->where('documents.client_id', '=', DB::raw(DB::getTablePrefix() . 'vendors.id'))
-                ->where('documents.document_type', '=', DB::raw('"' . addslashes(Purchaseorder::class) . '"'));;
+                ->where('documents.client_id', '=', DB::raw(DB::getTablePrefix().'vendors.id'))
+                ->where('documents.document_type', '=', DB::raw('"'.addslashes(Purchaseorder::class).'"'));
         })->toSql();
     }
 
@@ -263,8 +264,8 @@ class Vendor extends Model
     {
         return DB::table('document_amounts')->select(DB::raw('sum(total)'))->whereIn('document_id', function ($q) {
             $q->select('id')->from('documents')
-                ->where('documents.client_id', '=', DB::raw(DB::getTablePrefix() . 'vendors.id'))
-                ->where('documents.document_type', '=', DB::raw('"' . addslashes(Purchaseorder::class) . '"'));
+                ->where('documents.client_id', '=', DB::raw(DB::getTablePrefix().'vendors.id'))
+                ->where('documents.document_type', '=', DB::raw('"'.addslashes(Purchaseorder::class).'"'));
         })->toSql();
     }
 

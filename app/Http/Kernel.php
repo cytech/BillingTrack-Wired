@@ -53,17 +53,17 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $middlewareAliases = [
-        'auth'               => \Illuminate\Auth\Middleware\Authenticate::class,
-        'auth.admin'         => \BT\Http\Middleware\AuthenticateAdmin::class,
-        'auth.clientCenter'  => \BT\Http\Middleware\AuthenticateClientCenter::class,
-        'auth.basic'         => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
-        'auth.api'           => \BT\Http\Middleware\AuthenticateAPI::class,
-        'bindings'           => \Illuminate\Routing\Middleware\SubstituteBindings::class,
-        'can'                => \Illuminate\Auth\Middleware\Authorize::class,
-        'guest'              => \BT\Http\Middleware\RedirectIfAuthenticated::class,
-        'throttle'           => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-        'role'               => \Spatie\Permission\Middlewares\RoleMiddleware::class,
-        'permission'         => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
+        'auth' => \Illuminate\Auth\Middleware\Authenticate::class,
+        'auth.admin' => \BT\Http\Middleware\AuthenticateAdmin::class,
+        'auth.clientCenter' => \BT\Http\Middleware\AuthenticateClientCenter::class,
+        'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
+        'auth.api' => \BT\Http\Middleware\AuthenticateAPI::class,
+        'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
+        'can' => \Illuminate\Auth\Middleware\Authorize::class,
+        'guest' => \BT\Http\Middleware\RedirectIfAuthenticated::class,
+        'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
+        'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class,
+        'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
         'role_or_permission' => \Spatie\Permission\Middlewares\RoleOrPermissionMiddleware::class,
     ];
 }

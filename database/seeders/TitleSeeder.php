@@ -2,15 +2,15 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use BT\Modules\Titles\Models\Title;
 use Eloquent;
+use Illuminate\Database\Seeder;
 
 class TitleSeeder extends Seeder
 {
     public function run()
     {
-        if (Title::exists()){
+        if (Title::exists()) {
             return;
         }
 

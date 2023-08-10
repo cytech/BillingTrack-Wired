@@ -16,15 +16,14 @@ use Faker\Provider\Base;
 
 $factory->define(\BT\Modules\Products\Models\Product::class, function (Faker $faker) {
 
-
     return [
-        'name' => Commerce::productName(),//ucfirst($faker->word),
+        'name' => Commerce::productName(), //ucfirst($faker->word),
         'description' => $faker->sentence(6, false),
         'serialnum' => $faker->randomNumber(9),
         'active' => 1,
         'cost' => $faker->randomFloat(2, 19, 150),
         'inventorytype_id' => 7,
-        'numstock' => $faker->numberBetween(1,10),
+        'numstock' => $faker->numberBetween(1, 10),
     ];
 });
 
@@ -39,8 +38,7 @@ class Commerce extends Base
     public static function productName(): string
     {
         return static::randomElement(static::$productName['adjective'])
-            . ' ' . static::randomElement(static::$productName['material'])
-            . ' ' . static::randomElement(static::$productName['product']);
+            .' '.static::randomElement(static::$productName['material'])
+            .' '.static::randomElement(static::$productName['product']);
     }
-
 }

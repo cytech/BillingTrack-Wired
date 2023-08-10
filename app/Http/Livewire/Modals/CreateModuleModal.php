@@ -14,39 +14,82 @@ use Livewire\Component;
 
 class CreateModuleModal extends Component
 {
-    public $moduletype, $moduleop, $module_id, $modulefullname;
-    public $show, $readonly, $lineitem;
-    public $companyProfiles, $groups, $module_date, $resource_id, $resource_name, $group_id, $company_profile_id, $user_id;
-    public $frequencies, $next_date, $stop_date, $recurring_frequency, $recurring_period;
-    public $orig_resource_id, $orig_resource_name, $orig_group_id, $orig_company_profile_id;
+    public $moduletype;
+
+    public $moduleop;
+
+    public $module_id;
+
+    public $modulefullname;
+
+    public $show;
+
+    public $readonly;
+
+    public $lineitem;
+
+    public $companyProfiles;
+
+    public $groups;
+
+    public $module_date;
+
+    public $resource_id;
+
+    public $resource_name;
+
+    public $group_id;
+
+    public $company_profile_id;
+
+    public $user_id;
+
+    public $frequencies;
+
+    public $next_date;
+
+    public $stop_date;
+
+    public $recurring_frequency;
+
+    public $recurring_period;
+
+    public $orig_resource_id;
+
+    public $orig_resource_name;
+
+    public $orig_group_id;
+
+    public $orig_company_profile_id;
 
     // LivewireSelect sets 'name'(component name), 'value'(id), 'description'(name) and 'title'(name/unique_name)
     // from xxxSearch 'id' 'name' 'unique_name/name'
     // listeners then sets $this->resource_id from 'value' and $this->resource_name from 'description'
     protected $listeners = ['resource_idUpdated' => 'setResourceId',
-                            'descriptionUpdated' => 'setResourceName',];
+        'descriptionUpdated' => 'setResourceName', ];
 
     protected $rules = [
         'company_profile_id' => 'required|integer|exists:company_profiles,id',
-        'resource_id'        => 'required_without:resource_name',
-        'resource_name'      => 'required_without:resource_id',
-        'module_date'        => 'required',
-        'user_id'            => 'required',
-        'next_date'          => 'required'
+        'resource_id' => 'required_without:resource_name',
+        'resource_name' => 'required_without:resource_id',
+        'module_date' => 'required',
+        'user_id' => 'required',
+        'next_date' => 'required',
     ];
 
     /**
      * parameters sent by showModal array
+     *
      * @param $modulefullname
      * fully namespaced model
      * @param $moduleop
      * copy or create
-     * @param null $resource_id
+     * @param  null  $resource_id
      * resource id (client, vendor, etc)
-     * @param null $module_id
+     * @param  null  $module_id
      * module id (quote, workorder, etc)
-     * @param null $readonly
-     * @param null $lineitem
+     * @param  null  $readonly
+     * @param  null  $lineitem
      * item resource id to add item to module create - currently only purchaseorder item from Products
      */
     public function mount($modulefullname, $module_type, $moduleop, $resource_id = null, $module_id = null, $readonly = null, $lineitem = null)
@@ -63,8 +106,8 @@ class CreateModuleModal extends Component
             }
             $this->resource_id = $resource->id;
             $this->resource_name = $resource->name;
-            $this->emit('refreshSearch', ['searchTerm'  => $this->resource_name, 'value' => $this->resource_id,
-                                          'description' => $this->resource_name, 'optionsValues' => $this->resource_id]);
+            $this->emit('refreshSearch', ['searchTerm' => $this->resource_name, 'value' => $this->resource_id,
+                'description' => $this->resource_name, 'optionsValues' => $this->resource_id]);
         }
         if ($this->moduletype == 'Purchaseorder' && $lineitem) {
             $this->lineitem = Product::find($lineitem);
@@ -77,7 +120,7 @@ class CreateModuleModal extends Component
             $this->group_id = $module_model->group_id;
         } else {
             $this->company_profile_id = config('bt.defaultCompanyProfile');
-            $this->group_id = config('bt.' . lcfirst($this->moduletype) . 'Group');
+            $this->group_id = config('bt.'.lcfirst($this->moduletype).'Group');
         }
 
         if ($readonly) {
@@ -115,20 +158,20 @@ class CreateModuleModal extends Component
     {
         return [
             'company_profile_id' => trans('bt.company_profile'),
-            'resource_name'      => trans('bt.client'),
-            'resource_id'        => trans('bt.client'),
-            'user_id'            => trans('bt.user'),
-            'module_date'        => trans('bt.date'),
-            'group_id'           => trans('bt.group'),
-            'next_date'          => trans('bt.start_date'),
-            'stop_date'          => trans('bt.stop_date')
+            'resource_name' => trans('bt.client'),
+            'resource_id' => trans('bt.client'),
+            'user_id' => trans('bt.user'),
+            'module_date' => trans('bt.date'),
+            'group_id' => trans('bt.group'),
+            'next_date' => trans('bt.start_date'),
+            'stop_date' => trans('bt.stop_date'),
         ];
     }
 
     public function messages()
     {
         return [
-            'resource_name.required_without' => __('bt.validation_resource_name_required')
+            'resource_name.required_without' => __('bt.validation_resource_name_required'),
         ];
     }
 
@@ -149,15 +192,15 @@ class CreateModuleModal extends Component
 
     public function doCancel()
     {
-        if ($this->moduleop == 'create' && !$this->readonly) {
+        if ($this->moduleop == 'create' && ! $this->readonly) {
             $this->emit('refreshSearch', ['searchTerm' => null, 'value' => null, 'description' => null, 'optionsValues' => null]);
         } elseif ($this->moduleop == 'copy' || $this->readonly) {
             $this->resource_id = $this->orig_resource_id;
             $this->resource_name = $this->orig_resource_name;
             $this->company_profile_id = $this->orig_company_profile_id;
             $this->group_id = $this->orig_group_id;
-            $this->emit('refreshSearch', ['searchTerm'  => $this->resource_name, 'value' => $this->resource_id,
-                                          'description' => $this->resource_name, 'optionsValues' => $this->resource_id]);
+            $this->emit('refreshSearch', ['searchTerm' => $this->resource_name, 'value' => $this->resource_id,
+                'description' => $this->resource_name, 'optionsValues' => $this->resource_id]);
         }
 
         $this->emit('hideModal');
@@ -173,21 +216,21 @@ class CreateModuleModal extends Component
                 $searchmodel = Client::class;
                 $swaldatatext = __('bt.creating_new_client');
             }
-            if (!$this->resource_id && $this->resource_name) {
+            if (! $this->resource_id && $this->resource_name) {
                 $this->resource_id = $searchmodel::firstOrCreateByName(null, $this->resource_name)->id;
                 $swaldata['text'] = $swaldatatext;
             }
             // Quote, Workorder, Invoice, Purchaseorder, Recurringinvoice
             $createfields = [
-                'document_date'       => $this->module_date ?? Date('Y-m-d'),
-                'user_id'             => $this->user_id,
-                'client_id'           => $this->resource_id,
-                'group_id'            => $this->group_id,
-                'company_profile_id'  => $this->company_profile_id,
-                'next_date'           => $this->next_date ?? null,
-                'stop_date'           => $this->stop_date ?? '0000-00-00',
+                'document_date' => $this->module_date ?? date('Y-m-d'),
+                'user_id' => $this->user_id,
+                'client_id' => $this->resource_id,
+                'group_id' => $this->group_id,
+                'company_profile_id' => $this->company_profile_id,
+                'next_date' => $this->next_date ?? null,
+                'stop_date' => $this->stop_date ?? '0000-00-00',
                 'recurring_frequency' => $this->recurring_frequency ?? null,
-                'recurring_period'    => $this->recurring_period ?? null
+                'recurring_period' => $this->recurring_period ?? null,
             ];
 
             $this->validate();
@@ -199,16 +242,16 @@ class CreateModuleModal extends Component
             //currently only Purchaseorder Item from Products
             if ($this->moduletype == 'Purchaseorder' && $this->lineitem) {
                 DocumentItem::create([
-                    'document_id'    => $module->id,
-                    'name'           => $this->lineitem->name,
-                    'description'    => $this->lineitem->description,
-                    'quantity'       => 1,
-                    'price'          => $this->lineitem->cost,
-                    'tax_rate_id'    => $this->lineitem->tax_rate_id ?? 0,
-                    'tax_rate_2_id'  => $this->lineitem->tax_rate_2_id ?? 0,
+                    'document_id' => $module->id,
+                    'name' => $this->lineitem->name,
+                    'description' => $this->lineitem->description,
+                    'quantity' => 1,
+                    'price' => $this->lineitem->cost,
+                    'tax_rate_id' => $this->lineitem->tax_rate_id ?? 0,
+                    'tax_rate_2_id' => $this->lineitem->tax_rate_2_id ?? 0,
                     'resource_table' => 'products',
-                    'resource_id'    => $this->lineitem->id,
-                    'display_order'  => 1,
+                    'resource_id' => $this->lineitem->id,
+                    'display_order' => 1,
                 ]);
 
             }
@@ -233,28 +276,28 @@ class CreateModuleModal extends Component
             $searchmodel = Client::class;
             $swaldatatext = __('bt.creating_new_client');
         }
-        if (!$this->resource_id && $this->resource_name) {
+        if (! $this->resource_id && $this->resource_name) {
             $this->resource_id = $searchmodel::firstOrCreateByName(null, $this->resource_name)->id;
             $swaldata['text'] = $swaldatatext;
         }
         $fromModule = $this->modulefullname::find($this->module_id);
         $createfields = [
-            'document_date'       => $this->module_date ?? Date('Y-m-d'),
-            'user_id'             => $this->user_id,
-            'client_id'           => $this->resource_id,
-            'group_id'            => $this->moduletype == 'Recurringinvoice' ? config('bt.recurringinvoiceGroup'): $this->group_id,
-            'company_profile_id'  => $this->company_profile_id,
-            'currency_code'       => $fromModule->currency_code,
-            'exchange_rate'       => $fromModule->exchange_rate,
-            'terms'               => $fromModule->terms,
-            'footer'              => $fromModule->footer,
-            'template'            => $fromModule->template,
-            'summary'             => $fromModule->summary,
-            'discount'            => $fromModule->discount,
-            'next_date'           => $this->next_date ?? null,
-            'stop_date'           => $this->stop_date ?? '0000-00-00',
+            'document_date' => $this->module_date ?? date('Y-m-d'),
+            'user_id' => $this->user_id,
+            'client_id' => $this->resource_id,
+            'group_id' => $this->moduletype == 'Recurringinvoice' ? config('bt.recurringinvoiceGroup') : $this->group_id,
+            'company_profile_id' => $this->company_profile_id,
+            'currency_code' => $fromModule->currency_code,
+            'exchange_rate' => $fromModule->exchange_rate,
+            'terms' => $fromModule->terms,
+            'footer' => $fromModule->footer,
+            'template' => $fromModule->template,
+            'summary' => $fromModule->summary,
+            'discount' => $fromModule->discount,
+            'next_date' => $this->next_date ?? null,
+            'stop_date' => $this->stop_date ?? '0000-00-00',
             'recurring_frequency' => $this->recurring_frequency ?? null,
-            'recurring_period'    => $this->recurring_period ?? null
+            'recurring_period' => $this->recurring_period ?? null,
         ];
 
         $this->validate();
@@ -275,21 +318,21 @@ class CreateModuleModal extends Component
         foreach ($fromModule->items as $item) {
             DocumentItem::create(
                 [
-                    'document_id'    => $toModule->id,
-                    'name'           => $item->name,
-                    'description'    => $item->description,
-                    'quantity'       => $item->quantity,
-                    'price'          => $item->price,
-                    'tax_rate_id'    => $item->tax_rate_id,
-                    'tax_rate_2_id'  => $item->tax_rate_2_id,
+                    'document_id' => $toModule->id,
+                    'name' => $item->name,
+                    'description' => $item->description,
+                    'quantity' => $item->quantity,
+                    'price' => $item->price,
+                    'tax_rate_id' => $item->tax_rate_id,
+                    'tax_rate_2_id' => $item->tax_rate_2_id,
                     'resource_table' => $item->resource_table,
-                    'resource_id'    => $item->resource_id,
-                    'display_order'  => $item->display_order,
+                    'resource_id' => $item->resource_id,
+                    'display_order' => $item->display_order,
                 ]);
         }
 
         // Copy the custom fields
-        $custom = collect($fromModule->custom)->except(lcfirst(snake_case($this->moduletype)) . '_id')->toArray();
+        $custom = collect($fromModule->custom)->except(lcfirst(snake_case($this->moduletype)).'_id')->toArray();
         $toModule->custom->update($custom);
 
         event(new DocumentModified($toModule));

@@ -12,11 +12,11 @@
 namespace BT\Modules\API\Controllers;
 
 use BT\Events\DocumentModified;
-use BT\Modules\API\Requests\APIInvoiceStoreRequest;
 use BT\Modules\API\Requests\APIInvoiceItemRequest;
+use BT\Modules\API\Requests\APIInvoiceStoreRequest;
 use BT\Modules\Clients\Models\Client;
-use BT\Modules\Documents\Models\Invoice;
 use BT\Modules\Documents\Models\DocumentItem;
+use BT\Modules\Documents\Models\Invoice;
 use BT\Modules\Users\Models\User;
 
 class ApiInvoiceController extends ApiController
@@ -62,13 +62,11 @@ class ApiInvoiceController extends ApiController
     {
         $validator = $this->validator->make(['id' => request('id')], ['id' => 'required']);
 
-        if ($validator->fails())
-        {
+        if ($validator->fails()) {
             return response()->json($validator->errors()->all(), 400);
         }
 
-        if (Invoice::find(request('id')))
-        {
+        if (Invoice::find(request('id'))) {
             Invoice::destroy(request('id'));
 
             return response(200);

@@ -24,9 +24,9 @@ class APIQuoteItemRequest extends FormRequest
     public function attributes()
     {
         return [
-            'name'     => trans('bt.name'),
+            'name' => trans('bt.name'),
             'quantity' => trans('bt.quantity'),
-            'price'    => trans('bt.price'),
+            'price' => trans('bt.price'),
         ];
     }
 
@@ -35,7 +35,7 @@ class APIQuoteItemRequest extends FormRequest
         $request = $this->all();
 
         $request['quantity'] = NumberFormatter::unformat($request['quantity']);
-        $request['price']    = NumberFormatter::unformat($request['price']);
+        $request['price'] = NumberFormatter::unformat($request['price']);
 
         $this->replace($request);
     }
@@ -44,9 +44,9 @@ class APIQuoteItemRequest extends FormRequest
     {
         return [
             'document_id' => 'required',
-            'name'     => 'required_with:price,quantity',
+            'name' => 'required_with:price,quantity',
             'quantity' => 'required_with:price,name|numeric',
-            'price'    => 'required_with:name,quantity|numeric',
+            'price' => 'required_with:name,quantity|numeric',
         ];
     }
 }

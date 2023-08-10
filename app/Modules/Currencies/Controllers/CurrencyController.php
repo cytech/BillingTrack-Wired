@@ -13,9 +13,9 @@ namespace BT\Modules\Currencies\Controllers;
 
 use BT\Http\Controllers\Controller;
 use BT\Modules\Currencies\Models\Currency;
-use BT\Modules\Currencies\Support\CurrencyConverterFactory;
 use BT\Modules\Currencies\Requests\CurrencyStoreRequest;
 use BT\Modules\Currencies\Requests\CurrencyUpdateRequest;
+use BT\Modules\Currencies\Support\CurrencyConverterFactory;
 use BT\Traits\ReturnUrl;
 
 class CurrencyController extends Controller

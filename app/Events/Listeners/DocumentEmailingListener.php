@@ -21,13 +21,13 @@ class DocumentEmailingListener
                 $event->document->action_date = DateFormatter::incrementDateByDays(date('Y-m-d'), $event->document->client->client_terms);
                 $event->document->save();
             }
-        }  elseif ($event->module_type == 'Workorder') {
+        } elseif ($event->module_type == 'Workorder') {
             if (config('bt.resetWorkorderDateEmailDraft') and $event->document->status_text == 'draft') {
                 $event->document->document_date = date('Y-m-d');
                 $event->document->action_date = DateFormatter::incrementDateByDays(date('Y-m-d'), config('bt.workordersExpireAfter'));
                 $event->document->save();
             }
-        }  else { //purchaseorder
+        } else { //purchaseorder
             if (config('bt.resetPurchaseorderDateEmailDraft') and $event->document->status_text == 'draft') {
                 $event->document->document_date = date('Y-m-d');
                 $event->document->action_date = DateFormatter::incrementDateByDays(date('Y-m-d'), $event->document->vendor->vendor_terms);

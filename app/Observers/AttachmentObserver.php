@@ -14,11 +14,12 @@ class AttachmentObserver
 
     public function deleting(Attachment $attachment): void
     {
-        $filePath = $attachment->attachable->attachment_path . '/' . $attachment->filename;
+        $filePath = $attachment->attachable->attachment_path.'/'.$attachment->filename;
 
-        if (file_exists($filePath))
-        {
-            if ($attachment->isForceDeleting()){ unlink($filePath);}
+        if (file_exists($filePath)) {
+            if ($attachment->isForceDeleting()) {
+                unlink($filePath);
+            }
         }
     }
 }

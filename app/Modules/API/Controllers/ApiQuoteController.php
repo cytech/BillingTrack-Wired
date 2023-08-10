@@ -15,8 +15,8 @@ use BT\Events\DocumentModified;
 use BT\Modules\API\Requests\APIQuoteItemRequest;
 use BT\Modules\API\Requests\APIQuoteStoreRequest;
 use BT\Modules\Clients\Models\Client;
-use BT\Modules\Documents\Models\Quote;
 use BT\Modules\Documents\Models\DocumentItem;
+use BT\Modules\Documents\Models\Quote;
 use BT\Modules\Users\Models\User;
 
 class ApiQuoteController extends ApiController
@@ -62,13 +62,11 @@ class ApiQuoteController extends ApiController
     {
         $validator = $this->validator->make(['id' => request('id')], ['id' => 'required']);
 
-        if ($validator->fails())
-        {
+        if ($validator->fails()) {
             return response()->json($validator->errors()->all(), 400);
         }
 
-        if (Quote::find(request('id')))
-        {
+        if (Quote::find(request('id'))) {
             Quote::destroy(request('id'));
 
             return response(200);

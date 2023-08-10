@@ -21,7 +21,7 @@ class AttachmentController extends Controller
     {
         $attachment = Attachment::where('url_key', $urlKey)->firstOrFail();
 
-        return response()->download($attachment->attachable->attachment_path . '/' . $attachment->filename);
+        return response()->download($attachment->attachable->attachment_path.'/'.$attachment->filename);
     }
 
     public function ajaxList()

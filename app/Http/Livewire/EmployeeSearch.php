@@ -2,14 +2,15 @@
 
 namespace BT\Http\Livewire;
 
-use Illuminate\Support\Collection;
 use BT\Modules\Employees\Models\Employee;
+use Illuminate\Support\Collection;
 
 class EmployeeSearch extends LivewireSelect
 {
     protected $listeners = ['refreshSearch'];
 
-    public function refreshSearch($props){
+    public function refreshSearch($props)
+    {
         $this->searchTerm = $props['searchTerm'];
         $this->value = $props['value'];
         $this->description = $props['description'];
@@ -25,9 +26,9 @@ class EmployeeSearch extends LivewireSelect
             ->get()
             ->map(function (Employee $employee) {
                 return [
-                    'value'       => $employee->id,
+                    'value' => $employee->id,
                     'description' => $employee->short_name,
-                    'title'       => $employee->full_name,
+                    'title' => $employee->full_name,
                 ];
             });
     }
@@ -35,10 +36,11 @@ class EmployeeSearch extends LivewireSelect
     public function selectedOption($value)
     {
         $employee = Employee::find($value);
+
         return [
-            'value'       => optional($employee)->id,
+            'value' => optional($employee)->id,
             'description' => optional($employee)->short_name,
-            'title'       => optional($employee)->full_name
+            'title' => optional($employee)->full_name,
         ];
     }
 }

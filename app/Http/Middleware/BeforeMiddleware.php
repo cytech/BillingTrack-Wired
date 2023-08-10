@@ -2,10 +2,10 @@
 
 namespace BT\Http\Middleware;
 
-use Closure;
 use BT\Modules\Currencies\Models\Currency;
 use BT\Modules\Settings\Models\Setting;
 use BT\Support\DateFormatter;
+use Closure;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 
@@ -14,22 +14,18 @@ class BeforeMiddleware
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \Closure $next
+     * @param  \Illuminate\Http\Request  $request
      * @return mixed
      */
     public function handle($request, Closure $next)
     {
-        if (config('app.debug'))
-        {
+        if (config('app.debug')) {
             DB::enableQueryLog();
         }
 
         // Set the application specific settings under bt. prefix (bt.settingName)
-        if (Setting::setAll())
-        {
-            if (config('bt.forceHttps') and !$request->secure())
-            {
+        if (Setting::setAll()) {
+            if (config('bt.forceHttps') and ! $request->secure()) {
                 return redirect()->secure($request->getRequestUri());
             }
 
@@ -43,15 +39,11 @@ class BeforeMiddleware
 
             $mailPassword = '';
 
-            try
-            {
+            try {
                 $mailPassword = (config('bt.mailPassword')) ? Crypt::decrypt(config('bt.mailPassword')) : '';
-            }
-            catch (\Exception $e)
-            {
-                if (config('bt.mailDriver') == 'smtp')
-                {
-                    session()->flash('error', '<strong>' . trans('bt.error') . '</strong> - ' . trans('bt.mail_hash_error'));
+            } catch (\Exception $e) {
+                if (config('bt.mailDriver') == 'smtp') {
+                    session()->flash('error', '<strong>'.trans('bt.error').'</strong> - '.trans('bt.mail_hash_error'));
                 }
             }
 
@@ -71,13 +63,12 @@ class BeforeMiddleware
             config(['mail.mailers.smtp.password' => $mailPassword]);
             config(['mail.mailers.sendmail.path' => config('bt.mailSendmail')]);
 
-            if (config('bt.mailAllowSelfSignedCertificate'))
-            {
+            if (config('bt.mailAllowSelfSignedCertificate')) {
                 config([
                     'mail.stream.ssl' => [
                         'allow_self_signed' => true,
-                        'verify_peer'       => false,
-                        'verify_peer_name'  => false,
+                        'verify_peer' => false,
+                        'verify_peer_name' => false,
                     ],
                 ]);
             }
@@ -91,12 +82,9 @@ class BeforeMiddleware
 
         config(['bt.clientCenterRequest' => (($request->segment(1) == 'client_center') ? true : false)]);
 
-        if (!config('bt.clientCenterRequest'))
-        {
+        if (! config('bt.clientCenterRequest')) {
             app()->setLocale((config('bt.language')) ?: 'en');
-        }
-        elseif (config('bt.clientCenterRequest') and auth()->check() and auth()->user()->client_id)
-        {
+        } elseif (config('bt.clientCenterRequest') and auth()->check() and auth()->user()->client_id) {
             app()->setLocale(auth()->user()->client->language);
         }
 

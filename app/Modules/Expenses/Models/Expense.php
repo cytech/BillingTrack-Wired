@@ -32,7 +32,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Expense extends Model
 {
     use SoftDeletes;
-
     use SoftCascadeTrait;
 
     protected $softCascade = ['attachments', 'custom'];
@@ -92,12 +91,12 @@ class Expense extends Model
 
     public function attachmentPath(): Attribute
     {
-        return new Attribute(get: fn() => attachment_path('expenses/' . $this->id));
+        return new Attribute(get: fn () => attachment_path('expenses/'.$this->id));
     }
 
     public function attachmentPermissionOptions(): Attribute
     {
-        return new Attribute(get: fn() => [
+        return new Attribute(get: fn () => [
             '0' => trans('bt.not_visible'),
             '1' => trans('bt.visible'),
         ]);
@@ -105,48 +104,50 @@ class Expense extends Model
 
     public function formattedAmount(): Attribute
     {
-        return new Attribute(get: fn() => CurrencyFormatter::format($this->amount));
+        return new Attribute(get: fn () => CurrencyFormatter::format($this->amount));
     }
 
     public function formattedTax(): Attribute
     {
-        return new Attribute(get: fn() => CurrencyFormatter::format($this->tax));
+        return new Attribute(get: fn () => CurrencyFormatter::format($this->tax));
     }
 
     public function formattedDescription(): Attribute
     {
-        return new Attribute(get: fn() => nl2br($this->description));
+        return new Attribute(get: fn () => nl2br($this->description));
     }
 
     public function formattedExpenseDate(): Attribute
     {
-        return new Attribute(get: fn() => DateFormatter::format($this->expense_date));
+        return new Attribute(get: fn () => DateFormatter::format($this->expense_date));
     }
 
     public function formattedNumericAmount(): Attribute
     {
-        return new Attribute(get: fn() => NumberFormatter::format($this->amount));
+        return new Attribute(get: fn () => NumberFormatter::format($this->amount));
     }
 
     public function formattedNumericTax(): Attribute
     {
-        return new Attribute(get: fn() => NumberFormatter::format($this->tax));
+        return new Attribute(get: fn () => NumberFormatter::format($this->tax));
     }
 
     public function hasBeenBilled(): Attribute
     {
-        if (!is_null($this->invoice_id)) {
-            return new Attribute(get: fn() => true);
+        if (! is_null($this->invoice_id)) {
+            return new Attribute(get: fn () => true);
         }
-        return new Attribute(get: fn() => false);
+
+        return new Attribute(get: fn () => false);
     }
 
     public function isBillable(): Attribute
     {
         if ($this->client_id) {
-            return new Attribute(get: fn() => true);
+            return new Attribute(get: fn () => true);
         }
-        return new Attribute(get: fn() => false);
+
+        return new Attribute(get: fn () => false);
     }
 
     /*
@@ -187,11 +188,11 @@ class Expense extends Model
         if ($keywords) {
             $keywords = strtolower($keywords);
 
-            $query->where('expenses.expense_date', 'like', '%' . $keywords . '%')
-                ->orWhere('expenses.description', 'like', '%' . $keywords . '%')
-                ->orWhere('vendors.name', 'like', '%' . $keywords . '%')
-                ->orWhere('clients.name', 'like', '%' . $keywords . '%')
-                ->orWhere('categories.name', 'like', '%' . $keywords . '%');
+            $query->where('expenses.expense_date', 'like', '%'.$keywords.'%')
+                ->orWhere('expenses.description', 'like', '%'.$keywords.'%')
+                ->orWhere('vendors.name', 'like', '%'.$keywords.'%')
+                ->orWhere('clients.name', 'like', '%'.$keywords.'%')
+                ->orWhere('categories.name', 'like', '%'.$keywords.'%');
         }
 
         return $query;

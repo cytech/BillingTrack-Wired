@@ -23,20 +23,20 @@ class GroupRequest extends FormRequest
     public function attributes()
     {
         return [
-            'name'     => trans('bt.name'),
-            'next_id'  => trans('bt.next_number'),
+            'name' => trans('bt.name'),
+            'next_id' => trans('bt.next_number'),
             'left_pad' => trans('bt.left_pad'),
-            'format'   => trans('bt.format'),
+            'format' => trans('bt.format'),
         ];
     }
 
     public function rules()
     {
         return [
-            'name'     => 'required',
-            'next_id'  => 'required|integer',
+            'name' => 'required',
+            'next_id' => 'required|integer',
             'left_pad' => 'required|numeric',
-            'format'   => 'required',
+            'format' => 'required',
         ];
     }
 }

@@ -21,11 +21,9 @@ class InvoiceSummaryWidgetComposer
     private function getInvoicesTotalDraft()
     {
         return CurrencyFormatter::format(DocumentAmount::join('documents', 'documents.id', '=', 'document_amounts.document_id')
-            ->whereHas('invoice', function ($q)
-            {
+            ->whereHas('invoice', function ($q) {
                 $q->draft();
-                switch (config('bt.widgetInvoiceSummaryDashboardTotals'))
-                {
+                switch (config('bt.widgetInvoiceSummaryDashboardTotals')) {
                     case 'year_to_date':
                         $q->yearToDate();
                         break;
@@ -42,11 +40,9 @@ class InvoiceSummaryWidgetComposer
     private function getInvoicesTotalSent()
     {
         return CurrencyFormatter::format(DocumentAmount::join('documents', 'documents.id', '=', 'document_amounts.document_id')
-            ->whereHas('invoice', function ($q)
-            {
+            ->whereHas('invoice', function ($q) {
                 $q->sent();
-                switch (config('bt.widgetInvoiceSummaryDashboardTotals'))
-                {
+                switch (config('bt.widgetInvoiceSummaryDashboardTotals')) {
                     case 'year_to_date':
                         $q->yearToDate();
                         break;
@@ -64,8 +60,7 @@ class InvoiceSummaryWidgetComposer
     {
         $payments = Payment::join('documents', 'documents.id', '=', 'payments.invoice_id');
 
-        switch (config('bt.widgetInvoiceSummaryDashboardTotals'))
-        {
+        switch (config('bt.widgetInvoiceSummaryDashboardTotals')) {
             case 'year_to_date':
                 $payments->yearToDate();
                 break;
@@ -83,11 +78,9 @@ class InvoiceSummaryWidgetComposer
     private function getInvoicesTotalOverdue()
     {
         return CurrencyFormatter::format(DocumentAmount::join('documents', 'documents.id', '=', 'document_amounts.document_id')
-            ->whereHas('invoice', function ($q)
-            {
+            ->whereHas('invoice', function ($q) {
                 $q->overdue();
-                switch (config('bt.widgetInvoiceSummaryDashboardTotals'))
-                {
+                switch (config('bt.widgetInvoiceSummaryDashboardTotals')) {
                     case 'year_to_date':
                         $q->yearToDate();
                         break;

@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * This file is part of BillingTrack.
  *
@@ -11,9 +10,9 @@
 
 namespace BT\Modules\Products\Models;
 
+use BT\Modules\Categories\Models\Category;
 use BT\Modules\Documents\Models\DocumentItem;
 use BT\Modules\Documents\Models\Purchaseorder;
-use BT\Modules\Categories\Models\Category;
 use BT\Modules\TaxRates\Models\TaxRate;
 use BT\Modules\Vendors\Models\Vendor;
 use BT\Support\CurrencyFormatter;
@@ -27,6 +26,7 @@ class Product extends Model
 {
     /**
      * Guarded properties
+     *
      * @var array
      */
     protected $guarded = ['id'];
@@ -77,27 +77,27 @@ class Product extends Model
 
     public function isTrackable(): Attribute
     {
-        return new Attribute(get: fn() => $this->inventorytype->tracked);
+        return new Attribute(get: fn () => $this->inventorytype->tracked);
     }
 
     public function formattedPrice(): Attribute
     {
-        return new Attribute(get: fn() => CurrencyFormatter::format($this->price));
+        return new Attribute(get: fn () => CurrencyFormatter::format($this->price));
     }
 
     public function formattedCost(): Attribute
     {
-        return new Attribute(get: fn() => CurrencyFormatter::format($this->cost));
+        return new Attribute(get: fn () => CurrencyFormatter::format($this->cost));
     }
 
     public function formattedNumericPrice(): Attribute
     {
-        return new Attribute(get: fn() => NumberFormatter::format($this->price));
+        return new Attribute(get: fn () => NumberFormatter::format($this->price));
     }
 
     public function formattedActive(): Attribute
     {
-        return new Attribute(get: fn() => $this->active ? trans('bt.yes') : trans('bt.no'));
+        return new Attribute(get: fn () => $this->active ? trans('bt.yes') : trans('bt.no'));
     }
 
     //inventory tracked scope
@@ -109,9 +109,9 @@ class Product extends Model
     public function scopeStatus($query, $status)
     {
         if ($status == 'active') {
-            $query->where($this->table . '.active', 1);
+            $query->where($this->table.'.active', 1);
         } elseif ($status == 'inactive') {
-            $query->where($this->table . '.active', 0);
+            $query->where($this->table.'.active', 0);
         }
 
         return $query;

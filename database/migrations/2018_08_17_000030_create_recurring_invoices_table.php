@@ -1,26 +1,30 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateRecurringInvoicesTable extends Migration
 {
     /**
      * Schema table name to migrate
+     *
      * @var string
      */
     public $set_schema_table = 'recurring_invoices';
 
     /**
      * Run the migrations.
+     *
      * @table recurring_invoices
      *
      * @return void
      */
     public function up()
     {
-        if (Schema::hasTable($this->set_schema_table)) return;
+        if (Schema::hasTable($this->set_schema_table)) {
+            return;
+        }
         Schema::create($this->set_schema_table, function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
@@ -40,16 +44,15 @@ class CreateRecurringInvoicesTable extends Migration
             $table->date('next_date');
             $table->date('stop_date');
 
-            $table->index(["client_id"], 'recurring_invoices_client_id_index');
+            $table->index(['client_id'], 'recurring_invoices_client_id_index');
 
-            $table->index(["group_id"], 'fk_recurring_invoices_groups1_idx');
+            $table->index(['group_id'], 'fk_recurring_invoices_groups1_idx');
 
-            $table->index(["company_profile_id"], 'recurring_invoices_company_profile_id_index');
+            $table->index(['company_profile_id'], 'recurring_invoices_company_profile_id_index');
 
-            $table->index(["user_id"], 'recurring_invoices_user_id_index');
+            $table->index(['user_id'], 'recurring_invoices_user_id_index');
             $table->softDeletes();
             $table->nullableTimestamps();
-
 
             $table->foreign('client_id', 'recurring_invoices_client_id_index')
                 ->references('id')->on('clients')
@@ -78,8 +81,8 @@ class CreateRecurringInvoicesTable extends Migration
      *
      * @return void
      */
-     public function down()
-     {
-       Schema::dropIfExists($this->set_schema_table);
-     }
+    public function down()
+    {
+        Schema::dropIfExists($this->set_schema_table);
+    }
 }

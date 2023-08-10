@@ -27,7 +27,7 @@ class ClientCenterPublicInvoiceController extends Controller
 
         app()->setLocale($invoice->client->language);
 
-        if (!$invoice->viewed) {
+        if (! $invoice->viewed) {
             event(new DocumentViewed($invoice));
         }
 
@@ -44,7 +44,7 @@ class ClientCenterPublicInvoiceController extends Controller
         $invoice = Invoice::with('items.taxRate', 'items.taxRate2', 'items.amount.item.invoice', 'items.invoice')
             ->where('url_key', $urlKey)->first();
 
-        if (!$invoice->viewed) {
+        if (! $invoice->viewed) {
             event(new DocumentViewed($invoice));
         }
 

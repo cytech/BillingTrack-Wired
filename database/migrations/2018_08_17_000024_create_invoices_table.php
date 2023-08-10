@@ -1,26 +1,30 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateInvoicesTable extends Migration
 {
     /**
      * Schema table name to migrate
+     *
      * @var string
      */
     public $set_schema_table = 'invoices';
 
     /**
      * Run the migrations.
+     *
      * @table invoices
      *
      * @return void
      */
     public function up()
     {
-        if (Schema::hasTable($this->set_schema_table)) return;
+        if (Schema::hasTable($this->set_schema_table)) {
+            return;
+        }
         Schema::create($this->set_schema_table, function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
@@ -44,18 +48,17 @@ class CreateInvoicesTable extends Migration
             $table->decimal('discount', 15, 2)->default('0.00');
             $table->unsignedInteger('company_profile_id')->nullable();
 
-            $table->index(["user_id"], 'invoices_user_id_index');
+            $table->index(['user_id'], 'invoices_user_id_index');
 
-            $table->index(["group_id"], 'invoices_invoice_group_id_index');
+            $table->index(['group_id'], 'invoices_invoice_group_id_index');
 
-            $table->index(["client_id"], 'invoices_client_id_index');
+            $table->index(['client_id'], 'invoices_client_id_index');
 
-            $table->index(["company_profile_id"], 'invoices_company_profile_id_index');
+            $table->index(['company_profile_id'], 'invoices_company_profile_id_index');
 
-            $table->index(["invoice_status_id"], 'invoices_invoice_status_id_index');
+            $table->index(['invoice_status_id'], 'invoices_invoice_status_id_index');
             $table->softDeletes();
             $table->nullableTimestamps();
-
 
             $table->foreign('client_id', 'invoices_client_id_index')
                 ->references('id')->on('clients')
@@ -84,8 +87,8 @@ class CreateInvoicesTable extends Migration
      *
      * @return void
      */
-     public function down()
-     {
-       Schema::dropIfExists($this->set_schema_table);
-     }
+    public function down()
+    {
+        Schema::dropIfExists($this->set_schema_table);
+    }
 }

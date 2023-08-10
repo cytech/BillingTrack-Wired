@@ -24,7 +24,7 @@ class DateRangeRequest extends FormRequest
     {
         return [
             'from_date' => trans('bt.from_date'),
-            'to_date'   => trans('bt.to_date'),
+            'to_date' => trans('bt.to_date'),
         ];
     }
 
@@ -32,7 +32,7 @@ class DateRangeRequest extends FormRequest
     {
         return [
             'from_date' => 'required',
-            'to_date'   => 'required',
+            'to_date' => 'required',
         ];
     }
 }

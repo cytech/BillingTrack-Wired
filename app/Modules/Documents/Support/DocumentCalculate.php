@@ -34,7 +34,6 @@ class DocumentCalculate
 
         $totalPaid = Payment::where('invoice_id', $document->id)->sum('amount');
 
-
         $calculator = new DocumentCalculator;
 
         $calculator->setId($document->id);
@@ -43,16 +42,14 @@ class DocumentCalculate
 
         $calculator->setDiscount($document->discount);
 
-        if ($document->status_text == 'canceled')
-        {
+        if ($document->status_text == 'canceled') {
             $calculator->setIsCanceled(true);
         }
 
-        foreach ($documentItems as $documentItem)
-        {
-            $taxRatePercent       = ($documentItem->tax_rate_id) ? $documentItem->tax_rate_1_percent : 0;
-            $taxRate2Percent      = ($documentItem->tax_rate_2_id) ? $documentItem->tax_rate_2_percent : 0;
-            $taxRate2IsCompound   = ($documentItem->tax_rate_2_is_compound) ? 1 : 0;
+        foreach ($documentItems as $documentItem) {
+            $taxRatePercent = ($documentItem->tax_rate_id) ? $documentItem->tax_rate_1_percent : 0;
+            $taxRate2Percent = ($documentItem->tax_rate_2_id) ? $documentItem->tax_rate_2_percent : 0;
+            $taxRate2IsCompound = ($documentItem->tax_rate_2_is_compound) ? 1 : 0;
             $taxRate1CalculateVat = ($documentItem->tax_rate_1_calculate_vat) ? 1 : 0;
 
             $calculator->addItem($documentItem->id, $documentItem->quantity, $documentItem->price, $taxRatePercent, $taxRate2Percent, $taxRate2IsCompound, $taxRate1CalculateVat);
@@ -62,11 +59,10 @@ class DocumentCalculate
 
         // Get the calculated values
         $calculatedItemAmounts = $calculator->getCalculatedItemAmounts();
-        $calculatedAmount      = $calculator->getCalculatedAmount();
+        $calculatedAmount = $calculator->getCalculatedAmount();
 
         // Update the item amount records
-        foreach ($calculatedItemAmounts as $calculatedItemAmount)
-        {
+        foreach ($calculatedItemAmounts as $calculatedItemAmount) {
             $documentItemAmount = DocumentItemAmount::firstOrNew(['item_id' => $calculatedItemAmount['item_id']]);
             $documentItemAmount->fill($calculatedItemAmount);
             $documentItemAmount->save();
@@ -78,15 +74,13 @@ class DocumentCalculate
         $documentAmount->save();
 
         // Check to see if the invoice should be marked as paid.
-        if ($calculatedAmount['total'] > 0 and $calculatedAmount['balance'] <= 0 and $document->status_text != 'canceled')
-        {
+        if ($calculatedAmount['total'] > 0 and $calculatedAmount['balance'] <= 0 and $document->status_text != 'canceled') {
             $document->document_status_id = DocumentStatuses::getStatusId('paid');
             $document->save();
         }
 
         // Check to see if the invoice was marked as paid but should no longer be.
-        if ($calculatedAmount['total'] > 0 and $calculatedAmount['balance'] > 0 and $document->document_status_id == DocumentStatuses::getStatusId('paid'))
-        {
+        if ($calculatedAmount['total'] > 0 and $calculatedAmount['balance'] > 0 and $document->document_status_id == DocumentStatuses::getStatusId('paid')) {
             $document->document_status_id = DocumentStatuses::getStatusId('sent');
             $document->save();
         }
@@ -94,8 +88,7 @@ class DocumentCalculate
 
     public function calculateAll()
     {
-        foreach (Document::get() as $document)
-        {
+        foreach (Document::get() as $document) {
             $this->calculate($document);
         }
     }

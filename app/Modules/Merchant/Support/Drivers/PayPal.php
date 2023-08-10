@@ -22,21 +22,21 @@ class PayPal extends MerchantDriverPayable
         $apiContext = $this->getApiContext();
 
         $response = $apiContext->createOrder([
-            "intent"              => "CAPTURE",
-            "application_context" => [
-                "return_url" => route('merchant.returnUrl', [$this->getName(), $invoice->url_key]),
-                "cancel_url" => route('merchant.cancelUrl', [$this->getName(), $invoice->url_key]),
+            'intent' => 'CAPTURE',
+            'application_context' => [
+                'return_url' => route('merchant.returnUrl', [$this->getName(), $invoice->url_key]),
+                'cancel_url' => route('merchant.cancelUrl', [$this->getName(), $invoice->url_key]),
             ],
-            "purchase_units"      => [
+            'purchase_units' => [
                 0 => [
-                    "amount"     => [
-                        "currency_code" => $invoice->currency_code,
-                        "value"         => $invoice->amount->balance + 0
+                    'amount' => [
+                        'currency_code' => $invoice->currency_code,
+                        'value' => $invoice->amount->balance + 0,
                     ],
-                     //enabling this may return error if attempt to pay twice on same invoice
-                     //"invoice_id" => trans('bt.invoice') . ' #' . $invoice->number
-                ]
-            ]
+                    //enabling this may return error if attempt to pay twice on same invoice
+                    //"invoice_id" => trans('bt.invoice') . ' #' . $invoice->number
+                ],
+            ],
         ]);
 
         if (isset($response['id']) && $response['id'] != null) {
@@ -65,15 +65,16 @@ class PayPal extends MerchantDriverPayable
             foreach ($payment['purchase_units'] as $unit) {
                 foreach ($unit['payments']['captures'] as $capture) {
                     $btPayment = BTPayment::create([
-                        'client_id'         => $invoice->client->id,
-                        'invoice_id'        => $invoice->id,
-                        'amount'            => $capture['amount']['value'],
+                        'client_id' => $invoice->client->id,
+                        'invoice_id' => $invoice->id,
+                        'amount' => $capture['amount']['value'],
                         'payment_method_id' => config('bt.onlinePaymentMethod'),
                     ]);
 
                     MerchantPayment::saveByKey($this->getName(), $btPayment->id, 'id', $capture['id']);
                 }
             }
+
             return true;
         } else {
             return false;
@@ -83,23 +84,23 @@ class PayPal extends MerchantDriverPayable
     private function getApiContext()
     {
         $config = [
-            'mode'           => $this->getSetting('mode'), // Can only be 'sandbox' Or 'live'. If empty or invalid, 'live' will be used.
-            'sandbox'        => [
-                'client_id'     => $this->getSetting('clientId'),
+            'mode' => $this->getSetting('mode'), // Can only be 'sandbox' Or 'live'. If empty or invalid, 'live' will be used.
+            'sandbox' => [
+                'client_id' => $this->getSetting('clientId'),
                 'client_secret' => $this->getSetting('clientSecret'),
-                'app_id'        => '',
+                'app_id' => '',
             ],
-            'live'           => [
-                'client_id'     => $this->getSetting('clientId'),
+            'live' => [
+                'client_id' => $this->getSetting('clientId'),
                 'client_secret' => $this->getSetting('clientSecret'),
-                'app_id'        => '',
+                'app_id' => '',
             ],
             // set in config/paypal.php
             'payment_action' => config('paypal.payment_action'),
-            'currency'       => config('paypal.currency'),
-            'notify_url'     => config('paypal.notify_url'),
-            'locale'         => config('paypal.locale'),
-            'validate_ssl'   => config('paypal.validate_ssl'),
+            'currency' => config('paypal.currency'),
+            'notify_url' => config('paypal.notify_url'),
+            'locale' => config('paypal.locale'),
+            'validate_ssl' => config('paypal.validate_ssl'),
 
         ];
         $apiContext = new PayPalClient;

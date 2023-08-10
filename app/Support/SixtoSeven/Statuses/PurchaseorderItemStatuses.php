@@ -19,6 +19,6 @@ class PurchaseorderItemStatuses extends AbstractStatuses
         '2' => 'received',
         '3' => 'partial',
         '4' => 'canceled',
-        '5' => 'extra'
+        '5' => 'extra',
     ];
 }

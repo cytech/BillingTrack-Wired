@@ -56,31 +56,31 @@ class Contact extends Model
 
     public function formattedContact(): Attribute
     {
-        return new Attribute(get: fn() => $this->name . ' <' . $this->email . '>');
+        return new Attribute(get: fn () => $this->name.' <'.$this->email.'>');
     }
 
     public function formattedDefaultBcc(): Attribute
     {
-        return new Attribute(get: fn() => ($this->default_bcc) ? trans('bt.yes') : trans('bt.no'));
+        return new Attribute(get: fn () => ($this->default_bcc) ? trans('bt.yes') : trans('bt.no'));
     }
 
     public function formattedDefaultCc(): Attribute
     {
-        return new Attribute(get: fn() => ($this->default_cc) ? trans('bt.yes') : trans('bt.no'));
+        return new Attribute(get: fn () => ($this->default_cc) ? trans('bt.yes') : trans('bt.no'));
     }
 
     public function formattedDefaultTo(): Attribute
     {
-        return new Attribute(get: fn() => ($this->default_to) ? trans('bt.yes') : trans('bt.no'));
+        return new Attribute(get: fn () => ($this->default_to) ? trans('bt.yes') : trans('bt.no'));
     }
 
     public function formattedIsPrimary(): Attribute
     {
-        return new Attribute(get: fn() => ($this->is_primary) ? trans('bt.yes') : trans('bt.no'));
+        return new Attribute(get: fn () => ($this->is_primary) ? trans('bt.yes') : trans('bt.no'));
     }
 
     public function formattedOptin(): Attribute
     {
-        return new Attribute(get: fn() => ($this->optin) ? trans('bt.yes') : trans('bt.no'));
+        return new Attribute(get: fn () => ($this->optin) ? trans('bt.yes') : trans('bt.no'));
     }
 }

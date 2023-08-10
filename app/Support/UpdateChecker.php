@@ -17,7 +17,7 @@ class UpdateChecker
 
     public function __construct()
     {
-        $options = array('http' => array('user_agent' => 'BillingTrack'));
+        $options = ['http' => ['user_agent' => 'BillingTrack']];
         $context = stream_context_create($options);
 
         $this->currentVersion = json_decode(file_get_contents('https://api.github.com/repos/cytech/BillingTrack-Wired/releases/latest', false, $context), true)['tag_name'];
@@ -27,12 +27,11 @@ class UpdateChecker
     /**
      * Check to see if there is a newer version available for download.
      *
-     * @return boolean
+     * @return bool
      */
     public function updateAvailable()
     {
-        if (str_replace('v', '', $this->currentVersion) > config('bt.version'))
-        {
+        if (str_replace('v', '', $this->currentVersion) > config('bt.version')) {
             return true;
         }
 

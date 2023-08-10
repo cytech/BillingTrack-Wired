@@ -4,9 +4,9 @@ namespace BT\Observers;
 
 use BT\Modules\Currencies\Support\CurrencyConverterFactory;
 use BT\Modules\CustomFields\Models\DocumentCustom;
-use BT\Modules\Groups\Models\Group;
 use BT\Modules\Documents\Models\Document;
 use BT\Modules\Documents\Support\DocumentCalculate;
+use BT\Modules\Groups\Models\Group;
 use BT\Support\DateFormatter;
 use BT\Support\Statuses\DocumentStatuses;
 
@@ -19,9 +19,6 @@ class DocumentObserver
 
     /**
      * Handle the document "created" event.
-     *
-     * @param \BT\Modules\Documents\Models\Document $document
-     * @return void
      */
     public function created(Document $document): void
     {
@@ -41,92 +38,90 @@ class DocumentObserver
 
         // Create the custom document record.
         //$document->custom()->save(new DocumentCustom()); todo
-        $customclass = 'BT\\Modules\\CustomFields\\Models\\' . $document->module_type . 'Custom';
+        $customclass = 'BT\\Modules\\CustomFields\\Models\\'.$document->module_type.'Custom';
         $document->custom()->save(new $customclass());
     }
 
     /**
      * Handle the document "created" event.
-     *
-     * @param \BT\Modules\Documents\Models\Document $document
-     * @return void
      */
     public function creating(Document $document): void
     {
-        if (!$document->client_id) {
+        if (! $document->client_id) {
             // This needs to throw an exception since this is required.
         }
 
-        if (!$document->user_id) {
+        if (! $document->user_id) {
             $document->user_id = auth()->user()->id;
         }
 
-        if (!$document->document_date) {
+        if (! $document->document_date) {
             $document->document_date = date('Y-m-d');
         }
 
-        if (!$document->action_date) {
+        if (! $document->action_date) {
             if ($document->module_type == 'Invoice' || $document->module_type == 'Purchaseorder') {
-                $document->action_date = DateFormatter::incrementDateByDays($document->document_date->format('Y-m-d'), config('bt.' . $document->lower_case_baseclass . 'sDueAfter', 10));
+                $document->action_date = DateFormatter::incrementDateByDays($document->document_date->format('Y-m-d'), config('bt.'.$document->lower_case_baseclass.'sDueAfter', 10));
             } else {
-                $document->action_date = DateFormatter::incrementDateByDays($document->document_date->format('Y-m-d'), config('bt.' . $document->lower_case_baseclass . 'sExpireAfter', 10));
+                $document->action_date = DateFormatter::incrementDateByDays($document->document_date->format('Y-m-d'), config('bt.'.$document->lower_case_baseclass.'sExpireAfter', 10));
             }
         }
 
         if ($document->module_type == 'Workorder') {
-            if (!$document->job_date) {
+            if (! $document->job_date) {
                 $document->job_date = date('Y-m-d');
             }
 
-            if (!$document->start_time) {
+            if (! $document->start_time) {
                 $document->start_time = '08:00';
             }
 
-            if (!$document->end_time) {
+            if (! $document->end_time) {
                 $document->end_time = '09:00';
             }
         }
 
-        if (!$document->company_profile_id) {
+        if (! $document->company_profile_id) {
             $document->company_profile_id = config('bt.defaultCompanyProfile');
         }
 
-        if (!$document->number) {
+        if (! $document->number) {
             $document->number = Group::generateNumber($document->group_id);
         }
 
-        if (!$document->group_id) {
-            $document->group_id = config('bt.' . $document->lower_case_baseclass . 'Group');
+        if (! $document->group_id) {
+            $document->group_id = config('bt.'.$document->lower_case_baseclass.'Group');
         }
 
-        if (!isset($document->terms)) {
-            $document->terms = config('bt.' . $document->lower_case_baseclass . 'Terms');
+        if (! isset($document->terms)) {
+            $document->terms = config('bt.'.$document->lower_case_baseclass.'Terms');
         }
 
-        if (!isset($document->footer)) {
-            $document->footer = config('bt.' . $document->lower_case_baseclass . 'Footer');
+        if (! isset($document->footer)) {
+            $document->footer = config('bt.'.$document->lower_case_baseclass.'Footer');
         }
 
-        if (!$document->document_status_id) {
+        if (! $document->document_status_id) {
             if ($document->module_type == 'Recurringinvoice') {
                 $document->document_status_id = DocumentStatuses::getStatusId('active');
-            } else
+            } else {
                 $document->document_status_id = DocumentStatuses::getStatusId('draft');
+            }
         }
 
-        if (!$document->currency_code) {
-            $document->module_type == 'Purchaseorder' ? $document->currency_code = $document->vendor->currency_code:
+        if (! $document->currency_code) {
+            $document->module_type == 'Purchaseorder' ? $document->currency_code = $document->vendor->currency_code :
             $document->currency_code = $document->client->currency_code;
         }
 
-        if (!$document->template) {
-            $template = $document->lower_case_baseclass . '_template';
+        if (! $document->template) {
+            $template = $document->lower_case_baseclass.'_template';
             $document->template = $document->companyProfile->$template;
         }
 
         if ($document->currency_code == config('bt.baseCurrency')) {
             $document->exchange_rate = 1;
-        } elseif (!$document->exchange_rate) {
+        } elseif (! $document->exchange_rate) {
             $currencyConverter = CurrencyConverterFactory::create();
             $document->exchange_rate = $currencyConverter->convert(config('bt.currencyConversionKey'), config('bt.baseCurrency'), $document->currency_code);
         }
@@ -137,9 +132,6 @@ class DocumentObserver
 
     /**
      * Handle the document "deleting" event.
-     *
-     * @param \BT\Modules\Documents\Models\Document $document
-     * @return void
      */
     public function deleting(Document $document): void
     {
@@ -161,19 +153,23 @@ class DocumentObserver
 
         // invoice set invoice_id ref in quote, workorder, payment, expense and timetrackingtask to 0, denoting deleted
         if ($document->module_type == 'Invoice' && $document->isForceDeleting()) {
-            if ($document->workorder) $document->workorder->updateQuietly(['invoice_id' => 0]);
-            if ($document->quote) $document->quote->updateQuietly(['invoice_id' => 0]);
-            if ($document->payments){
+            if ($document->workorder) {
+                $document->workorder->updateQuietly(['invoice_id' => 0]);
+            }
+            if ($document->quote) {
+                $document->quote->updateQuietly(['invoice_id' => 0]);
+            }
+            if ($document->payments) {
                 foreach ($document->payments as $payment) {
                     $payment->updateQuietly(['invoice_id' => 0]);
                 }
             }
-            if ($document->expenses){
+            if ($document->expenses) {
                 foreach ($document->expenses as $expense) {
                     $expense->updateQuietly(['invoice_id' => 0]);
                 }
             }
-            if ($document->timetrackingtasks){
+            if ($document->timetrackingtasks) {
                 foreach ($document->timetrackingtasks as $timetrackingtask) {
                     $timetrackingtask->updateQuietly(['invoice_id' => 0]);
                 }
@@ -181,12 +177,14 @@ class DocumentObserver
         }
 
         if ($document->module_type == 'Workorder' && $document->isForceDeleting()) {
-            if($document->quote) $document->quote->updateQuietly(['workorder_id' => 0]);
+            if ($document->quote) {
+                $document->quote->updateQuietly(['workorder_id' => 0]);
+            }
         }
 
         // purchaseorder set invoice_id ref in payment to -1, denoting deleted purchaseorder
         if ($document->module_type == 'Purchaseorder' && $document->isForceDeleting()) {
-            if ($document->payments){
+            if ($document->payments) {
                 foreach ($document->payments as $payment) {
                     $payment->updateQuietly(['invoice_id' => -1]);
                 }
@@ -194,22 +192,19 @@ class DocumentObserver
         }
 
         //this gets messy with soft deletes...
-//        $group = Group::where('id', $document->group_id)
-//            ->where('last_number', $document->number)
-//            ->first();
-//
-//        if ($group)
-//        {
-//            $group->next_id = $group->next_id - 1;
-//            $group->save();
-//        }
+        //        $group = Group::where('id', $document->group_id)
+        //            ->where('last_number', $document->number)
+        //            ->first();
+        //
+        //        if ($group)
+        //        {
+        //            $group->next_id = $group->next_id - 1;
+        //            $group->save();
+        //        }
     }
 
     /**
      * Handle the document "restoring" event.
-     *
-     * @param \BT\Modules\Documents\Models\Document $document
-     * @return void
      */
     public function restoring(Document $document): void
     {
@@ -229,5 +224,4 @@ class DocumentObserver
             $note->onlyTrashed()->restore();
         }
     }
-
 }

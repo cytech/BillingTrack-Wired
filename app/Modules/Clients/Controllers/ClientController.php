@@ -16,11 +16,11 @@ use BT\Modules\Clients\Models\Client;
 use BT\Modules\Clients\Requests\ClientStoreRequest;
 use BT\Modules\Clients\Requests\ClientUpdateRequest;
 use BT\Modules\CustomFields\Models\CustomField;
+use BT\Modules\Industries\Models\Industry;
 use BT\Modules\PaymentTerms\Models\PaymentTerm;
+use BT\Modules\Sizes\Models\Size;
 use BT\Support\Frequency;
 use BT\Traits\ReturnUrl;
-use BT\Modules\Industries\Models\Industry;
-use BT\Modules\Sizes\Models\Size;
 
 class ClientController extends Controller
 {
@@ -105,12 +105,14 @@ class ClientController extends Controller
     public function bulkDelete()
     {
         Client::destroy(request('ids'));
+
         return response()->json(['success' => trans('bt.record_successfully_trashed')], 200);
     }
 
     public function bulkStatus()
     {
         Client::whereIn('id', request('ids'))->update(['active' => request('status')]);
+
         return response()->json(['success' => trans('bt.status_successfully_updated')], 200);
 
     }
@@ -142,9 +144,9 @@ class ClientController extends Controller
     public function ajaxCheckDuplicateName()
     {
         if (Client::where(function ($query) {
-                $query->where('name', request('client_name'));
-                $query->orWhere('unique_name', request('unique_name'));
-            })->where('id', '<>', request('client_id'))->count() > 0
+            $query->where('name', request('client_name'));
+            $query->orWhere('unique_name', request('unique_name'));
+        })->where('id', '<>', request('client_id'))->count() > 0
         ) {
             return response()->json(['is_duplicate' => 1]);
         }

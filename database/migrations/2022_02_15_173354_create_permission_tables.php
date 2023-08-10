@@ -3,9 +3,9 @@
 use BT\Modules\Users\Models\User;
 use Database\Seeders\PermissionsTableSeeder;
 use Database\Seeders\RolesTableSeeder;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 use Spatie\Permission\PermissionRegistrar;
 
 class CreatePermissionTables extends Migration
@@ -122,18 +122,18 @@ class CreatePermissionTables extends Migration
 
         //seed permissions and roles
         Artisan::call('db:seed', [
-            '--class' => PermissionsTableSeeder::class
+            '--class' => PermissionsTableSeeder::class,
         ]);
         Artisan::call('db:seed', [
-            '--class' => RolesTableSeeder::class
+            '--class' => RolesTableSeeder::class,
         ]);
 
         app('cache')
             ->store(config('permission.cache.store') != 'default' ? config('permission.cache.store') : null)
             ->forget(config('permission.cache.key'));
 
-        if(User::count()){ //get "client" users and assign client role
-            $users = User::whereNotNull('client_id')->where('client_id','>', 0)->get();
+        if (User::count()) { //get "client" users and assign client role
+            $users = User::whereNotNull('client_id')->where('client_id', '>', 0)->get();
             if ($users) {
                 foreach ($users as $user) {
                     $user->assignRole('client');

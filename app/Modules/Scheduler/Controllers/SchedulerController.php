@@ -11,31 +11,30 @@
 namespace BT\Modules\Scheduler\Controllers;
 
 use BT\Http\Controllers\Controller;
+use BT\Modules\CompanyProfiles\Models\CompanyProfile;
+use BT\Modules\Documents\Models\DocumentItem;
+use BT\Modules\Documents\Models\Invoice;
 use BT\Modules\Documents\Models\Purchaseorder;
-use BT\Modules\Scheduler\Requests\ReplaceRequest;
+use BT\Modules\Documents\Models\Quote;
+use BT\Modules\Documents\Models\Workorder;
 use BT\Modules\Employees\Models\Employee;
+use BT\Modules\Expenses\Models\Expense;
+use BT\Modules\Payments\Models\Payment;
 use BT\Modules\Products\Models\Product;
+use BT\Modules\Scheduler\Models\Category;
 use BT\Modules\Scheduler\Models\Schedule;
 use BT\Modules\Scheduler\Models\ScheduleOccurrence;
 use BT\Modules\Scheduler\Models\ScheduleResource;
-use BT\Modules\Scheduler\Models\Category;
+use BT\Modules\Scheduler\Requests\EventRequest;
+//for coreevnts
+use BT\Modules\Scheduler\Requests\ReplaceRequest;
+use BT\Modules\Scheduler\Support\CalendarEventPresenter;
 use BT\Modules\Settings\Models\Setting;
-use BT\Modules\Documents\Models\DocumentItem;
+use BT\Modules\TimeTracking\Models\TimeTrackingProject;
+use BT\Modules\TimeTracking\Models\TimeTrackingTask;
 use Carbon\Carbon;
 use DB;
 use Illuminate\Http\Request;
-use BT\Modules\CompanyProfiles\Models\CompanyProfile;
-use BT\Modules\Scheduler\Requests\EventRequest;
-
-//for coreevnts
-use BT\Modules\Scheduler\Support\CalendarEventPresenter;
-use BT\Modules\Documents\Models\Quote;
-use BT\Modules\Documents\Models\Workorder;
-use BT\Modules\Documents\Models\Invoice;
-use BT\Modules\Payments\Models\Payment;
-use BT\Modules\Expenses\Models\Expense;
-use BT\Modules\TimeTracking\Models\TimeTrackingProject;
-use BT\Modules\TimeTracking\Models\TimeTrackingTask;
 
 class SchedulerController extends Controller
 {
@@ -50,11 +49,11 @@ class SchedulerController extends Controller
         $nextmonthstart = $today->copy()->modify('0:00 first day of next month');
         $nextmonthend = $today->copy()->modify('23:59:59 last day of next month');
 
-// alternate eloquent way...
-//		$data['monthEvent'] = Schedule::whereHas('occurrences',function($q) use($today){
-//			$q->where( 'start_date', '>=', $today->copy()->modify( '0:00 first day of this month' ) )
-//			  ->where( 'schedule_occurrences.start_date', '<=', $today->copy()->modify( '23:59:59 last day of this month' ) );
-//			})->count();
+        // alternate eloquent way...
+        //		$data['monthEvent'] = Schedule::whereHas('occurrences',function($q) use($today){
+        //			$q->where( 'start_date', '>=', $today->copy()->modify( '0:00 first day of this month' ) )
+        //			  ->where( 'schedule_occurrences.start_date', '<=', $today->copy()->modify( '23:59:59 last day of this month' ) );
+        //			})->count();
 
         $data['monthEvent'] = Schedule::withOccurrences()->whereBetween('schedule_occurrences.start_date', [$thismonthstart, $thismonthend])->count();
         $data['lastMonthEvent'] = Schedule::withOccurrences()->whereBetween('schedule_occurrences.start_date', [$lastmonthstart, $lastmonthend])->count();
@@ -113,7 +112,7 @@ class SchedulerController extends Controller
 
         $coredata = [
             //quote sent or approved,based on displayinvoiced setting, with client
-            'quote'         => (config('bt.schedulerDisplayInvoiced') == 1) ?
+            'quote' => (config('bt.schedulerDisplayInvoiced') == 1) ?
                 Quote::where(function ($query) {
                     $query->sentorapproved();
                 })
@@ -126,7 +125,7 @@ class SchedulerController extends Controller
                     })
                     ->with('client'),
             //workorder sent or approved, based on displayinvoiced setting, with client
-            'workorder'     => (config('bt.schedulerDisplayInvoiced') == 1) ?
+            'workorder' => (config('bt.schedulerDisplayInvoiced') == 1) ?
                 Workorder::where(function ($query) {
                     $query->sentorapproved();
                 })
@@ -138,19 +137,20 @@ class SchedulerController extends Controller
                         $query->sentorapproved();
                     })
                     ->with('client', 'documentItems.employee'),
-            'invoice'       => Invoice::sent()->with('client'),
-            'payment'       => Payment::with(['invoice', 'paymentMethod']),
-            'expense'       => Expense::status('not_billed')->with(['category']),
-            'project'       => TimeTrackingProject::statusid('1'),
-            'task'          => TimeTrackingTask::unbilled()->with(['project', 'timers']),
+            'invoice' => Invoice::sent()->with('client'),
+            'payment' => Payment::with(['invoice', 'paymentMethod']),
+            'expense' => Expense::status('not_billed')->with(['category']),
+            'project' => TimeTrackingProject::statusid('1'),
+            'task' => TimeTrackingTask::unbilled()->with(['project', 'timers']),
             'purchaseorder' => Purchaseorder::sentorpartial()->with(['vendor']),
         ];
 
         foreach ($coredata as $type => $source) {
-            if (!count($filter) || in_array($type, $filter)) {
+            if (! count($filter) || in_array($type, $filter)) {
                 $source->where(function ($query) {
                     $start = Carbon::now()->subDays(config('bt.schedulerPastdays'));
-                    $end = Carbon::now()->addCentury();//really.....
+                    $end = Carbon::now()->addCentury(); //really.....
+
                     return $query->dateRange($start, $end);
                 });
 
@@ -167,7 +167,7 @@ class SchedulerController extends Controller
 
     public function showSchedule()
     {
-        if (!isset($_POST['back']) && !isset($_POST['forward'])) {
+        if (! isset($_POST['back']) && ! isset($_POST['forward'])) {
             $date = new Carbon();
         }
 
@@ -190,7 +190,6 @@ class SchedulerController extends Controller
 
         $companyProfiles = CompanyProfile::getList();
 
-
         $scheduled_employees = Workorder::with(['client', 'documentItems' => function ($q) {
             $q->where('resource_table', 'employees');
         }])->whereBetween('job_date', [$mySdate, $myEdate])->approved()->get();
@@ -207,7 +206,7 @@ class SchedulerController extends Controller
         $ardata = [];
 
         foreach ($dates as $date) {
-            list($available_employees, $available_resources) = $this->getResourceStatus($date);
+            [$available_employees, $available_resources] = $this->getResourceStatus($date);
 
             $aedata[$date] = $available_employees;
             $ardata[$date] = $available_resources;
@@ -235,7 +234,7 @@ class SchedulerController extends Controller
 
     public function scheduledResources($date)
     {
-        list($available_employees, $available_resources) = $this->getResourceStatus($date);
+        [$available_employees, $available_resources] = $this->getResourceStatus($date);
 
         return response()->json(['success' => true, 'available_employees' => $available_employees, 'available_resources' => $available_resources], 200);
     }
@@ -263,6 +262,7 @@ class SchedulerController extends Controller
     public function bulkDelete()
     {
         Schedule::destroy(request('ids'));
+
         return response()->json(['success' => trans('bt.record_successfully_trashed')], 200);
     }
 
@@ -283,7 +283,7 @@ class SchedulerController extends Controller
     {
         $inactive_employee = Employee::where('short_name', $name)->first();
 
-        list($available_employees) = $this->getResourceStatus($date);
+        [$available_employees] = $this->getResourceStatus($date);
 
         if (empty($available_employees)) {
             $available_employees[0] = trans('bt.no_emp_available');
@@ -300,7 +300,7 @@ class SchedulerController extends Controller
         $item = DocumentItem::find($request->id);
         $item->resource_id = $request->resource_id;
         $item->name = $request->name;
-        $item->description = substr_replace($item->description, $request->resource_id, strpos($item->description, "-") + 1);
+        $item->description = substr_replace($item->description, $request->resource_id, strpos($item->description, '-') + 1);
         $item->save();
 
         return response()->json(['success' => trans('bt.employee_successfully_replaced')], 200);
@@ -318,7 +318,7 @@ class SchedulerController extends Controller
         })->where('resource_table', 'employees')->orderBy('name')->get('resource_id');
 
         $employees_unscheduled = Employee::where('active', '=', '1')->where('schedule', '=', '1')
-            ->where(function ($query) use ($date){
+            ->where(function ($query) use ($date) {
                 $query->whereNull('term_date')
                     ->orWhere('term_date', '>', $date);
             })
@@ -344,7 +344,7 @@ class SchedulerController extends Controller
                 }
             }
         }
+
         return [$employees_unscheduled, $resources_unscheduled];
     }
 }
-

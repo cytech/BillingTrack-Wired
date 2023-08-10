@@ -15,9 +15,9 @@ use Askedio\SoftCascade\Traits\SoftCascadeTrait;
 use BT\Modules\Clients\Models\Client;
 use BT\Modules\CompanyProfiles\Models\CompanyProfile;
 use BT\Modules\Users\Models\User;
-use BT\Support\Statuses\TimeTrackingProjectStatuses;
 use BT\Support\CurrencyFormatter;
 use BT\Support\DateFormatter;
+use BT\Support\Statuses\TimeTrackingProjectStatuses;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -28,7 +28,6 @@ use Illuminate\Support\Facades\DB;
 class TimeTrackingProject extends Model
 {
     use SoftDeletes;
-
     use SoftCascadeTrait;
 
     protected $softCascade = ['tasks'];
@@ -39,7 +38,7 @@ class TimeTrackingProject extends Model
 
     protected $guarded = ['id'];
 
-//    protected $appends = ['status_text', 'formatted_created_at', 'formatted_due_at'];
+    //    protected $appends = ['status_text', 'formatted_created_at', 'formatted_due_at'];
 
     public static function getList($status = null)
     {
@@ -80,23 +79,24 @@ class TimeTrackingProject extends Model
 
     public function formattedCreatedat(): Attribute
     {
-        return new Attribute(get: fn() => DateFormatter::format($this->created_at));
+        return new Attribute(get: fn () => DateFormatter::format($this->created_at));
     }
 
     public function formattedDueAt(): Attribute
     {
-        return new Attribute(get: fn() => DateFormatter::format($this->due_at));
+        return new Attribute(get: fn () => DateFormatter::format($this->due_at));
     }
 
     public function formattedHourlyRate(): Attribute
     {
-        return new Attribute(get: fn() => CurrencyFormatter::format($this->hourly_rate));
+        return new Attribute(get: fn () => CurrencyFormatter::format($this->hourly_rate));
     }
 
     public function statusText(): Attribute
     {
         $statuses = TimeTrackingProjectStatuses::statuses();
-        return new Attribute(get: fn() => $statuses[$this->status_id]);
+
+        return new Attribute(get: fn () => $statuses[$this->status_id]);
     }
 
     /*
@@ -110,9 +110,9 @@ class TimeTrackingProject extends Model
         return $query->select(
             'time_tracking_projects.*',
             'clients.name AS client_name',
-            DB::raw('(' . $this->getHoursSql() . ') AS hours'),
-            DB::raw('(' . $this->getUnbilledHoursSql() . ') AS unbilled_hours'),
-            DB::raw('(' . $this->getBilledHours() . ') AS billed_hours')
+            DB::raw('('.$this->getHoursSql().') AS hours'),
+            DB::raw('('.$this->getUnbilledHoursSql().') AS unbilled_hours'),
+            DB::raw('('.$this->getBilledHours().') AS billed_hours')
         )->leftJoin('clients', 'clients.id', '=', 'time_tracking_projects.client_id');
     }
 
@@ -151,7 +151,7 @@ class TimeTrackingProject extends Model
         return DB::table('time_tracking_timers')
             ->selectRaw('IFNULL(SUM(hours), 0.00)')
             ->join('time_tracking_tasks', 'time_tracking_tasks.id', '=', 'time_tracking_timers.time_tracking_task_id')
-            ->where('time_tracking_tasks.time_tracking_project_id', '=', DB::raw(DB::getTablePrefix() . 'time_tracking_projects.id'))
+            ->where('time_tracking_tasks.time_tracking_project_id', '=', DB::raw(DB::getTablePrefix().'time_tracking_projects.id'))
             ->whereNull('time_tracking_timers.deleted_at')
             ->toSql();
     }
@@ -161,7 +161,7 @@ class TimeTrackingProject extends Model
         return DB::table('time_tracking_timers')
             ->selectRaw('IFNULL(SUM(hours), 0.00)')
             ->join('time_tracking_tasks', 'time_tracking_tasks.id', '=', 'time_tracking_timers.time_tracking_task_id')
-            ->where('time_tracking_tasks.time_tracking_project_id', '=', DB::raw(DB::getTablePrefix() . 'time_tracking_projects.id'))
+            ->where('time_tracking_tasks.time_tracking_project_id', '=', DB::raw(DB::getTablePrefix().'time_tracking_projects.id'))
             ->where('time_tracking_tasks.billed', DB::raw(0))
             ->whereNull('time_tracking_timers.deleted_at')
             ->toSql();
@@ -172,7 +172,7 @@ class TimeTrackingProject extends Model
         return DB::table('time_tracking_timers')
             ->selectRaw('IFNULL(SUM(hours), 0.00)')
             ->join('time_tracking_tasks', 'time_tracking_tasks.id', '=', 'time_tracking_timers.time_tracking_task_id')
-            ->where('time_tracking_tasks.time_tracking_project_id', '=', DB::raw(DB::getTablePrefix() . 'time_tracking_projects.id'))
+            ->where('time_tracking_tasks.time_tracking_project_id', '=', DB::raw(DB::getTablePrefix().'time_tracking_projects.id'))
             ->where('time_tracking_tasks.billed', DB::raw(1))
             ->toSql();
     }

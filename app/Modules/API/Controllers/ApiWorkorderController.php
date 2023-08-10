@@ -14,8 +14,8 @@ use BT\Events\DocumentModified;
 use BT\Modules\API\Requests\APIWorkorderItemRequest;
 use BT\Modules\API\Requests\APIWorkorderStoreRequest;
 use BT\Modules\Clients\Models\Client;
-use BT\Modules\Documents\Models\Workorder;
 use BT\Modules\Documents\Models\DocumentItem;
+use BT\Modules\Documents\Models\Workorder;
 use BT\Modules\Users\Models\User;
 
 class ApiWorkorderController extends ApiController
@@ -61,13 +61,11 @@ class ApiWorkorderController extends ApiController
     {
         $validator = $this->validator->make(['id' => request('id')], ['id' => 'required']);
 
-        if ($validator->fails())
-        {
+        if ($validator->fails()) {
             return response()->json($validator->errors()->all(), 400);
         }
 
-        if (Workorder::find(request('id')))
-        {
+        if (Workorder::find(request('id'))) {
             Workorder::destroy(request('id'));
 
             return response(200);

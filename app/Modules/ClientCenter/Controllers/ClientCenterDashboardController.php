@@ -13,16 +13,18 @@ namespace BT\Modules\ClientCenter\Controllers;
 
 use BT\Http\Controllers\Controller;
 use BT\Modules\Documents\Models\Invoice;
-use BT\Modules\Payments\Models\Payment;
 use BT\Modules\Documents\Models\Quote;
 use BT\Modules\Documents\Models\Workorder;
+use BT\Modules\Payments\Models\Payment;
 use BT\Support\Statuses\DocumentStatuses;
 use Illuminate\Support\Facades\DB;
 
 class ClientCenterDashboardController extends Controller
 {
     private $invoiceStatuses;
+
     private $quoteStatuses;
+
     private $workorderStatuses;
 
     public function __construct(
@@ -31,8 +33,8 @@ class ClientCenterDashboardController extends Controller
         DocumentStatuses $workorderStatuses)
     {
         $this->invoiceStatuses = $invoiceStatuses;
-        $this->quoteStatuses   = $quoteStatuses;
-        $this->workorderStatuses   = $workorderStatuses;
+        $this->quoteStatuses = $quoteStatuses;
+        $this->workorderStatuses = $workorderStatuses;
     }
 
     public function index()
@@ -61,8 +63,7 @@ class ClientCenterDashboardController extends Controller
             ->limit(5)->get();
 
         $payments = Payment::with('invoice.amount.invoice.currency', 'invoice.client')
-            ->whereHas('invoice', function ($invoice) use ($clientId)
-            {
+            ->whereHas('invoice', function ($invoice) use ($clientId) {
                 $invoice->where('client_id', $clientId);
             })->orderBy('created_at', 'desc')
             ->limit(5)->get();

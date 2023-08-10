@@ -13,13 +13,13 @@ namespace BT\Support\SixtoSeven\Models;
 
 use Askedio\SoftCascade\Traits\SoftCascadeTrait;
 use BT\Modules\CustomFields\Models\QuoteCustom;
-use Carbon\Carbon;
 use BT\Support\CurrencyFormatter;
 use BT\Support\DateFormatter;
 use BT\Support\FileNames;
 use BT\Support\HTML;
 use BT\Support\NumberFormatter;
 use BT\Support\SixtoSeven\Statuses\QuoteStatuses;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
@@ -27,7 +27,6 @@ use Illuminate\Support\Facades\DB;
 class Quote extends Model
 {
     use SoftDeletes;
-
     use SoftCascadeTrait;
 
     protected $softCascade = ['quoteItems', 'custom', 'amount', 'activities', 'attachments', 'mailQueue', 'notes'];
@@ -36,7 +35,7 @@ class Quote extends Model
 
     protected $casts = ['expires_at' => 'datetime', 'quote_date' => 'datetime', 'deleted_at' => 'datetime'];
 
-    protected $appends = ['formatted_quote_date', 'formatted_expires_at','status_text', 'formatted_summary'];
+    protected $appends = ['formatted_quote_date', 'formatted_expires_at', 'status_text', 'formatted_summary'];
 
     /*
     |--------------------------------------------------------------------------
@@ -145,7 +144,7 @@ class Quote extends Model
 
     public function getAttachmentPathAttribute()
     {
-        return attachment_path('quotes/' . $this->id);
+        return attachment_path('quotes/'.$this->id);
     }
 
     public function getAttachmentPermissionOptionsAttribute()
@@ -202,8 +201,7 @@ class Quote extends Model
 
     public function getIsForeignCurrencyAttribute()
     {
-        if ($this->attributes['currency_code'] == config('bt.baseCurrency'))
-        {
+        if ($this->attributes['currency_code'] == config('bt.baseCurrency')) {
             return false;
         }
 
@@ -220,8 +218,9 @@ class Quote extends Model
         return NumberFormatter::format($this->attributes['discount']);
     }
 
-    public function  getFormattedSummaryAttribute(){
-        return mb_strimwidth($this->attributes['summary'],0,50,'...');
+    public function getFormattedSummaryAttribute()
+    {
+        return mb_strimwidth($this->attributes['summary'], 0, 50, '...');
     }
 
     /**
@@ -233,47 +232,37 @@ class Quote extends Model
     {
         $taxes = [];
 
-        foreach ($this->items as $item)
-        {
-            if ($item->taxRate)
-            {
+        foreach ($this->items as $item) {
+            if ($item->taxRate) {
                 $key = $item->taxRate->name;
 
-                if (!isset($taxes[$key]))
-                {
-                    $taxes[$key]              = new \stdClass();
-                    $taxes[$key]->name        = $item->taxRate->name;
-                    $taxes[$key]->percent     = $item->taxRate->formatted_percent;
-                    $taxes[$key]->total       = $item->amount->tax_1;
+                if (! isset($taxes[$key])) {
+                    $taxes[$key] = new \stdClass();
+                    $taxes[$key]->name = $item->taxRate->name;
+                    $taxes[$key]->percent = $item->taxRate->formatted_percent;
+                    $taxes[$key]->total = $item->amount->tax_1;
                     $taxes[$key]->raw_percent = $item->taxRate->percent;
-                }
-                else
-                {
+                } else {
                     $taxes[$key]->total += $item->amount->tax_1;
                 }
             }
 
-            if ($item->taxRate2)
-            {
+            if ($item->taxRate2) {
                 $key = $item->taxRate2->name;
 
-                if (!isset($taxes[$key]))
-                {
-                    $taxes[$key]              = new \stdClass();
-                    $taxes[$key]->name        = $item->taxRate2->name;
-                    $taxes[$key]->percent     = $item->taxRate2->formatted_percent;
-                    $taxes[$key]->total       = $item->amount->tax_2;
+                if (! isset($taxes[$key])) {
+                    $taxes[$key] = new \stdClass();
+                    $taxes[$key]->name = $item->taxRate2->name;
+                    $taxes[$key]->percent = $item->taxRate2->formatted_percent;
+                    $taxes[$key]->total = $item->amount->tax_2;
                     $taxes[$key]->raw_percent = $item->taxRate2->percent;
-                }
-                else
-                {
+                } else {
                     $taxes[$key]->total += $item->amount->tax_2;
                 }
             }
         }
 
-        foreach ($taxes as $key => $tax)
-        {
+        foreach ($taxes as $key => $tax) {
             $taxes[$key]->total = CurrencyFormatter::format($tax->total, $this->currency);
         }
 
@@ -300,8 +289,7 @@ class Quote extends Model
 
     public function scopeClientId($query, $clientId = null)
     {
-        if ($clientId)
-        {
+        if ($clientId) {
             $query->where('client_id', $clientId);
         }
 
@@ -310,8 +298,7 @@ class Quote extends Model
 
     public function scopeCompanyProfileId($query, $companyProfileId)
     {
-        if ($companyProfileId)
-        {
+        if ($companyProfileId) {
             $query->where('company_profile_id', $companyProfileId);
         }
 
@@ -336,7 +323,7 @@ class Quote extends Model
     public function scopeSentOrApproved($query)
     {
         return $query->where('quote_status_id', '=', QuoteStatuses::getStatusId('sent'))
-                     ->orWhere('quote_status_id', '=', QuoteStatuses::getStatusId('approved'));
+            ->orWhere('quote_status_id', '=', QuoteStatuses::getStatusId('approved'));
     }
 
     public function scopeRejected($query)
@@ -351,8 +338,7 @@ class Quote extends Model
 
     public function scopeStatus($query, $status = null)
     {
-        switch ($status)
-        {
+        switch ($status) {
             case 'draft':
                 $query->draft();
                 break;
@@ -378,8 +364,8 @@ class Quote extends Model
 
     public function scopeYearToDate($query)
     {
-        return $query->where('quote_date', '>=', date('Y') . '-01-01')
-            ->where('quote_date', '<=', date('Y') . '-12-31');
+        return $query->where('quote_date', '>=', date('Y').'-01-01')
+            ->where('quote_date', '<=', date('Y').'-12-31');
     }
 
     public function scopeThisQuarter($query)
@@ -396,17 +382,15 @@ class Quote extends Model
 
     public function scopeKeywords($query, $keywords)
     {
-        if ($keywords)
-        {
+        if ($keywords) {
             $keywords = strtolower($keywords);
 
-            $query->where(DB::raw('lower(number)'), 'like', '%' . $keywords . '%')
-                ->orWhere('quotes.quote_date', 'like', '%' . $keywords . '%')
-                ->orWhere('expires_at', 'like', '%' . $keywords . '%')
-                ->orWhere('summary', 'like', '%' . $keywords . '%')
-                ->orWhereIn('client_id', function ($query) use ($keywords)
-                {
-                    $query->select('id')->from('clients')->where(DB::raw("CONCAT_WS('^',LOWER(name),LOWER(unique_name))"), 'like', '%' . $keywords . '%');
+            $query->where(DB::raw('lower(number)'), 'like', '%'.$keywords.'%')
+                ->orWhere('quotes.quote_date', 'like', '%'.$keywords.'%')
+                ->orWhere('expires_at', 'like', '%'.$keywords.'%')
+                ->orWhere('summary', 'like', '%'.$keywords.'%')
+                ->orWhereIn('client_id', function ($query) use ($keywords) {
+                    $query->select('id')->from('clients')->where(DB::raw("CONCAT_WS('^',LOWER(name),LOWER(unique_name))"), 'like', '%'.$keywords.'%');
                 });
         }
 

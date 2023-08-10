@@ -20,7 +20,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class InvoiceItem extends Model
 {
     use SoftDeletes;
-
     use SoftCascadeTrait;
 
     protected $connection = 'mysql'; // necessary for livewire error:Queueing collections with multiple model connections is not supported
@@ -103,8 +102,7 @@ class InvoiceItem extends Model
 
     public function scopeByDateRange($query, $from, $to)
     {
-        return $query->whereIn('invoice_id', function ($query) use ($from, $to)
-        {
+        return $query->whereIn('invoice_id', function ($query) use ($from, $to) {
             $query->select('id')
                 ->from('invoices')
                 ->where('invoice_date', '>=', $from)

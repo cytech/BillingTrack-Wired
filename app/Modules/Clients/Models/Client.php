@@ -18,6 +18,7 @@ use BT\Modules\CustomFields\Models\ClientCustom;
 use BT\Modules\Documents\Models\Document;
 use BT\Modules\Documents\Models\Invoice;
 use BT\Modules\Documents\Models\Quote;
+use BT\Modules\Documents\Models\Recurringinvoice;
 use BT\Modules\Documents\Models\Workorder;
 use BT\Modules\Expenses\Models\Expense;
 use BT\Modules\Industries\Models\Industry;
@@ -25,7 +26,6 @@ use BT\Modules\Merchant\Models\MerchantClient;
 use BT\Modules\Notes\Models\Note;
 use BT\Modules\Payments\Models\Payment;
 use BT\Modules\PaymentTerms\Models\PaymentTerm;
-use BT\Modules\Documents\Models\Recurringinvoice;
 use BT\Modules\Sizes\Models\Size;
 use BT\Modules\TimeTracking\Models\TimeTrackingProject;
 use BT\Modules\Users\Models\User;
@@ -43,7 +43,6 @@ use Illuminate\Support\Facades\DB;
 
 class Client extends Model
 {
-
     use SoftDeletes;
     use SoftCascadeTrait;
 
@@ -86,10 +85,11 @@ class Client extends Model
             'id' => $id,
         ]);
 
-        if (!$client->id) {
+        if (! $client->id) {
             $client->name = $name;
             $client->unique_name = self::generateUniqueName($name);
             $client->save();
+
             return self::find($client->id);
         }
 
@@ -98,7 +98,7 @@ class Client extends Model
 
     public static function generateUniqueName($name)
     {
-        return substr($name, 0, 10) . '_' .
+        return substr($name, 0, 10).'_'.
             substr(base_convert(mt_rand(), 10, 36), 0, 5);
     }
 
@@ -211,65 +211,65 @@ class Client extends Model
 
     public function formattedCreatedat(): Attribute
     {
-        return new Attribute(get: fn() => DateFormatter::format($this->created_at));
+        return new Attribute(get: fn () => DateFormatter::format($this->created_at));
     }
 
     public function uniqueNamePrefix(): Attribute
     {
-        return new Attribute(get: fn() => substr($this->unique_name, 0, strpos($this->unique_name, "_") + 1));
+        return new Attribute(get: fn () => substr($this->unique_name, 0, strpos($this->unique_name, '_') + 1));
     }
 
     public function uniqueNameSuffix(): Attribute
     {
-        return new Attribute(get: fn() => substr($this->unique_name, strpos($this->unique_name, "_") + 1));
+        return new Attribute(get: fn () => substr($this->unique_name, strpos($this->unique_name, '_') + 1));
     }
 
     public function attachmentPath(): Attribute
     {
-        return new Attribute(get: fn() => attachment_path('clients/' . $this->id));
+        return new Attribute(get: fn () => attachment_path('clients/'.$this->id));
     }
 
     public function attachmentPermissionOptions(): Attribute
     {
-        return new Attribute(get: fn() => ['0' => trans('bt.not_visible')]);
+        return new Attribute(get: fn () => ['0' => trans('bt.not_visible')]);
     }
 
     public function formattedBalance(): Attribute
     {
-        return new Attribute(get: fn() => CurrencyFormatter::format($this->balance, $this->currency));
+        return new Attribute(get: fn () => CurrencyFormatter::format($this->balance, $this->currency));
     }
 
     public function formattedPaid(): Attribute
     {
-        return new Attribute(get: fn() => CurrencyFormatter::format($this->paid, $this->currency));
+        return new Attribute(get: fn () => CurrencyFormatter::format($this->paid, $this->currency));
     }
 
     public function formattedTotal(): Attribute
     {
-        return new Attribute(get: fn() => CurrencyFormatter::format($this->total, $this->currency));
+        return new Attribute(get: fn () => CurrencyFormatter::format($this->total, $this->currency));
     }
 
     public function formattedAddress(): Attribute
     {
-        return new Attribute(get: fn() => nl2br(formatAddress($this)));
+        return new Attribute(get: fn () => nl2br(formatAddress($this)));
     }
 
     public function formattedAddress2(): Attribute
     {
-        return new Attribute(get: fn() => nl2br(formatAddress2($this)));
+        return new Attribute(get: fn () => nl2br(formatAddress2($this)));
     }
 
     public function clientEmail(): Attribute
     {
-        return new Attribute(get: fn() => $this->email);
+        return new Attribute(get: fn () => $this->email);
     }
 
     public function clientTerms(): Attribute
     {
         if ($this->paymentterm->id != 1) {
-            return new Attribute(get: fn() => $this->paymentterm->num_days);
+            return new Attribute(get: fn () => $this->paymentterm->num_days);
         } else {
-            return new Attribute(get: fn() => config('bt.invoicesDueAfter'));
+            return new Attribute(get: fn () => config('bt.invoicesDueAfter'));
         }
     }
 
@@ -282,9 +282,9 @@ class Client extends Model
     public function scopeGetSelect()
     {
         return self::select('clients.*',
-            DB::raw('(' . $this->getBalanceSql() . ') as balance'),
-            DB::raw('(' . $this->getPaidSql() . ') AS paid'),
-            DB::raw('(' . $this->getTotalSql() . ') AS total')
+            DB::raw('('.$this->getBalanceSql().') as balance'),
+            DB::raw('('.$this->getPaidSql().') AS paid'),
+            DB::raw('('.$this->getTotalSql().') AS total')
         );
     }
 
@@ -331,7 +331,7 @@ class Client extends Model
         return DB::table('document_amounts')->select(DB::raw('sum(balance)'))->whereIn('document_id', function ($q) {
             $q->select('id')
                 ->from('documents')
-                ->where('documents.client_id', '=', DB::raw(DB::getTablePrefix() . 'clients.id'))
+                ->where('documents.client_id', '=', DB::raw(DB::getTablePrefix().'clients.id'))
                 ->where('documents.document_status_id', '<>', DB::raw(DocumentStatuses::getStatusId('canceled')))
                 ->whereNull('deleted_at');
         })->toSql();
@@ -340,7 +340,7 @@ class Client extends Model
     private function getPaidSql()
     {
         return DB::table('document_amounts')->select(DB::raw('sum(paid)'))->whereIn('document_id', function ($q) {
-            $q->select('id')->from('documents')->where('documents.client_id', '=', DB::raw(DB::getTablePrefix() . 'clients.id'));
+            $q->select('id')->from('documents')->where('documents.client_id', '=', DB::raw(DB::getTablePrefix().'clients.id'));
         })->toSql();
     }
 
@@ -349,8 +349,8 @@ class Client extends Model
         //restrict total (billed) to invoices
         return DB::table('document_amounts')->select(DB::raw('sum(total)'))->whereIn('document_id', function ($q) {
             $q->select('id')->from('documents')
-                ->where('documents.client_id', '=', DB::raw(DB::getTablePrefix() . 'clients.id'))
-                ->where('documents.document_type', '=', DB::raw('"' . addslashes(Invoice::class) . '"'));
+                ->where('documents.client_id', '=', DB::raw(DB::getTablePrefix().'clients.id'))
+                ->where('documents.document_type', '=', DB::raw('"'.addslashes(Invoice::class).'"'));
         })->toSql();
     }
 }

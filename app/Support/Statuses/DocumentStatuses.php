@@ -24,6 +24,6 @@ class DocumentStatuses extends AbstractStatuses
         '7' => 'received', //po was 3
         '8' => 'partial', //po was 4
         '9' => 'active', //recurring invoice
-        '10' => 'inactive' //recurring invoice
+        '10' => 'inactive', //recurring invoice
     ];
 }

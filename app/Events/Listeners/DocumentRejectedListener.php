@@ -21,11 +21,11 @@ class DocumentRejectedListener
             $parser = new Parser($event->document);
 
             $mail = $this->mailQueue->create($event->document, [
-                'to'         => [$event->document->user->email],
-                'cc'         => [config('bt.mailDefaultCc')],
-                'bcc'        => [config('bt.mailDefaultBcc')],
-                'subject'    => trans('bt.quote_status_change_notification'),
-                'body'       => $parser->parse('quoteRejectedEmailBody'),
+                'to' => [$event->document->user->email],
+                'cc' => [config('bt.mailDefaultCc')],
+                'bcc' => [config('bt.mailDefaultBcc')],
+                'subject' => trans('bt.quote_status_change_notification'),
+                'body' => $parser->parse('quoteRejectedEmailBody'),
                 'attach_pdf' => config('bt.attachPdf'),
             ]);
 
@@ -34,12 +34,12 @@ class DocumentRejectedListener
             $parser = new Parser($event->document);
 
             $mail = $this->mailQueue->create($event->document, [
-                'to'         => [$event->document->user->email],
-                'cc'         => [config('bt.mailDefaultCc')],
-                'bcc'        => [config('bt.mailDefaultBcc')],
-                'subject'    => trans('bt.workorder_status_change_notification'),
-                'body'       => $parser->parse('workorderRejectedEmailBody'),
-                'attach_pdf' => config('bt.attachPdf')
+                'to' => [$event->document->user->email],
+                'cc' => [config('bt.mailDefaultCc')],
+                'bcc' => [config('bt.mailDefaultBcc')],
+                'subject' => trans('bt.workorder_status_change_notification'),
+                'body' => $parser->parse('workorderRejectedEmailBody'),
+                'attach_pdf' => config('bt.attachPdf'),
             ]);
 
             $this->mailQueue->send($mail->id);

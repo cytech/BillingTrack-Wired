@@ -5,9 +5,9 @@ use Illuminate\Database\Migrations\Migration;
 
 class Version602 extends Migration
 {
-
     /**
      * Run the migrations.
+     *
      * @table payments_custom
      *
      * @return void
@@ -22,8 +22,8 @@ class Version602 extends Migration
      *
      * @return void
      */
-     public function down()
-     {
-         Setting::saveByKey('version', '6.0.1');
-     }
+    public function down()
+    {
+        Setting::saveByKey('version', '6.0.1');
+    }
 }

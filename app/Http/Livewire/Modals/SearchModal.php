@@ -6,24 +6,31 @@ use Livewire\Component;
 
 class SearchModal extends Component
 {
-    public $search_type, $resource_id, $resource_name, $module;
+    public $search_type;
 
-    protected $listeners = ['resource_idUpdated'   => 'setResourceId',
-                            'descriptionUpdated' => 'setResourceName',];
+    public $resource_id;
+
+    public $resource_name;
+
+    public $module;
+
+    protected $listeners = ['resource_idUpdated' => 'setResourceId',
+        'descriptionUpdated' => 'setResourceName', ];
 
     protected $rules = [
-        'resource_id'         => 'required',
-        'module'        => 'required',
+        'resource_id' => 'required',
+        'module' => 'required',
     ];
 
     public function messages()
     {
         return [
-            'resource_id.required' => __('bt.resource_not_found')
+            'resource_id.required' => __('bt.resource_not_found'),
         ];
     }
 
-    public function mount($modulefullname, $module_id = null, $search_type){
+    public function mount($modulefullname, $module_id, $search_type)
+    {
         $this->module = $modulefullname::find($module_id);
         $this->search_type = $search_type;
     }
@@ -45,11 +52,12 @@ class SearchModal extends Component
         $this->emit('hideModal');
     }
 
-    public function changeResource(){
+    public function changeResource()
+    {
         $this->validate();
-        if (class_basename($this->module) == 'Purchaseorder'){
+        if (class_basename($this->module) == 'Purchaseorder') {
             $this->module->update(['vendor_id' => $this->resource_id]);
-        }else {
+        } else {
             $this->module->update(['client_id' => $this->resource_id]);
         }
         $this->emit('hideModal');

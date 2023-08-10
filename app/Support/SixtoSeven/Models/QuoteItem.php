@@ -20,7 +20,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class QuoteItem extends Model
 {
     use SoftDeletes;
-
     use SoftCascadeTrait;
 
     protected $connection = 'mysql'; // necessary for livewire error:Queueing collections with multiple model connections is not supported
@@ -60,13 +59,13 @@ class QuoteItem extends Model
     public function products()
     {
         return $this->hasMany('BT\Modules\Products\Models\Product', 'resource_id')
-            ->where('resource_table','=','products');
+            ->where('resource_table', '=', 'products');
     }
 
     public function employees()
     {
         return $this->hasMany('BT\Modules\Employees\Models\Employee', 'resource_id')
-            ->where('resource_table','=','employees');
+            ->where('resource_table', '=', 'employees');
     }
 
     /*

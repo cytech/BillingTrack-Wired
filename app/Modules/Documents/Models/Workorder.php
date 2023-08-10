@@ -27,7 +27,8 @@ class Workorder extends Document
     {
         return $this::class;
     }
-    public function invoice() :HasOne
+
+    public function invoice(): HasOne
     {
         return $this->hasOne(Invoice::class, 'id', 'invoice_id')->withTrashed();
     }
@@ -39,17 +40,17 @@ class Workorder extends Document
 
     public function formattedJobDate(): Attribute
     {
-        return new Attribute(get: fn() => DateFormatter::format($this->job_date));
+        return new Attribute(get: fn () => DateFormatter::format($this->job_date));
     }
 
     public function formattedStartTime(): Attribute
     {
-        return new Attribute(get: fn() => DateFormatter::formattime($this->start_time));
+        return new Attribute(get: fn () => DateFormatter::formattime($this->start_time));
     }
 
     public function formattedEndTime(): Attribute
     {
-        return new Attribute(get: fn() => DateFormatter::formattime($this->end_time));
+        return new Attribute(get: fn () => DateFormatter::formattime($this->end_time));
     }
 
     public function formattedJobLength(): Attribute
@@ -57,7 +58,7 @@ class Workorder extends Document
         $datetime1 = new \DateTime($this->start_time);
         $datetime2 = new \DateTime($this->end_time);
         $interval = $datetime1->diff($datetime2);
-        return new Attribute(get: fn() => $interval->h + $interval->i / 60);//return decimal hours
-    }
 
+        return new Attribute(get: fn () => $interval->h + $interval->i / 60); //return decimal hours
+    }
 }

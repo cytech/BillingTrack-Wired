@@ -17,8 +17,7 @@ class ExpenseObserver
 
     public function deleting(Expense $expense): void
     {
-        foreach ($expense->attachments as $attachment)
-        {
+        foreach ($expense->attachments as $attachment) {
             ($expense->isForceDeleting()) ? $attachment->onlyTrashed()->forceDelete() : $attachment->delete();
         }
     }
@@ -30,15 +29,12 @@ class ExpenseObserver
 
     public function saving(Expense $expense): void
     {
-        if (!$expense->id)
-        {
+        if (! $expense->id) {
             $expense->user_id = auth()->user()->id;
         }
 
-        if ($expense->company_profile)
-        {
-            if (!CompanyProfile::where('company', $expense->company_profile)->count())
-            {
+        if ($expense->company_profile) {
+            if (! CompanyProfile::where('company', $expense->company_profile)->count()) {
                 $expense->company_profile_id = config('bt.defaultCompanyProfile');
             }
         }

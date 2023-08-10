@@ -69,21 +69,22 @@ class Activity extends Model
                     break;
             }
         }
+
         return '';
     }
 
     public function formattedCreatedAt(): Attribute
     {
-        return new Attribute(get: fn() => DateFormatter::format($this->created_at, true));
+        return new Attribute(get: fn () => DateFormatter::format($this->created_at, true));
     }
 
     public function formattedCreatedAtDate(): Attribute
     {
-        return new Attribute(get: fn() => DateFormatter::format($this->created_at));
+        return new Attribute(get: fn () => DateFormatter::format($this->created_at));
     }
 
     public function formattedCreatedAtTime(): Attribute
     {
-        return new Attribute(get: fn() => DateFormatter::formattime($this->created_at));
+        return new Attribute(get: fn () => DateFormatter::formattime($this->created_at));
     }
 }

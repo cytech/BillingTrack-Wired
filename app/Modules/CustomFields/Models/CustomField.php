@@ -16,9 +16,7 @@ use Illuminate\Support\Facades\Schema;
 
 class CustomField extends Model
 {
-
     protected $guarded = ['id'];
-
 
     /*
     |--------------------------------------------------------------------------
@@ -30,33 +28,25 @@ class CustomField extends Model
     {
         $currentColumn = self::where('tbl_name', '=', $tableName)->orderBy('id', 'DESC')->take(1)->first();
 
-        if (!$currentColumn)
-        {
+        if (! $currentColumn) {
             return 'column_1';
-        }
-        else
-        {
+        } else {
             $column = explode('_', $currentColumn->column_name);
 
-            return $column[0] . '_' . ($column[1] + 1);
+            return $column[0].'_'.($column[1] + 1);
         }
     }
 
     public static function createCustomColumn($tableName, $columnName, $fieldType)
     {
-        if (substr($tableName, -7) <> '_custom')
-        {
-            $tableName = $tableName . '_custom';
+        if (substr($tableName, -7) != '_custom') {
+            $tableName = $tableName.'_custom';
         }
 
-        Schema::table($tableName, function ($table) use ($columnName, $fieldType)
-        {
-            if ($fieldType == 'textarea')
-            {
+        Schema::table($tableName, function ($table) use ($columnName, $fieldType) {
+            if ($fieldType == 'textarea') {
                 $table->text($columnName)->nullable();
-            }
-            else
-            {
+            } else {
                 $table->string($columnName)->nullable();
             }
 
@@ -65,15 +55,12 @@ class CustomField extends Model
 
     public static function deleteCustomColumn($tableName, $columnName)
     {
-        if (substr($tableName, -7) <> '_custom')
-        {
-            $tableName = $tableName . '_custom';
+        if (substr($tableName, -7) != '_custom') {
+            $tableName = $tableName.'_custom';
         }
 
-        if (Schema::hasColumn($tableName, $columnName))
-        {
-            Schema::table($tableName, function ($table) use ($columnName)
-            {
+        if (Schema::hasColumn($tableName, $columnName)) {
+            Schema::table($tableName, function ($table) use ($columnName) {
                 $table->dropColumn($columnName);
             });
         }
@@ -82,21 +69,18 @@ class CustomField extends Model
     public static function copyCustomFieldValues($fromModel, $toModel)
     {
         $commonFields = [];
-        $fromFields   = self::forTable($fromModel->getTable())->get();
-        $toFields     = self::forTable($toModel->getTable())->get();
+        $fromFields = self::forTable($fromModel->getTable())->get();
+        $toFields = self::forTable($toModel->getTable())->get();
 
-        foreach ($fromFields as $fromField)
-        {
+        foreach ($fromFields as $fromField) {
             $toField = $toFields->where('field_label', $fromField->field_label)->first();
 
-            if ($toField)
-            {
+            if ($toField) {
                 $commonFields[$toField->column_name] = $fromModel->custom->{$fromField->column_name};
             }
         }
 
-        if ($commonFields)
-        {
+        if ($commonFields) {
             $toModel->custom->update($commonFields);
         }
     }

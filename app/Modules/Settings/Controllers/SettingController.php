@@ -16,16 +16,12 @@ use BT\Modules\CompanyProfiles\Models\CompanyProfile;
 use BT\Modules\Currencies\Models\Currency;
 use BT\Modules\Documents\Support\DocumentTemplates;
 use BT\Modules\Groups\Models\Group;
-use BT\Modules\Invoices\Support\InvoiceTemplates;
 use BT\Modules\MailQueue\Support\MailSettings;
 use BT\Modules\Merchant\Support\MerchantFactory;
 use BT\Modules\PaymentMethods\Models\PaymentMethod;
-use BT\Modules\Purchaseorders\Support\PurchaseorderTemplates;
-use BT\Modules\Quotes\Support\QuoteTemplates;
 use BT\Modules\Settings\Models\Setting;
 use BT\Modules\Settings\Requests\SettingUpdateRequest;
 use BT\Modules\TaxRates\Models\TaxRate;
-use BT\Modules\Workorders\Support\WorkorderTemplates;
 use BT\Support\DashboardWidgets;
 use BT\Support\DateFormatter;
 use BT\Support\Frequency;
@@ -50,64 +46,64 @@ class SettingController extends Controller
 
         return view('settings.index')
             ->with([
-                'amountDecimalOptions'          => ['0' => '0', '2' => '2', '3' => '3', '4' => '4'],
-                'clientUniqueNameOptions'       => ['0' => trans('bt.client_unique_name_option_1'), '1' => trans('bt.client_unique_name_option_2')],
-                'colWidthArray'                 => array_combine(range(1, 12), range(1, 12)),
-                'companyProfiles'               => CompanyProfile::getList(),
-                'convertQuoteOptions'           => ['quote' => trans('bt.convert_quote_option1'), 'invoice' => trans('bt.convert_quote_option2')],
-                'convertWorkorderDate'          => ['jobdate' => trans('bt.convert_workorder_date1'), 'currentdate' => trans('bt.convert_workorder_date2')],
-                'convertWorkorderOptions'       => ['workorder' => trans('bt.convert_workorder_option1'), 'invoice' => trans('bt.convert_workorder_option2')],
-                'currencies'                    => Currency::getList(),
-                'dashboardWidgets'              => DashboardWidgets::listsByOrder(),
-                'dateFormats'                   => DateFormatter::dropdownArray(),
-                'displayOrderArray'             => array_combine(range(1, 24), range(1, 24)),
-                'emailEncryptions'              => MailSettings::listEncryptions(),
-                'emailSendMethods'              => MailSettings::listSendMethods(),
-                'exchangeRateModes'             => ['automatic' => trans('bt.automatic'), 'manual' => trans('bt.manual')],
-                'groups'                        => Group::getList(),
-                'invoiceStatuses'               => collect(DocumentStatuses::listsAllFlat() + ['overdue' => trans('bt.overdue')])->except('approved', 'rejected', 'received', 'partial', 'active', 'inactive'),
-                'invoiceTemplates'              => DocumentTemplates::lists('Invoice'),
-                'invoiceWhenDraftOptions'       => [0 => trans('bt.keep_invoice_date_as_is'), 1 => trans('bt.change_invoice_date_to_todays_date')],
-                'languages'                     => Languages::listLanguages(),
-                'merchant'                      => config('bt.merchant'),
-                'merchantDrivers'               => MerchantFactory::getDrivers(),
-                'paperOrientations'             => ['portrait' => trans('bt.portrait'), 'landscape' => trans('bt.landscape')],
-                'paperSizes'                    => ['letter' => trans('bt.letter'), 'A4' => trans('bt.a4'), 'legal' => trans('bt.legal')],
-                'paymentMethods'                => PaymentMethod::getList(),
-                'pdfDisposition'                => ['inline' => trans('bt.inline'), 'attachment' => trans('bt.attachment')],
-                'pdfDrivers'                    => PDFFactory::getDrivers(),
-                'periods'                       => Frequency::lists(),
-                'profileImageDrivers'           => ProfileImageFactory::getDrivers(),
-                'purchaseorderStatuses'         => collect(DocumentStatuses::listsAllFlat() + ['overdue' => trans('bt.overdue')])->except('approved', 'rejected', 'active', 'inactive'),
-                'purchaseorderTemplates'        => DocumentTemplates::lists('Purchaseorder'),
+                'amountDecimalOptions' => ['0' => '0', '2' => '2', '3' => '3', '4' => '4'],
+                'clientUniqueNameOptions' => ['0' => trans('bt.client_unique_name_option_1'), '1' => trans('bt.client_unique_name_option_2')],
+                'colWidthArray' => array_combine(range(1, 12), range(1, 12)),
+                'companyProfiles' => CompanyProfile::getList(),
+                'convertQuoteOptions' => ['quote' => trans('bt.convert_quote_option1'), 'invoice' => trans('bt.convert_quote_option2')],
+                'convertWorkorderDate' => ['jobdate' => trans('bt.convert_workorder_date1'), 'currentdate' => trans('bt.convert_workorder_date2')],
+                'convertWorkorderOptions' => ['workorder' => trans('bt.convert_workorder_option1'), 'invoice' => trans('bt.convert_workorder_option2')],
+                'currencies' => Currency::getList(),
+                'dashboardWidgets' => DashboardWidgets::listsByOrder(),
+                'dateFormats' => DateFormatter::dropdownArray(),
+                'displayOrderArray' => array_combine(range(1, 24), range(1, 24)),
+                'emailEncryptions' => MailSettings::listEncryptions(),
+                'emailSendMethods' => MailSettings::listSendMethods(),
+                'exchangeRateModes' => ['automatic' => trans('bt.automatic'), 'manual' => trans('bt.manual')],
+                'groups' => Group::getList(),
+                'invoiceStatuses' => collect(DocumentStatuses::listsAllFlat() + ['overdue' => trans('bt.overdue')])->except('approved', 'rejected', 'received', 'partial', 'active', 'inactive'),
+                'invoiceTemplates' => DocumentTemplates::lists('Invoice'),
+                'invoiceWhenDraftOptions' => [0 => trans('bt.keep_invoice_date_as_is'), 1 => trans('bt.change_invoice_date_to_todays_date')],
+                'languages' => Languages::listLanguages(),
+                'merchant' => config('bt.merchant'),
+                'merchantDrivers' => MerchantFactory::getDrivers(),
+                'paperOrientations' => ['portrait' => trans('bt.portrait'), 'landscape' => trans('bt.landscape')],
+                'paperSizes' => ['letter' => trans('bt.letter'), 'A4' => trans('bt.a4'), 'legal' => trans('bt.legal')],
+                'paymentMethods' => PaymentMethod::getList(),
+                'pdfDisposition' => ['inline' => trans('bt.inline'), 'attachment' => trans('bt.attachment')],
+                'pdfDrivers' => PDFFactory::getDrivers(),
+                'periods' => Frequency::lists(),
+                'profileImageDrivers' => ProfileImageFactory::getDrivers(),
+                'purchaseorderStatuses' => collect(DocumentStatuses::listsAllFlat() + ['overdue' => trans('bt.overdue')])->except('approved', 'rejected', 'active', 'inactive'),
+                'purchaseorderTemplates' => DocumentTemplates::lists('Purchaseorder'),
                 'purchaseorderWhenDraftOptions' => [0 => trans('bt.keep_purchaseorder_date_as_is'), 1 => trans('bt.change_purchaseorder_date_to_todays_date')],
-                'quoteStatuses'                 => collect(DocumentStatuses::listsAllFlat())->except('paid', 'received', 'partial', 'active', 'inactive'),
-                'quoteTemplates'                => DocumentTemplates::lists('Quote'),
-                'quoteWhenDraftOptions'         => [0 => trans('bt.keep_quote_date_as_is'), 1 => trans('bt.change_quote_date_to_todays_date')],
-                'recurringinvoiceStatuses'      => collect(DocumentStatuses::listsAllFlat())->only('all_statuses', 'active', 'inactive'),
-                'resultsPerPage'                => array_combine([10, 25, 50, 100], [10, 25, 50, 100]),
-                'roundTaxDecimalOptions'        => ['2' => '2', '3' => '3', '4' => '4'],
-                'skins'                         => Skins::lists(),
-                'taxRates'                      => TaxRate::getList(),
-                'timezones'                     => array_combine(timezone_identifiers_list(), timezone_identifiers_list()),
-                'workorderStatuses'             => collect(DocumentStatuses::listsAllFlat())->except('paid', 'received', 'partial', 'active', 'inactive'),
-                'workorderTemplates'            => DocumentTemplates::lists('Workorder'),
-                'workorderWhenDraftOptions'     => [0 => trans('bt.keep_workorder_date_as_is'), 1 => trans('bt.change_workorder_date_to_todays_date')],
-                'yesNoArray'                    => ['0' => trans('bt.no'), '1' => trans('bt.yes')],
+                'quoteStatuses' => collect(DocumentStatuses::listsAllFlat())->except('paid', 'received', 'partial', 'active', 'inactive'),
+                'quoteTemplates' => DocumentTemplates::lists('Quote'),
+                'quoteWhenDraftOptions' => [0 => trans('bt.keep_quote_date_as_is'), 1 => trans('bt.change_quote_date_to_todays_date')],
+                'recurringinvoiceStatuses' => collect(DocumentStatuses::listsAllFlat())->only('all_statuses', 'active', 'inactive'),
+                'resultsPerPage' => array_combine([10, 25, 50, 100], [10, 25, 50, 100]),
+                'roundTaxDecimalOptions' => ['2' => '2', '3' => '3', '4' => '4'],
+                'skins' => Skins::lists(),
+                'taxRates' => TaxRate::getList(),
+                'timezones' => array_combine(timezone_identifiers_list(), timezone_identifiers_list()),
+                'workorderStatuses' => collect(DocumentStatuses::listsAllFlat())->except('paid', 'received', 'partial', 'active', 'inactive'),
+                'workorderTemplates' => DocumentTemplates::lists('Workorder'),
+                'workorderWhenDraftOptions' => [0 => trans('bt.keep_workorder_date_as_is'), 1 => trans('bt.change_workorder_date_to_todays_date')],
+                'yesNoArray' => ['0' => trans('bt.no'), '1' => trans('bt.yes')],
             ]);
     }
 
     public function update(SettingUpdateRequest $request)
     {
         //check if no enableCoreEvent checkboxes checked
-        if (!$request->has('enabledCoreEvents')) {
+        if (! $request->has('enabledCoreEvents')) {
             $request['enabledCoreEvents'] = [0];
-        };
+        }
 
         //check if no enabledModules checkboxes checked
-        if (!$request->has('enabledModules')) {
+        if (! $request->has('enabledModules')) {
             $request['enabledModules'] = [0];
-        };
+        }
 
         Setting::saveByKey('enabledModules', array_sum($request->enabledModules));
 
@@ -120,7 +116,7 @@ class SettingController extends Controller
 
             if ($key == 'mailPassword' and $value) {
                 $value = Crypt::encrypt($value);
-            } elseif ($key == 'mailPassword' and !$value) {
+            } elseif ($key == 'mailPassword' and ! $value) {
                 $skipSave = true;
             }
 
@@ -128,7 +124,7 @@ class SettingController extends Controller
                 $value = json_encode($value);
             }
 
-            if (!$skipSave) {
+            if (! $skipSave) {
                 Setting::saveByKey($key, $value);
             }
         }

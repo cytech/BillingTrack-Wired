@@ -8,7 +8,9 @@ use Rappasoft\LaravelLivewireTables\Views\Column;
 
 class TrashTable extends DataTableComponent
 {
-    public $module_type, $module_fullname;
+    public $module_type;
+
+    public $module_fullname;
 
     public function configure(): void
     {
@@ -16,25 +18,25 @@ class TrashTable extends DataTableComponent
         $this->setSearchDisabled();
         $this->setTableAttributes([
             'default' => true,
-            'class'   => 'datatable',
+            'class' => 'datatable',
         ]);
 
         $this->setTheadAttributes([
             'default' => true,
-            'class'   => 'bg-body lwtable',
+            'class' => 'bg-body lwtable',
         ]);
 
         $this->setThAttributes(function (Column $column) {
             if ($column->isField('id') || $column->isLabel()) {
                 return [
                     'default' => true,
-                    'width'   => '8%'
+                    'width' => '8%',
                 ];
             }
 
             return [];
         });
-        if ($this->module_type == 'Orphaned'){
+        if ($this->module_type == 'Orphaned') {
             $this->setBulkActionsDisabled();
         }
     }
@@ -50,9 +52,9 @@ class TrashTable extends DataTableComponent
         } elseif ($this->module_type == 'Orphaned') {
             $this->module_fullname = 'BT\\Modules\\Documents\\Models\\Document';
         } elseif (in_array($this->module_type, ['Invoice', 'Quote', 'Workorder', 'Purchaseorder', 'Recurringinvoice'])) {
-            $this->module_fullname = 'BT\\Modules\\Documents\\Models\\' . $this->module_type;
+            $this->module_fullname = 'BT\\Modules\\Documents\\Models\\'.$this->module_type;
         } else {
-            $this->module_fullname = 'BT\\Modules\\' . $this->module_type . 's\\Models\\' . $this->module_type;
+            $this->module_fullname = 'BT\\Modules\\'.$this->module_type.'s\\Models\\'.$this->module_type;
         }
     }
 
@@ -61,7 +63,7 @@ class TrashTable extends DataTableComponent
         if (in_array($this->module_type, ['Invoice', 'Quote', 'Workorder', 'Purchaseorder', 'Recurringinvoice'])) {
             $status_model = 'BT\\Support\\Statuses\\DocumentStatuses';
         } else {
-            $status_model = 'BT\\Support\\Statuses\\' . $this->module_type . 'Statuses';
+            $status_model = 'BT\\Support\\Statuses\\'.$this->module_type.'Statuses';
         }
         $statuses = class_exists($status_model) ? $status_model::listsAllFlat() + ['overdue' => trans('bt.overdue')] : null;
 
@@ -72,20 +74,19 @@ class TrashTable extends DataTableComponent
     {
         return [
             'restore' => __('bt.restore'),
-            'delete'  => __('bt.delete'),
+            'delete' => __('bt.delete'),
         ];
     }
-
 
     public function restore(): void
     {
         if ($this->getSelectedCount() > 0) {
             $ids = $this->getSelected();
             $swaldata = [
-                'title'       => __('bt.trash_restoreselected_warning'),
-                'ids'         => $ids,
+                'title' => __('bt.trash_restoreselected_warning'),
+                'ids' => $ids,
                 'module_type' => $this->module_type,
-                'route'       => route('utilities.bulk.restoretrash'),
+                'route' => route('utilities.bulk.restoretrash'),
             ];
             $this->dispatchBrowserEvent('swal:bulkConfirm', $swaldata);
         }
@@ -97,10 +98,10 @@ class TrashTable extends DataTableComponent
         if ($this->getSelectedCount() > 0) {
             $ids = $this->getSelected();
             $swaldata = [
-                'title'       => __('bt.bulk_delete_record_warning'),
-                'ids'         => $ids,
+                'title' => __('bt.bulk_delete_record_warning'),
+                'ids' => $ids,
                 'module_type' => $this->module_type,
-                'route'       => route('utilities.bulk.deletetrash'),
+                'route' => route('utilities.bulk.deletetrash'),
             ];
             $this->dispatchBrowserEvent('swal:bulkConfirm', $swaldata);
         }
@@ -118,9 +119,9 @@ class TrashTable extends DataTableComponent
             return $this->module_fullname::has('vendor')->with('vendor')->onlyTrashed()->select('documents.*');
         } elseif ($this->module_type == 'Client') {
             return $this->module_fullname::getSelect()->onlyTrashed();
-        } elseif ($this->module_type == 'Vendor'){
+        } elseif ($this->module_type == 'Vendor') {
             return $this->module_fullname::getSelect()->onlyTrashed();
-        } elseif ($this->module_type == 'Payment'){
+        } elseif ($this->module_type == 'Payment') {
             return $this->module_fullname::has('client')->with('client')->select('payments.*')->onlyTrashed();
         } elseif ($this->module_type == 'Expense') {
             return $this->module_fullname::defaultQuery()->onlyTrashed();
@@ -130,7 +131,7 @@ class TrashTable extends DataTableComponent
             return $this->module_fullname::with(['latestOccurrence' => function ($q) {
                 $q->onlyTrashed();
             }, 'category'])->select('schedule.*')->onlyTrashed();
-        } elseif ($this->module_type == 'Orphaned'){
+        } elseif ($this->module_type == 'Orphaned') {
             return $this->module_fullname::whereDoesntHave('trashedvendor')->where('document_type', 'BT\Modules\Documents\Models\Purchaseorder')
                 ->orWhereDoesntHave('trashedclient')->where('document_type', '!=', 'BT\Modules\Documents\Models\Purchaseorder')
                 ->select('documents.*')->onlyTrashed();

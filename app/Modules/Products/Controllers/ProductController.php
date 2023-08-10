@@ -10,12 +10,12 @@
 
 namespace BT\Modules\Products\Controllers;
 
+use BT\Http\Controllers\Controller;
 use BT\Modules\Categories\Models\Category;
 use BT\Modules\ItemLookups\Models\ItemLookup;
 use BT\Modules\Products\Models\InventoryType;
 use BT\Modules\Products\Models\Product;
 use BT\Modules\Products\Requests\ProductRequest;
-use BT\Http\Controllers\Controller;
 use BT\Modules\TaxRates\Models\TaxRate;
 use BT\Modules\Vendors\Models\Vendor;
 use BT\Traits\ReturnUrl;
@@ -26,7 +26,6 @@ class ProductController extends Controller
 
     /**
      * Display a listing of the product.
-     *
      */
     public function index()
     {
@@ -39,7 +38,6 @@ class ProductController extends Controller
 
     /**
      * Show the form for creating a new product.
-     *
      */
     public function create()
     {
@@ -62,7 +60,7 @@ class ProductController extends Controller
     /**
      * Store a newly created product in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(ProductRequest $request)
@@ -82,7 +80,7 @@ class ProductController extends Controller
         $products->price = $request->price ?: 0;
         $products->active = is_null($request->active) ? 0 : $request->active;
         $products->cost = $request->cost ?: 0;
-        $products->inventorytype_id = $request->type;// <> 1 ?: 3;
+        $products->inventorytype_id = $request->type; // <> 1 ?: 3;
         $products->numstock = $request->numstock ?: 0;
         $products->tax_rate_id = $request->tax_rate_id;
         $products->tax_rate_2_id = $request->tax_rate_2_id;
@@ -93,14 +91,13 @@ class ProductController extends Controller
             $this->forceLUTupdate($ret);
         }
 
-
         return redirect($this->getReturnUrl())->with('alertInfo', trans('bt.create_product_success'));
     }
 
     /**
      * Show the form for editing the specified product.
      *
-     * @param int $id
+     * @param  int  $id
      */
     public function edit($id)
     {
@@ -126,8 +123,8 @@ class ProductController extends Controller
     /**
      * Update the specified product in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(ProductRequest $request, $id)
@@ -151,7 +148,7 @@ class ProductController extends Controller
         $products->price = $request->price ?: 0;
         $products->active = is_null($request->active) ? 0 : $request->active;
         $products->cost = $request->cost ?: 0;
-        $products->inventorytype_id = $request->type;// <> 1 ?: 3;
+        $products->inventorytype_id = $request->type; // <> 1 ?: 3;
         $products->numstock = $request->numstock ?: 0;
         $products->tax_rate_id = $request->tax_rate_id;
         $products->tax_rate_2_id = $request->tax_rate_2_id;
@@ -192,6 +189,7 @@ class ProductController extends Controller
     public function bulkStatus()
     {
         Product::whereIn('id', request('ids'))->update(['active' => request('status')]);
+
         return response()->json(['success' => trans('bt.status_successfully_updated')], 200);
 
     }

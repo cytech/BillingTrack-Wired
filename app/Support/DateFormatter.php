@@ -18,64 +18,60 @@ class DateFormatter
 {
     /**
      * Returns an array of date format options.
-     *
-     * @return array
      */
-    static function formats(): array
+    public static function formats(): array
     {
         return [
             'm/d/Y' => [ //php (jquery datetimepicker)
-                'setting'    => 'm/d/Y',
+                'setting' => 'm/d/Y',
                 'datepicker' => 'mm/dd/yyyy', //daterangepicker
-                'datetimepicker' => 'm/d/Y' . (!config('bt.use24HourTimeFormat') ? ' h:i A' : ' H:i'), //jquery datetimepicker
+                'datetimepicker' => 'm/d/Y'.(! config('bt.use24HourTimeFormat') ? ' h:i A' : ' H:i'), //jquery datetimepicker
             ],
             'm-d-Y' => [
-                'setting'    => 'm-d-Y',
+                'setting' => 'm-d-Y',
                 'datepicker' => 'mm-dd-yyyy',
-                'datetimepicker' => 'm-d-Y' . (!config('bt.use24HourTimeFormat') ? ' h:i A' : ' H:i'), //jquery datetimepicker
+                'datetimepicker' => 'm-d-Y'.(! config('bt.use24HourTimeFormat') ? ' h:i A' : ' H:i'), //jquery datetimepicker
             ],
             'm.d.Y' => [
-                'setting'    => 'm.d.Y',
+                'setting' => 'm.d.Y',
                 'datepicker' => 'mm.dd.yyyy',
-                'datetimepicker' => 'm.d.Y' . (!config('bt.use24HourTimeFormat') ? ' h:i A' : ' H:i'), //jquery datetimepicker
+                'datetimepicker' => 'm.d.Y'.(! config('bt.use24HourTimeFormat') ? ' h:i A' : ' H:i'), //jquery datetimepicker
             ],
             'Y/m/d' => [
-                'setting'    => 'Y/m/d',
+                'setting' => 'Y/m/d',
                 'datepicker' => 'yyyy/mm/dd',
-                'datetimepicker' => 'Y/m/d' . (!config('bt.use24HourTimeFormat') ? ' h:i A' : ' H:i'), //jquery datetimepicker
+                'datetimepicker' => 'Y/m/d'.(! config('bt.use24HourTimeFormat') ? ' h:i A' : ' H:i'), //jquery datetimepicker
             ],
             'Y-m-d' => [
-                'setting'    => 'Y-m-d',
+                'setting' => 'Y-m-d',
                 'datepicker' => 'yyyy-mm-dd',
-                'datetimepicker' => 'Y-m-d' . (!config('bt.use24HourTimeFormat') ? ' h:i A' : ' H:i'), //jquery datetimepicker
+                'datetimepicker' => 'Y-m-d'.(! config('bt.use24HourTimeFormat') ? ' h:i A' : ' H:i'), //jquery datetimepicker
             ],
             'Y.m.d' => [
-                'setting'    => 'Y.m.d',
+                'setting' => 'Y.m.d',
                 'datepicker' => 'yyyy.mm.dd',
-                'datetimepicker' => 'Y.m.d' . (!config('bt.use24HourTimeFormat') ? ' h:i A' : ' H:i'), //jquery datetimepicker
+                'datetimepicker' => 'Y.m.d'.(! config('bt.use24HourTimeFormat') ? ' h:i A' : ' H:i'), //jquery datetimepicker
             ],
             'd/m/Y' => [
-                'setting'    => 'd/m/Y',
+                'setting' => 'd/m/Y',
                 'datepicker' => 'dd/mm/yyyy',
-                'datetimepicker' => 'd/m/Y' . (!config('bt.use24HourTimeFormat') ? ' h:i A' : ' H:i'), //jquery datetimepicker
+                'datetimepicker' => 'd/m/Y'.(! config('bt.use24HourTimeFormat') ? ' h:i A' : ' H:i'), //jquery datetimepicker
             ],
             'd-m-Y' => [
-                'setting'    => 'd-m-Y',
+                'setting' => 'd-m-Y',
                 'datepicker' => 'dd-mm-yyyy',
-                'datetimepicker' => 'd-m-Y' . (!config('bt.use24HourTimeFormat') ? ' h:i A' : ' H:i'), //jquery datetimepicker
+                'datetimepicker' => 'd-m-Y'.(! config('bt.use24HourTimeFormat') ? ' h:i A' : ' H:i'), //jquery datetimepicker
             ],
             'd.m.Y' => [
-                'setting'    => 'd.m.Y',
+                'setting' => 'd.m.Y',
                 'datepicker' => 'dd.mm.yyyy',
-                'datetimepicker' => 'd.m.Y' . (!config('bt.use24HourTimeFormat') ? ' h:i A' : ' H:i'), //jquery datetimepicker
+                'datetimepicker' => 'd.m.Y'.(! config('bt.use24HourTimeFormat') ? ' h:i A' : ' H:i'), //jquery datetimepicker
             ],
         ];
     }
 
     /**
      * Returns a flattened version of the format() method array to display as dropdown options.
-     *
-     * @return array
      */
     public static function dropdownArray(): array
     {
@@ -83,8 +79,7 @@ class DateFormatter
 
         $return = [];
 
-        foreach ($formats as $format)
-        {
+        foreach ($formats as $format) {
             $return[$format['setting']] = $format['setting'];
         }
 
@@ -94,17 +89,17 @@ class DateFormatter
     /**
      * Converts a stored date to the user formatted date.
      *
-     * @param string $date The yyyy-mm-dd standardized date
-     * @param bool $includeTime Whether to include the time
+     * @param  string  $date The yyyy-mm-dd standardized date
+     * @param  bool  $includeTime Whether to include the time
      * @return string             The user formatted date
+     *
      * @throws \Exception
      */
     public static function format($date = null, $includeTime = false): string
     {
         $date = new DateTime($date);
 
-        if (!$includeTime)
-        {
+        if (! $includeTime) {
             return $date->format(config('bt.dateFormat'));
         }
 
@@ -115,19 +110,20 @@ class DateFormatter
     /**
      * Converts a user submitted date back to standard yyyy-mm-dd format.
      *
-     * @param  string $userDate The user submitted date
+     * @param  string  $userDate The user submitted date
      * @return string|null      The yyyy-mm-dd standardized date
      */
     public static function unformat($userDate = null, $includeTime = false): ?string
     {
-        if ($userDate)
-        {
-            if (!$includeTime) {
+        if ($userDate) {
+            if (! $includeTime) {
                 $date = DateTime::createFromFormat(config('bt.dateFormat'), $userDate);
+
                 return $date->format('Y-m-d');
             }
 
             $date = DateTime::createFromFormat(config('bt.datetimepickerFormat'), $userDate);
+
             return $date->format('Y-m-d H:i:s');
         }
 
@@ -137,41 +133,43 @@ class DateFormatter
     /**
      * Converts a stored date to unix epoch with optional millisecond.
      *
-     * @param string $date The yyyy-mm-dd h:i:s standardized date
+     * @param  string  $date The yyyy-mm-dd h:i:s standardized date
      * @return int             The unix epoch millisecond date
+     *
      * @throws \Exception
      */
     public static function formatEpoch($date = null, $milli = null): int
     {
         $date = new DateTime($date);
-        return !$milli ? strtotime($date->format('Y-m-d H:i:s')) : strtotime($date->format('Y-m-d H:i:s')) * 1000;
+
+        return ! $milli ? strtotime($date->format('Y-m-d H:i:s')) : strtotime($date->format('Y-m-d H:i:s')) * 1000;
     }
 
     /**
      * Converts a stored time to the user formatted time.
      *
-     * @param string $time The H:i:s standardized time
+     * @param  string  $time The H:i:s standardized time
      * @return string             The user formatted time
+     *
      * @throws \Exception
      */
     public static function formattime($time = null): string
     {
         $time = new DateTime($time);
 
-        return $time->format(!config('bt.use24HourTimeFormat') ? ' h:i A' : ' H:i');
+        return $time->format(! config('bt.use24HourTimeFormat') ? ' h:i A' : ' H:i');
     }
 
     /**
      * Converts a user submitted time back to standard H:i:s format.
      *
-     * @param  string $userTime The user submitted time
+     * @param  string  $userTime The user submitted time
      * @return string|null             The H:i:s standardized time
      */
     public static function unformattime($userTime = null): ?string
     {
-        if ($userTime)
-        {
-            $time = DateTime::createFromFormat(!config('bt.use24HourTimeFormat') ? ' h:i A' : ' H:i', $userTime);
+        if ($userTime) {
+            $time = DateTime::createFromFormat(! config('bt.use24HourTimeFormat') ? ' h:i A' : ' H:i', $userTime);
 
             return $time->format('H:i:s');
         }
@@ -182,16 +180,17 @@ class DateFormatter
     /**
      * Adds a specified number of days to a yyyy-mm-dd formatted date.
      *
-     * @param string $date The date
-     * @param int $numDays The number of days to increment
+     * @param  string  $date The date
+     * @param  int  $numDays The number of days to increment
      * @return string The yyyy-mm-dd standardized incremented date
+     *
      * @throws \Exception
      */
     public static function incrementDateByDays($date, $numDays): string
     {
         $date = DateTime::createFromFormat('Y-m-d', $date);
 
-        $date->add(new DateInterval('P' . $numDays . 'D'));
+        $date->add(new DateInterval('P'.$numDays.'D'));
 
         return $date->format('Y-m-d');
     }
@@ -199,29 +198,29 @@ class DateFormatter
     /**
      * Adds a specified number of periods to a yyyy-mm-dd formatted date.
      *
-     * @param string $date The date
-     * @param int $period 1 = Days, 2 = Weeks, 3 = Months, 4 = Years
-     * @param int $numPeriods The number of periods to increment
+     * @param  string  $date The date
+     * @param  int  $period 1 = Days, 2 = Weeks, 3 = Months, 4 = Years
+     * @param  int  $numPeriods The number of periods to increment
      * @return string The yyyy-mm-dd standardized incremented date
+     *
      * @throws \Exception
      */
     public static function incrementDate($date, $period, $numPeriods): string
     {
         $date = DateTime::createFromFormat('Y-m-d', $date);
 
-        switch ($period)
-        {
+        switch ($period) {
             case 1:
-                $date->add(new DateInterval('P' . $numPeriods . 'D'));
+                $date->add(new DateInterval('P'.$numPeriods.'D'));
                 break;
             case 2:
-                $date->add(new DateInterval('P' . $numPeriods . 'W'));
+                $date->add(new DateInterval('P'.$numPeriods.'W'));
                 break;
             case 3:
-                $date->add(new DateInterval('P' . $numPeriods . 'M'));
+                $date->add(new DateInterval('P'.$numPeriods.'M'));
                 break;
             case 4:
-                $date->add(new DateInterval('P' . $numPeriods . 'Y'));
+                $date->add(new DateInterval('P'.$numPeriods.'Y'));
                 break;
         }
 
@@ -231,8 +230,7 @@ class DateFormatter
     /**
      * Returns the short name of the month from a numeric representation.
      *
-     * @param  int $monthNumber
-     * @return string
+     * @param  int  $monthNumber
      */
     public static function getMonthShortName($monthNumber): string
     {
@@ -241,8 +239,6 @@ class DateFormatter
 
     /**
      * Returns the format required to initialize the datepicker.
-     *
-     * @return string
      */
     public static function getDatepickerFormat(): string
     {

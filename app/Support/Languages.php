@@ -18,14 +18,13 @@ class Languages
      *
      * @return array
      */
-    static function listLanguages()
+    public static function listLanguages()
     {
         $directories = Directory::listContents(base_path('resources/lang'));
 
         $languages = [];
 
-        foreach ($directories as $directory)
-        {
+        foreach ($directories as $directory) {
             $languages[$directory] = $directory;
         }
 

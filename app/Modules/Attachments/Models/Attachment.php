@@ -53,11 +53,11 @@ class Attachment extends Model
 
     public function downloadUrl(): Attribute
     {
-        return new Attribute(get: fn() => route('attachments.download', [$this->url_key]));
+        return new Attribute(get: fn () => route('attachments.download', [$this->url_key]));
     }
 
     public function formattedCreatedAt(): Attribute
     {
-        return new Attribute(get: fn() => DateFormatter::format($this->created_at, true));
+        return new Attribute(get: fn () => DateFormatter::format($this->created_at, true));
     }
 }

@@ -2,15 +2,15 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use BT\Modules\Employees\Models\EmployeeType;
 use Eloquent;
+use Illuminate\Database\Seeder;
 
 class EmployeeTypeSeeder extends Seeder
 {
     public function run()
     {
-        if (EmployeeType::exists()){
+        if (EmployeeType::exists()) {
             return;
         }
 

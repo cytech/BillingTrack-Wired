@@ -2,20 +2,22 @@
 
 //namespace Database\Migrations;
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateDocumentItemAmountsTable extends Migration
 {
     /**
      * Schema table name to migrate
+     *
      * @var string
      */
     public $tableName = 'document_item_amounts';
 
     /**
      * Run the migrations.
+     *
      * @table document_item_amounts
      *
      * @return void
@@ -32,7 +34,7 @@ class CreateDocumentItemAmountsTable extends Migration
             $table->decimal('tax', 20, 4)->default('0.0000');
             $table->decimal('total', 20, 4)->default('0.0000');
 
-            $table->index(["item_id"], 'fk_document_item_amounts_document_items1_idx');
+            $table->index(['item_id'], 'fk_document_item_amounts_document_items1_idx');
             $table->softDeletes();
             $table->nullableTimestamps();
 

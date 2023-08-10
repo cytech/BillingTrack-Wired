@@ -3,10 +3,10 @@
 namespace BT\Modules\Users\Controllers;
 
 use BT\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Spatie\Permission\Models\Role;
 use BT\Modules\Users\Models\Permission;
 use BT\Traits\ReturnUrl;
+use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
 
 class RolesController extends Controller
 {
@@ -21,6 +21,7 @@ class RolesController extends Controller
 
         $roles = Role::all();
         $permissions = Permission::orderBy('group')->get();
+
         return view('roles.index', compact('roles', 'permissions'));
     }
 
@@ -43,8 +44,8 @@ class RolesController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name'       => 'required',
-            'guard_name' => 'required'
+            'name' => 'required',
+            'guard_name' => 'required',
         ]);
 
         $role = new Role;

@@ -10,15 +10,14 @@
 
 namespace BT\Modules\Categories\Controllers;
 
-use BT\Modules\Categories\Models\Category;
 use BT\Http\Controllers\Controller;
+use BT\Modules\Categories\Models\Category;
 use Illuminate\Http\Request;
 
 class CategoriesController extends Controller
 {
     /**
      * Display a listing of the product.
-     *
      */
     public function index()
     {
@@ -38,7 +37,6 @@ class CategoriesController extends Controller
     /**
      * Store a newly created product in storage.
      *
-     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
@@ -53,7 +51,7 @@ class CategoriesController extends Controller
     /**
      * Show the form for editing the specified product.
      *
-     * @param int $id
+     * @param  int  $id
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function edit($id)
@@ -66,8 +64,7 @@ class CategoriesController extends Controller
     /**
      * Update the specified product in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
+     * @param  int  $id
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, $id)

@@ -13,9 +13,9 @@ namespace BT\Modules\Reports\Controllers;
 
 use BT\Http\Controllers\Controller;
 use BT\Modules\Categories\Models\Category;
-use BT\Modules\Vendors\Models\Vendor;
 use BT\Modules\Reports\Reports\ExpenseListReport;
 use BT\Modules\Reports\Requests\DateRangeRequest;
+use BT\Modules\Vendors\Models\Vendor;
 use BT\Support\PDF\PDFFactory;
 
 class ExpenseListReportController extends Controller
@@ -69,6 +69,6 @@ class ExpenseListReportController extends Controller
         $html = view('reports.output.expense_list')
             ->with('results', $results)->render();
 
-        $pdf->download($html, trans('bt.expense_list') . '.pdf');
+        $pdf->download($html, trans('bt.expense_list').'.pdf');
     }
 }

@@ -11,11 +11,11 @@
 
 namespace BT\Modules\Reports\Controllers;
 
-use BT\Support\Statuses\TimeTrackingProjectStatuses;
-use BT\Modules\Reports\Reports\TimeTrackingReport;
 use BT\Http\Controllers\Controller;
 use BT\Modules\CompanyProfiles\Models\CompanyProfile;
+use BT\Modules\Reports\Reports\TimeTrackingReport;
 use BT\Support\PDF\PDFFactory;
+use BT\Support\Statuses\TimeTrackingProjectStatuses;
 
 class TimeTrackingReportController extends Controller
 {
@@ -24,8 +24,7 @@ class TimeTrackingReportController extends Controller
     public function __construct(
         TimeTrackingReport $timeTrackingReport
 
-    )
-    {
+    ) {
         $this->timeTrackingReport = $timeTrackingReport;
     }
 
@@ -70,6 +69,6 @@ class TimeTrackingReportController extends Controller
         $html = view('reports.output.timetracking')
             ->with('results', $results)->render();
 
-        $pdf->download($html, trans('bt.time_tracking') . '.pdf');
+        $pdf->download($html, trans('bt.time_tracking').'.pdf');
     }
 }

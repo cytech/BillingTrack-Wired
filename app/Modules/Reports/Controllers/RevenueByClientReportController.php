@@ -45,8 +45,7 @@ class RevenueByClientReportController extends Controller
 
         $months = [];
 
-        foreach (range(1, 12) as $month)
-        {
+        foreach (range(1, 12) as $month) {
             $months[$month] = DateFormatter::getMonthShortName($month);
         }
 
@@ -64,8 +63,7 @@ class RevenueByClientReportController extends Controller
 
         $months = [];
 
-        foreach (range(1, 12) as $month)
-        {
+        foreach (range(1, 12) as $month) {
             $months[$month] = DateFormatter::getMonthShortName($month);
         }
 
@@ -74,6 +72,6 @@ class RevenueByClientReportController extends Controller
             ->with('months', $months)
             ->render();
 
-        $pdf->download($html, trans('bt.revenue_by_client') . '.pdf');
+        $pdf->download($html, trans('bt.revenue_by_client').'.pdf');
     }
 }

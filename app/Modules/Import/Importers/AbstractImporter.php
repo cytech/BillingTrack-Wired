@@ -42,7 +42,7 @@ abstract class AbstractImporter
     /**
      * Return an instance of the validator.
      *
-     * @param array $input
+     * @param  array  $input
      * @return Validator;
      */
     abstract public function getValidator($input);
@@ -52,16 +52,15 @@ abstract class AbstractImporter
     /**
      * Perform validation on file map.
      *
-     * @param  Input $input
-     * @return boolean
+     * @param  Input  $input
+     * @return bool
      */
     public function validateMap($input)
     {
         $validator = Validator::make($input, $this->getMapRules());
 
         /** @noinspection PhpUndefinedMethodInspection */
-        if ($validator->fails())
-        {
+        if ($validator->fails()) {
             /** @noinspection PhpUndefinedMethodInspection */
             $this->messages->merge($validator->messages()->all());
 
@@ -74,14 +73,13 @@ abstract class AbstractImporter
     /**
      * Validate individual records being imported.
      *
-     * @param  array $input
-     * @return boolean
+     * @param  array  $input
+     * @return bool
      */
     public function validateRecord($input)
     {
         /** @noinspection PhpUndefinedMethodInspection */
-        if ($this->getValidator($input)->fails())
-        {
+        if ($this->getValidator($input)->fails()) {
             return false;
         }
 
@@ -91,7 +89,7 @@ abstract class AbstractImporter
     /**
      * Read the column names from the import file.
      *
-     * @param  string $file
+     * @param  string  $file
      * @return array
      */
     public function getFileFields($file)
@@ -110,7 +108,7 @@ abstract class AbstractImporter
     /**
      * Get the file handle.
      *
-     * @param  string $file
+     * @param  string  $file
      * @return Handle
      */
     public function getFileHandle($file)

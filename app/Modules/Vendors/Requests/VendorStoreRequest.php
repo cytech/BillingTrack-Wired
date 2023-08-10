@@ -23,8 +23,8 @@ class VendorStoreRequest extends FormRequest
     public function attributes()
     {
         return [
-            'name'        => trans('bt.name'),
-            'email'       => trans('bt.email'),
+            'name' => trans('bt.name'),
+            'email' => trans('bt.email'),
         ];
     }
 
@@ -42,8 +42,8 @@ class VendorStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'        => 'required',
-            'email'       => 'email',
+            'name' => 'required',
+            'email' => 'email',
         ];
     }
 }

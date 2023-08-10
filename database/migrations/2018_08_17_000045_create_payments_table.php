@@ -1,26 +1,30 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreatePaymentsTable extends Migration
 {
     /**
      * Schema table name to migrate
+     *
      * @var string
      */
     public $set_schema_table = 'payments';
 
     /**
      * Run the migrations.
+     *
      * @table payments
      *
      * @return void
      */
     public function up()
     {
-        if (Schema::hasTable($this->set_schema_table)) return;
+        if (Schema::hasTable($this->set_schema_table)) {
+            return;
+        }
         Schema::create($this->set_schema_table, function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
@@ -31,14 +35,13 @@ class CreatePaymentsTable extends Migration
             $table->text('note');
             $table->decimal('amount', 20, 4)->default('0.0000');
 
-            $table->index(["client_id"], 'fk_payments_clients1_idx');
+            $table->index(['client_id'], 'fk_payments_clients1_idx');
 
-            $table->index(["invoice_id"], 'payments_invoice_id_index');
+            $table->index(['invoice_id'], 'payments_invoice_id_index');
 
-            $table->index(["payment_method_id"], 'payments_payment_method_id_index');
+            $table->index(['payment_method_id'], 'payments_payment_method_id_index');
             $table->softDeletes();
             $table->nullableTimestamps();
-
 
             $table->foreign('invoice_id', 'payments_invoice_id_index')
                 ->references('id')->on('invoices')
@@ -62,8 +65,8 @@ class CreatePaymentsTable extends Migration
      *
      * @return void
      */
-     public function down()
-     {
-       Schema::dropIfExists($this->set_schema_table);
-     }
+    public function down()
+    {
+        Schema::dropIfExists($this->set_schema_table);
+    }
 }

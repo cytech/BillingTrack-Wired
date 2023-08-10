@@ -2,14 +2,15 @@
 
 namespace BT\Http\Livewire;
 
-use Illuminate\Support\Collection;
 use BT\Modules\Clients\Models\Client;
+use Illuminate\Support\Collection;
 
 class ClientSearch extends LivewireSelect
 {
     protected $listeners = ['refreshSearch'];
 
-    public function refreshSearch($props){
+    public function refreshSearch($props)
+    {
         $this->searchTerm = $props['searchTerm'];
         $this->value = $props['value'];
         $this->description = $props['description'];
@@ -31,23 +32,23 @@ class ClientSearch extends LivewireSelect
                 ->get()
                 ->map(function (Client $client) {
                     return [
-                        'value'       => $client->id,
+                        'value' => $client->id,
                         'description' => $client->name,
-                        'title'       => $client->email,
+                        'title' => $client->email,
                     ];
                 });
 
-        }else {
+        } else {
             return Client::query()
                 ->when($searchTerm, function ($query, $searchTerm) {
                     $query->where('name', 'like', "%$searchTerm%")->where('active', 1)->orderBy('name');
-            })
+                })
                 ->get()
                 ->map(function (Client $client) {
                     return [
-                        'value'       => $client->id,
+                        'value' => $client->id,
                         'description' => $client->name,
-                        'title'       => $client->unique_name,
+                        'title' => $client->unique_name,
                     ];
                 });
         }
@@ -56,10 +57,11 @@ class ClientSearch extends LivewireSelect
     public function selectedOption($value)
     {
         $client = Client::find($value);
+
         return [
-            'value'       => optional($client)->id,
+            'value' => optional($client)->id,
             'description' => optional($client)->name,
-            'title'       => optional($client)->unique_name
+            'title' => optional($client)->unique_name,
         ];
     }
 }

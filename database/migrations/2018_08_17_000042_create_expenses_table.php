@@ -1,26 +1,30 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateExpensesTable extends Migration
 {
     /**
      * Schema table name to migrate
+     *
      * @var string
      */
     public $set_schema_table = 'expenses';
 
     /**
      * Run the migrations.
+     *
      * @table expenses
      *
      * @return void
      */
     public function up()
     {
-        if (Schema::hasTable($this->set_schema_table)) return;
+        if (Schema::hasTable($this->set_schema_table)) {
+            return;
+        }
         Schema::create($this->set_schema_table, function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
@@ -35,16 +39,15 @@ class CreateExpensesTable extends Migration
             $table->decimal('tax', 20, 4);
             $table->unsignedInteger('company_profile_id')->nullable();
 
-            $table->index(["category_id"], 'expenses_category_id_index');
+            $table->index(['category_id'], 'expenses_category_id_index');
 
-            $table->index(["invoice_id"], 'fk_expenses_invoices1_idx');
+            $table->index(['invoice_id'], 'fk_expenses_invoices1_idx');
 
-            $table->index(["company_profile_id"], 'expenses_company_profile_id_index');
+            $table->index(['company_profile_id'], 'expenses_company_profile_id_index');
 
-            $table->index(["user_id"], 'fk_expenses_users1_idx');
+            $table->index(['user_id'], 'fk_expenses_users1_idx');
             $table->softDeletes();
             $table->nullableTimestamps();
-
 
             $table->foreign('company_profile_id', 'expenses_company_profile_id_index')
                 ->references('id')->on('company_profiles')
@@ -73,8 +76,8 @@ class CreateExpensesTable extends Migration
      *
      * @return void
      */
-     public function down()
-     {
-       Schema::dropIfExists($this->set_schema_table);
-     }
+    public function down()
+    {
+        Schema::dropIfExists($this->set_schema_table);
+    }
 }

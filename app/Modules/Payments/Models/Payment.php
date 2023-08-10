@@ -21,12 +21,12 @@ use BT\Modules\MailQueue\Models\MailQueue;
 use BT\Modules\Notes\Models\Note;
 use BT\Modules\PaymentMethods\Models\PaymentMethod;
 use BT\Modules\Vendors\Models\Vendor;
-use Carbon\Carbon;
 use BT\Support\CurrencyFormatter;
 use BT\Support\DateFormatter;
 use BT\Support\FileNames;
 use BT\Support\HTML;
 use BT\Support\NumberFormatter;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -38,13 +38,13 @@ use Illuminate\Support\Facades\DB;
 class Payment extends Model
 {
     use SoftDeletes;
-
     use SoftCascadeTrait;
 
     protected $softCascade = ['custom', 'mailQueue', 'notes'];
 
     /**
      * Guarded properties
+     *
      * @var array
      */
     protected $guarded = ['id'];
@@ -111,37 +111,37 @@ class Payment extends Model
 
     public function formattedPaidAt(): Attribute
     {
-        return new Attribute(get: fn() => DateFormatter::format($this->paid_at));
+        return new Attribute(get: fn () => DateFormatter::format($this->paid_at));
     }
 
     public function formattedAmount(): Attribute
     {
-        return new Attribute(get: fn() => CurrencyFormatter::format($this->amount, $this->invoice->currency ?? ''));
+        return new Attribute(get: fn () => CurrencyFormatter::format($this->amount, $this->invoice->currency ?? ''));
     }
 
     public function formattedNumericAmount(): Attribute
     {
-        return new Attribute(get: fn() => NumberFormatter::format($this->amount));
+        return new Attribute(get: fn () => NumberFormatter::format($this->amount));
     }
 
     public function formattedNote(): Attribute
     {
-        return new Attribute(get: fn() => nl2br($this->note));
+        return new Attribute(get: fn () => nl2br($this->note));
     }
 
     public function user(): Attribute
     {
-        return new Attribute(get: fn() => $this->invoice->user);
+        return new Attribute(get: fn () => $this->invoice->user);
     }
 
     public function html(): Attribute
     {
-        return new Attribute(get: fn() => HTML::invoice($this->invoice));
+        return new Attribute(get: fn () => HTML::invoice($this->invoice));
     }
 
     public function pdfFilename(): Attribute
     {
-        return new Attribute(get: fn() => FileNames::invoice($this->invoice));
+        return new Attribute(get: fn () => FileNames::invoice($this->invoice));
     }
 
     /*
@@ -152,8 +152,8 @@ class Payment extends Model
 
     public function scopeYearToDate($query)
     {
-        return $query->where('paid_at', '>=', date('Y') . '-01-01')
-            ->where('paid_at', '<=', date('Y') . '-12-31');
+        return $query->where('paid_at', '>=', date('Y').'-01-01')
+            ->where('paid_at', '<=', date('Y').'-12-31');
     }
 
     public function scopeThisQuarter($query)
@@ -169,8 +169,8 @@ class Payment extends Model
 
     public function scopeYear($query, $year)
     {
-        return $query->where('paid_at', '>=', $year . '-01-01')
-            ->where('paid_at', '<=', $year . '-12-31');
+        return $query->where('paid_at', '>=', $year.'-01-01')
+            ->where('paid_at', '<=', $year.'-12-31');
     }
 
     public function scopeKeywords($query, $keywords)
@@ -178,16 +178,16 @@ class Payment extends Model
         if ($keywords) {
             $keywords = strtolower($keywords);
 
-            $query->where('payments.created_at', 'like', '%' . $keywords . '%')
+            $query->where('payments.created_at', 'like', '%'.$keywords.'%')
                 ->orWhereIn('invoice_id', function ($query) use ($keywords) {
-                    $query->select('id')->from('invoices')->where(DB::raw('lower(number)'), 'like', '%' . $keywords . '%')
-                        ->orWhere('summary', 'like', '%' . $keywords . '%')
+                    $query->select('id')->from('invoices')->where(DB::raw('lower(number)'), 'like', '%'.$keywords.'%')
+                        ->orWhere('summary', 'like', '%'.$keywords.'%')
                         ->orWhereIn('client_id', function ($query) use ($keywords) {
-                            $query->select('id')->from('clients')->where(DB::raw("CONCAT_WS('^',LOWER(name),LOWER(unique_name))"), 'like', '%' . $keywords . '%');
+                            $query->select('id')->from('clients')->where(DB::raw("CONCAT_WS('^',LOWER(name),LOWER(unique_name))"), 'like', '%'.$keywords.'%');
                         });
                 })
                 ->orWhereIn('payment_method_id', function ($query) use ($keywords) {
-                    $query->select('id')->from('payment_methods')->where(DB::raw('lower(name)'), 'like', '%' . $keywords . '%');
+                    $query->select('id')->from('payment_methods')->where(DB::raw('lower(name)'), 'like', '%'.$keywords.'%');
                 });
         }
 

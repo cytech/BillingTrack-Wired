@@ -2,15 +2,15 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use BT\Modules\Sizes\Models\Size;
 use Eloquent;
+use Illuminate\Database\Seeder;
 
 class SizeSeeder extends Seeder
 {
     public function run()
     {
-        if (Size::exists()){
+        if (Size::exists()) {
             return;
         }
 

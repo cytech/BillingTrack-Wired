@@ -28,13 +28,13 @@ class SessionController extends Controller
     {
         $rememberMe = ($request->input('remember_me')) ? true : false;
 
-        if (!auth()->attempt(['email' => $request->input('email'), 'password' => $request->input('password')], $rememberMe)) {
+        if (! auth()->attempt(['email' => $request->input('email'), 'password' => $request->input('password')], $rememberMe)) {
             return back()->withErrors([
                 'email' => trans('bt.invalid_credentials'),
             ])->onlyInput('email');
         }
 
-        if (!auth()->user()->client_id) {
+        if (! auth()->user()->client_id) {
             return redirect()->route('dashboard.index');
         }
 

@@ -24,7 +24,7 @@ class TaxRateRequest extends FormRequest
     public function attributes()
     {
         return [
-            'name'    => trans('bt.name'),
+            'name' => trans('bt.name'),
             'percent' => trans('bt.percent'),
         ];
     }
@@ -41,7 +41,7 @@ class TaxRateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'    => 'required',
+            'name' => 'required',
             'percent' => 'required|numeric',
         ];
     }

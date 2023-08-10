@@ -12,9 +12,9 @@
 namespace BT\Modules\Documents\Controllers;
 
 use BT\Http\Controllers\Controller;
-use BT\Modules\Groups\Models\Group;
 use BT\Modules\Documents\Models\Document;
 use BT\Modules\Documents\Requests\DocumentToInvoiceRequest;
+use BT\Modules\Groups\Models\Group;
 use BT\Support\ConvertToModule;
 use BT\Support\DateFormatter;
 

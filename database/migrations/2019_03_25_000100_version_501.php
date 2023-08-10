@@ -5,9 +5,9 @@ use Illuminate\Database\Migrations\Migration;
 
 class Version501 extends Migration
 {
-
     /**
      * Run the migrations.
+     *
      * @table payments_custom
      *
      * @return void
@@ -27,8 +27,8 @@ class Version501 extends Migration
      *
      * @return void
      */
-     public function down()
-     {
-       //
-     }
+    public function down()
+    {
+        //
+    }
 }

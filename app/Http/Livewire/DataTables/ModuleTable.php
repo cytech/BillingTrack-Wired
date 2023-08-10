@@ -12,7 +12,17 @@ use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class ModuleTable extends DataTableComponent
 {
-    public $module_type, $module_fullname, $keyedStatuses, $reqstatus, $clientid, $status;
+    public $module_type;
+
+    public $module_fullname;
+
+    public $keyedStatuses;
+
+    public $reqstatus;
+
+    public $clientid;
+
+    public $status;
 
     public function configure(): void
     {
@@ -23,7 +33,9 @@ class ModuleTable extends DataTableComponent
         $this->setFilterLayoutPopover();
 
         // remove search box on client/vendor view tabs
-        if ($this->clientid) $this->setSearchDisabled();
+        if ($this->clientid) {
+            $this->setSearchDisabled();
+        }
 
         if (request('vendor')) {
             $vendorname = Vendor::find(request('vendor'));
@@ -31,19 +43,19 @@ class ModuleTable extends DataTableComponent
         }
         $this->setTableAttributes([
             'default' => true,
-            'class'   => 'datatable',
+            'class' => 'datatable',
         ]);
 
         $this->setTheadAttributes([
             'default' => true,
-            'class'   => 'bg-body lwtable',
+            'class' => 'bg-body lwtable',
         ]);
 
         $this->setThAttributes(function (Column $column) {
             if ($column->isField('id') || $column->isLabel()) {
                 return [
                     'default' => true,
-                    'width'   => '8%'
+                    'width' => '8%',
                 ];
             }
 
@@ -96,7 +108,7 @@ class ModuleTable extends DataTableComponent
             } elseif ($this->module_type === 'Recurringinvoice') {
                 $this->keyedStatuses = collect(('BT\\Support\\Statuses\\DocumentStatuses')::lists())->only(9, 10);
             }
-            $this->module_fullname = 'BT\\Modules\\Documents\\Models\\' . $this->module_type;
+            $this->module_fullname = 'BT\\Modules\\Documents\\Models\\'.$this->module_type;
         }
     }
 
@@ -110,11 +122,13 @@ class ModuleTable extends DataTableComponent
         if (in_array($this->module_type, ['Invoice', 'Quote', 'Workorder', 'Purchaseorder', 'Recurringinvoice'])) {
             $status_model = 'BT\\Support\\Statuses\\DocumentStatuses';
         } else {
-            $status_model = 'BT\\Support\\Statuses\\' . $this->module_type . 'Statuses';
+            $status_model = 'BT\\Support\\Statuses\\'.$this->module_type.'Statuses';
         }
         $statuses = class_exists($status_model) ? $status_model::listsAllFlat() + ['overdue' => trans('bt.overdue')] : null;
         // send $status (client/vendor) to payment for column selection
-        if ($this->module_type == 'Payment') $statuses = $this->status;
+        if ($this->module_type == 'Payment') {
+            $statuses = $this->status;
+        }
 
         return ModuleColumnDefs::columndefs($statuses, $this->module_type);
     }
@@ -131,8 +145,9 @@ class ModuleTable extends DataTableComponent
                     ->filter(function (Builder $builder, string $value) {
                         if ($value === 'overdue') {
                             $builder->Overdue();
-                        } else
+                        } else {
                             $builder->where('document_status_id', $value);
+                        }
                     }),
                 SelectFilter::make(__('bt.company_profiles'), 'company_profile_id')
                     ->options(['' => trans('bt.all_company_profiles')] + CompanyProfile::getList())
@@ -140,9 +155,10 @@ class ModuleTable extends DataTableComponent
                         if ($value) {
                             $builder->where('company_profile_id', $value);
                         }
-                    })
+                    }),
             ];
         }
+
         return [];
     }
 
@@ -165,11 +181,12 @@ class ModuleTable extends DataTableComponent
         } else {
             $cs = [];
             foreach ($this->keyedStatuses as $k => $v) {
-                $cs += ['changestatus(' . $k . ')' => __('bt.status_to') . $v];
+                $cs += ['changestatus('.$k.')' => __('bt.status_to').$v];
             }
-            if (!in_array($this->module_type, $no_trash_action)) {
+            if (! in_array($this->module_type, $no_trash_action)) {
                 $cs += ['trash' => __('bt.trash')];
             }
+
             return $cs;
         }
     }
@@ -181,17 +198,17 @@ class ModuleTable extends DataTableComponent
             if ($this->module_type == 'TimeTrackingProject') {
                 $route = route('timeTracking.projects.bulk.status');
             } elseif (in_array($this->module_type, ['Client', 'Employee', 'Vendor', 'Product'])) {
-                $route = route(strtolower($this->module_type) . 's.bulk.status');
+                $route = route(strtolower($this->module_type).'s.bulk.status');
             } else {
                 $route = route('documents.bulk.status');
             }
 
             $swaldata = [
-                'title'       => __('bt.bulk_change_status_record_warning'),
-                'ids'         => $ids,
+                'title' => __('bt.bulk_change_status_record_warning'),
+                'ids' => $ids,
                 'module_type' => $this->module_type,
-                'route'       => $route,
-                'status'      => $status
+                'route' => $route,
+                'status' => $status,
             ];
             $this->dispatchBrowserEvent('swal:bulkConfirm', $swaldata);
         }
@@ -213,10 +230,10 @@ class ModuleTable extends DataTableComponent
         if ($this->getSelectedCount() > 0) {
             $ids = $this->getSelected();
             $swaldata = [
-                'title'   => __('bt.bulk_trash_record_warning'),
+                'title' => __('bt.bulk_trash_record_warning'),
                 'message' => __('bt.bulk_trash_record_warning_msg'),
-                'ids'     => $ids,
-                'route'   => $route,
+                'ids' => $ids,
+                'route' => $route,
             ];
             $this->dispatchBrowserEvent('swal:bulkConfirm', $swaldata);
         }
@@ -227,14 +244,14 @@ class ModuleTable extends DataTableComponent
         if ($this->module_type == 'Payment') {
             if ($this->clientid) {
                 return $this->module_fullname::statusId($this->status)
-                    ->select(lcfirst($this->module_type) . 's.*')
+                    ->select(lcfirst($this->module_type).'s.*')
                     ->where('payments.client_id', $this->clientid);
             } else {
                 return $this->module_fullname::statusId($this->status)
-                    ->select(lcfirst($this->module_type) . 's.*');
+                    ->select(lcfirst($this->module_type).'s.*');
             }
         } elseif ($this->module_type == 'Expense') {
-            return $this->module_fullname::select(lcfirst($this->module_type) . 's.*')
+            return $this->module_fullname::select(lcfirst($this->module_type).'s.*')
                 ->categoryId(request('category'))
                 ->vendorId(request('vendor'))
                 ->status(request('status'))
@@ -281,8 +298,7 @@ class ModuleTable extends DataTableComponent
                 }
             }
 
-            return $this->module_fullname::
-            select('documents.*')->where('document_type', $this->module_fullname)
+            return $this->module_fullname::select('documents.*')->where('document_type', $this->module_fullname)
                 ->clientId($this->clientid)
                 ->companyProfileId(request('company_profile'));
         }

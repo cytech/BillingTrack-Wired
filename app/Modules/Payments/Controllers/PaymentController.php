@@ -12,7 +12,6 @@
 namespace BT\Modules\Payments\Controllers;
 
 use BT\Http\Controllers\Controller;
-use BT\Modules\CompanyProfiles\Models\CompanyProfile;
 use BT\Modules\CustomFields\Models\CustomField;
 use BT\Modules\PaymentMethods\Models\PaymentMethod;
 use BT\Modules\Payments\Models\Payment;
@@ -63,6 +62,7 @@ class PaymentController extends Controller
     public function bulkDelete()
     {
         Payment::destroy(request('ids'));
+
         return response()->json(['success' => trans('bt.record_successfully_trashed')], 200);
     }
 }

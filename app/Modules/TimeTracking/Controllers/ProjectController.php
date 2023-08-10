@@ -11,13 +11,13 @@
 
 namespace BT\Modules\TimeTracking\Controllers;
 
+use BT\Http\Controllers\Controller;
+use BT\Modules\Clients\Models\Client;
+use BT\Modules\CompanyProfiles\Models\CompanyProfile;
 use BT\Modules\TimeTracking\Models\TimeTrackingProject;
 use BT\Modules\TimeTracking\Models\TimeTrackingTask;
 use BT\Modules\TimeTracking\Requests\ProjectRequest;
 use BT\Support\Statuses\TimeTrackingProjectStatuses;
-use BT\Http\Controllers\Controller;
-use BT\Modules\Clients\Models\Client;
-use BT\Modules\CompanyProfiles\Models\CompanyProfile;
 use BT\Traits\ReturnUrl;
 
 class ProjectController extends Controller
@@ -113,6 +113,7 @@ class ProjectController extends Controller
     public function bulkDelete()
     {
         TimeTrackingProject::destroy(request('ids'));
+
         return response()->json(['success' => trans('bt.record_successfully_trashed')], 200);
 
     }
@@ -120,8 +121,8 @@ class ProjectController extends Controller
     public function bulkStatus()
     {
         TimeTrackingProject::whereIn('id', request('ids'))->update(['status_id' => request('status')]);
+
         return response()->json(['success' => trans('bt.status_successfully_updated')], 200);
 
     }
-
 }

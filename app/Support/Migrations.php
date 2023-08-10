@@ -13,8 +13,7 @@ class Migrations
     {
         $migrationRepository = app('migration.repository');
 
-        if (!$migrationRepository->repositoryExists())
-        {
+        if (! $migrationRepository->repositoryExists()) {
             $migrationRepository->createRepository();
         }
 
@@ -22,7 +21,7 @@ class Migrations
 
         try {
             // if fresh install, run migrate to use schema instead of old migrations
-            if (!$migrationRepository->getRan()) {
+            if (! $migrationRepository->getRan()) {
                 Artisan::call('migrate');
             } else {
                 $this->migrator->run($path);
@@ -39,8 +38,8 @@ class Migrations
 
     public function getPendingMigrations($path)
     {
-        $migrationFiles    = $this->getMigrationFiles($path);
-        $ranMigrations     = $this->getRanMigrations();
+        $migrationFiles = $this->getMigrationFiles($path);
+        $ranMigrations = $this->getRanMigrations();
 
         $pendingMigrations = array_diff($migrationFiles, $ranMigrations);
 
@@ -49,12 +48,13 @@ class Migrations
 
     public function getMigrationFiles($path)
     {
-        $files = File::glob($path . '/*_*.php');
+        $files = File::glob($path.'/*_*.php');
 
-        if ($files === false) return [];
+        if ($files === false) {
+            return [];
+        }
 
-        $files = array_map(function ($file)
-        {
+        $files = array_map(function ($file) {
             return str_replace('.php', '', basename($file));
         }, $files);
 

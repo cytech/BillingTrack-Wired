@@ -12,12 +12,12 @@
 namespace BT\Modules\TimeTracking\Controllers;
 
 use BT\Events\DocumentModified;
+use BT\Http\Controllers\Controller;
 use BT\Modules\Documents\Models\DocumentItem;
 use BT\Modules\Documents\Models\Invoice;
+use BT\Modules\Groups\Models\Group;
 use BT\Modules\TimeTracking\Models\TimeTrackingProject;
 use BT\Modules\TimeTracking\Models\TimeTrackingTask;
-use BT\Http\Controllers\Controller;
-use BT\Modules\Groups\Models\Group;
 
 class TaskBillController extends Controller
 {
@@ -30,7 +30,7 @@ class TaskBillController extends Controller
         $clientInvoices = $project->client->invoices()->orderBy('created_at', 'desc')->statusIn(['draft', 'sent'])->get();
 
         foreach ($clientInvoices as $invoice) {
-            $invoices[$invoice->id] = $invoice->formatted_created_at . ' - ' . $invoice->number . ' ' . $invoice->summary;
+            $invoices[$invoice->id] = $invoice->formatted_created_at.' - '.$invoice->number.' '.$invoice->summary;
         }
 
         return view('time_tracking._task_bill_modal')
@@ -52,10 +52,10 @@ class TaskBillController extends Controller
 
         if (request('how_to_bill') == 'new') {
             $invoice = Invoice::create([
-                'client_id'          => $project->client_id,
+                'client_id' => $project->client_id,
                 'company_profile_id' => $project->company_profile_id,
-                'group_id'           => request('group_id'),
-                'user_id'            => auth()->user()->id,
+                'group_id' => request('group_id'),
+                'user_id' => auth()->user()->id,
             ]);
         } elseif (request('how_to_bill') == 'existing') {
             $invoice = Invoice::find(request('invoice_id'));
@@ -63,12 +63,12 @@ class TaskBillController extends Controller
 
         foreach ($tasks as $task) {
             DocumentItem::create([
-                'document_id'    => $invoice->id,
-                'name'          => trans('bt.hourly_charge'),
-                'description'   => $task->name,
-                'quantity'      => $task->hours,
-                'price'         => $project->hourly_rate,
-                'tax_rate_id'   => config('bt.itemTaxRate'),
+                'document_id' => $invoice->id,
+                'name' => trans('bt.hourly_charge'),
+                'description' => $task->name,
+                'quantity' => $task->hours,
+                'price' => $project->hourly_rate,
+                'tax_rate_id' => config('bt.itemTaxRate'),
                 'tax_rate_2_id' => config('bt.itemTax2Rate'),
             ]);
 

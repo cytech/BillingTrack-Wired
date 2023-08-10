@@ -6,8 +6,6 @@
  *  *
  *  * For the full copyright and license information, please view the LICENSE
  *  * file that was distributed with this source code.
- *
- *
  */
 
 namespace BT\Modules\Products\Requests;
@@ -16,13 +14,13 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class ProductRequest extends FormRequest
 {
-	protected $rules = [
+    protected $rules = [
         'name' => 'required',
         'price' => 'numeric',
         'vendor' => 'required',
         'cost' => 'numeric',
-		'numstock' => 'numeric',
-	];
+        'numstock' => 'numeric',
+    ];
 
     /**
      * Determine if the user is authorized to make this request.
@@ -39,14 +37,15 @@ class ProductRequest extends FormRequest
      *
      * @return array
      */
-	public function rules() {
-			return $this->rules;
-	}
+    public function rules()
+    {
+        return $this->rules;
+    }
 
     public function messages()
     {
         return [
-            'numstock.numeric' => "The ".trans('bt.product_numstock')." must be a number.",
+            'numstock.numeric' => 'The '.trans('bt.product_numstock').' must be a number.',
         ];
     }
 }

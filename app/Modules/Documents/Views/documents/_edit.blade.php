@@ -2,9 +2,9 @@
 <section class="app-content-header">
     <h3 class="float-start px-3">@lang('bt.'. $document->lower_case_baseclass) #{{ $document->number }}</h3>
     @if ($document->viewed)
-        <span style="margin-start: 10px;" class="badge bg-success">@lang('bt.viewed')</span>
+        <span style="margin-left: 10px;" class="badge bg-success">@lang('bt.viewed')</span>
     @else
-        <span style="margin-start: 10px;" class="badge bg-secondary">@lang('bt.not_viewed')</span>
+        <span style="margin-left: 10px;" class="badge bg-secondary">@lang('bt.not_viewed')</span>
     @endif
 
     @if ($document->invoice_id)

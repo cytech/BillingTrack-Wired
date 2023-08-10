@@ -18,6 +18,6 @@ class Gravatar implements ProfileImageInterface
 {
     public function getProfileImageUrl(User $user)
     {
-        return 'https://www.gravatar.com/avatar/' . md5(strtolower($user->email)) . '?d=mp';
+        return 'https://www.gravatar.com/avatar/'.md5(strtolower($user->email)).'?d=mp';
     }
 }

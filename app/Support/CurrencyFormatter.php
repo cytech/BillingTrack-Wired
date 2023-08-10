@@ -16,23 +16,22 @@ class CurrencyFormatter extends NumberFormatter
     /**
      * Formats currency according to BT config.
      *
-     * @param  float $amount
-     * @param  object $currency
-     * @param  integer $decimalPlaces
+     * @param  float  $amount
+     * @param  object  $currency
+     * @param  int  $decimalPlaces
      * @return string
      */
     public static function format($amount, $currency = null, $decimalPlaces = null)
     {
-        $currency      = ($currency) ?: config('bt.currency');
+        $currency = ($currency) ?: config('bt.currency');
         $decimalPlaces = ($decimalPlaces) ?: config('bt.amountDecimals');
 
         $amount = parent::format($amount, $currency, $decimalPlaces);
 
-        if ($currency->placement == 'before')
-        {
-            return $currency->symbol . $amount;
+        if ($currency->placement == 'before') {
+            return $currency->symbol.$amount;
         }
 
-        return $amount . $currency->symbol;
+        return $amount.$currency->symbol;
     }
 }

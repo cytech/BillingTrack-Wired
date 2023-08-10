@@ -39,7 +39,7 @@ class AddonController extends Controller
 
         $migrator = app('migrator');
 
-        $migrator->run(addon_path($addon->path . '/Migrations'));
+        $migrator->run(addon_path($addon->path.'/Migrations'));
 
         $addon->enabled = 1;
 
@@ -52,7 +52,7 @@ class AddonController extends Controller
     {
         $addon = Addon::find($id);
 
-        $this->migrations->runMigrations(addon_path($addon->path . '/Migrations'));
+        $this->migrations->runMigrations(addon_path($addon->path.'/Migrations'));
 
         return redirect()->route('addons.index');
     }
@@ -68,16 +68,14 @@ class AddonController extends Controller
     {
         $addons = Directory::listDirectories(addon_path());
 
-        foreach ($addons as $addon)
-        {
-            $setupClass = 'Addons\\' . $addon . '\Setup';
+        foreach ($addons as $addon) {
+            $setupClass = 'Addons\\'.$addon.'\Setup';
 
             $setupClass = new $setupClass;
 
             $addonRecord = $setupClass->properties;
 
-            if (!Addon::where('name', $addonRecord['name'])->count())
-            {
+            if (! Addon::where('name', $addonRecord['name'])->count()) {
                 $addonRecord['path'] = $addon;
 
                 Addon::create($addonRecord);

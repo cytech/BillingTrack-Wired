@@ -28,7 +28,7 @@ class ClientCenterPublicWorkorderController extends Controller
 
         app()->setLocale($workorder->client->language);
 
-        if (!$workorder->viewed) {
+        if (! $workorder->viewed) {
             event(new DocumentViewed($workorder));
         }
 
@@ -44,7 +44,7 @@ class ClientCenterPublicWorkorderController extends Controller
         $workorder = Workorder::with('items.taxRate', 'items.taxRate2', 'items.amount.item.workorder', 'items.workorder')
             ->where('url_key', $urlKey)->first();
 
-        if (!$workorder->viewed) {
+        if (! $workorder->viewed) {
             event(new DocumentViewed($workorder));
         }
 

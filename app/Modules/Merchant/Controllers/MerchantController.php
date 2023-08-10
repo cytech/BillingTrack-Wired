@@ -18,12 +18,12 @@ class MerchantController extends Controller
             if ($merchant->isRedirect()) {
                 return [
                     'redirect' => 1,
-                    'url'      => $merchant->pay($invoice),
+                    'url' => $merchant->pay($invoice),
                 ];
             } else {
                 return [
-                    'redirect'     => 0,
-                    'modalContent' => view('merchant.' . strtolower(request('driver')))
+                    'redirect' => 0,
+                    'modalContent' => view('merchant.'.strtolower(request('driver')))
                         ->with('driver', MerchantFactory::create(request('driver')))
                         ->with('invoice', $invoice)
                         ->with('urlKey', request('urlKey'))
@@ -32,6 +32,7 @@ class MerchantController extends Controller
             }
         } catch (\Exception $e) {
             \Log::info($e->getMessage());
+
             return redirect()->route('clientCenter.public.invoice.show', [request('urlKey')])
                 ->with('alert', $e->getMessage());
         }

@@ -22,13 +22,13 @@ class ExpenseImporter extends AbstractImporter
     public function getFields()
     {
         $fields = [
-            'expense_date'    => '* ' . trans('bt.date'),
-            'category_name'   => '* ' . trans('bt.category'),
-            'amount'          => '* ' . trans('bt.amount'),
-            'vendor_name'     => trans('bt.vendor'),
-            'client_name'     => trans('bt.client'),
-            'description'     => trans('bt.description'),
-            'tax'             => trans('bt.tax'),
+            'expense_date' => '* '.trans('bt.date'),
+            'category_name' => '* '.trans('bt.category'),
+            'amount' => '* '.trans('bt.amount'),
+            'vendor_name' => trans('bt.vendor'),
+            'client_name' => trans('bt.client'),
+            'description' => trans('bt.description'),
+            'tax' => trans('bt.tax'),
             'company_profile' => trans('bt.company_profile'),
         ];
 
@@ -38,25 +38,25 @@ class ExpenseImporter extends AbstractImporter
     public function getMapRules()
     {
         return [
-            'expense_date'  => 'required',
+            'expense_date' => 'required',
             'category_name' => 'required',
-            'amount'        => 'required',
+            'amount' => 'required',
         ];
     }
 
     public function getValidator($input)
     {
         return Validator::make($input, [
-            'expense_date'  => 'required',
+            'expense_date' => 'required',
             'category_name' => 'required',
-            'amount'        => 'required|numeric',
+            'amount' => 'required|numeric',
         ])->setAttributeNames([
-            'user_id'            => trans('bt.user'),
+            'user_id' => trans('bt.user'),
             'company_profile_id' => trans('bt.company_profile'),
-            'expense_date'       => trans('bt.date'),
-            'category_name'      => trans('bt.category'),
-            'description'        => trans('bt.description'),
-            'amount'             => trans('bt.amount'),
+            'expense_date' => trans('bt.date'),
+            'category_name' => trans('bt.category'),
+            'description' => trans('bt.description'),
+            'amount' => trans('bt.amount'),
         ]);
     }
 
@@ -66,36 +66,29 @@ class ExpenseImporter extends AbstractImporter
 
         $fields = [];
 
-        foreach ($input as $key => $field)
-        {
-            if (is_numeric($field))
-            {
+        foreach ($input as $key => $field) {
+            if (is_numeric($field)) {
                 $fields[$key] = $field;
             }
         }
 
         $handle = fopen(storage_path('expenses.csv'), 'r');
 
-        if (!$handle)
-        {
+        if (! $handle) {
             $this->messages->add('error', 'Could not open the file');
 
             return false;
         }
 
-        while (($data = fgetcsv($handle, 1000, ',')) !== false)
-        {
-            if ($row !== 1)
-            {
+        while (($data = fgetcsv($handle, 1000, ',')) !== false) {
+            if ($row !== 1) {
                 $record = [];
 
-                foreach ($fields as $field => $key)
-                {
+                foreach ($fields as $field => $key) {
                     $record[$field] = $data[$key];
                 }
 
-                if ($this->validateRecord($record))
-                {
+                if ($this->validateRecord($record)) {
                     $record['category_id'] = Category::firstOrCreate(['name' => $record['category_name']])->id;
                     $record['client_id'] = Client::firstOrCreate(['name' => $record['client_name']])->id;
                     $record['vendor_id'] = Vendor::firstOrCreate(['name' => $record['vendor_name']])->id;

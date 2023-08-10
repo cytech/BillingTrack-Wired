@@ -20,10 +20,10 @@ class ItemLookupImporter extends AbstractImporter
     public function getFields()
     {
         return [
-            'name'          => '* ' . trans('bt.name'),
-            'description'   => '* ' . trans('bt.description'),
-            'price'         => '* ' . trans('bt.price'),
-            'tax_rate_id'   => trans('bt.tax_1'),
+            'name' => '* '.trans('bt.name'),
+            'description' => '* '.trans('bt.description'),
+            'price' => '* '.trans('bt.price'),
+            'tax_rate_id' => trans('bt.tax_1'),
             'tax_rate_2_id' => trans('bt.tax_2'),
         ];
     }
@@ -31,18 +31,18 @@ class ItemLookupImporter extends AbstractImporter
     public function getMapRules()
     {
         return [
-            'name'        => 'required',
+            'name' => 'required',
             'description' => 'required',
-            'price'       => 'required',
+            'price' => 'required',
         ];
     }
 
     public function getValidator($input)
     {
         return Validator::make($input, [
-                'name'  => 'required',
-                'price' => 'required|numeric',
-            ]
+            'name' => 'required',
+            'price' => 'required|numeric',
+        ]
         );
     }
 
@@ -54,68 +54,49 @@ class ItemLookupImporter extends AbstractImporter
 
         $taxRates = TaxRate::get();
 
-        foreach ($input as $field => $key)
-        {
-            if (is_numeric($key))
-            {
+        foreach ($input as $field => $key) {
+            if (is_numeric($key)) {
                 $fields[$key] = $field;
             }
         }
 
         $handle = fopen(storage_path('itemLookups.csv'), 'r');
 
-        if (!$handle)
-        {
+        if (! $handle) {
             $this->messages->add('error', 'Could not open the file');
 
             return false;
         }
 
-        while (($data = fgetcsv($handle, 1000, ',')) !== false)
-        {
-            if ($row !== 1)
-            {
+        while (($data = fgetcsv($handle, 1000, ',')) !== false) {
+            if ($row !== 1) {
                 $record = [];
 
-                foreach ($fields as $key => $field)
-                {
+                foreach ($fields as $key => $field) {
                     $record[$field] = $data[$key];
                 }
 
-                if (!isset($record['tax_rate_id']))
-                {
+                if (! isset($record['tax_rate_id'])) {
                     $record['tax_rate_id'] = 0;
-                }
-                else
-                {
-                    if ($taxRate = $taxRates->where('name', $record['tax_rate_id'])->first())
-                    {
+                } else {
+                    if ($taxRate = $taxRates->where('name', $record['tax_rate_id'])->first()) {
                         $record['tax_rate_id'] = $taxRate->id;
-                    }
-                    else
-                    {
+                    } else {
                         $record['tax_rate_id'] = 0;
                     }
                 }
 
-                if (!isset($record['tax_rate_2_id']))
-                {
+                if (! isset($record['tax_rate_2_id'])) {
                     $record['tax_rate_2_id'] = 0;
-                }
-                else
-                {
-                    if ($taxRate = $taxRates->where('name', $record['tax_rate_2_id'])->first())
-                    {
+                } else {
+                    if ($taxRate = $taxRates->where('name', $record['tax_rate_2_id'])->first()) {
                         $record['tax_rate_2_id'] = $taxRate->id;
-                    }
-                    else
-                    {
+                    } else {
                         $record['tax_rate_2_id'] = 0;
                     }
                 }
 
-                if ($this->validateRecord($record))
-                {
+                if ($this->validateRecord($record)) {
                     ItemLookup::create($record);
                 }
             }

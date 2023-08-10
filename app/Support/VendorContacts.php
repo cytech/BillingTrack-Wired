@@ -16,17 +16,18 @@ use BT\Modules\Vendors\Models\Vendor;
 class VendorContacts
 {
     private $vendor;
+
     private $user;
 
     public function __construct(Vendor $vendor)
     {
         $this->vendor = $vendor;
-        $this->user   = auth()->user();
+        $this->user = auth()->user();
     }
 
     public function contactDropdownTo()
     {
-        $allContacts      = $this->getAllContacts();
+        $allContacts = $this->getAllContacts();
         $selectedContacts = $this->getSelectedContactsTo();
 
         return html()->select('to', $allContacts, $selectedContacts)->multiple()->class('form-control');
@@ -34,7 +35,7 @@ class VendorContacts
 
     public function contactDropdownCc()
     {
-        $allContacts      = $this->getAllContacts();
+        $allContacts = $this->getAllContacts();
         $selectedContacts = $this->getSelectedContactsCc();
 
         return html()->select('cc', $allContacts, $selectedContacts)->multiple()->class('form-control');
@@ -42,7 +43,7 @@ class VendorContacts
 
     public function contactDropdownBcc()
     {
-        $allContacts      = $this->getAllContacts();
+        $allContacts = $this->getAllContacts();
         $selectedContacts = $this->getSelectedContactsBcc();
 
         return html()->select('bcc', $allContacts, $selectedContacts)->multiple()->class('form-control');
@@ -60,8 +61,7 @@ class VendorContacts
             ->pluck('email')
             ->toArray();
 
-        if (config('bt.mailDefaultCc'))
-        {
+        if (config('bt.mailDefaultCc')) {
             $contacts = array_merge($contacts, [config('bt.mailDefaultCc')]);
         }
 
@@ -75,8 +75,7 @@ class VendorContacts
             ->pluck('email')
             ->toArray();
 
-        if (config('bt.mailDefaultBcc'))
-        {
+        if (config('bt.mailDefaultBcc')) {
             $contacts = array_merge($contacts, [config('bt.mailDefaultBcc')]);
         }
 
@@ -87,20 +86,17 @@ class VendorContacts
     {
         $contacts = ($this->vendor->email) ? [$this->vendor->email => $this->getFormattedContact($this->vendor->name, $this->vendor->email)] : [];
 
-        foreach ($this->vendor->contacts->pluck('name', 'email') as $email => $name)
-        {
+        foreach ($this->vendor->contacts->pluck('name', 'email') as $email => $name) {
             $contacts[$email] = $this->getFormattedContact($name, $email);
         }
 
         $contacts[$this->user->email] = $this->getFormattedContact($this->user->name, $this->user->email);
 
-        if (config('bt.mailDefaultCc'))
-        {
-            $contacts[config('bt.mailDefaultCc')]  = config('bt.mailDefaultCc');
+        if (config('bt.mailDefaultCc')) {
+            $contacts[config('bt.mailDefaultCc')] = config('bt.mailDefaultCc');
         }
 
-        if (config('bt.mailDefaultBcc'))
-        {
+        if (config('bt.mailDefaultBcc')) {
             $contacts[config('bt.mailDefaultBcc')] = config('bt.mailDefaultBcc');
         }
 
@@ -109,6 +105,6 @@ class VendorContacts
 
     private function getFormattedContact($name, $email)
     {
-        return $name . ' <' . $email . '>';
+        return $name.' <'.$email.'>';
     }
 }

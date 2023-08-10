@@ -1,26 +1,30 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateAttachmentsTable extends Migration
 {
     /**
      * Schema table name to migrate
+     *
      * @var string
      */
     public $set_schema_table = 'attachments';
 
     /**
      * Run the migrations.
+     *
      * @table attachments
      *
      * @return void
      */
     public function up()
     {
-        if (Schema::hasTable($this->set_schema_table)) return;
+        if (Schema::hasTable($this->set_schema_table)) {
+            return;
+        }
         Schema::create($this->set_schema_table, function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
@@ -33,10 +37,9 @@ class CreateAttachmentsTable extends Migration
             $table->string('url_key');
             $table->integer('client_visibility')->default('0');
 
-            $table->index(["user_id"], 'fk_attachments_users1_idx');
+            $table->index(['user_id'], 'fk_attachments_users1_idx');
             $table->softDeletes();
             $table->nullableTimestamps();
-
 
             $table->foreign('user_id', 'fk_attachments_users1_idx')
                 ->references('id')->on('users')
@@ -50,8 +53,8 @@ class CreateAttachmentsTable extends Migration
      *
      * @return void
      */
-     public function down()
-     {
-       Schema::dropIfExists($this->set_schema_table);
-     }
+    public function down()
+    {
+        Schema::dropIfExists($this->set_schema_table);
+    }
 }

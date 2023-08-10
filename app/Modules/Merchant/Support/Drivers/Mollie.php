@@ -23,15 +23,15 @@ class Mollie extends MerchantDriverPayable
         $mollie->setApiKey($this->getSetting('apiKey'));
 
         $payment = $mollie->payments->create([
-            'amount'      => [
+            'amount' => [
                 'currency' => $invoice->currency_code,
-                'value' => number_format($invoice->amount->balance,2)
+                'value' => number_format($invoice->amount->balance, 2),
             ],
-            'description' => trans('bt.invoice') . ' #' . $invoice->number,
+            'description' => trans('bt.invoice').' #'.$invoice->number,
             'redirectUrl' => route('clientCenter.public.invoice.show', [$invoice->url_key]),
             //for testing on localhost - webhook.site/<token from site> or ngrok http 8000
             //'webhookUrl'  => 'https://webhook.site/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
-            'webhookUrl'  => route('merchant.webhookUrl', [$this->getName(), $invoice->url_key]),
+            'webhookUrl' => route('merchant.webhookUrl', [$this->getName(), $invoice->url_key]),
 
         ]);
 
@@ -46,12 +46,11 @@ class Mollie extends MerchantDriverPayable
 
         $payment = $mollie->payments->get(request('id'));
 
-        if ($payment->isPaid())
-        {
+        if ($payment->isPaid()) {
             $fiPayment = Payment::create([
-                'client_id'         => $invoice->client->id,
-                'invoice_id'        => $invoice->id,
-                'amount'            => $payment->amount,
+                'client_id' => $invoice->client->id,
+                'invoice_id' => $invoice->id,
+                'amount' => $payment->amount,
                 'payment_method_id' => config('bt.onlinePaymentMethod'),
             ]);
 

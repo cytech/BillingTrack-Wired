@@ -30,8 +30,8 @@ class SchedulerEditController extends Controller
     {
         $days = [0 => 'MO', 1 => 'TU', 2 => 'WE', 3 => 'TH', 4 => 'FR', 5 => 'SA', 6 => 'SU'];
         $months = [];
-        for ($i = 0; $i < 12; $i++ ){
-            $months[$i] = $i +1;
+        for ($i = 0; $i < 12; $i++) {
+            $months[$i] = $i + 1;
         }
 
         if ($id) { //if edit route called with id parameter
@@ -42,19 +42,19 @@ class SchedulerEditController extends Controller
             $textTransformer = new Recurr\Transformer\TextTransformer();
 
             $rrule = [
-                "frequency"  => $rule->getString(),
-                "freqtext"   => $textTransformer->transform($rule),
-                "freq"       => $rule->getFreqAsText(),
-                "start_date" => $rule->getStartDate()->format('Y-m-d H:i:s'),
-                "end_date"   => $rule->getEndDate()->format('Y-m-d H:i:s'),
-                "until"      => ($rule->getUntil()) ? $rule->getUntil()->format('Y-m-d H:i:s') : '',
-                "count"      => $rule->getCount(),
-                "interval"   => $rule->getInterval(),
-                "wkst"       => $rule->getWeekStart(),
-                "bysetpos"   => $rule->getBySetPosition(),
-                "bymonthday" => $rule->getByMonthDay(),
-                "byyearday"  => $rule->getByYearDay(),
-                "byweekno"   => $rule->getByWeekNumber(),
+                'frequency' => $rule->getString(),
+                'freqtext' => $textTransformer->transform($rule),
+                'freq' => $rule->getFreqAsText(),
+                'start_date' => $rule->getStartDate()->format('Y-m-d H:i:s'),
+                'end_date' => $rule->getEndDate()->format('Y-m-d H:i:s'),
+                'until' => ($rule->getUntil()) ? $rule->getUntil()->format('Y-m-d H:i:s') : '',
+                'count' => $rule->getCount(),
+                'interval' => $rule->getInterval(),
+                'wkst' => $rule->getWeekStart(),
+                'bysetpos' => $rule->getBySetPosition(),
+                'bymonthday' => $rule->getByMonthDay(),
+                'byyearday' => $rule->getByYearDay(),
+                'byweekno' => $rule->getByWeekNumber(),
             ];
 
             // remap days and months to populate checkboxes....
@@ -88,14 +88,14 @@ class SchedulerEditController extends Controller
             // end remap
 
             $data = [
-                'schedule'   => $schedule,
+                'schedule' => $schedule,
                 'categories' => Category::pluck('name', 'id'),
-                'url'        => 'schedule\edit_event',
-                'title'      => 'update_recurring_event',
-                'message'    => 'recurring_event_updated',
-                'rrule'      => $rrule,
-                'days'       => $days,
-                'months'     => $months
+                'url' => 'schedule\edit_event',
+                'title' => 'update_recurring_event',
+                'message' => 'recurring_event_updated',
+                'rrule' => $rrule,
+                'days' => $days,
+                'months' => $months,
             ];
 
             return view('schedule.recurringEventEdit', $data)
@@ -104,20 +104,20 @@ class SchedulerEditController extends Controller
         } else {// no id - create new
             $schedule = new Schedule();
             $data = [
-                'schedule'   => $schedule,
-                'rrule'      => [
-                    "freq"       => 'WEEKLY',
-                    "start_date" => Carbon::now()->startOfDay()->addHours(8),
-                    "end_date"   => Carbon::now()->startOfDay()->addHours(16),
-                    "until"      => Carbon::now()->startOfDay()->addMonth()->addHours(16),
-                    "wkst"       => 'MO',
+                'schedule' => $schedule,
+                'rrule' => [
+                    'freq' => 'WEEKLY',
+                    'start_date' => Carbon::now()->startOfDay()->addHours(8),
+                    'end_date' => Carbon::now()->startOfDay()->addHours(16),
+                    'until' => Carbon::now()->startOfDay()->addMonth()->addHours(16),
+                    'wkst' => 'MO',
                 ],
-                'url'        => 'schedule\edit_event',
-                'title'      => 'create_recurring_event',
-                'message'    => 'recurring_event_created',
+                'url' => 'schedule\edit_event',
+                'title' => 'create_recurring_event',
+                'message' => 'recurring_event_created',
                 'categories' => Category::pluck('name', 'id'),
-                'days'       => $days,
-                'months'     => $months
+                'days' => $days,
+                'months' => $months,
             ];
             //defaults
             $schedule['category_id'] = 3;
@@ -198,6 +198,7 @@ class SchedulerEditController extends Controller
             }
         }
         $msg = $request->id ? trans('bt.record_successfully_updated') : trans('bt.record_successfully_created');
+
         return redirect()->route('scheduler.tablerecurringevent')->with('alertSuccess', $msg);
     }
 
@@ -210,8 +211,8 @@ class SchedulerEditController extends Controller
         $allfields['DTEND'] = $allfields['end_date'];
         unset($allfields['start_date']);
         unset($allfields['end_date']);
-//        isset($allfields['byday']) ? $allfields['byday'] = implode(',',$allfields['byday']) : null;
-//        isset($allfields['bymonth']) ? $allfields['bymonth'] = implode(',',$allfields['bymonth']) : null;
+        //        isset($allfields['byday']) ? $allfields['byday'] = implode(',',$allfields['byday']) : null;
+        //        isset($allfields['bymonth']) ? $allfields['bymonth'] = implode(',',$allfields['bymonth']) : null;
         $allfields = array_change_key_case($allfields, CASE_UPPER);
         //clear all empty
         $allfields = array_filter($allfields);

@@ -28,7 +28,7 @@ class ClientCenterPublicQuoteController extends Controller
 
         app()->setLocale($quote->client->language);
 
-        if (!$quote->viewed) {
+        if (! $quote->viewed) {
             event(new DocumentViewed($quote));
         }
 
@@ -44,7 +44,7 @@ class ClientCenterPublicQuoteController extends Controller
         $quote = Quote::with('items.taxRate', 'items.taxRate2', 'items.amount.item.quote', 'items.quote')
             ->where('url_key', $urlKey)->first();
 
-        if (!$quote->viewed) {
+        if (! $quote->viewed) {
             event(new DocumentViewed($quote));
         }
 

@@ -24,8 +24,7 @@ class WidgetServiceProvider extends ServiceProvider
         view()->composer('SchedulerSummaryWidget', 'BT\Widgets\Dashboard\SchedulerSummary\Composers\SchedulerSummaryWidgetComposer');
 
         // Widgets don't have route files so we'll place this here.
-        Route::group(['middleware' => ['web','auth.admin'], 'namespace' => 'BT\Widgets\Dashboard\SchedulerSummary\Controllers'], function ()
-        {
+        Route::group(['middleware' => ['web', 'auth.admin'], 'namespace' => 'BT\Widgets\Dashboard\SchedulerSummary\Controllers'], function () {
             Route::post('widgets/dashboard/scheduler_summary/render_partial', ['uses' => 'WidgetController@renderPartial', 'as' => 'widgets.dashboard.schedulerSummary.renderPartial']);
         });
     }

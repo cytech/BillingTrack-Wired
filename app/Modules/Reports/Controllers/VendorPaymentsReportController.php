@@ -61,6 +61,6 @@ class VendorPaymentsReportController extends Controller
         $html = view('reports.output.vendor_payments')
             ->with('results', $results)->render();
 
-        $pdf->download($html, trans('bt.vendor_payments') . '.pdf');
+        $pdf->download($html, trans('bt.vendor_payments').'.pdf');
     }
 }

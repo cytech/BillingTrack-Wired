@@ -24,13 +24,13 @@ class ExpenseRequest extends FormRequest
     public function attributes()
     {
         return [
-            'user_id'            => trans('bt.user'),
+            'user_id' => trans('bt.user'),
             'company_profile_id' => trans('bt.company_profile'),
-            'expense_date'       => trans('bt.date'),
-            'category_name'      => trans('bt.category'),
-            'description'        => trans('bt.description'),
-            'amount'             => trans('bt.amount'),
-            'tax'                => trans('bt.tax'),
+            'expense_date' => trans('bt.date'),
+            'category_name' => trans('bt.category'),
+            'description' => trans('bt.description'),
+            'amount' => trans('bt.amount'),
+            'tax' => trans('bt.tax'),
         ];
     }
 
@@ -38,8 +38,7 @@ class ExpenseRequest extends FormRequest
     {
         $request = $this->all();
 
-        if (isset($request['amount']))
-        {
+        if (isset($request['amount'])) {
             $request['amount'] = NumberFormatter::unformat($request['amount']);
         }
 
@@ -49,13 +48,13 @@ class ExpenseRequest extends FormRequest
     public function rules()
     {
         return [
-            'user_id'            => 'required',
+            'user_id' => 'required',
             'company_profile_id' => 'required',
-            'expense_date'       => 'required',
-            'category_name'      => 'required',
-            'description'        => 'max:255',
-            'amount'             => 'required|numeric',
-            'tax'                => 'numeric',
+            'expense_date' => 'required',
+            'category_name' => 'required',
+            'description' => 'max:255',
+            'amount' => 'required|numeric',
+            'tax' => 'numeric',
         ];
     }
 }

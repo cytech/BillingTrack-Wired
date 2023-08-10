@@ -17,7 +17,7 @@ class CustomFieldUpdateRequest extends CustomFieldStoreRequest
     {
         return [
             'field_label' => 'required',
-            'field_type'  => 'required',
+            'field_type' => 'required',
         ];
     }
 }

@@ -21,12 +21,12 @@ class InvoiceItemImporter extends AbstractImporter
     public function getFields()
     {
         return [
-            'document_id'    => '* ' . trans('bt.invoice_number'),
-            'name'          => '* ' . trans('bt.product'),
-            'quantity'      => '* ' . trans('bt.quantity'),
-            'price'         => '* ' . trans('bt.price'),
-            'description'   => trans('bt.description'),
-            'tax_rate_id'   => trans('bt.tax_1'),
+            'document_id' => '* '.trans('bt.invoice_number'),
+            'name' => '* '.trans('bt.product'),
+            'quantity' => '* '.trans('bt.quantity'),
+            'price' => '* '.trans('bt.price'),
+            'description' => trans('bt.description'),
+            'tax_rate_id' => trans('bt.tax_1'),
             'tax_rate_2_id' => trans('bt.tax_2'),
         ];
     }
@@ -35,20 +35,20 @@ class InvoiceItemImporter extends AbstractImporter
     {
         return [
             'document_id' => 'required',
-            'name'       => 'required',
-            'quantity'   => 'required',
-            'price'      => 'required',
+            'name' => 'required',
+            'quantity' => 'required',
+            'price' => 'required',
         ];
     }
 
     public function getValidator($input)
     {
         return Validator::make($input, [
-                'document_id' => 'required',
-                'name'       => 'required',
-                'quantity'   => 'required|numeric',
-                'price'      => 'required|numeric',
-            ]
+            'document_id' => 'required',
+            'name' => 'required',
+            'quantity' => 'required|numeric',
+            'price' => 'required|numeric',
+        ]
         );
     }
 
@@ -60,77 +60,59 @@ class InvoiceItemImporter extends AbstractImporter
 
         $taxRates = TaxRate::get();
 
-        foreach ($input as $field => $key)
-        {
-            if (is_numeric($key))
-            {
+        foreach ($input as $field => $key) {
+            if (is_numeric($key)) {
                 $fields[$key] = $field;
             }
         }
 
         $handle = fopen(storage_path('invoiceItems.csv'), 'r');
 
-        if (!$handle)
-        {
+        if (! $handle) {
             $this->messages->add('error', 'Could not open the file');
 
             return false;
         }
 
-        while (($data = fgetcsv($handle, 1000, ',')) !== false)
-        {
-            if ($row !== 1)
-            {
+        while (($data = fgetcsv($handle, 1000, ',')) !== false) {
+            if ($row !== 1) {
                 $record = [];
 
-                foreach ($fields as $key => $field)
-                {
+                foreach ($fields as $key => $field) {
                     $record[$field] = $data[$key];
                 }
 
                 $invoice = Invoice::where('number', $record['document_id'])->first();
 
-                if ($invoice)
-                {
+                if ($invoice) {
                     $record['document_id'] = $invoice->id;
 
-                    if (!isset($record['tax_rate_id']))
-                    {
+                    if (! isset($record['tax_rate_id'])) {
                         $record['tax_rate_id'] = 0;
-                    }
-                    else
-                    {
-                        if ($taxRate = $taxRates->where('name', $record['tax_rate_id'])->first())
-                        {
+                    } else {
+                        if ($taxRate = $taxRates->where('name', $record['tax_rate_id'])->first()) {
                             $record['tax_rate_id'] = $taxRate->id;
-                        }
-                        else
-                        {
+                        } else {
                             $record['tax_rate_id'] = 0;
                         }
                     }
 
-                    if (!isset($record['tax_rate_2_id']))
-                    {
+                    if (! isset($record['tax_rate_2_id'])) {
                         $record['tax_rate_2_id'] = 0;
-                    }
-                    else
-                    {
-                        if ($taxRate = $taxRates->where('name', $record['tax_rate_2_id'])->first())
-                        {
+                    } else {
+                        if ($taxRate = $taxRates->where('name', $record['tax_rate_2_id'])->first()) {
                             $record['tax_rate_2_id'] = $taxRate->id;
-                        }
-                        else
-                        {
+                        } else {
                             $record['tax_rate_2_id'] = 0;
                         }
                     }
 
                     $record['display_order'] = 0;
 
-                    if ($this->validateRecord($record))
-                    {
-                        if (!isset($record['description'])) $record['description'] = '';
+                    if ($this->validateRecord($record)) {
+                        if (! isset($record['description'])) {
+                            $record['description'] = '';
+                        }
 
                         $invoice->items()->create($record);
 

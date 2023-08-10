@@ -14,8 +14,8 @@ namespace BT\Modules\Documents\Controllers;
 use BT\Events\DocumentEmailed;
 use BT\Events\DocumentEmailing;
 use BT\Http\Controllers\Controller;
-use BT\Modules\MailQueue\Support\MailQueue;
 use BT\Modules\Documents\Models\Document;
+use BT\Modules\MailQueue\Support\MailQueue;
 use BT\Requests\SendEmailRequest;
 use BT\Support\Contacts;
 use BT\Support\Parser;
@@ -34,7 +34,7 @@ class DocumentMailController extends Controller
     {
         $document = Document::find(request('document_id'));
 
-        if ($document->module_type == 'Purchaseorder'){
+        if ($document->module_type == 'Purchaseorder') {
             $contacts = new VendorContacts($document->vendor);
         } else {
             $contacts = new Contacts($document->client);
@@ -45,8 +45,8 @@ class DocumentMailController extends Controller
         return view('documents._modal_mail')
             ->with('documentId', $document->id)
             ->with('redirectTo', urlencode(request('redirectTo')))
-            ->with('subject', $parser->parse(strtolower($document->module_type) . 'EmailSubject'))
-            ->with('body', $parser->parse(strtolower($document->module_type) . 'EmailBody'))
+            ->with('subject', $parser->parse(strtolower($document->module_type).'EmailSubject'))
+            ->with('body', $parser->parse(strtolower($document->module_type).'EmailBody'))
             ->with('contactDropdownTo', $contacts->contactDropdownTo())
             ->with('contactDropdownCc', $contacts->contactDropdownCc())
             ->with('contactDropdownBcc', $contacts->contactDropdownBcc());
@@ -60,12 +60,9 @@ class DocumentMailController extends Controller
 
         $mail = $this->mailQueue->create($document, $request->except('document_id'));
 
-        if ($this->mailQueue->send($mail->id))
-        {
+        if ($this->mailQueue->send($mail->id)) {
             event(new DocumentEmailed($document));
-        }
-        else
-        {
+        } else {
             return response()->json(['errors' => [[$this->mailQueue->getError()]]], 400);
         }
     }

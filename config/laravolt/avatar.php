@@ -48,8 +48,8 @@ return [
 
     // Fonts used to render text.
     // If contains more than one fonts, randomly selected based on name supplied
-//    'fonts' => [__DIR__ . '/../fonts/OpenSans-Bold.ttf', __DIR__ . '/../fonts/rockwell.ttf'],
-    'fonts' => [__DIR__ . '/../fonts/OpenSans-Bold.ttf'],
+    //    'fonts' => [__DIR__ . '/../fonts/OpenSans-Bold.ttf', __DIR__ . '/../fonts/rockwell.ttf'],
+    'fonts' => [__DIR__.'/../fonts/OpenSans-Bold.ttf'],
 
     // List of foreground colors to be used, randomly selected based on name supplied
     'foregrounds' => [
@@ -120,9 +120,9 @@ return [
                 '#009688',
                 '#4CAF50',
                 '#8BC34A',
-                '#CDDC39',//too light
-                '#FFC107',//too light
-                '#FF9800',//too light
+                '#CDDC39', //too light
+                '#FFC107', //too light
+                '#FF9800', //too light
                 '#FF5722',
             ],
             'foregrounds' => ['#FFFFFF'],

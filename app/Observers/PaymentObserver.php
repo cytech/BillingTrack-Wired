@@ -2,15 +2,12 @@
 
 namespace BT\Observers;
 
-
 //use BT\Events\InvoiceModified;
 
 use BT\Events\DocumentModified;
 use BT\Modules\CustomFields\Models\PaymentCustom;
 use BT\Modules\MailQueue\Support\MailQueue;
 use BT\Modules\Payments\Models\Payment;
-use BT\Support\Contacts;
-use BT\Support\Parser;
 
 class PaymentObserver
 {
@@ -18,24 +15,22 @@ class PaymentObserver
     {
         $this->mailQueue = $mailQueue;
     }
+
     /**
      * Handle the payment "created" event.
-     *
-     * @param  \BT\Modules\Payments\Models\Payment  $payment
-     * @return void
      */
     public function created(Payment $payment): void
     {
         if ($payment->invoice) {
             event(new DocumentModified($payment->invoice));
-        } else
+        } else {
             event(new DocumentModified($payment->purchaseorder));
+        }
 
         // Create the default custom record.
         $payment->custom()->save(new PaymentCustom());
 
-        if (auth()->guest() or auth()->user()->user_type == 'client')
-        {
+        if (auth()->guest() or auth()->user()->user_type == 'client') {
             $payment->invoice->activities()->create(['activity' => 'public.paid']);
         }
     }
@@ -43,8 +38,7 @@ class PaymentObserver
     public function creating(Payment $payment): void
     {
 
-        if (!$payment->paid_at)
-        {
+        if (! $payment->paid_at) {
             $payment->paid_at = date('Y-m-d');
         }
     }
@@ -53,19 +47,18 @@ class PaymentObserver
     {
         if ($payment->invoice) {
             event(new DocumentModified($payment->invoice));
-        } else
+        } else {
             event(new DocumentModified($payment->purchaseorder));
+        }
     }
 
     public function deleting(Payment $payment): void
     {
-        foreach ($payment->mailQueue as $mailQueue)
-        {
+        foreach ($payment->mailQueue as $mailQueue) {
             ($payment->isForceDeleting()) ? $mailQueue->onlyTrashed()->forceDelete() : $mailQueue->delete();
         }
 
-        foreach ($payment->notes as $note)
-        {
+        foreach ($payment->notes as $note) {
             ($payment->isForceDeleting()) ? $note->onlyTrashed()->forceDelete() : $note->delete();
         }
     }
@@ -74,13 +67,14 @@ class PaymentObserver
     {
         if ($payment->invoice) {
             event(new DocumentModified($payment->invoice));
-        } else
+        } else {
             event(new DocumentModified($payment->purchaseorder));
+        }
     }
 
     public function restoring(Payment $payment): void
     {
-       foreach ($payment->mailQueue as $mailQueue) {
+        foreach ($payment->mailQueue as $mailQueue) {
             $mailQueue->onlyTrashed()->restore();
         }
 
@@ -88,5 +82,4 @@ class PaymentObserver
             $note->onlyTrashed()->restore();
         }
     }
-
 }

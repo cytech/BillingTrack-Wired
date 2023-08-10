@@ -12,7 +12,6 @@
 namespace BT\Modules\Users\Models;
 
 use Askedio\SoftCascade\Traits\SoftCascadeTrait;
-
 use BT\Modules\Clients\Models\Client;
 use BT\Modules\CustomFields\Models\UserCustom;
 use BT\Modules\Documents\Models\Document;
@@ -22,19 +21,19 @@ use BT\Modules\Documents\Models\Quote;
 use BT\Modules\Documents\Models\Workorder;
 use BT\Modules\Expenses\Models\Expense;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\Hash;
-use Spatie\Permission\Traits\HasRoles;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use  HasFactory, Notifiable, HasRoles, SoftDeletes, SoftCascadeTrait;
+    use HasFactory, Notifiable, HasRoles, SoftDeletes, SoftCascadeTrait;
 
     protected $softCascade = ['custom'];
 
@@ -99,12 +98,12 @@ class User extends Authenticatable
     */
     public function userType(): Attribute
     {
-        return new Attribute(get: fn() => $this->roles()->first()->name);
+        return new Attribute(get: fn () => $this->roles()->first()->name);
     }
 
     public function userRole(): Attribute
     {
-        return new Attribute(get: fn() => $this->roles()->first()->name);
+        return new Attribute(get: fn () => $this->roles()->first()->name);
     }
 
     /*
@@ -115,7 +114,7 @@ class User extends Authenticatable
 
     public function password(): Attribute
     {
-        return new Attribute(set: fn($password) => $this->password = Hash::make($password));
+        return new Attribute(set: fn ($password) => $this->password = Hash::make($password));
     }
     /*
     |--------------------------------------------------------------------------

@@ -15,6 +15,6 @@ class CompanyProfileUpdateRequest extends CompanyProfileStoreRequest
 {
     public function rules()
     {
-        return ['company' => 'required|unique:company_profiles,company,' . $this->route('id')];
+        return ['company' => 'required|unique:company_profiles,company,'.$this->route('id')];
     }
 }

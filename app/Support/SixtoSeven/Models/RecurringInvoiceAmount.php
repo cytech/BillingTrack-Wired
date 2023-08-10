@@ -22,13 +22,15 @@ class RecurringInvoiceAmount extends Model
     use SoftDeletes;
 
     protected $casts = ['deleted_at' => 'datetime'];
+
     /**
      * Guarded properties
+     *
      * @var array
      */
     protected $guarded = ['id'];
 
-//    protected $appends = ['formatted_total'];
+    //    protected $appends = ['formatted_total'];
 
     /*
     |--------------------------------------------------------------------------
@@ -49,30 +51,31 @@ class RecurringInvoiceAmount extends Model
 
     public function formattedSubtotal(): Attribute
     {
-        return new Attribute(get: fn() => CurrencyFormatter::format($this->subtotal, $this->recurringInvoice->currency));
+        return new Attribute(get: fn () => CurrencyFormatter::format($this->subtotal, $this->recurringInvoice->currency));
     }
 
     public function formattedTax(): Attribute
     {
-        return new Attribute(get: fn() => CurrencyFormatter::format($this->tax, $this->recurringInvoice->currency));
+        return new Attribute(get: fn () => CurrencyFormatter::format($this->tax, $this->recurringInvoice->currency));
     }
 
     public function formattedTotal(): Attribute
     {
-        return new Attribute(get: fn() => CurrencyFormatter::format($this->total, $this->recurringInvoice->currency));
+        return new Attribute(get: fn () => CurrencyFormatter::format($this->total, $this->recurringInvoice->currency));
     }
 
     public function formattedDiscount(): Attribute
     {
-        return new Attribute(get: fn() => CurrencyFormatter::format($this->discount, $this->recurringInvoice->currency));
+        return new Attribute(get: fn () => CurrencyFormatter::format($this->discount, $this->recurringInvoice->currency));
     }
 
     /**
      * Retrieve the formatted total prior to conversion.
+     *
      * @return string
      */
-//    public function getFormattedTotalWithoutConversionAttribute()
-//    {
-//        return CurrencyFormatter::format($this->total / $this->recurringInvoice->exchange_rate);
-//    }
+    //    public function getFormattedTotalWithoutConversionAttribute()
+    //    {
+    //        return CurrencyFormatter::format($this->total / $this->recurringInvoice->exchange_rate);
+    //    }
 }

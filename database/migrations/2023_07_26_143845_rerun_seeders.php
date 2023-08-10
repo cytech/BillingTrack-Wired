@@ -11,7 +11,6 @@ use Database\Seeders\RolesTableSeeder;
 use Database\Seeders\SizeSeeder;
 use Database\Seeders\TitleSeeder;
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -29,34 +28,34 @@ return new class extends Migration
 
         //seed industries, sizes, titles and paymentterms
         Artisan::call('db:seed', [
-            '--class' => IndustrySeeder::class
+            '--class' => IndustrySeeder::class,
         ]);
         Artisan::call('db:seed', [
-            '--class' => SizeSeeder::class
+            '--class' => SizeSeeder::class,
         ]);
         Artisan::call('db:seed', [
-            '--class' => TitleSeeder::class
+            '--class' => TitleSeeder::class,
         ]);
         Artisan::call('db:seed', [
-            '--class' => PaymentTermsSeeder::class
+            '--class' => PaymentTermsSeeder::class,
         ]);
 
         //seed inventory types
         Artisan::call('db:seed', [
-            '--class' => InventoryTypesSeeder::class
+            '--class' => InventoryTypesSeeder::class,
         ]);
 
         //seed permissions and roles
         Artisan::call('db:seed', [
-            '--class' => PermissionsTableSeeder::class
+            '--class' => PermissionsTableSeeder::class,
         ]);
         Artisan::call('db:seed', [
-            '--class' => RolesTableSeeder::class
+            '--class' => RolesTableSeeder::class,
         ]);
 
         //seed employee_types
         Artisan::call('db:seed', [
-            '--class' => EmployeeTypeSeeder::class
+            '--class' => EmployeeTypeSeeder::class,
         ]);
 
         if (Setting::getByKey('version') == '4.0.0') { //seeded version setting
@@ -67,8 +66,8 @@ return new class extends Migration
             Setting::saveByKey('purchaseorderEmailBody', '<p>Please find the attached purchase order from {{ $purchaseorder->user->name }}</p>');
             Setting::saveByKey('purchaseorderEmailSubject', 'Purchase Order #{{ $purchaseorder->number }}');
             Setting::saveByKey('purchaseorderFooter', '');
-            $pogroup = Group::create(['name'    => 'Purchaseorder Default', 'format' => 'PO{NUMBER}', 'next_id' => 1,
-                                      'last_id' => 0, 'left_pad' => 0, 'reset_number' => 0]);
+            $pogroup = Group::create(['name' => 'Purchaseorder Default', 'format' => 'PO{NUMBER}', 'next_id' => 1,
+                'last_id' => 0, 'left_pad' => 0, 'reset_number' => 0]);
             Setting::saveByKey('purchaseorderGroup', $pogroup->id);
             Setting::saveByKey('purchaseordersDueAfter', '30');
             Setting::saveByKey('purchaseorderStatusFilter', 'all_statuses');
@@ -82,8 +81,8 @@ return new class extends Migration
             Setting::saveByKey('updateInvProductsDefault', '1');
             Setting::saveByKey('updateProductsDefault', '1');
             Setting::saveByKey('recurringinvoiceFrequency', 1);
-            $rinvgroup = Group::create(['name'    => 'Recurringinvoice Default', 'format' => 'RINV{NUMBER}', 'next_id' => 1,
-                                        'last_id' => 0, 'left_pad' => 0, 'reset_number' => 0]);
+            $rinvgroup = Group::create(['name' => 'Recurringinvoice Default', 'format' => 'RINV{NUMBER}', 'next_id' => 1,
+                'last_id' => 0, 'left_pad' => 0, 'reset_number' => 0]);
             Setting::saveByKey('recurringinvoiceGroup', $rinvgroup->id);
             Setting::saveByKey('recurringinvoicePeriod', 3);
             Setting::saveByKey('recurringinvoiceStatusFilter', 'all_statuses');
@@ -96,7 +95,6 @@ return new class extends Migration
 
             Setting::saveByKey('version', '7.0.0');
         }
-
 
     }
 

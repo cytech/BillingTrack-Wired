@@ -15,12 +15,12 @@ use BT\Events\DocumentModified;
 use BT\Http\Controllers\Controller;
 use BT\Modules\Currencies\Models\Currency;
 use BT\Modules\CustomFields\Models\CustomField;
-use BT\Modules\Groups\Models\Group;
-use BT\Modules\ItemLookups\Models\ItemLookup;
 use BT\Modules\Documents\Models\Document;
 use BT\Modules\Documents\Models\DocumentItem;
-use BT\Modules\Documents\Support\DocumentTemplates;
 use BT\Modules\Documents\Requests\DocumentUpdateRequest;
+use BT\Modules\Documents\Support\DocumentTemplates;
+use BT\Modules\Groups\Models\Group;
+use BT\Modules\ItemLookups\Models\ItemLookup;
 use BT\Modules\TaxRates\Models\TaxRate;
 use BT\Support\Frequency;
 use BT\Support\Statuses\DocumentStatuses;
@@ -67,7 +67,7 @@ class DocumentEditController extends Controller
                 $item['price'] = $item['price'] * $document->exchange_rate;
             }
 
-            if (!isset($item['id']) or (!$item['id'])) {
+            if (! isset($item['id']) or (! $item['id'])) {
                 //if item_lookup and item_lookup has resource, remap item to resource
                 if ($item['resource_table'] == 'item_lookups') {
                     $il = ItemLookup::find($item['resource_id']);

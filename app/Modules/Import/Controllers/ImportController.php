@@ -20,14 +20,14 @@ class ImportController extends Controller
     public function index()
     {
         $importTypes = [
-            'clients'      => trans('bt.clients'),
-            'quotes'       => trans('bt.quotes'),
-            'quoteItems'   => trans('bt.quote_items'),
-            'invoices'     => trans('bt.invoices'),
+            'clients' => trans('bt.clients'),
+            'quotes' => trans('bt.quotes'),
+            'quoteItems' => trans('bt.quote_items'),
+            'invoices' => trans('bt.invoices'),
             'invoiceItems' => trans('bt.invoice_items'),
-            'payments'     => trans('bt.payments'),
-            'expenses'     => trans('bt.expenses'),
-            'itemLookups'  => trans('bt.item_lookups'),
+            'payments' => trans('bt.payments'),
+            'expenses' => trans('bt.expenses'),
+            'itemLookups' => trans('bt.item_lookups'),
         ];
 
         return view('import.index')
@@ -36,7 +36,7 @@ class ImportController extends Controller
 
     public function upload(ImportRequest $request)
     {
-        $request->file('import_file')->move(storage_path(), $request->input('import_type') . '.csv');
+        $request->file('import_file')->move(storage_path(), $request->input('import_type').'.csv');
 
         return redirect()->route('import.map', [$request->input('import_type')]);
     }
@@ -48,20 +48,20 @@ class ImportController extends Controller
         return view('import.map')
             ->with('importType', $importType)
             ->with('importFields', $importer->getFields($importType))
-            ->with('fileFields', $importer->getFileFields(storage_path($importType . '.csv')));
+            ->with('fileFields', $importer->getFileFields(storage_path($importType.'.csv')));
     }
 
     public function mapImportSubmit($importType)
     {
         $importer = ImportFactory::create($importType);
 
-        if (!$importer->validateMap(request()->all())) {
+        if (! $importer->validateMap(request()->all())) {
             return redirect()->route('import.map', [$importType])
                 ->withErrors($importer->errors())
                 ->withInput();
         }
 
-        if (!$importer->importData(request()->except('_token'))) {
+        if (! $importer->importData(request()->except('_token'))) {
             return redirect()->route('import.map', [$importType])
                 ->withErrors($importer->errors());
         }

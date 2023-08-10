@@ -1,26 +1,30 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateScheduleTable extends Migration
 {
     /**
      * Schema table name to migrate
+     *
      * @var string
      */
     public $set_schema_table = 'schedule';
 
     /**
      * Run the migrations.
+     *
      * @table schedule
      *
      * @return void
      */
     public function up()
     {
-        if (Schema::hasTable($this->set_schema_table)) return;
+        if (Schema::hasTable($this->set_schema_table)) {
+            return;
+        }
         Schema::create($this->set_schema_table, function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
@@ -33,12 +37,11 @@ class CreateScheduleTable extends Migration
             $table->string('url')->nullable()->default(null);
             $table->tinyInteger('will_call')->default('0');
 
-            $table->index(["category_id"], 'fk_schedule_schedule_categories1_idx');
+            $table->index(['category_id'], 'fk_schedule_schedule_categories1_idx');
 
-            $table->index(["user_id"], 'fk_schedule_users1_idx');
+            $table->index(['user_id'], 'fk_schedule_users1_idx');
             $table->softDeletes();
             $table->nullableTimestamps();
-
 
             $table->foreign('category_id', 'fk_schedule_schedule_categories1_idx')
                 ->references('id')->on('schedule_categories')
@@ -57,8 +60,8 @@ class CreateScheduleTable extends Migration
      *
      * @return void
      */
-     public function down()
-     {
-       Schema::dropIfExists($this->set_schema_table);
-     }
+    public function down()
+    {
+        Schema::dropIfExists($this->set_schema_table);
+    }
 }

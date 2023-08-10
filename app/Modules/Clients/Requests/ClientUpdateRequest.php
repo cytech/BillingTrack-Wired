@@ -17,7 +17,7 @@ class ClientUpdateRequest extends ClientStoreRequest
     {
         $rules = parent::rules();
 
-        $rules['unique_name'] = 'required|unique:clients,unique_name,' . $this->route('id');
+        $rules['unique_name'] = 'required|unique:clients,unique_name,'.$this->route('id');
 
         return $rules;
     }

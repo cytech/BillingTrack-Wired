@@ -15,9 +15,9 @@ class HTML
 {
     public static function document($document)
     {
-        if ($document->module_type == 'Purchaseorder'){
+        if ($document->module_type == 'Purchaseorder') {
             app()->setLocale($document->vendor->language);
-        }else {
+        } else {
             app()->setLocale($document->client->language);
         }
 
@@ -25,23 +25,20 @@ class HTML
 
         $template = str_replace('.blade.php', '', $document->template);
 
-        if (view()->exists(strtolower($document->module_type) . '_templates.' . $template))
-        {
-            $template = strtolower($document->module_type) . '_templates.' . $template;
-        }
-        else
-        {
-            $template = 'templates.' . strtolower($document->module_type) . 's.default';
+        if (view()->exists(strtolower($document->module_type).'_templates.'.$template)) {
+            $template = strtolower($document->module_type).'_templates.'.$template;
+        } else {
+            $template = 'templates.'.strtolower($document->module_type).'s.default';
         }
 
         try {
             return view($template)
                 ->with('document', $document)
                 ->with('logo', $document->companyProfile->logo())->render();
-        }
-        catch (\Exception $e){
+        } catch (\Exception $e) {
             $msg = __('bt.custom_template_error');
             $msg .= $e->getMessage();
+
             return $msg;
         }
     }

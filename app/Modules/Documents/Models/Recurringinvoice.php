@@ -32,18 +32,20 @@ class Recurringinvoice extends Document
 
     public function formattedNextDate(): Attribute
     {
-        if ($this->next_date <> '0000-00-00') {
-            return new Attribute(get: fn() => DateFormatter::format($this->next_date));
+        if ($this->next_date != '0000-00-00') {
+            return new Attribute(get: fn () => DateFormatter::format($this->next_date));
         }
-        return new Attribute(get: fn() => '');
+
+        return new Attribute(get: fn () => '');
     }
 
     public function formattedStopDate(): Attribute
     {
-        if ($this->stop_date <> '0000-00-00') {
-            return new Attribute(get: fn() => DateFormatter::format($this->stop_date));
+        if ($this->stop_date != '0000-00-00') {
+            return new Attribute(get: fn () => DateFormatter::format($this->stop_date));
         }
-        return new Attribute(get: fn() => '');
+
+        return new Attribute(get: fn () => '');
     }
 
     //scopes

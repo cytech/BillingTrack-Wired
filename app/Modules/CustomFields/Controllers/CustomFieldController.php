@@ -13,9 +13,9 @@ namespace BT\Modules\CustomFields\Controllers;
 
 use BT\Http\Controllers\Controller;
 use BT\Modules\CustomFields\Models\CustomField;
-use BT\Modules\CustomFields\Support\CustomFields;
 use BT\Modules\CustomFields\Requests\CustomFieldStoreRequest;
 use BT\Modules\CustomFields\Requests\CustomFieldUpdateRequest;
+use BT\Modules\CustomFields\Support\CustomFields;
 use BT\Traits\ReturnUrl;
 
 class CustomFieldController extends Controller

@@ -16,9 +16,9 @@ class DocumentToWorkorderRequest extends DocumentStoreRequest
     public function rules()
     {
         return [
-            'client_id'    => 'required',
+            'client_id' => 'required',
             'document_date' => 'required',
-            'group_id'     => 'required',
+            'group_id' => 'required',
         ];
     }
 }

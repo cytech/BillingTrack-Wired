@@ -1,19 +1,12 @@
 <?php
 
-use BT\Modules\Expenses\Models\Expense;
-use BT\Modules\Groups\Models\Group;
-use BT\Modules\Payments\Models\Payment;
-use BT\Modules\Settings\Models\Setting;
-use BT\Modules\TimeTracking\Models\TimeTrackingTask;
+use BT\Modules\Documents\Models\Invoice;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use BT\Modules\Documents\Models\Quote;
-use BT\Modules\Documents\Models\Workorder;
-use BT\Modules\Documents\Models\Invoice;
-use BT\Modules\Documents\Models\Purchaseorder;
 
-return new class extends Migration {
+return new class extends Migration
+{
     /**
      * Run the migrations.
      */
@@ -23,11 +16,11 @@ return new class extends Migration {
 
         // drop client_id foreign on payments (for client vendor share..)
 
-        Schema::table('payments', function (Blueprint $table){
+        Schema::table('payments', function (Blueprint $table) {
             $table->dropForeign('fk_payments_clients1_idx');
         });
 
-        if (!Schema::hasTable('recurringinvoices_custom')) {
+        if (! Schema::hasTable('recurringinvoices_custom')) {
             Schema::rename('recurring_invoices_custom', 'recurringinvoices_custom');
 
             Schema::table('recurringinvoices_custom', function (Blueprint $table) {
@@ -40,14 +33,13 @@ return new class extends Migration {
             });
         }
 
-
         $coredoctypes = ['Quote', 'Workorder', 'Invoice', 'Purchaseorder', 'RecurringInvoice'];
 
         //modify customfield tables
         foreach ($coredoctypes as $coredoctype) {
-            Schema::whenTableDoesntHaveColumn(strtolower($coredoctype) . 's_custom', strtolower($coredoctype) . '_id_v7',
+            Schema::whenTableDoesntHaveColumn(strtolower($coredoctype).'s_custom', strtolower($coredoctype).'_id_v7',
                 function (Blueprint $table) use ($coredoctype) {
-                    $table->unsignedInteger(strtolower($coredoctype) . '_id_v7')->after(strtolower($coredoctype) . '_id');
+                    $table->unsignedInteger(strtolower($coredoctype).'_id_v7')->after(strtolower($coredoctype).'_id');
                 });
         }
 
@@ -55,25 +47,25 @@ return new class extends Migration {
         //$docs = $modtype::withTrashed()->doesntHave('invoice')->count();
 
         foreach ($coredoctypes as $coredoctype) {
-            $modtype = '\\BT\Support\\SixtoSeven\\Models\\' . $coredoctype;
+            $modtype = '\\BT\Support\\SixtoSeven\\Models\\'.$coredoctype;
 
             $docs = $modtype::withTrashed()->with(
                 [
-                    'amount'       => function ($query) {
+                    'amount' => function ($query) {
                         return $query->withTrashed();
                     },
                     'items.amount' => function ($query) {
                         return $query->withTrashed();
                     },
-                    'custom'       => function ($query) {
+                    'custom' => function ($query) {
                         return $query->withTrashed();
-                    }
+                    },
                 ]
             )->get();
 
             foreach ($docs as $doc) {
                 $document = new \BT\Modules\Documents\Models\Document();
-                $document->document_type = 'BT\\Modules\\Documents\\Models\\' . ucfirst(strtolower($coredoctype));
+                $document->document_type = 'BT\\Modules\\Documents\\Models\\'.ucfirst(strtolower($coredoctype));
                 $document->document_id = $doc->id;
                 $document->document_date = $doc->quote_date ?? $doc->workorder_date ?? $doc->invoice_date ?? $doc->purchaseorder_date ?? '0000-00-00';
                 $document->workorder_id = $doc->workorder_id ?? null;
@@ -108,10 +100,9 @@ return new class extends Migration {
 
                 $document->saveQuietly();
 
-
                 $documentamount = new \BT\Modules\Documents\Models\DocumentAmount();
-//                $message = $modtype . $doc->id;
-//                Log::error($message);
+                //                $message = $modtype . $doc->id;
+                //                Log::error($message);
                 $documentamount->document_id = $document->id;
                 $documentamount->subtotal = $doc->amount->subtotal;
                 $documentamount->discount = $doc->amount->discount;
@@ -125,7 +116,7 @@ return new class extends Migration {
 
                 $documentamount->saveQuietly();
 
-                $custidfield = strtolower($coredoctype) . '_id_v7';
+                $custidfield = strtolower($coredoctype).'_id_v7';
 
                 if ($doc->custom) {
                     $doc->custom->$custidfield = $document->id;
@@ -154,7 +145,6 @@ return new class extends Migration {
 
                     $documentitem->saveQuietly();
 
-
                     $documentitemamount = new \BT\Modules\Documents\Models\DocumentItemAmount();
 
                     $documentitemamount->item_id = $documentitem->id;
@@ -180,8 +170,7 @@ return new class extends Migration {
     /**
      * Reverse the migrations.
      */
-    public
-    function down(): void
+    public function down(): void
     {
         //
     }

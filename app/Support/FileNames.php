@@ -17,19 +17,18 @@ class FileNames
     {
         switch ($document->module_type) {
             case 'Quote':
-                return trans('bt.quote') . '_' . str_replace('/', '-', $document->number) . '.pdf';
+                return trans('bt.quote').'_'.str_replace('/', '-', $document->number).'.pdf';
             case 'Workorder':
-                return trans('bt.workorder') . '_' . str_replace('/', '-', $document->number) . '.pdf';
+                return trans('bt.workorder').'_'.str_replace('/', '-', $document->number).'.pdf';
             case 'Invoice':
-                return trans('bt.invoice') . '_' . str_replace('/', '-', $document->number) . '.pdf';
+                return trans('bt.invoice').'_'.str_replace('/', '-', $document->number).'.pdf';
             case 'Purchaseorder':
-                return trans('bt.purchaseorder') . '_' . str_replace('/', '-', $document->number) . '.pdf';
+                return trans('bt.purchaseorder').'_'.str_replace('/', '-', $document->number).'.pdf';
         }
     }
 
-
     public static function batchprint($batch_type)
     {
-        return trans('bt.batchprint') . '_' . ucfirst($batch_type) . '.pdf';
+        return trans('bt.batchprint').'_'.ucfirst($batch_type).'.pdf';
     }
 }

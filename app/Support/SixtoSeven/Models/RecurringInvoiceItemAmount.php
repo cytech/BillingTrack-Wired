@@ -22,6 +22,7 @@ class RecurringInvoiceItemAmount extends Model
     use SoftDeletes;
 
     protected $casts = ['deleted_at' => 'datetime'];
+
     protected $guarded = ['id'];
 
     /*
@@ -43,16 +44,16 @@ class RecurringInvoiceItemAmount extends Model
 
     public function formattedSubtotal(): Attribute
     {
-        return new Attribute(get: fn() => CurrencyFormatter::format($this->subtotal, $this->recurringInvoice->currency));
+        return new Attribute(get: fn () => CurrencyFormatter::format($this->subtotal, $this->recurringInvoice->currency));
     }
 
     public function formattedTax(): Attribute
     {
-        return new Attribute(get: fn() => CurrencyFormatter::format($this->tax, $this->recurringInvoice->currency));
+        return new Attribute(get: fn () => CurrencyFormatter::format($this->tax, $this->recurringInvoice->currency));
     }
 
     public function formattedTotal(): Attribute
     {
-        return new Attribute(get: fn() => CurrencyFormatter::format($this->total, $this->recurringInvoice->currency));
+        return new Attribute(get: fn () => CurrencyFormatter::format($this->total, $this->recurringInvoice->currency));
     }
 }

@@ -7,16 +7,16 @@ use Illuminate\Database\Schema\Blueprint;
 
 class Version603 extends Migration
 {
-
     /**
      * Run the migrations.
+     *
      * @table employee_types
      *
      * @return void
      */
     public function up()
     {
-        Schema::create('employee_types' , function (Blueprint $table){
+        Schema::create('employee_types', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->string('name', 85)->nullable()->default(null);
@@ -24,7 +24,7 @@ class Version603 extends Migration
 
         //seed employee_types
         Artisan::call('db:seed', [
-            '--class' => EmployeeTypeSeeder::class
+            '--class' => EmployeeTypeSeeder::class,
         ]);
 
         Schema::table('employees', function (Blueprint $table) {
@@ -40,14 +40,14 @@ class Version603 extends Migration
      *
      * @return void
      */
-     public function down()
-     {
-         Schema::dropIfExists('employee_types');
+    public function down()
+    {
+        Schema::dropIfExists('employee_types');
 
-         Schema::table('employees', function (Blueprint $table) {
-             $table->dropColumn(['type_id', 'term_date']);
-         });
+        Schema::table('employees', function (Blueprint $table) {
+            $table->dropColumn(['type_id', 'term_date']);
+        });
 
-         Setting::saveByKey('version', '6.0.2');
-     }
+        Setting::saveByKey('version', '6.0.2');
+    }
 }

@@ -53,12 +53,12 @@ class Note extends Model
 
     public function formattedCreatedAt(): Attribute
     {
-        return new Attribute(get: fn() => DateFormatter::format($this->created_at, true));
+        return new Attribute(get: fn () => DateFormatter::format($this->created_at, true));
     }
 
     public function formattedNote(): Attribute
     {
-        return new Attribute(get: fn() => nl2br($this->note));
+        return new Attribute(get: fn () => nl2br($this->note));
     }
     /*
     |--------------------------------------------------------------------------
@@ -68,8 +68,7 @@ class Note extends Model
 
     public function scopeProtect($query, $user)
     {
-        if ($user->client_id)
-        {
+        if ($user->client_id) {
             return $query->where('private', 0);
         }
 

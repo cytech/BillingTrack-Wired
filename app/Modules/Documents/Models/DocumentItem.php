@@ -27,7 +27,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class DocumentItem extends Model
 {
     use SoftDeletes;
-
     use SoftCascadeTrait;
 
     protected $connection = 'mysql'; // necessary for livewire error:Queueing collections with multiple model connections is not supported
@@ -74,7 +73,6 @@ class DocumentItem extends Model
         return $this->belongsTo(Purchaseorder::class, 'document_id');
     }
 
-
     public function taxRate(): BelongsTo
     {
         return $this->belongsTo(TaxRate::class);
@@ -103,28 +101,29 @@ class DocumentItem extends Model
 
     public function formattedQuantity(): Attribute
     {
-        return new Attribute(get: fn() => NumberFormatter::format($this->quantity));
+        return new Attribute(get: fn () => NumberFormatter::format($this->quantity));
     }
 
     public function formattedNumericPrice(): Attribute
     {
-        return new Attribute(get: fn() => NumberFormatter::format($this->price));
+        return new Attribute(get: fn () => NumberFormatter::format($this->price));
     }
 
     public function formattedPrice(): Attribute
     {
-        return new Attribute(get: fn() => CurrencyFormatter::format($this->price, $this->document->currency));
+        return new Attribute(get: fn () => CurrencyFormatter::format($this->price, $this->document->currency));
     }
 
     public function formattedDescription(): Attribute
     {
-        return new Attribute(get: fn() => nl2br($this->description));
+        return new Attribute(get: fn () => nl2br($this->description));
     }
 
     public function recStatusText(): Attribute
     {
-            $statuses = PurchaseorderItemStatuses::statuses();
-            return new Attribute(get: fn() => $statuses[$this->rec_status_id]);
+        $statuses = PurchaseorderItemStatuses::statuses();
+
+        return new Attribute(get: fn () => $statuses[$this->rec_status_id]);
     }
 
     /*

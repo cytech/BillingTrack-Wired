@@ -2,8 +2,8 @@
 
 namespace BT\Observers;
 
-use BT\Modules\Vendors\Models\Vendor;
 use BT\Modules\CustomFields\Models\VendorCustom;
+use BT\Modules\Vendors\Models\Vendor;
 
 class VendorObserver
 {
@@ -15,18 +15,17 @@ class VendorObserver
         // Create the default custom record.
         $vendor->custom()->save(new VendorCustom());
     }
+
     /**
      * Listen to the Vendor creating event.
      */
     public function creating(Vendor $vendor): void
     {
-        if (!$vendor->currency_code)
-        {
+        if (! $vendor->currency_code) {
             $vendor->currency_code = config('bt.baseCurrency');
         }
 
-        if (!$vendor->language)
-        {
+        if (! $vendor->language) {
             $vendor->language = config('bt.language');
         }
     }
@@ -36,28 +35,26 @@ class VendorObserver
      */
     public function saving(Vendor $vendor): void
     {
-        $vendor->name    = strip_tags($vendor->name);
+        $vendor->name = strip_tags($vendor->name);
         $vendor->address = strip_tags($vendor->address);
 
-
     }
+
     /**
      * Listen to the Vendor deleting event.
      */
     public function deleting(Vendor $vendor): void
     {
-        foreach ($vendor->notes as $note)
-        {
+        foreach ($vendor->notes as $note) {
             ($vendor->isForceDeleting()) ? $note->onlyTrashed()->forceDelete() : $note->delete();
         }
 
-        foreach ($vendor->attachments as $attachment)
-        {
+        foreach ($vendor->attachments as $attachment) {
             ($vendor->isForceDeleting()) ? $attachment->onlyTrashed()->forceDelete() : $attachment->delete();
         }
 
-        if ($vendor->isForceDeleting()){
-            foreach ($vendor->payments as $payment){
+        if ($vendor->isForceDeleting()) {
+            foreach ($vendor->payments as $payment) {
                 $payment->updateQuietly(['client_id' => -1]);
             }
         }
@@ -78,5 +75,4 @@ class VendorObserver
         }
 
     }
-
 }

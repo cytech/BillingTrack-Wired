@@ -27,7 +27,6 @@ class UtilityController
     }
 
     /**
-     * @param $id
      * @param $entity fully qualified classname passed from _action
      * @return \Illuminate\Http\RedirectResponse
      */
@@ -39,7 +38,6 @@ class UtilityController
     }
 
     /**
-     * @param $id
      * @param $entity fully qualified classname passed from _action
      * @return \Illuminate\Http\RedirectResponse
      */
@@ -55,13 +53,13 @@ class UtilityController
         $ids = request('ids');
         $module_type = request('module_type');
         if ($module_type == 'Schedule') {
-            $module_model = 'BT\\Modules\\Scheduler\\Models\\' . $module_type;
+            $module_model = 'BT\\Modules\\Scheduler\\Models\\'.$module_type;
         } elseif ($module_type == 'TimeTrackingProject') {
-            $module_model = 'BT\\Modules\\TimeTracking\\Models\\' . $module_type;
+            $module_model = 'BT\\Modules\\TimeTracking\\Models\\'.$module_type;
         } elseif (in_array($module_type, ['Invoice', 'Quote', 'Workorder', 'Purchaseorder', 'Recurringinvoice'])) {
-            $module_model = 'BT\\Modules\\Documents\\Models\\' . $module_type;
+            $module_model = 'BT\\Modules\\Documents\\Models\\'.$module_type;
         } else {
-            $module_model = 'BT\\Modules\\' . $module_type . 's\\Models\\' . $module_type;
+            $module_model = 'BT\\Modules\\'.$module_type.'s\\Models\\'.$module_type;
         }
 
         foreach ($ids as $id) {
@@ -76,13 +74,13 @@ class UtilityController
         $ids = request('ids');
         $module_type = request('module_type');
         if ($module_type == 'Schedule') {
-            $module_model = 'BT\\Modules\\Scheduler\\Models\\' . $module_type;
+            $module_model = 'BT\\Modules\\Scheduler\\Models\\'.$module_type;
         } elseif ($module_type == 'TimeTrackingProject') {
-            $module_model = 'BT\\Modules\\TimeTracking\\Models\\' . $module_type;
+            $module_model = 'BT\\Modules\\TimeTracking\\Models\\'.$module_type;
         } elseif (in_array($module_type, ['Invoice', 'Quote', 'Workorder', 'Purchaseorder', 'Recurringinvoice'])) {
-            $module_model = 'BT\\Modules\\Documents\\Models\\' . $module_type;
+            $module_model = 'BT\\Modules\\Documents\\Models\\'.$module_type;
         } else {
-            $module_model = 'BT\\Modules\\' . $module_type . 's\\Models\\' . $module_type;
+            $module_model = 'BT\\Modules\\'.$module_type.'s\\Models\\'.$module_type;
         }
 
         foreach ($ids as $id) {
@@ -123,8 +121,7 @@ class UtilityController
                     break;
             }
 
-
-            if (!count($batchtypes)) {
+            if (! count($batchtypes)) {
                 return redirect()->back()->with('alert', trans('bt.batch_nodata_alert'));
             }
 
@@ -147,5 +144,4 @@ class UtilityController
     {
         session(['trashTabId' => request('trashTabId')]);
     }
-
 }

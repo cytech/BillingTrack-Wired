@@ -12,7 +12,7 @@ class InvoiceCreatedRecurring extends Event
 
     public function __construct(Invoice $invoice, Recurringinvoice $recurringInvoice)
     {
-        $this->invoice          = $invoice;
+        $this->invoice = $invoice;
         $this->recurringInvoice = $recurringInvoice;
     }
 }

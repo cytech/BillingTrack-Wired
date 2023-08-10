@@ -8,23 +8,20 @@
  * file that was distributed with this source code.
  */
 
-
 namespace BT\Modules\Scheduler\Models;
 
 use Askedio\SoftCascade\Traits\SoftCascadeTrait;
 use BT\Support\DateFormatter;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-
 class ScheduleOccurrence extends Model
 {
-
     use SoftDeletes, SoftCascadeTrait;
 
     protected $softCascade = ['resources'];
@@ -39,16 +36,16 @@ class ScheduleOccurrence extends Model
 
     protected $casts = ['start_date' => 'datetime', 'end_date' => 'datetime', 'reminder_date' => 'datetime', 'deleted_at' => 'datetime'];
 
-//	protected $appends = ['formatted_start_date', 'formatted_end_date'];
+    //	protected $appends = ['formatted_start_date', 'formatted_end_date'];
 
     public static function reminderinterval()
     {
         return [
-            'none'    => __('bt.no_reminder'),
+            'none' => __('bt.no_reminder'),
             'minutes' => __('bt.minutes'),
-            'hours'   => __('bt.hours'),
-            'days'    => __('bt.days'),
-            'weeks'   => __('bt.weeks')
+            'hours' => __('bt.hours'),
+            'days' => __('bt.days'),
+            'weeks' => __('bt.weeks'),
         ];
     }
 
@@ -59,6 +56,7 @@ class ScheduleOccurrence extends Model
         if ($interval != 'none') {
             return $date->subtract($num, $interval);
         }
+
         return null;
     }
 
@@ -81,11 +79,11 @@ class ScheduleOccurrence extends Model
 
     public function formattedStartDate(): Attribute
     {
-        return new Attribute(get: fn() => DateFormatter::format($this->start_date, true));
+        return new Attribute(get: fn () => DateFormatter::format($this->start_date, true));
     }
 
     public function formattedEndDate(): Attribute
     {
-        return new Attribute(get: fn() => DateFormatter::format($this->end_date, true));
+        return new Attribute(get: fn () => DateFormatter::format($this->end_date, true));
     }
 }

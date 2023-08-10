@@ -12,9 +12,9 @@
 namespace BT\Modules\Vendors\Controllers;
 
 use BT\Http\Controllers\Controller;
+use BT\Modules\Titles\Models\Title;
 use BT\Modules\Vendors\Models\Contact;
 use BT\Modules\Vendors\Requests\ContactRequest;
-use BT\Modules\Titles\Models\Title;
 use Session;
 
 class ContactController extends Controller
@@ -35,7 +35,7 @@ class ContactController extends Controller
 
         if ($request->is_primary == 1) {
             Contact::where('vendor_id', '=', $request->vendorId)->update(['is_primary' => 0]);
-            $message = __('bt.record_successfully_created') . '<br>' . __('bt.primary_changed');
+            $message = __('bt.record_successfully_created').'<br>'.__('bt.primary_changed');
         }
 
         Contact::create($request->all());
@@ -64,8 +64,9 @@ class ContactController extends Controller
 
         if ($request->is_primary == 1) {
             Contact::where('vendor_id', '=', $request->vendorId)->where('id', '!=', $id)->update(['is_primary' => 0]);
-            if ($contact->is_primary != 1)
-                $message = __('bt.record_successfully_updated') . '<br>' . __('bt.primary_changed');
+            if ($contact->is_primary != 1) {
+                $message = __('bt.record_successfully_updated').'<br>'.__('bt.primary_changed');
+            }
         }
 
         $contact->fill($request->all());
@@ -91,22 +92,22 @@ class ContactController extends Controller
         switch (request('default')) {
             case 'to':
                 $data = [
-                    'default_to'  => ($contact->default_to) ? 0 : 1,
-                    'default_cc'  => 0,
+                    'default_to' => ($contact->default_to) ? 0 : 1,
+                    'default_cc' => 0,
                     'default_bcc' => 0,
                 ];
                 break;
             case 'cc':
                 $data = [
-                    'default_to'  => 0,
-                    'default_cc'  => ($contact->default_cc) ? 0 : 1,
+                    'default_to' => 0,
+                    'default_cc' => ($contact->default_cc) ? 0 : 1,
                     'default_bcc' => 0,
                 ];
                 break;
             case 'bcc':
                 $data = [
-                    'default_to'  => 0,
-                    'default_cc'  => 0,
+                    'default_to' => 0,
+                    'default_cc' => 0,
                     'default_bcc' => ($contact->default_bcc) ? 0 : 1,
                 ];
                 break;
