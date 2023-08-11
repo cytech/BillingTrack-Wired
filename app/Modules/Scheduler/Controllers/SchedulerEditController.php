@@ -98,9 +98,6 @@ class SchedulerEditController extends Controller
                 'months' => $months,
             ];
 
-            return view('schedule.recurringEventEdit', $data)
-                ->with('reminder_interval', ScheduleOccurrence::reminderinterval());
-
         } else {// no id - create new
             $schedule = new Schedule();
             $data = [
@@ -122,9 +119,9 @@ class SchedulerEditController extends Controller
             //defaults
             $schedule['category_id'] = 3;
 
-            return view('schedule.recurringEventEdit', $data)
-                ->with('reminder_interval', ScheduleOccurrence::reminderinterval());
         }
+        return view('schedule.recurringEventEdit', $data)
+            ->with('reminder_interval', ScheduleOccurrence::reminderinterval());
     }
 
     //recurring event store or update

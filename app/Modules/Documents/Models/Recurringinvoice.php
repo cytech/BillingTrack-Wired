@@ -74,13 +74,11 @@ class Recurringinvoice extends Document
 
     public function scopeStatus($query, $status = null)
     {
-        switch ($status) {
-            case 'active':
-                return $query->active();
-            case 'inactive':
-                return $query->inactive();
-        }
+        return match ($status) {
+            'active' => $query->active(),
+            'inactive' => $query->inactive(),
+            default => $query,
+        };
 
-        return $query;
     }
 }

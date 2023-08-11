@@ -34,12 +34,12 @@ class OTFDB
         $this->database = $database;
 
         // Figure out the driver and get the default configuration for the driver
-        $driver = isset($options['driver']) ? $options['driver'] : Config::get('database.default');
+        $driver = $options['driver'] ?? Config::get('database.default');
         $default = Config::get("database.connections.$driver");
 
         // Loop through our default array and update options if we have non-defaults
         foreach ($default as $item => $value) {
-            $default[$item] = isset($options[$item]) ? $options[$item] : $default[$item];
+            $default[$item] = $options[$item] ?? $value;
         }
 
         // Set the temporary configuration

@@ -63,7 +63,7 @@ class ClientImporter extends AbstractImporter
 
         foreach ($input as $key => $field) {
             if (is_numeric($field)) {
-                if (substr($key, 0, 7) != 'custom_') {
+                if (!str_starts_with($key, 'custom_')) {
                     $fields[$key] = $field;
                 } else {
                     $customFields[substr($key, 7)] = $field;

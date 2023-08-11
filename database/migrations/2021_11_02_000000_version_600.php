@@ -28,7 +28,7 @@ class Version600 extends Migration
                 $newunique = substr(str_replace('_', '-', $client->name), 0, 10).'_'.
                     substr(base_convert(mt_rand(), 10, 36), 0, 5);
             } //if $client->unique_name contains $client_name, truncate name and add underscore and add unique_name with client-> name stripped
-            elseif (strpos($client->unique_name, $client->name) !== false) {
+            elseif (str_contains($client->unique_name, $client->name)) {
                 $newunique = substr(str_replace('_', '-', $client->name), 0, 10).'_'.
                     str_replace($client->name, '', $client->unique_name);
             } // if unique_name does not fit above, append to client->name as prefix

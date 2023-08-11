@@ -53,15 +53,12 @@ class ConvertToModule
 
         if ($toModuleType == 'Invoice') {
             $record['document_type'] = Invoice::class;
-            $record['document_date'] = $moduleDate;
-            $record['action_date'] = $dueAt;
-            $record['document_status_id'] = $toModuleStatuses::getStatusId('draft');
         } else { //module workorder
             $record['document_type'] = Workorder::class;
-            $record['document_date'] = $moduleDate;
-            $record['action_date'] = $dueAt;
-            $record['document_status_id'] = $toModuleStatuses::getStatusId('draft');
         }
+        $record['document_date'] = $moduleDate;
+        $record['action_date'] = $dueAt;
+        $record['document_status_id'] = $toModuleStatuses::getStatusId('draft');
 
         $toModule = $toModuleModel::create($record);
 

@@ -16,7 +16,7 @@
             <div class="brand-link ">
                 <img src="/img/billingtrack_logo.svg" alt="BillingTrack Logo"
                      class="brand-image img-circle elevation-3 img-sm pe-1">
-                <span class="brand-text "><h3>BillingTrack Documentation</h3></span>
+                <div class="brand-text "><h3>BillingTrack Documentation</h3></div>
             </div>
         </div>
     </div>

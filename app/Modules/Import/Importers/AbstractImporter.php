@@ -109,7 +109,7 @@ abstract class AbstractImporter
      * Get the file handle.
      *
      * @param  string  $file
-     * @return Handle
+     * @return false|resource
      */
     public function getFileHandle($file)
     {

@@ -137,9 +137,9 @@
     <tr>
         <th style="width:25%; text-align: left;">{{ mb_strtoupper(trans('bt.item')) }}</th>
         <th style="text-align: left;">{{ mb_strtoupper(trans('bt.description' )) }}</th>
-        <th class="amount" width="10%">{{ mb_strtoupper(trans('bt.qty')) }}</th>
-        <th class="amount" width="10%">{{ mb_strtoupper(trans('bt.price')) }}</th>
-        <th class="amount" width="10%">{{ mb_strtoupper(trans('bt.total')) }}</th>
+        <th class="amount" style="width:10%;">{{ mb_strtoupper(trans('bt.qty')) }}</th>
+        <th class="amount" style="width:10%;">{{ mb_strtoupper(trans('bt.price')) }}</th>
+        <th class="amount" style="width:10%;">{{ mb_strtoupper(trans('bt.total')) }}</th>
     </tr>
     </thead>
     <tbody>

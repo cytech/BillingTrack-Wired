@@ -20,32 +20,27 @@ Installation
 4. Copy .env.example to .env
 
 5. edit .env and change:
-
--   DB\_HOST=
--   DB\_DATABASE=
--   DB\_USERNAME=
--   DB\_PASSWORD=
-
-- to your \*\*NEW\*\* database settings.  
-  NOTE: Do not change APP_ENV=local. Changing this will cause migrations to fail without feedback. Changing this value to "production" has no beneficial effect on BillingTrack operation.
+   -   DB\_HOST=
+   -   DB\_DATABASE=
+   -   DB\_USERNAME=
+   -   DB\_PASSWORD=  
+   To your \*\*NEW\*\* database settings.  
+   NOTE: Do not change APP_ENV=local. Changing this will cause migrations to fail without feedback. Changing this value to "production" has no beneficial effect on BillingTrack operation.
+<br/><br/>
 6. save .env file.
-
--   Run "php artisan key:generate"
--   This copies the app key into the .env file, attached to the APP_KEY= line.
-
-
+   -   Run "php artisan key:generate"
+   -   This copies the app key into the .env file, attached to the APP_KEY= line.  
+<br/><br/>
 7. Set permissions for your site.
 
 8. Start YOUR\_BILLINGTRACK\_WEBSITE/setup
 
 9. After database configuration finishes (this may take awhile. 10 minutes is not unusual):
 
-Note: In some instances a fresh install will throw an "unknown error" alert box. If this happens, dismiss the alert box and continue. In all reported cases the migration completed properly but some timeout was thrown that causes the error.
-
-- Create new account -&gt; creates fresh installation with account
-
-
-10. sign in
+   * Note: In some instances a fresh install will throw an "unknown error" alert box. If this happens, dismiss the alert box and continue. In all reported cases the migration completed properly but some timeout was thrown that causes the error.
+   * Create new account -&gt; creates fresh installation with account
+<br/><br/>
+10. Sign in
 
 ---
 

@@ -145,9 +145,9 @@
 
 .public-doc-wrapper {
   background-color: white;
-  -webkit-box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.75);
-  -moz-box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.75);
-  box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.75);
+  -webkit-box-shadow: 2px 2px 5px 0 rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 2px 2px 5px 0 rgba(0, 0, 0, 0.75);
+  box-shadow: 2px 2px 5px 0 rgba(0, 0, 0, 0.75);
 }
 
 .direct-chat-scope {
@@ -246,7 +246,6 @@
 
 //back to top button
 .back-to-top {
-  background: none;
   margin: 0;
   position: fixed;
   bottom: 0;
@@ -257,7 +256,7 @@
   display: none;
   text-decoration: none;
   color: #1f2a75;
-  background-color: transparent;
+  background: transparent none;
 }
 .back-to-top i {
   font-size: 40px;

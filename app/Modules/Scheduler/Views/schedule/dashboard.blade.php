@@ -7,19 +7,19 @@
             <div class="container-fluid">
                 <a class="navbar-brand mb-0" href="#">@lang('bt.schedule_dashboard')</a>
                 <div class="navbar-nav me-auto">
-                    <li class="nav-item"><a class="nav-link"
+                    <div class="nav-item"><a class="nav-link"
                                             href="{!! route('scheduler.fullcalendar') !!}">@lang('bt.calendar')</a>
-                    </li>
-                    <li class="nav-item"><a class="nav-link"
+                    </div>
+                    <div class="nav-item"><a class="nav-link"
                                             href="{!! route('scheduler.showschedule') !!}">@lang('bt.schedule')</a>
-                    </li>
-                    <li class="nav-item"><a class="nav-link"
+                    </div>
+                    <div class="nav-item"><a class="nav-link"
                                             href="{!! route('scheduler.tableevent') !!}">@lang('bt.event_table')</a>
-                    </li>
-                    <li class="nav-item"><a class="nav-link"
+                    </div>
+                    <div class="nav-item"><a class="nav-link"
                                             href="{!! route('scheduler.tablerecurringevent') !!}">@lang('bt.recurring_event')</a>
-                    </li>
-                    <li class="nav-item dropdown">
+                    </div>
+                    <div class="nav-item dropdown">
                         <a class="nav-link" data-bs-toggle="dropdown" href="#">@lang('bt.utilities')
                         </a>
                         <div class="dropdown-menu dropdown-menu-end">
@@ -30,7 +30,7 @@
                                href="{!! route('scheduler.checkschedule') !!}"><i
                                         class="nav-icon fas fa-check-double"></i> @lang('bt.orphan_check')</a>
                         </div>
-                    </li>
+                    </div>
                 </div>
             </div>
         </nav>

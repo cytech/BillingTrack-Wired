@@ -65,31 +65,19 @@ class BackupController extends Controller
             $records = $className::whereHas('occurrences', function ($q) use ($date) {
                 $q->where('end_date', '<', $date)->whereNull('deleted_at');
             });
-            if ($records) {
-                $msg = $records->count().' '.trans('bt.record_successfully_trashed');
-                $records->delete();
-            } else {
-                $msg = '0 '.trans('bt.record_successfully_trashed');
-            }
         } elseif ($module == 'Payment') {
             $className = '\BT\Modules\\'.$module.'s\Models\\'.$module;
             $records = $className::where('created_at', '<', $date)->whereNull('deleted_at');
-            if ($records) {
-                $msg = $records->count().' '.trans('bt.record_successfully_trashed');
-                $records->delete();
-            } else {
-                $msg = '0 '.trans('bt.record_successfully_trashed');
-            }
         } else {
             $className = '\BT\Modules\Documents\Models\\'.$module;
             $datefield = 'document_date';
             $records = $className::where($datefield, '<', $date)->whereNull('deleted_at');
-            if ($records) {
-                $msg = $records->count().' '.trans('bt.record_successfully_trashed');
-                $records->delete();
-            } else {
-                $msg = '0 '.trans('bt.record_successfully_trashed');
-            }
+        }
+        if ($records) {
+            $msg = $records->count().' '.trans('bt.record_successfully_trashed');
+            $records->delete();
+        } else {
+            $msg = '0 '.trans('bt.record_successfully_trashed');
         }
 
         ini_set('max_execution_time', $maxtime);

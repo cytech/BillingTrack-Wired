@@ -283,7 +283,7 @@ class Workorder extends Model
         }
 
         foreach ($taxes as $key => $tax) {
-            $taxes[$key]->total = CurrencyFormatter::format($tax->total, $this->currency);
+            $tax->total = CurrencyFormatter::format($tax->total, $this->currency);
         }
 
         return $taxes;

@@ -1,3 +1,4 @@
+<!--suppress Annotator -->
 <script type="text/javascript">
     const handler = StripeCheckout.configure({
         key: '{{ $driver->getSetting('publishableKey') }}',

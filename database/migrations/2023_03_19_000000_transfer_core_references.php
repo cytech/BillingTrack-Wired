@@ -28,11 +28,10 @@ return new class extends Migration
         foreach ($invoices as $invoice) {
             if ($invoice->document_status_id == 3) {
                 $invoice->document_status_id = 6;
-                $invoice->updateQuietly();
             } else { //4
                 $invoice->document_status_id = 5;
-                $invoice->updateQuietly();
             }
+            $invoice->updateQuietly();
 
         }
         //move purchaseorder status_id to document statuses
@@ -41,17 +40,14 @@ return new class extends Migration
         foreach ($purchaseorders as $purchaseorder) {
             if ($purchaseorder->document_status_id == 3) {
                 $purchaseorder->document_status_id = 7;
-                $purchaseorder->updateQuietly();
             } elseif ($purchaseorder->document_status_id == 4) {
                 $purchaseorder->document_status_id = 8;
-                $purchaseorder->updateQuietly();
             } elseif ($purchaseorder->document_status_id == 5) {
                 $purchaseorder->document_status_id = 6;
-                $purchaseorder->updateQuietly();
             } else { //6
                 $purchaseorder->document_status_id = 5;
-                $purchaseorder->updateQuietly();
             }
+            $purchaseorder->updateQuietly();
 
         }
 

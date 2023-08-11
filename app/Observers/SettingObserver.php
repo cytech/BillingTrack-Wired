@@ -33,7 +33,7 @@ class SettingObserver
                 {
                     CompanyProfile::whereNull('quote_template')->orWhere('quote_template', $originalTemplate)->orWhere('quote_template', '')->update(['quote_template' => $newTemplate]);
                 }
-                elseif ($templateType == 'quoteTemplate')
+                elseif ($templateType == 'workorderTemplate')
                 {
                     CompanyProfile::whereNull('workorder_template')->orWhere('workorder_template', $originalTemplate)->orWhere('workorder_template', '')->update(['workorder_template' => $newTemplate]);
                 }

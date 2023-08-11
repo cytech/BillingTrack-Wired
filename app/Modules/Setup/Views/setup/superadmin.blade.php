@@ -61,11 +61,7 @@
                                     for (var i = 0, len = radios.length; i < len; i++) {
                                         var r = radios[i]; // current radio button
                                         // superadmin checked and id = role2 id (remove admin_, user_ to get id)
-                                        if (superadmin && this.value === r.value.substring(r.value.indexOf("_") + 1)) {
-                                            r.disabled = true
-                                        } else { // superadmin not checked
-                                            r.disabled = false; // no radios disabled
-                                        }
+                                        r.disabled = !!(superadmin && this.value === r.value.substring(r.value.indexOf("_") + 1));
                                     }
                                 }
                             })

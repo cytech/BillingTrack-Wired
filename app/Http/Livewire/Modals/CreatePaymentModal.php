@@ -119,7 +119,7 @@ class CreatePaymentModal extends Component
         $this->emit('hideModal');
 
         // email receipt
-        if ($this->email_payment_receipt == true
+        if ($this->email_payment_receipt
             or !$this->email_payment_receipt and config('bt.automaticEmailPaymentReceipts') and $module->invoice->client->email) {
             $parser = new Parser($module);
 

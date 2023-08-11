@@ -6,7 +6,6 @@
             </div>
             <div class="card-body">
                 <table class="table table-striped datatable">
-                    <tbody>
                     <thead class="bg-body lwtable">
                     <tr>
                         <th>@lang('bt.client')</th>

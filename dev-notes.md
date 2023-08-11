@@ -1,3 +1,7 @@
+Illuminate\Contracts\Validation\Rule; deprecated in laravel 10
+see Illuminate\Contracts\ValidationRule;
+affects app/Modules/Settings/Rules/ValidFile.php
+----------------------------
 Chrome (as of Version 100.0.4896.127) does not allow mouse wheel scrolling in time input controls.
 It works in Firefox.
 ------------------

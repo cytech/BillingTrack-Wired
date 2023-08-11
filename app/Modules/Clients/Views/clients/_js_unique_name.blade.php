@@ -3,11 +3,7 @@
         clientId = {{ isset($client) ? $client->id : 0 }};
         stopHideUniqueName = false;
 
-        if (document.getElementById('unique_name').value === '' || clientId === 0) {
-            hasUniqueName = false;
-        } else {
-            hasUniqueName = true;
-        }
+        hasUniqueName = !(document.getElementById('unique_name').value === '' || clientId === 0);
 
         function clientNameIsDuplicate(name, callback) {
             axios.post('{{ route('clients.ajax.checkDuplicateName') }}', {

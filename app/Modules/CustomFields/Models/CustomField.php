@@ -28,19 +28,19 @@ class CustomField extends Model
     {
         $currentColumn = self::where('tbl_name', '=', $tableName)->orderBy('id', 'DESC')->take(1)->first();
 
-        if (! $currentColumn) {
+        if (!$currentColumn) {
             return 'column_1';
         } else {
             $column = explode('_', $currentColumn->column_name);
 
-            return $column[0].'_'.($column[1] + 1);
+            return $column[0] . '_' . ($column[1] + 1);
         }
     }
 
     public static function createCustomColumn($tableName, $columnName, $fieldType)
     {
-        if (substr($tableName, -7) != '_custom') {
-            $tableName = $tableName.'_custom';
+        if (!str_ends_with($tableName, '_custom')) {
+            $tableName = $tableName . '_custom';
         }
 
         Schema::table($tableName, function ($table) use ($columnName, $fieldType) {
@@ -55,8 +55,8 @@ class CustomField extends Model
 
     public static function deleteCustomColumn($tableName, $columnName)
     {
-        if (substr($tableName, -7) != '_custom') {
-            $tableName = $tableName.'_custom';
+        if (!str_ends_with($tableName, '_custom')) {
+            $tableName = $tableName . '_custom';
         }
 
         if (Schema::hasColumn($tableName, $columnName)) {
