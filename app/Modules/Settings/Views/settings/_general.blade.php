@@ -83,7 +83,7 @@
     <div class="col-md-2">
         <div class="mb-3">
             <label class="form-label fw-bold">@lang('bt.skin_menu_mode'): </label>
-            {{ html()->select('skin[sidebarMode]', ['open'=>'Open', 'mini'=>'Collapse'], json_decode(config('bt.skin'),true)['sidebarMode'])->class('form-select') }}
+            {{ html()->select('skin[sidebarMode]', ['open'=>'Open', 'collapse'=>'Collapse'], json_decode(config('bt.skin'),true)['sidebarMode'])->class('form-select') }}
         </div>
     </div>
 </div>

@@ -6,6 +6,15 @@
 
 import './bootstrap';
 import '../sass/app.scss'
+import 'overlayscrollbars/overlayscrollbars.css';
+import {
+    OverlayScrollbars,
+    ScrollbarsHidingPlugin,
+    SizeObserverPlugin,
+    ClickScrollPlugin
+} from 'overlayscrollbars';
+window.OverlayScrollbarsGlobal = OverlayScrollbars
+
 // SortableJS https://github.com/SortableJS/Sortable
 import Sortable from 'sortablejs/Sortable.min';
 
