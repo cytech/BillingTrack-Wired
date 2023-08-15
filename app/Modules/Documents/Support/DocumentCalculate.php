@@ -86,9 +86,9 @@ class DocumentCalculate
         }
     }
 
-    public function calculateAll()
+    public function calculateAll($moduletype)
     {
-        foreach (Document::get() as $document) {
+        foreach ($moduletype::get() as $document) {
             $this->calculate($document);
         }
     }

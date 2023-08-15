@@ -11,8 +11,7 @@
             addEvent(document, 'click', "#btn-recalculate-invoices", (e) => {
                 const btn = e.target
                 btn.innerHTML = 'loading...'
-                {{--axios.post("{{ route('invoices.recalculate') }}").then(function (response) {--}}
-                axios.post("{{ route('documents.recalculate') }}").then(function (response) {
+                axios.post("{{ route('documents.recalculate') }}", { moduletype: 'Invoice'}).then(function (response) {
                     notify(response.data.message, 'info');
                 }).catch(function (error) {
                     notify('@lang('bt.error'): ' + error.response.data.errors, 'error');
@@ -24,8 +23,7 @@
             addEvent(document, 'click', "#btn-recalculate-workorders", (e) => {
                 const btn = e.target
                 btn.innerHTML = 'loading...'
-                {{--axios.post("{{ route('workorders.recalculate') }}").then(function (response) {--}}
-                axios.post("{{ route('documents.recalculate') }}").then(function (response) {
+                axios.post("{{ route('documents.recalculate') }}", { moduletype: 'Workorder'}).then(function (response) {
                     notify(response.data.message, 'info');
                 }).catch(function (error) {
                     notify('@lang('bt.error'): ' + error.response.data.errors, 'error');
@@ -37,8 +35,7 @@
             addEvent(document, 'click', "#btn-recalculate-quotes", (e) => {
                 const btn = e.target
                 btn.innerHTML = 'loading...'
-                {{--axios.post("{{ route('quotes.recalculate') }}").then(function (response) {--}}
-                axios.post("{{ route('documents.recalculate') }}").then(function (response) {
+                axios.post("{{ route('documents.recalculate') }}", { moduletype: 'Quote'}).then(function (response) {
                     notify(response.data.message, 'info');
                 }).catch(function (error) {
                     notify('@lang('bt.error'): ' + error.response.data.errors, 'error');
@@ -50,8 +47,7 @@
             addEvent(document, 'click', "#btn-recalculate-purchaseorders", (e) => {
                 const btn = e.target
                 btn.innerHTML = 'loading...'
-                {{--axios.post("{{ route('purchaseorders.recalculate') }}").then(function (response) {--}}
-                axios.post("{{ route('documents.recalculate') }}").then(function (response) {
+                axios.post("{{ route('documents.recalculate') }}", { moduletype: 'Purchaseorder'}).then(function (response) {
                     notify(response.data.message, 'info');
                 }).catch(function (error) {
                     notify('@lang('bt.error'): ' + error.response.data.errors, 'error');

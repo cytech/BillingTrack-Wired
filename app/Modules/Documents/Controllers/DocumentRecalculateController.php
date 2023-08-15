@@ -13,6 +13,7 @@ namespace BT\Modules\Documents\Controllers;
 
 use BT\Http\Controllers\Controller;
 use BT\Modules\Documents\Support\DocumentCalculate;
+use Illuminate\Http\Request;
 
 class DocumentRecalculateController extends Controller
 {
@@ -23,10 +24,12 @@ class DocumentRecalculateController extends Controller
         $this->documentCalculate = $documentCalculate;
     }
 
-    public function recalculate()
+    public function recalculate(Request $request)
     {
+        $moduletype = 'BT\Modules\Documents\Models\\'.$request->moduletype;
+
         try {
-            $this->documentCalculate->calculateAll();
+            $this->documentCalculate->calculateAll($moduletype);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
