@@ -49,7 +49,7 @@ class TimeTrackingTask extends Model
 
     public function invoice(): BelongsTo
     {
-        return $this->belongsTo(Invoice::class);
+        return $this->belongsTo(Invoice::class)->withTrashed();
     }
 
     public function project(): BelongsTo

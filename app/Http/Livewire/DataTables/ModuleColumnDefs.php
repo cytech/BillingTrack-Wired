@@ -286,6 +286,8 @@ class ModuleColumnDefs
                             if ($row->has_been_billed) {
                                 if ($row->invoice_id == 0) {
                                     $ret .= '<br><span class="badge bg-danger" title="'.__('bt.deleted').'">'.__('bt.billed').'</span></a>';
+                                } elseif ($row->invoice->trashed()) {
+                                    $ret .= '<br> <span class="badge bg-danger" title="'.__('bt.trashed').'">'.__('bt.billed').'</span>';
                                 } else {
                                     $ret .= '<br><a href="'.route('documents.edit', [$row->invoice_id]).'"><span class="badge bg-success">'.__('bt.billed').'</span></a>';
                                 }

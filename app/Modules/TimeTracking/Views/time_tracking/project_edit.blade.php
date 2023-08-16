@@ -269,12 +269,16 @@
                                 <tr>
                                     <td>{{ $task->name }}</td>
                                     <td class="text-end">{{ $task->formatted_hours }}</td>
-                                    @if(empty($task->invoice->number))
-                                        <td style="color:red">Invoice #{{$task->invoice_id}} Trashed</td>
-                                    @else
-                                        <td>
-                                            <a href="{{ route('documents.edit', [$task->invoice_id]) }}">{{ $task->invoice->number }}</a>
-                                        </td>
+                                    @if($task->invoice)
+                                        @if($task->invoice->trashed())
+                                            <td class="badge bg-danger ms-3 mt-2" title="{{__('bt.trashed')}}">{{__('bt.billed')}}</td>
+                                        @else
+                                            <td>
+                                                <div class="badge bg-light "><a href="{{ route('documents.edit', [$task->invoice_id]) }}">{{ $task->invoice->number }}</a></div>
+                                            </td>
+                                        @endif
+                                    @else($task->invoice_id == 0)
+                                        <td class="badge bg-danger ms-3 mt-2" title="{{__('bt.deleted')}}">{{__('bt.billed')}}</td>
                                     @endif
                                 </tr>
                             @endforeach
