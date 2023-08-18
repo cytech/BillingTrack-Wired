@@ -18,11 +18,18 @@ class DocumentItemController extends Controller
 {
     public function delete()
     {
+        $documentItem = DocumentItem::find(request('id'));
+
+        if ($documentItem->document->moduleType == 'Invoice' && config('bt.updateInvProductsDefault') && $documentItem->is_tracked) {
+            $documentItem->product->increment('numstock', $documentItem->quantity);
+        }
+
         try {
-            DocumentItem::destroy(request('id'));
+            $documentItem->delete();
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()], 400);
         }
+
         return response()->json(['success' => true, 'message' => trans('bt.record_successfully_trashed')], 200);
     }
 }

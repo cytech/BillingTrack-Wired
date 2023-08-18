@@ -55,6 +55,8 @@ class DocumentEditController extends Controller
 
         // Save the document.
         $document = Document::find($id);
+        $oldstatus = $document->document_status_id;
+        $newstatus = $document['document_status_id'];
         $document->fill($input);
         $document->save();
 
@@ -77,8 +79,45 @@ class DocumentEditController extends Controller
                     }
                 }
                 DocumentItem::create($item);
+                // product numstock update - moved to DocumentItemObserver:created()
             } else {
                 $documentItem = DocumentItem::find($item['id']);
+                // product numstock updating on invoices only
+                if ($documentItem->document->moduleType == 'Invoice' && config('bt.updateInvProductsDefault')) {
+                    $qtydiff = abs($documentItem->quantity - $item['quantity']);
+                    // if quantity changed
+                    if ($qtydiff && $documentItem->is_tracked) {
+                        switch ($documentItem->quantity <=> $item['quantity']) {
+                            case 0:
+                                break;
+                            case -1:
+                                $documentItem->product->decrement('numstock', $qtydiff);
+                                break;
+                            case 1:
+                                $documentItem->product->increment('numstock', $qtydiff);
+                                break;
+                        }
+                    }
+
+                    // if status changed to sent from draft or canceled
+                    if (($oldstatus == 1 || $oldstatus == 5) && $newstatus == 2) {
+                        // if item has NOT already been tracked and item is tracked inventory, decrement onhand
+                        if ($documentItem->resource_id && ! $documentItem->is_tracked && $documentItem->resource_table == 'products'
+                            && $documentItem->product()->tracked()->get()->isNotEmpty()) {
+                            $documentItem->product->decrement('numstock', $item['quantity']);
+                            $documentItem->is_tracked = 1;
+                        }
+                    }
+                    //if status changed from sent to draft or canceled
+                    if ($oldstatus == 2 && ($newstatus == 1 || $newstatus == 5)) {
+                        // if item has already been tracked and item is tracked inventory, increment onhand
+                        if ($documentItem->resource_id && $documentItem->is_tracked && $documentItem->resource_table == 'products'
+                            && $documentItem->product()->tracked()->get()->isNotEmpty()) {
+                            $documentItem->product->increment('numstock', $item['quantity']);
+                            $documentItem->is_tracked = 0;
+                        }
+                    }
+                }
                 $documentItem->fill($item);
                 $documentItem->save();
             }
