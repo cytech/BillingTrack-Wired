@@ -1,6 +1,6 @@
 <?php
 
-namespace BT\Http\Livewire;
+namespace BT\Livewire;
 
 use Illuminate\Support\Collection;
 use Livewire\Component;
@@ -144,7 +144,7 @@ class LivewireSelect extends Component
 
     public function notifyValueChanged()
     {
-        $this->emit('resource_idUpdated', [
+        $this->dispatch('resource_idUpdated', [
             'name' => $this->name,
             'value' => $this->value,
         ]);
@@ -152,7 +152,7 @@ class LivewireSelect extends Component
 
     public function notifyDescriptionChanged()
     {
-        $this->emit('descriptionUpdated', [
+        $this->dispatch('descriptionUpdated', [
             'name' => $this->name,
             'description' => $this->description,
         ]);
@@ -163,11 +163,11 @@ class LivewireSelect extends Component
         $this->value = $value;
 
         if ($this->searchable && $this->value == null) {
-            $this->emit('livewire-select-focus-search', ['name' => $this->name]);
+            $this->dispatch('livewire-select-focus-search', ['name' => $this->name]);
         }
 
         if ($this->searchable && $this->value != null) {
-            $this->emit('livewire-select-focus-selected', ['name' => $this->name]);
+            $this->dispatch('livewire-select-focus-selected', ['name' => $this->name]);
         }
 
         $this->notifyValueChanged();

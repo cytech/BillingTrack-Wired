@@ -11,8 +11,8 @@
                         class="fa fa-arrow-alt-circle-right"></i> @lang('bt.receive')</a>
         @endif
         @if($model->module_type != 'Recurringinvoice')
-        <a class="dropdown-item" href="{{ route('documents.pdf', [$model->id]) }}" target="_blank"
-           id="btn-pdf-document"><i class="fa fa-print"></i> @lang('bt.pdf')</a>
+            <a class="dropdown-item" href="{{ route('documents.pdf', [$model->id]) }}" target="_blank"
+               id="btn-pdf-document"><i class="fa fa-print"></i> @lang('bt.pdf')</a>
         @endif
         @if (config('bt.mailConfigured') && $model->module_type != 'Recurringinvoice')
             <a class="dropdown-item email-document" href="javascript:void(0)" data-document-id="{{ $model->id }}"
@@ -29,7 +29,8 @@
         @if ($model->isPayable or config('bt.allowPaymentsWithoutBalance'))
             <button class="dropdown-item"
                     type="button"
-                    onclick="window.livewire.emit('showModal', 'modals.create-payment-modal', '{{  addslashes(get_class($model)) }}', {{ $model->id }}, true )"
+                    {{--                    params 3 thru ... mount($modulefullname = null, $module_id = null, $readonly = null)--}}
+                    onclick="window.Livewire.dispatch('showModal', {alias: 'modals.create-payment-modal', params: { modulefullname: '{{ addslashes(get_class($model)) }}', module_id: {{ $model->id }}, readonly: true }})"
             ><i class="fa fa-credit-card"></i> @lang('bt.enter_payment')
             </button>
         @endif

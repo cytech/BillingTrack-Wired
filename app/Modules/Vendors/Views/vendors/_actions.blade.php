@@ -8,9 +8,8 @@
         <a class="dropdown-item" href="{{ route('vendors.edit', [$model->id]) }}" id="edit-vendor-{{ $model->id }}"><i
                     class="fa fa-edit"></i> @lang('bt.edit')</a>
         <a class="dropdown-item" href="#" id="btn-create-purchaseorder"
-           {{--                   params 3 thru ... mount(,,$modulefullname, $moduleop, $resource_id = null, $module_id = null, $readonly = null)--}}
-           onclick="window.livewire.emit('showModal', 'modals.create-module-modal',
-                   '{{ addslashes(get_class($model->purchaseorders()->getRelated())) }}', 'Purchaseorder', 'create', {{ $model->id }}, null, true)">
+            {{--                    params 3 thru ... mount($modulefullname, $module_type, $moduleop, $resource_id = null, $module_id = null, $readonly = null, $lineitem = null)--}}
+            onclick="window.Livewire.dispatch('showModal', {alias: 'modals.create-module-modal', params: { modulefullname: '{{ addslashes(get_class($model->purchaseorders()->getRelated())) }}', module_type: 'Purchaseorder', moduleop: 'create', resource_id: {{ $model->id }}, module_id: null, readonly: true }})">
             <i class="far fa-file-alt"></i> @lang('bt.create_purchaseorder')</a>
         <div class="dropdown-divider"></div>
         <a class="dropdown-item" href="#"

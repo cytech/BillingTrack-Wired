@@ -17,7 +17,7 @@ class ProductRequest extends FormRequest
     protected $rules = [
         'name' => 'required',
         'price' => 'numeric',
-        'vendor' => 'required',
+        'vendor' => 'nullable',
         'cost' => 'numeric',
         'numstock' => 'numeric',
     ];

@@ -80,7 +80,7 @@
                     axios.post(event.detail.route, { //post to item delete()
                         id: event.detail.id
                     }).then(function (response) {
-                        window.livewire.emit('removeModuleItem', event.detail.index)
+                        window.Livewire.dispatch('removeModuleItem', event.detail.index)
                         axios.post(event.detail.totalsRoute, {id: event.detail.entityID})
                             .then(response => {
                                 setInnerHTML(document.getElementById('div-totals'), response.data)
@@ -124,7 +124,7 @@
                 axios.post(event.detail.route, {
                     ids: event.detail.ids, module_type: event.detail.module_type, status: event.detail.status
                 }).then((response) => {
-                    window.livewire.emit('reset_bulk_select')
+                    window.Livewire.dispatch('reset_bulk_select')
                     notify(response.data.success, 'success');
                 }).catch((response) => {
                     notify(response, 'error')

@@ -3,7 +3,7 @@
             type="text"
             class="form-control"
             placeholder="Search Employees..."
-            wire:model="query"
+            wire:model.live="query"
             wire:keydown.escape="resetFilters"
             wire:keydown.tab="resetFilters"
             wire:keydown.ArrowUp="decrementHighlight"

@@ -26,9 +26,8 @@
                 <div class="fs-3 float-start">{{__('bt.view_vendor') . ' - ' . $vendor->name}}</div>
                 <div class="btn-group float-end">
                     <a class="btn btn-primary rounded me-1" href="#" id="btn-create-purchaseorder"
-                       {{--                   params 3 thru ... mount(,,$modulefullname, $moduleop, $resource_id = null, $module_id = null, $readonly = null)--}}
-                       onclick="window.livewire.emit('showModal', 'modals.create-module-modal',
-                               '{{ addslashes(get_class($vendor->purchaseorders()->getRelated())) }}', 'Purchaseorder', 'create', {{ $vendor->id }}, null, true)">
+                        {{--                    params 3 thru ... mount($modulefullname, $module_type, $moduleop, $resource_id = null, $module_id = null, $readonly = null, $lineitem = null)--}}
+                        onclick="window.Livewire.dispatch('showModal', {alias: 'modals.create-module-modal', params: { modulefullname: '{{ addslashes(get_class($vendor->purchaseorders()->getRelated())) }}', module_type: 'Purchaseorder', moduleop: 'create', resource_id: {{ $vendor->id }}, module_id: null, readonly: true }})">
                         <i class="far fa-plus"></i> @lang('bt.create_purchaseorder')</a>
                     <a href="{{ $returnUrl }}" class="btn btn-green rounded me-1"><i
                                 class="fa fa-backward"></i> @lang('bt.back')</a>

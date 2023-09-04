@@ -29,7 +29,7 @@
                     @if(request('status') == 1)
                     <button class="btn btn-primary rounded border"
                             type="button"
-                            onclick="window.livewire.emit('showModal', 'modals.create-payment-modal')"
+                            onclick="window.Livewire.dispatch('showModal', {alias: 'modals.create-payment-modal', params: {}})"
                     ><i class="fa fa-credit-card"></i> @lang('bt.enter_payment')
                     </button>
                     @else

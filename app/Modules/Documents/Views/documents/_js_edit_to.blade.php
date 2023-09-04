@@ -7,9 +7,7 @@
                 id: {{ $document->id }}
             })
         });
-        window.livewire.on('resource-changed', id => {
-            loadModal('{{ route('documents.documentEdit.refreshTo') }}', {id: id}, 'col-to')
-        })
+
         document.getElementById('btn-edit-vendor')?.addEventListener('click', (e) => {
             loadModal('{{ route('vendors.ajax.modalEdit') }}', {
                 vendor_id: e.target.dataset.vendorId,
@@ -17,7 +15,8 @@
                 id: {{ $document->id }}
             })
         });
-        window.livewire.on('resource-changed', id => {
+
+        window.Livewire.on('resource-changed', id => {
             loadModal('{{ route('documents.documentEdit.refreshTo') }}', {id: id}, 'col-to')
         })
     });

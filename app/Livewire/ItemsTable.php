@@ -1,6 +1,6 @@
 <?php
 
-namespace BT\Http\Livewire;
+namespace BT\Livewire;
 
 use BT\Modules\TaxRates\Models\TaxRate;
 use Illuminate\Support\Str;
@@ -174,7 +174,7 @@ class ItemsTable extends Component
     {
         $this->reset('resource_id', 'save_item_as');
         $this->new_item = new $this->moduleitem_fullname($this->new_item_cfg);
-        $this->emit('refreshSearch', ['searchTerm' => null, 'value' => null, 'description' => null, 'optionsValues' => null]);
+        $this->dispatch('refreshSearch', ['searchTerm' => null, 'value' => null, 'description' => null, 'optionsValues' => null]);
     }
 
     public function removeItem($index)
@@ -190,7 +190,7 @@ class ItemsTable extends Component
                 'totalsRoute' => route('documents.documentEdit.refreshTotals'),
                 'entityID' => $this->module->id,
             ];
-            $this->dispatchBrowserEvent('swal:deleteConfirm', $swaldata);
+            $this->dispatch('swal:deleteConfirm', $swaldata);
         } else {
             $this->removeModuleItem($index);
         }

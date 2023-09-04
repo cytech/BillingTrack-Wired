@@ -6,7 +6,8 @@
         <div class="btn-group float-end">
             <button class="btn btn-primary rounded border"
                     type="button"
-                    onclick="window.livewire.emit('showModal', 'modals.create-event-modal')"
+{{--                    onclick="window.livewire.emit('showModal', 'modals.create-event-modal')"--}}
+                    onclick="window.Livewire.dispatch('showModal', { alias: 'modals.create-event-modal', params : {} })"
             ><i class="fa fa-plus"></i> @lang('bt.create_event')
             </button>
         </div>

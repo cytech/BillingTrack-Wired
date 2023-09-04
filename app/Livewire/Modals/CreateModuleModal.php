@@ -1,6 +1,6 @@
 <?php
 
-namespace BT\Http\Livewire\Modals;
+namespace BT\Livewire\Modals;
 
 use BT\Events\DocumentModified;
 use BT\Modules\Clients\Models\Client;
@@ -82,6 +82,8 @@ class CreateModuleModal extends Component
      *
      * @param $modulefullname
      * fully namespaced model
+     * @param $module_type
+     * module baseclass
      * @param $moduleop
      * copy or create
      * @param  null  $resource_id
@@ -106,7 +108,7 @@ class CreateModuleModal extends Component
             }
             $this->resource_id = $resource->id;
             $this->resource_name = $resource->name;
-            $this->emit('refreshSearch', ['searchTerm' => $this->resource_name, 'value' => $this->resource_id,
+            $this->dispatch('refreshSearch', ['searchTerm' => $this->resource_name, 'value' => $this->resource_id,
                 'description' => $this->resource_name, 'optionsValues' => $this->resource_id]);
         }
         if ($this->moduletype == 'Purchaseorder' && $lineitem) {
@@ -193,17 +195,17 @@ class CreateModuleModal extends Component
     public function doCancel()
     {
         if ($this->moduleop == 'create' && ! $this->readonly) {
-            $this->emit('refreshSearch', ['searchTerm' => null, 'value' => null, 'description' => null, 'optionsValues' => null]);
+            $this->dispatch('refreshSearch', ['searchTerm' => null, 'value' => null, 'description' => null, 'optionsValues' => null]);
         } elseif ($this->moduleop == 'copy' || $this->readonly) {
             $this->resource_id = $this->orig_resource_id;
             $this->resource_name = $this->orig_resource_name;
             $this->company_profile_id = $this->orig_company_profile_id;
             $this->group_id = $this->orig_group_id;
-            $this->emit('refreshSearch', ['searchTerm' => $this->resource_name, 'value' => $this->resource_id,
+            $this->dispatch('refreshSearch', ['searchTerm' => $this->resource_name, 'value' => $this->resource_id,
                 'description' => $this->resource_name, 'optionsValues' => $this->resource_id]);
         }
 
-        $this->emit('hideModal');
+        $this->dispatch('hideModal');
     }
 
     public function createModule()
@@ -236,7 +238,7 @@ class CreateModuleModal extends Component
             $this->validate();
 
             $swaldata['message'] = __('bt.saving');
-            $this->dispatchBrowserEvent('swal:saving', $swaldata);
+            $this->dispatch('swal:saving', $swaldata);
 
             $module = $this->modulefullname::create($createfields);
             //currently only Purchaseorder Item from Products
@@ -257,7 +259,7 @@ class CreateModuleModal extends Component
             }
             event(new DocumentModified($module));
             // Close Modal After Logic
-            $this->emit('hideModal');
+            $this->dispatch('hideModal');
 
             return redirect()->route('documents.edit', $module->id)
                 ->with('alertSuccess', trans('bt.record_successfully_created'));
@@ -303,7 +305,7 @@ class CreateModuleModal extends Component
         $this->validate();
         $swaldata['message'] = __('bt.saving');
 
-        $this->dispatchBrowserEvent('swal:saving', $swaldata);
+        $this->dispatch('swal:saving', $swaldata);
 
         $toModule = $this->modulefullname::create($createfields);
 
@@ -337,7 +339,7 @@ class CreateModuleModal extends Component
 
         event(new DocumentModified($toModule));
         // Close Modal After Logic
-        $this->emit('hideModal');
+        $this->dispatch('hideModal');
 
         return redirect()->route('documents.edit', $toModule->id)
             ->with('alertSuccess', trans('bt.record_successfully_created'));

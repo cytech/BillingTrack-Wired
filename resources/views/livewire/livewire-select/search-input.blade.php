@@ -7,7 +7,7 @@
     autocomplete="off"
 
     wire:keydown.enter.prevent=""
-    wire:model.debounce.500ms="searchTerm"
+    wire:model.live.debounce.500ms="searchTerm"
 
     x-on:click="isOpen = true"
     x-on:keydown="isOpen = true"

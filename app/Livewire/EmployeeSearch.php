@@ -1,6 +1,6 @@
 <?php
 
-namespace BT\Http\Livewire;
+namespace BT\Livewire;
 
 use BT\Modules\Employees\Models\Employee;
 use Illuminate\Support\Collection;

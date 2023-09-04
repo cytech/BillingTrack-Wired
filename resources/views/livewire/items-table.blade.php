@@ -6,16 +6,22 @@
                 <div class="card-tools float-right">
                     <button class="btn btn-primary btn-sm"
                             {{--                                     params 3 thru ...> mount(,,$modulefullname, $module_id = null, $resource_type)--}}
-                            onclick="window.livewire.emit('showModal', 'modals.add-resource-modal', '{{  addslashes(get_class($module)) }}', {{$module->id}}, 'Product')">
+{{--                            onclick="window.livewire.emit('showModal', 'modals.add-resource-modal', '{{  addslashes(get_class($module)) }}', {{$module->id}}, 'Product')"--}}
+                                    {{--                        $modulefullname, $module_id, $resource_type--}}
+                        onclick="window.Livewire.dispatch('showModal', { alias: 'modals.add-resource-modal', params: { modulefullname: '{{  addslashes(get_class($module)) }}', module_id: {{$module->id}}, resource_type: 'Product' }, classes: 'modal-xl'})">
                         <i class="fa fa-plus"></i> @lang('bt.add_product')</button>
                     @if($module->module_type != 'Purchaseorder')
                         <button class="btn btn-primary btn-sm"
                                 {{--                                     params 3 thru ...> mount(,,$modulefullname, $module_id = null, $resource_type)--}}
-                                onclick="window.livewire.emit('showModal', 'modals.add-resource-modal', '{{  addslashes(get_class($module)) }}', {{$module->id}}, 'Employee')">
+{{--                                onclick="window.livewire.emit('showModal', 'modals.add-resource-modal', '{{  addslashes(get_class($module)) }}', {{$module->id}}, 'Employee')">--}}
+                            {{--                        $modulefullname, $module_id, $resource_type--}}
+                            onclick="window.Livewire.dispatch('showModal', { alias: 'modals.add-resource-modal', params: { modulefullname: '{{  addslashes(get_class($module)) }}', module_id: {{$module->id}}, resource_type: 'Employee' }, classes: 'modal-xl'})">
                             <i class="fa fa-plus"></i> @lang('bt.add_employee')</button>
                         <button class="btn btn-primary btn-sm"
                                 {{--                                     params 3 thru ...> mount(,,$modulefullname, $module_id = null, $resource_type)--}}
-                                onclick="window.livewire.emit('showModal', 'modals.add-resource-modal', '{{  addslashes(get_class($module)) }}', {{$module->id}}, 'ItemLookup')">
+{{--                                onclick="window.livewire.emit('showModal', 'modals.add-resource-modal', '{{  addslashes(get_class($module)) }}', {{$module->id}}, 'ItemLookup')">--}}
+                            {{--                        $modulefullname, $module_id, $resource_type--}}
+                            onclick="window.Livewire.dispatch('showModal', { alias: 'modals.add-resource-modal', params: { modulefullname: '{{  addslashes(get_class($module)) }}', module_id: {{$module->id}}, resource_type: 'ItemLookup' }, classes: 'modal-xl'})">
                             <i class="fa fa-plus"></i> @lang('bt.add_lookup')</button>
                     @endif
                 </div>
@@ -42,7 +48,7 @@
                             @if($module->module_type == 'Purchaseorder')
                                 <livewire:product-search
                                         {{--module base name, adds hidden fields with _id and _name--}}
-                                        wire:onload="$emit('refreshSearch', ['searchTerm' => null, 'value' => null, 'description' => null, 'optionsValues' => null]);"
+                                        wire:onload="$dispatch('refreshSearch', ['searchTerm' => null, 'value' => null, 'description' => null, 'optionsValues' => null]);"
                                         name="product"
                                         value=""
                                         description=""
@@ -53,7 +59,7 @@
                             @else
                                 <livewire:item-lookup-search
                                         {{--module base name, adds hidden fields with _id and _name--}}
-                                        wire:onload="$emit('refreshSearch', ['searchTerm' => null, 'value' => null, 'description' => null, 'optionsValues' => null]);"
+                                        wire:onload="$dispatch('refreshSearch', ['searchTerm' => null, 'value' => null, 'description' => null, 'optionsValues' => null]);"
                                         name="itemLookup"
                                         value=""
                                         description=""
@@ -65,7 +71,7 @@
                             @error('new_item.name') <span class="text-sm text-danger">{{ $message }}</span> @enderror
                             @if(!$resource_id)
                                 <label for="save_item_as" class="mt-2">
-                                    <input wire:model="save_item_as"
+                                    <input wire:model.live="save_item_as"
                                            type="checkbox"
                                            name="save_item_as"
                                            id="save_item_as"
@@ -79,24 +85,24 @@
                             @endif
                         </td>
                         <td>
-                            {{ html()->textarea('new-description', null)->attribute('wire:model.defer', 'new_item.description')->rows(1)->class('form-control') }}
+                            {{ html()->textarea('new-description', null)->attribute('wire:model', 'new_item.description')->rows(1)->class('form-control') }}
                             @error('new_item.description') <span
                                     class="text-sm text-danger">{{ $message }}</span> @enderror
                         </td>
                         <td>
-                            {{ html()->text('new-quantity', null)->attribute('wire:model.defer', 'new_item.quantity')->class('form-control') }}
+                            {{ html()->text('new-quantity', null)->attribute('wire:model', 'new_item.quantity')->class('form-control') }}
                             @error('new_item.quantity') <span
                                     class="text-sm text-danger">{{ $message }}</span> @enderror
                         </td>
                         <td>
-                            {{ html()->text('new-price', null)->attribute('wire:model.defer', 'new_item.price')->class('form-control') }}
+                            {{ html()->text('new-price', null)->attribute('wire:model', 'new_item.price')->class('form-control') }}
                             @error('new_item.price') <span class="text-sm text-danger">{{ $message }}</span> @enderror
                         </td>
                         <td>
-                            {{ html()->select('new-tax_rate_id', $taxRates, null)->attribute('wire:model.defer', 'new_item.tax_rate_id')->class('form-select') }}
+                            {{ html()->select('new-tax_rate_id', $taxRates, null)->attribute('wire:model', 'new_item.tax_rate_id')->class('form-select') }}
                         </td>
                         <td>
-                            {{ html()->select('new-tax_rate_2_id', $taxRates, null)->attribute('wire:model.defer', 'new_item.tax_rate_2_id')->class('form-select') }}
+                            {{ html()->select('new-tax_rate_2_id', $taxRates, null)->attribute('wire:model', 'new_item.tax_rate_2_id')->class('form-select') }}
                         </td>
                         <td style='white-space: nowrap'>
                             <button class="btn btn-sm btn-warning ms-4 me-2"
@@ -146,7 +152,7 @@
                             <input type="hidden" name="id" value="{{$item->id ?? null}}"/>
                             <td><i class="fas fa-arrows-alt-v handle"></i></td>
                             <td>
-                                <input wire:model="module_items.{{$index}}.name" name="name"
+                                <input wire:model.live="module_items.{{$index}}.name" name="name"
                                        class="form-control item-lookup" readonly>
                             </td>
                             <td><textarea name="description" rows="1" cols="50" class="form-control"

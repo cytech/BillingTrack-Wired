@@ -8,7 +8,10 @@
     <script type="text/javascript">
         addEvent(document, 'click', "[id^=createWorkorder]", (e) => {
             date = e.target.dataset.date
-            window.livewire.emit('showModal', 'modals.create-seeded-workorder-modal', date, 'showschedule')
+            // window.livewire.emit('showModal', 'modals.create-seeded-workorder-modal', date, 'showschedule')
+            //                                                                       date, returnurl
+            window.Livewire.dispatch('showModal', { alias: 'modals.create-seeded-workorder-modal', params: { date: date, returnurl: 'showschedule'}, classes: 'modal-lg'})
+
         })
     </script>
 @endsection

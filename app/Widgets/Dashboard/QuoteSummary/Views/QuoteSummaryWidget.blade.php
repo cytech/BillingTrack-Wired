@@ -41,7 +41,8 @@
                 <button class="btn btn-sm"
                         type="button"
                         {{--                   params 3 thru ... mount(,,$modulefullname, $moduleop, $resource_id = null, $module_id = null, $readonly = null)--}}
-                        onclick="window.livewire.emit('showModal', 'modals.create-module-modal',  'BT\\Modules\\Documents\\Models\\Quote', 'Quote', 'create' )"
+{{--                        onclick="window.livewire.emit('showModal', 'modals.create-module-modal',  'BT\\Modules\\Documents\\Models\\Quote', 'Quote', 'create' )"--}}
+                        onclick="window.Livewire.dispatch('showModal', {alias: 'modals.create-module-modal', params: { modulefullname: 'BT\\Modules\\Documents\\Models\\Quote', module_type: 'Quote', moduleop: 'create' }})"
                 ><i class="fa fa-plus"></i> @lang('bt.create_quote')
                 </button>
             </div>

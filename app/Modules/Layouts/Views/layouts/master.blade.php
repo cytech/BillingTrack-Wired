@@ -9,7 +9,7 @@
     <title>{{ config('bt.headerTitleText') }}</title>
     <link rel="stylesheet" href="/build/assets/app.css">
     @include('layouts._head')
-    <script defer src="{{ asset('plugins/alpinejs/cdn.min.js') }}"></script>
+{{--    <script defer src="{{ asset('plugins/alpinejs/cdn.min.js') }}"></script>--}}
     <script src="/build/assets/app.js"></script>
     {{--    @vite(['resources/js/app.js'])--}}
     @include('layouts._js_global')
@@ -70,6 +70,7 @@
 
     // livewire modals-bs5.js
     let modalsElement = document.getElementById('laravel-livewire-modals');
+    let lwModal = bootstrap.Modal.getOrCreateInstance(modalsElement);
 
     // example
     // modalsElement.addEventListener('shown.bs.modal', (e) => {
@@ -85,14 +86,14 @@
     })
 
     modalsElement.addEventListener('hidden.bs.modal', () => {
-        window.livewire.emit('resetModal');
+        window.Livewire.dispatch('resetModal');
     })
 
-    window.livewire.on('showBootstrapModal', () => {
-        new bootstrap.Modal(modalsElement).show()
+    window.Livewire.on('showBootstrapModal', () => {
+        lwModal.show()
     });
 
-    window.livewire.on('hideModal', () => {
-        bootstrap.Modal.getInstance(modalsElement).hide()
+    window.Livewire.on('hideModal', () => {
+        lwModal.hide()
     });
 </script>

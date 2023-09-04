@@ -1,6 +1,6 @@
 <?php
 
-namespace BT\Http\Livewire\Modals;
+namespace BT\Livewire\Modals;
 
 use BT\Modules\CustomFields\Models\CustomField;
 use BT\Modules\Documents\Models\Invoice;
@@ -15,21 +15,22 @@ use Livewire\Component;
 class CreatePaymentModal extends Component
 {
     public $paymentdate, $paymentmethods = [], $amount, $payment_method_id, $payment_note, $readonly;
-    public $email_payment_receipt, $customFields, $custom_data =[];
+    public $email_payment_receipt, $customFields, $custom_data = [];
     public $resource_id, $resource_name, $client_invoices = [], $invoice_id;
     public $module, $modulefullname, $moduletype, $module_id, $currentUrl;
 
-    protected $listeners = ['resource_idUpdated'   => 'setResourceId',
+    protected $listeners = ['resource_idUpdated' => 'setResourceId',
                             'descriptionUpdated' => 'setResourceName',];
     protected $rules = [
-        'resource_id'         => 'required',
-        'paymentdate'           => 'required',
+        'resource_id'       => 'required',
+        'paymentdate'       => 'required',
         'invoice_id'        => 'required',
         'amount'            => 'required|numeric',
         'payment_method_id' => 'required',
     ];
 
-    public function mount($modulefullname = null, $module_id = null, $readonly = null){
+    public function mount($modulefullname = null, $module_id = null, $readonly = null)
+    {
         $this->currentUrl = url()->previous();
         $this->paymentdate = date('Y-m-d');
         $this->paymentmethods = PaymentMethod::getList();
@@ -56,9 +57,9 @@ class CreatePaymentModal extends Component
     public function setResourceId($object)
     {
         $this->resource_id = $object['value'];
-        $this->client_invoices = Invoice::whereHas( 'client', function ($query) use ($object){
+        $this->client_invoices = Invoice::whereHas('client', function ($query) use ($object) {
             $query->where('id', $object['value']);
-        })->whereHas( 'amount', function ($query){
+        })->whereHas('amount', function ($query) {
             $query->where('balance', '>', 0);
         })->sent()->get();
 
@@ -70,15 +71,16 @@ class CreatePaymentModal extends Component
         $this->resource_name = $object['description'];
     }
 
-    public function updatedInvoiceId(){
+    public function updatedInvoiceId()
+    {
         $this->amount = $this->client_invoices->find($this->invoice_id)->amount->formatted_numeric_balance;
     }
 
     public function validationAttributes()
     {
         return [
-            'resource_id'        => trans('bt.client'),
-            'paymentdate'           => trans('bt.payment_date'),
+            'resource_id'       => trans('bt.client'),
+            'paymentdate'       => trans('bt.payment_date'),
             'invoice_id'        => trans('bt.invoice'),
             'amount'            => trans('bt.amount'),
             'payment_method_id' => trans('bt.payment_method'),
@@ -92,31 +94,32 @@ class CreatePaymentModal extends Component
 
     public function doCancel()
     {
-        $this->emit('refreshSearch', ['searchTerm' => null, 'value' => null, 'description' => null, 'optionsValues' => null]);
-        $this->emit('hideModal');
+        $this->dispatch('refreshSearch', ['searchTerm' => null, 'value' => null, 'description' => null, 'optionsValues' => null]);
+        $this->dispatch('hideModal');
     }
 
-    public function createPayment(){
+    public function createPayment()
+    {
         $createfields = [
-            'client_id' => $this->resource_id,
-                'invoice_id' => $this->invoice_id,
-                'amount' => $this->amount,
-                'payment_method_id' => $this->payment_method_id,
-                'paid_at' => $this->paymentdate,
-                'note' => $this->payment_note ?? '',
+            'client_id'         => $this->resource_id,
+            'invoice_id'        => $this->invoice_id,
+            'amount'            => $this->amount,
+            'payment_method_id' => $this->payment_method_id,
+            'paid_at'           => $this->paymentdate,
+            'note'              => $this->payment_note ?? '',
         ];
 
         $this->validate();
 
         $swaldata['message'] = __('bt.saving');
-        $this->dispatchBrowserEvent('swal:saving', $swaldata);
+        $this->dispatch('swal:saving', $swaldata);
 
         $module = Payment::create($createfields);
 
-        $module->custom->update($this->custom_data,[]);
+        $module->custom->update($this->custom_data, []);
 
         // Close Modal After Logic
-        $this->emit('hideModal');
+        $this->dispatch('hideModal');
 
         // email receipt
         if ($this->email_payment_receipt
@@ -139,10 +142,10 @@ class CreatePaymentModal extends Component
             $mailQueue->send($mail->id);
         }
 
-        if ($this->module){
+        if ($this->module) {
             return redirect($this->currentUrl)
                 ->with('alertSuccess', trans('bt.record_successfully_created'));
-        }else {
+        } else {
             return redirect()->route('payments.index', ['status' => 1])
                 ->with('alertSuccess', trans('bt.record_successfully_created'));
         }

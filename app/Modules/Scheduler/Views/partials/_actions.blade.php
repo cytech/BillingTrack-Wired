@@ -5,7 +5,8 @@
     <div class="dropdown-menu dropdown-menu-end" role="menu">
         <button class="dropdown-item "
                 type="button"
-                onclick="window.livewire.emit('showModal', 'modals.create-event-modal', {!! $model !!})"
+                {{--                    params 3 thru ... mount($module = null, $fromcalendar = null, $date = null)--}}
+                onclick="window.Livewire.dispatch('showModal', {alias: 'modals.create-event-modal', params: { module: {!! $model !!} }})"
         ><i class="fa fa-edit"></i> @lang('bt.edit')
         </button>
         <div class="dropdown-divider"></div>

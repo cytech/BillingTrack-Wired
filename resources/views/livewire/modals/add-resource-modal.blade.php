@@ -1,5 +1,6 @@
-<div class="modal-dialog modal-xl">
-    <div class="modal-content">
+<div>
+{{--<div class="modal-dialog modal-xl">--}}
+{{--    <div class="modal-content">--}}
         <div class="modal-header">
             <h4 class="modal-title">@lang('bt.add_items_from', ['resource_type' => $resource_type . 's'])</h4>
             <div class="float-right">
@@ -14,7 +15,7 @@
         @if($module->module_type == 'Purchaseorder')
             <div class="modal-header pt-2 pb-1">
                 <label>
-                    <input wire:model="pref_vendor" type="checkbox" checked name="pref_vendor"
+                    <input wire:model.live="pref_vendor" type="checkbox" checked name="pref_vendor"
                            id="pref_vendor"> @lang('bt.vendor_preferred_only', ['vname' => $module->vendor->name])
                 </label>
             </div>
@@ -37,7 +38,7 @@
                 @foreach ($resources as $resource)
                     @if(class_basename($resource) == 'Employee')
                         <tr class="prodlist">
-                            <td><input wire:model.defer="selected_resources" type="checkbox" name="resource_ids[]"
+                            <td><input wire:model="selected_resources" type="checkbox" name="resource_ids[]"
                                        value="{!! $resource->id!!}"></td>
                             <td>{!! $resource->formatted_short_name !!}</td>
                             <td>{!! $resource->title !!}</td>
@@ -45,7 +46,7 @@
                         </tr>
                     @else
                         <tr class="prodlist">
-                            <td><input wire:model.defer="selected_resources" type="checkbox" name="resource_ids[]"
+                            <td><input wire:model="selected_resources" type="checkbox" name="resource_ids[]"
                                        value="{!! $resource->id!!}"></td>
                             <td>{!!  $resource->formatted_name ?? $resource->name !!}</td>
                             <td>{!!  $resource->description ?? $resource->title !!}</td>
@@ -64,6 +65,6 @@
                 </tbody>
             </table>
         </div>
-    </div>
+{{--    </div>--}}
+{{--</div>--}}
 </div>
-

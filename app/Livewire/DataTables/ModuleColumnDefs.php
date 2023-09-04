@@ -1,6 +1,6 @@
 <?php
 
-namespace BT\Http\Livewire\DataTables;
+namespace BT\Livewire\DataTables;
 
 use BT\Support\Frequency;
 use Illuminate\Database\Eloquent\Builder;

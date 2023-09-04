@@ -1,6 +1,6 @@
 <?php
 
-namespace BT\Http\Livewire\Modals;
+namespace BT\Livewire\Modals;
 
 use BT\Modules\Employees\Models\Employee;
 use BT\Modules\Scheduler\Models\Category;
@@ -91,7 +91,7 @@ class CreateEventModal extends Component
             if ($employee && $employee->schedule == 1) {
                 $this->resource_id = $employee->id;
                 $this->resource_name = $employee->full_name;
-                $this->emit('refreshSearch', ['searchTerm' => $this->resource_name, 'value' => $this->resource_id,
+                $this->dispatch('refreshSearch', ['searchTerm' => $this->resource_name, 'value' => $this->resource_id,
                     'description' => $this->resource_name, 'optionsValues' => $this->resource_id]);
             }
         }
@@ -129,8 +129,8 @@ class CreateEventModal extends Component
 
     public function doCancel()
     {
-        $this->emit('refreshSearch', ['searchTerm' => null, 'value' => null, 'description' => null, 'optionsValues' => null]);
-        $this->emit('hideModal');
+        $this->dispatch('refreshSearch', ['searchTerm' => null, 'value' => null, 'description' => null, 'optionsValues' => null]);
+        $this->dispatch('hideModal');
     }
 
     public function createEvent()

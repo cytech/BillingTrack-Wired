@@ -1,6 +1,6 @@
 <?php
 
-namespace BT\Http\Livewire\DataTables;
+namespace BT\Livewire\DataTables;
 
 use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
@@ -88,7 +88,7 @@ class TrashTable extends DataTableComponent
                 'module_type' => $this->module_type,
                 'route' => route('utilities.bulk.restoretrash'),
             ];
-            $this->dispatchBrowserEvent('swal:bulkConfirm', $swaldata);
+            $this->dispatch('swal:bulkConfirm', $swaldata);
         }
         $this->clearSelected();
     }
@@ -103,7 +103,7 @@ class TrashTable extends DataTableComponent
                 'module_type' => $this->module_type,
                 'route' => route('utilities.bulk.deletetrash'),
             ];
-            $this->dispatchBrowserEvent('swal:bulkConfirm', $swaldata);
+            $this->dispatch('swal:bulkConfirm', $swaldata);
         }
         $this->clearSelected();
     }

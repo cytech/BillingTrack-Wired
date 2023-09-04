@@ -1,6 +1,6 @@
 <?php
 
-namespace BT\Http\Livewire\Modals;
+namespace BT\Livewire\Modals;
 
 use Livewire\Component;
 
@@ -48,8 +48,8 @@ class SearchModal extends Component
 
     public function doCancel()
     {
-        $this->emit('refreshSearch', ['searchTerm' => null, 'value' => null, 'description' => null, 'optionsValues' => null]);
-        $this->emit('hideModal');
+        $this->dispatch('refreshSearch', ['searchTerm' => null, 'value' => null, 'description' => null, 'optionsValues' => null]);
+        $this->dispatch('hideModal');
     }
 
     public function changeResource()
@@ -60,8 +60,8 @@ class SearchModal extends Component
         } else {
             $this->module->update(['client_id' => $this->resource_id]);
         }
-        $this->emit('hideModal');
-        $this->emit('resource-changed', $this->module->id);
+        $this->dispatch('hideModal');
+        $this->dispatch('resource-changed', $this->module->id);
     }
 
     public function render()

@@ -1,6 +1,6 @@
 <?php
 
-namespace BT\Http\Livewire\DataTables;
+namespace BT\Livewire\DataTables;
 
 use BT\Modules\CompanyProfiles\Models\CompanyProfile;
 use BT\Modules\Vendors\Models\Vendor;
@@ -210,7 +210,7 @@ class ModuleTable extends DataTableComponent
                 'route' => $route,
                 'status' => $status,
             ];
-            $this->dispatchBrowserEvent('swal:bulkConfirm', $swaldata);
+            $this->dispatch('swal:bulkConfirm', $swaldata);
         }
     }
 
@@ -235,7 +235,7 @@ class ModuleTable extends DataTableComponent
                 'ids' => $ids,
                 'route' => $route,
             ];
-            $this->dispatchBrowserEvent('swal:bulkConfirm', $swaldata);
+            $this->dispatch('swal:bulkConfirm', $swaldata);
         }
     }
 

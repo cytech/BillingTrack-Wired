@@ -1,6 +1,6 @@
 <?php
 
-namespace BT\Http\Livewire\Modals;
+namespace BT\Livewire\Modals;
 
 use Livewire\Component;
 
@@ -53,14 +53,14 @@ class AddResourceModal extends Component
 
     public function doCancel()
     {
-        $this->emit('hideModal');
+        $this->dispatch('hideModal');
     }
 
     public function addItems()
     {
-        $this->emit('addItems', ['resources' => $this->selected_resources, 'resource_type' => $this->resource_type]);
+        $this->dispatch('addItems', ['resources' => $this->selected_resources, 'resource_type' => $this->resource_type]);
         // Close Modal After Logic
-        $this->emit('hideModal');
+        $this->dispatch('hideModal');
     }
 
     public function render()

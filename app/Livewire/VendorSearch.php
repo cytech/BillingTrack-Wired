@@ -1,11 +1,11 @@
 <?php
 
-namespace BT\Http\Livewire;
+namespace BT\Livewire;
 
-use BT\Modules\Products\Models\Product;
+use BT\Modules\Vendors\Models\Vendor;
 use Illuminate\Support\Collection;
 
-class ProductSearch extends LivewireSelect
+class VendorSearch extends LivewireSelect
 {
     protected $listeners = ['refreshSearch'];
 
@@ -19,28 +19,28 @@ class ProductSearch extends LivewireSelect
 
     public function options($searchTerm = null): Collection
     {
-        return Product::query()
+        return Vendor::query()
             ->when($searchTerm, function ($query, $searchTerm) {
-                $query->where('name', 'like', "%$searchTerm%")->where('active', 1)->orderby('name', 'ASC');
+                $query->where('name', 'like', "%$searchTerm%")->where('active', 1);
             })
             ->get()
-            ->map(function (Product $product) {
+            ->map(function (Vendor $vendor) {
                 return [
-                    'value' => $product->id,
-                    'description' => $product->name,
-                    'title' => $product->serialnum,
+                    'value' => $vendor->id,
+                    'description' => $vendor->name,
+                    'title' => $vendor->name,
                 ];
             });
     }
 
     public function selectedOption($value)
     {
-        $product = Product::find($value);
+        $vendor = Vendor::find($value);
 
         return [
-            'value' => optional($product)->id,
-            'description' => optional($product)->name,
-            'title' => optional($product)->serialnum,
+            'value' => optional($vendor)->id,
+            'description' => optional($vendor)->name,
+            'title' => optional($vendor)->name,
         ];
     }
 }

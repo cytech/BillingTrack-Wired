@@ -53,15 +53,14 @@
                 @if (($document->module_type == 'Invoice' or $document->module_type == 'Purchaseorder') and ($document->isPayable or config('bt.allowPaymentsWithoutBalance')))
                     <button class="dropdown-item"
                             type="button"
-                            onclick="window.livewire.emit('showModal', 'modals.create-payment-modal', '{{  addslashes(get_class($document)) }}', {{ $document->id }}, true )"
+                            {{--                    params 3 thru ... mount($modulefullname = null, $module_id = null, $readonly = null)--}}
+                            onclick="window.Livewire.dispatch('showModal', {alias: 'modals.create-payment-modal', params: { modulefullname: '{{ addslashes(get_class($document)) }}', module_id: {{ $document->id }}, readonly: true }})"
                     ><i class="fa fa-credit-card"></i> @lang('bt.enter_payment')
                     </button>
                 @endif
                 <a class="dropdown-item" href="#" id="btn-copy-document"
-                   {{--                   params 3 thru ... mount(,,$modulefullname, $module_type, $moduleop, $resource_id = null, $module_id = null, $readonly = null)--}}
-                   onclick="window.livewire.emit('showModal', 'modals.create-module-modal',
-                   '{{  addslashes(get_class($document)) }}', '{{$document->module_type}}', 'copy',
-                    {{ $document->module_type == 'Purchaseorder' ? $document->vendor->id: $document->client->id }}, {{ $document->id }})">
+                   {{--                    params 3 thru ... mount($modulefullname, $module_type, $moduleop, $resource_id = null, $module_id = null, $readonly = null, $lineitem = null)--}}
+                   onclick="window.Livewire.dispatch('showModal', {alias: 'modals.create-module-modal', params: { modulefullname: '{{  addslashes(get_class($document)) }}', module_type: '{{$document->module_type}}', moduleop: 'copy', resource_id: {{ $document->module_type == 'Purchaseorder' ? $document->vendor->id: $document->client->id }}, module_id: {{ $document->id }} }})">
                     <i class="fa fa-copy"></i> @lang('bt.copy_'.$document->lower_case_baseclass)</a>
                 @if($document->module_type == 'Quote')
                     <a class="dropdown-item" href="javascript:void(0)" id="btn-document-to-workorder"><i

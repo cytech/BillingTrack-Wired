@@ -8,16 +8,16 @@
         <a class="dropdown-item" href="{{ route('clients.edit', [$model->id]) }}"
         ><i class="fa fa-edit"></i> @lang('bt.edit')</a>
         <a class="dropdown-item" href="#" id="btn-create-quote"
-           {{--                   params 3 thru ... mount(,,$modulefullname, $moduleop, $resource_id = null, $module_id = null, $readonly = null)--}}
-           onclick="window.livewire.emit('showModal', 'modals.create-module-modal', '{{ addslashes(get_class($model->quotes()->getRelated())) }}', 'create', {{ $model->id }}, null, true)">
+           {{--                    params 3 thru ... mount($modulefullname, $module_type, $moduleop, $resource_id = null, $module_id = null, $readonly = null, $lineitem = null)--}}
+           onclick="window.Livewire.dispatch('showModal', {alias: 'modals.create-module-modal', params: { modulefullname: '{{ addslashes(get_class($model->quotes()->getRelated())) }}', module_type: 'Quote', moduleop: 'create', resource_id: {{ $model->id }}, module_id: null, readonly: true }})">
             <i class="far fa-file-alt"></i> @lang('bt.create_quote')</a>
         <a class="dropdown-item" href="#" id="btn-create-workorder"
-           {{--                   params 3 thru ... mount(,,$modulefullname, $moduleop, $resource_id = null, $module_id = null, $readonly = null)--}}
-           onclick="window.livewire.emit('showModal', 'modals.create-module-modal', '{{ addslashes(get_class($model->workorders()->getRelated())) }}', 'create', {{$model->id}}, null, true)">
+           {{--                    params 3 thru ... mount($modulefullname, $module_type, $moduleop, $resource_id = null, $module_id = null, $readonly = null, $lineitem = null)--}}
+           onclick="window.Livewire.dispatch('showModal', {alias: 'modals.create-module-modal', params: { modulefullname: '{{ addslashes(get_class($model->workorders()->getRelated())) }}', module_type: 'Workorder', moduleop: 'create', resource_id: {{ $model->id }}, module_id: null, readonly: true }})">
             <i class="far fa-file-alt"></i> @lang('bt.create_workorder')</a>
         <a class="dropdown-item" href="#" id="btn-create-invoice"
-           {{--                   params 3 thru ... mount(,,$modulefullname, $moduleop, $resource_id = null, $module_id = null, $readonly = null)--}}
-           onclick="window.livewire.emit('showModal', 'modals.create-module-modal', '{{ addslashes(get_class($model->invoices()->getRelated())) }}', 'create', {{$model->id}}, null, true)">
+           {{--                    params 3 thru ... mount($modulefullname, $module_type, $moduleop, $resource_id = null, $module_id = null, $readonly = null, $lineitem = null)--}}
+           onclick="window.Livewire.dispatch('showModal', {alias: 'modals.create-module-modal', params: { modulefullname: '{{ addslashes(get_class($model->invoices()->getRelated())) }}', module_type: 'Invoice', moduleop: 'create', resource_id: {{ $model->id }}, module_id: null, readonly: true }})">
             <i class="far fa-file-alt"></i> @lang('bt.create_invoice')</a>
         <div class="dropdown-divider"></div>
         <a class="dropdown-item" href="#"

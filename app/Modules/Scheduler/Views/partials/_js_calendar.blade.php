@@ -70,9 +70,12 @@
                     // If Workorder Button Icon Selected
                     if (info.jsEvent.target.classList.contains('createwobutton')) {
                         //                                                                       date, returnurl
-                        window.livewire.emit('showModal', 'modals.create-seeded-workorder-modal', info.date, 'fullcalendar')
+                        // window.livewire.emit('showModal', 'modals.create-seeded-workorder-modal', info.date, 'fullcalendar')
+                        window.Livewire.dispatch('showModal', { alias: 'modals.create-seeded-workorder-modal', params: { date: info.date, returnurl: 'fullcalendar'}, classes: 'modal-lg'})
                     } else {
-                        window.livewire.emit('showModal', 'modals.create-event-modal', null, true, info.date)
+                        //                                       $module = null, $fromcalendar = null, $date = null)
+                        // window.livewire.emit('showModal', 'modals.create-event-modal', null, true, info.date)
+                        window.Livewire.dispatch('showModal', { alias: 'modals.create-event-modal', params: {module: null, fromcalendar: true, date: info.date }})
                     }
                 },
 
@@ -87,8 +90,9 @@
                         window.open('{{ route('scheduler.editrecurringevent') }}' + '/' + info.event.id, '_parent');
                         return false;
                     }
-                    //                                                              model, fromcalendar
-                    window.livewire.emit('showModal', 'modals.create-event-modal', info.event, true)
+                    //                                                              module, fromcalendar, date
+                    // window.livewire.emit('showModal', 'modals.create-event-modal', info.event, true)
+                    window.Livewire.dispatch('showModal', { alias: 'modals.create-event-modal', params: { module: info.event, fromcalendar: true }})
                 },
 
                 // added tooltip mouseover

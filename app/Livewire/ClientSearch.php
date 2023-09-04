@@ -1,6 +1,6 @@
 <?php
 
-namespace BT\Http\Livewire;
+namespace BT\Livewire;
 
 use BT\Modules\Clients\Models\Client;
 use Illuminate\Support\Collection;
