@@ -11,8 +11,6 @@ class Modals extends Component
     public $params = [];
     public $classes;
 
-//    protected $listeners = ['showModal', 'resetModal'];
-
     public function render()
     {
         return view('livewire.modals');

@@ -10,6 +10,7 @@ use BT\Modules\Payments\Models\Payment;
 use BT\Support\Contacts;
 use BT\Support\Parser;
 use Illuminate\Support\Str;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class CreatePaymentModal extends Component
@@ -19,8 +20,6 @@ class CreatePaymentModal extends Component
     public $resource_id, $resource_name, $client_invoices = [], $invoice_id;
     public $module, $modulefullname, $moduletype, $module_id, $currentUrl;
 
-    protected $listeners = ['resource_idUpdated' => 'setResourceId',
-                            'descriptionUpdated' => 'setResourceName',];
     protected $rules = [
         'resource_id'       => 'required',
         'paymentdate'       => 'required',
@@ -54,6 +53,7 @@ class CreatePaymentModal extends Component
         }
     }
 
+    #[On('resource_idUpdated')]
     public function setResourceId($object)
     {
         $this->resource_id = $object['value'];
@@ -66,6 +66,7 @@ class CreatePaymentModal extends Component
         $this->resetValidation();
     }
 
+    #[On('descriptionUpdated')]
     public function setResourceName($object)
     {
         $this->resource_name = $object['description'];

@@ -4,6 +4,7 @@ namespace BT\Livewire;
 
 use BT\Modules\TaxRates\Models\TaxRate;
 use Illuminate\Support\Str;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class ItemsTable extends Component
@@ -41,11 +42,8 @@ class ItemsTable extends Component
     // LivewireSelect sets 'name'(component name), 'value'(id), 'description'(name) and 'title'(name/unique_name)
     // from xxxSearch 'id' 'name' 'unique_name/name'
     // listeners then sets $this->resource_id from 'value' and $this->resource_name from 'description'
-    protected $listeners = ['resource_idUpdated' => 'setResourceId',
-        'descriptionUpdated' => 'setResourceName',
-        'removeModuleItem' => 'removeModuleItem', //emit from _js_global swal:deleteConfirm
-        'addItems' => 'addItems', //emit from AddResourceModal
-    ];
+    // 'removeModuleItem' => 'removeModuleItem', //emit from _js_global swal:deleteConfirm
+    // 'addItems' => 'addItems', //emit from AddResourceModal
 
     protected function rules()
     {
@@ -92,6 +90,7 @@ class ItemsTable extends Component
         $this->taxRates = TaxRate::getList();
     }
 
+    #[On('resource_idUpdated')]
     public function setResourceId($object)
     {
         $this->resource_id = $object['value'];
@@ -108,6 +107,7 @@ class ItemsTable extends Component
         }
     }
 
+    #[On('descriptionUpdated')]
     public function setResourceName($object)
     {
         $this->search_mod_fullname = 'BT\\Modules\\'.ucfirst($object['name']).'s\\Models\\'.ucfirst($object['name']);
@@ -116,6 +116,7 @@ class ItemsTable extends Component
         $this->new_item->name = $object['description'];
     }
 
+    #[On('addItems')]
     public function addItems($params)
     {
         $search_mod_fullname = 'BT\\Modules\\'.ucfirst($params['resource_type']).'s\\Models\\'.ucfirst($params['resource_type']);
@@ -196,6 +197,7 @@ class ItemsTable extends Component
         }
     }
 
+    #[On('removeModuleItem')]
     public function removeModuleItem($index)
     {
         $this->module_items->forget($index);

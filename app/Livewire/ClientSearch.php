@@ -4,11 +4,11 @@ namespace BT\Livewire;
 
 use BT\Modules\Clients\Models\Client;
 use Illuminate\Support\Collection;
+use Livewire\Attributes\On;
 
 class ClientSearch extends LivewireSelect
 {
-    protected $listeners = ['refreshSearch'];
-
+    #[On('refreshSearch')]
     public function refreshSearch($props)
     {
         $this->searchTerm = $props['searchTerm'];

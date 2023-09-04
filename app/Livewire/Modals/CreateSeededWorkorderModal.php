@@ -13,6 +13,7 @@ use BT\Modules\Products\Models\Product;
 use BT\Modules\Scheduler\Controllers\SchedulerController;
 use BT\Support\Statuses\DocumentStatuses;
 use Carbon\Carbon;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class CreateSeededWorkorderModal extends Component
@@ -61,9 +62,6 @@ class CreateSeededWorkorderModal extends Component
 
     public $selected_qty = [];
 
-    protected $listeners = ['resource_idUpdated' => 'setResourceId',
-        'descriptionUpdated' => 'setResourceName', ];
-
     protected $rules = [
         'company_profile_id' => 'required|integer|exists:company_profiles,id',
         'resource_id' => 'required_without:resource_name',
@@ -91,12 +89,14 @@ class CreateSeededWorkorderModal extends Component
         [$this->available_employees, $this->available_resources] = (new SchedulerController)->getResourceStatus(Carbon::parse($date));
     }
 
+    #[On('resource_idUpdated')]
     public function setResourceId($object)
     {
         $this->resource_id = $object['value'];
         $this->resetValidation();
     }
 
+    #[On('descriptionUpdated')]
     public function setResourceName($object)
     {
         $this->resource_name = $object['description'];

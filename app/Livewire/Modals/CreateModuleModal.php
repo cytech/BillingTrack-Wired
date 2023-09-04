@@ -10,6 +10,7 @@ use BT\Modules\Groups\Models\Group;
 use BT\Modules\Products\Models\Product;
 use BT\Modules\Vendors\Models\Vendor;
 use BT\Support\Frequency;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class CreateModuleModal extends Component
@@ -65,8 +66,6 @@ class CreateModuleModal extends Component
     // LivewireSelect sets 'name'(component name), 'value'(id), 'description'(name) and 'title'(name/unique_name)
     // from xxxSearch 'id' 'name' 'unique_name/name'
     // listeners then sets $this->resource_id from 'value' and $this->resource_name from 'description'
-    protected $listeners = ['resource_idUpdated' => 'setResourceId',
-        'descriptionUpdated' => 'setResourceName', ];
 
     protected $rules = [
         'company_profile_id' => 'required|integer|exists:company_profiles,id',
@@ -145,12 +144,14 @@ class CreateModuleModal extends Component
         $this->show = false;
     }
 
+    #[On('resource_idUpdated')]
     public function setResourceId($object)
     {
         $this->resource_id = $object['value'];
         $this->resetValidation();
     }
 
+    #[On('descriptionUpdated')]
     public function setResourceName($object)
     {
         $this->resource_name = $object['description'];

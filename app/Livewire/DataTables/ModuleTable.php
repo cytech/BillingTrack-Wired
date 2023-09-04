@@ -6,6 +6,7 @@ use BT\Modules\CompanyProfiles\Models\CompanyProfile;
 use BT\Modules\Vendors\Models\Vendor;
 use BT\Support\Statuses\DocumentStatuses;
 use Illuminate\Database\Eloquent\Builder;
+use Livewire\Attributes\On;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
@@ -63,8 +64,6 @@ class ModuleTable extends DataTableComponent
         });
     }
 
-    protected $listeners = ['reset_bulk_select' => 'resetBulkSelect'];  //emit from _js_global swal:bulkConfirm
-
     public function mount()
     {
         if ($this->module_type == 'TimeTrackingProject') {
@@ -112,6 +111,7 @@ class ModuleTable extends DataTableComponent
         }
     }
 
+    #[On('reset_bulk_select')]
     public function resetBulkSelect()
     {
         $this->clearSelected();

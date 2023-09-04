@@ -4,11 +4,11 @@ namespace BT\Livewire;
 
 use BT\Modules\ItemLookups\Models\ItemLookup;
 use Illuminate\Support\Collection;
+use Livewire\Attributes\On;
 
 class ItemLookupSearch extends LivewireSelect
 {
-    protected $listeners = ['refreshSearch'];
-
+    #[On('refreshSearch')]
     public function refreshSearch($props){
         $this->searchTerm = $props['searchTerm'];
         $this->value = $props['value'];

@@ -9,6 +9,7 @@ use BT\Modules\Scheduler\Models\ScheduleOccurrence;
 use BT\Modules\Scheduler\Models\ScheduleResource;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class CreateEventModal extends Component
@@ -40,9 +41,6 @@ class CreateEventModal extends Component
     public $resource_name;
 
     public $fromcalendar;
-
-    protected $listeners = ['resource_idUpdated' => 'setResourceId',
-        'descriptionUpdated' => 'setResourceName', ];
 
     protected $rules = [
         'title' => 'required_without:resource_id',
@@ -97,6 +95,7 @@ class CreateEventModal extends Component
         }
     }
 
+    #[On('resource_idUpdated')]
     public function setResourceId($object)
     {
         $this->resource_id = $object['value'];
@@ -104,6 +103,7 @@ class CreateEventModal extends Component
         $this->resetValidation();
     }
 
+    #[On('descriptionUpdated')]
     public function setResourceName($object)
     {
         $this->resource_name = $object['description'];

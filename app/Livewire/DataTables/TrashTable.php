@@ -3,6 +3,7 @@
 namespace BT\Livewire\DataTables;
 
 use Illuminate\Database\Eloquent\Builder;
+use Livewire\Attributes\On;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 
@@ -40,8 +41,6 @@ class TrashTable extends DataTableComponent
             $this->setBulkActionsDisabled();
         }
     }
-
-    protected $listeners = ['reset_bulk_select' => 'resetBulkSelect'];  //emit from _js_global swal:bulkConfirm
 
     public function mount()
     {
@@ -108,6 +107,7 @@ class TrashTable extends DataTableComponent
         $this->clearSelected();
     }
 
+    #[On('reset_bulk_select')]
     public function resetBulkSelect()
     {
         $this->clearSelected();

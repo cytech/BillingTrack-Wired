@@ -2,6 +2,7 @@
 
 namespace BT\Livewire\Modals;
 
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class SearchModal extends Component
@@ -13,9 +14,6 @@ class SearchModal extends Component
     public $resource_name;
 
     public $module;
-
-    protected $listeners = ['resource_idUpdated' => 'setResourceId',
-        'descriptionUpdated' => 'setResourceName', ];
 
     protected $rules = [
         'resource_id' => 'required',
@@ -35,12 +33,14 @@ class SearchModal extends Component
         $this->search_type = $search_type;
     }
 
+    #[On('resource_idUpdated')]
     public function setResourceId($object)
     {
         $this->resource_id = $object['value'];
         $this->resetValidation();
     }
 
+    #[On('descriptionUpdated')]
     public function setResourceName($object)
     {
         $this->resource_name = $object['description'];
