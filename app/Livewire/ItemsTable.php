@@ -15,8 +15,6 @@ class ItemsTable extends Component
 
     public $module_fullname;
 
-    public $module_id_type;
-
     public $moduleitem_type;
 
     public $moduleitem_fullname;
@@ -42,13 +40,13 @@ class ItemsTable extends Component
     // LivewireSelect sets 'name'(component name), 'value'(id), 'description'(name) and 'title'(name/unique_name)
     // from xxxSearch 'id' 'name' 'unique_name/name'
     // listeners then sets $this->resource_id from 'value' and $this->resource_name from 'description'
-    // 'removeModuleItem' => 'removeModuleItem', //emit from _js_global swal:deleteConfirm
-    // 'addItems' => 'addItems', //emit from AddResourceModal
+    // 'removeModuleItem' => 'removeModuleItem', //dispatch from _js_global swal:deleteConfirm
+    // 'addItems' => 'addItems', //dispatch from AddResourceModal
 
     protected function rules()
     {
         return [
-            'new_item.'.$this->module_id_type => 'integer',
+            'new_item.document_id' => 'integer',
             'new_item.id' => 'integer',
             'new_item.name' => 'required|string',
             'new_item.description' => 'required|string',
@@ -58,7 +56,7 @@ class ItemsTable extends Component
             'new_item.tax_rate_2_id' => 'integer',
             'new_item.resource_table' => 'string',
             'new_item.resource_id' => 'integer',
-            'module_items.*.'.$this->module_id_type => 'integer',
+            'module_items.*.document_id' => 'integer',
             'module_items.*.id' => 'integer',
             'module_items.*.name' => 'string',
             'module_items.*.description' => 'string',
@@ -75,17 +73,16 @@ class ItemsTable extends Component
     {
         $this->module_fullname = get_class($this->module);
         $this->module_type = class_basename($this->module);
-        $this->moduleitem_fullname = get_class($this->module->items()->getRelated());
-        $this->moduleitem_type = class_basename($this->module->items()->getRelated());
-        $this->new_item_cfg = [Str::snake($this->module_type).'_id' => $this->module->id,
+        $this->moduleitem_fullname = 'BT\Modules\Documents\Models\DocumentItem';
+        $this->moduleitem_type = 'DocumentItem';
+        $this->new_item_cfg =
+            ['document_id' => $this->module->id,
             'quantity' => 1,
             'price' => 1,
             'tax_rate_id' => config('bt.itemTaxRate'),
             'tax_rate_2_id' => config('bt.itemTax2Rate')];
         $this->new_item = new $this->moduleitem_fullname($this->new_item_cfg);
-        $module_id_type = $this->module_id_type = 'document_id';
-
-        $this->new_item->$module_id_type = $this->module->id;
+        $this->new_item->document_id = $this->module->id;
         $this->module_items = $this->module->items;
         $this->taxRates = TaxRate::getList();
     }
@@ -123,9 +120,7 @@ class ItemsTable extends Component
 
         foreach ($params['resources'] as $val) {
             $add_item = new $this->moduleitem_fullname($this->new_item_cfg);
-            $module_id_type = $this->module_id_type = 'document_id';
-
-            $add_item->$module_id_type = $this->module->id;
+            $add_item->document_id = $this->module->id;
 
             $res = $search_mod_fullname::where('id', '=', $val)->firstOrFail();
 
@@ -185,13 +180,11 @@ class ItemsTable extends Component
                 'message' => __('bt.trash_record_warning'),
                 'index' => $index,
                 'id' => $this->module_items[$index]->id,
-                //                'route'       => route(lcfirst($this->module_type) . 'Item.delete'),
                 'route' => route('documentItem.delete'),
-                //                'totalsRoute' => route(lcfirst($this->module_type) . 's.' . lcfirst($this->module_type) . 'Edit.refreshTotals'),
                 'totalsRoute' => route('documents.documentEdit.refreshTotals'),
                 'entityID' => $this->module->id,
             ];
-            $this->dispatch('swal:deleteConfirm', $swaldata);
+            $this->dispatch('swal:deleteConfirm', ...$swaldata);
         } else {
             $this->removeModuleItem($index);
         }

@@ -16,7 +16,7 @@
             })
         });
 
-        window.Livewire.on('resource-changed', id => {
+        window.Livewire.on('resource-changed', ({id}) => {
             loadModal('{{ route('documents.documentEdit.refreshTo') }}', {id: id}, 'col-to')
         })
     });

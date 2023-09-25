@@ -239,7 +239,7 @@ class CreateModuleModal extends Component
             $this->validate();
 
             $swaldata['message'] = __('bt.saving');
-            $this->dispatch('swal:saving', $swaldata);
+            $this->dispatch('swal:saving', ...$swaldata);
 
             $module = $this->modulefullname::create($createfields);
             //currently only Purchaseorder Item from Products
@@ -306,7 +306,7 @@ class CreateModuleModal extends Component
         $this->validate();
         $swaldata['message'] = __('bt.saving');
 
-        $this->dispatch('swal:saving', $swaldata);
+        $this->dispatch('swal:saving', ...$swaldata);
 
         $toModule = $this->modulefullname::create($createfields);
 

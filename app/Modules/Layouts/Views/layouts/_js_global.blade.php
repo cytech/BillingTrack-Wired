@@ -66,7 +66,7 @@
         });
     });
     // sweetalert confirmation dialog for saved event
-    // emits removeModuleItem for livewire item-table
+    // dispatchs removeModuleItem for livewire item-table
     window.addEventListener('swal:deleteConfirm', event => {
         Swal.fire({
             title: event.detail.message,
@@ -80,7 +80,7 @@
                     axios.post(event.detail.route, { //post to item delete()
                         id: event.detail.id
                     }).then(function (response) {
-                        window.Livewire.dispatch('removeModuleItem', event.detail.index)
+                        window.Livewire.dispatch('removeModuleItem', {index: event.detail.index})
                         axios.post(event.detail.totalsRoute, {id: event.detail.entityID})
                             .then(response => {
                                 setInnerHTML(document.getElementById('div-totals'), response.data)

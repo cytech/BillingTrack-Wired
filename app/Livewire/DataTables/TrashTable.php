@@ -87,7 +87,7 @@ class TrashTable extends DataTableComponent
                 'module_type' => $this->module_type,
                 'route' => route('utilities.bulk.restoretrash'),
             ];
-            $this->dispatch('swal:bulkConfirm', $swaldata);
+            $this->dispatch('swal:bulkConfirm', ...$swaldata);
         }
         $this->clearSelected();
     }
@@ -102,7 +102,7 @@ class TrashTable extends DataTableComponent
                 'module_type' => $this->module_type,
                 'route' => route('utilities.bulk.deletetrash'),
             ];
-            $this->dispatch('swal:bulkConfirm', $swaldata);
+            $this->dispatch('swal:bulkConfirm', ...$swaldata);
         }
         $this->clearSelected();
     }

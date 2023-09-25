@@ -162,7 +162,7 @@ class CreateSeededWorkorderModal extends Component
         $this->validate();
 
         $swaldata['message'] = __('bt.saving');
-        $this->dispatch('swal:saving', $swaldata);
+        $this->dispatch('swal:saving', ...$swaldata);
 
         $module = Workorder::create($createfields);
         // Now let's add some employee items to that new workorder.
@@ -199,7 +199,7 @@ class CreateSeededWorkorderModal extends Component
         event(new DocumentModified(Workorder::find($module->id)));
         // Close Modal After Logic
         $this->dispatch('hideModal');
-        $this->dispatch('swal:saved', ['message' => trans('bt.record_successfully_created')]);
+        $this->dispatch('swal:saved', message: trans('bt.record_successfully_created'));
 
         if (! $module->client->address) {
             return redirect()->route('documents.edit', $module->id);

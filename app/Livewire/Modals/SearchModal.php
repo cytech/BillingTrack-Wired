@@ -61,7 +61,7 @@ class SearchModal extends Component
             $this->module->update(['client_id' => $this->resource_id]);
         }
         $this->dispatch('hideModal');
-        $this->dispatch('resource-changed', $this->module->id);
+        $this->dispatch('resource-changed', id: $this->module->id);
     }
 
     public function render()

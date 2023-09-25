@@ -42,7 +42,6 @@
                 <button class="btn btn-sm"
                         type="button"
                         {{--                   params 3 thru ... mount(,,$modulefullname, $module_type, $moduleop, $resource_id = null, $module_id = null, $readonly = null)--}}
-{{--                        onclick="window.livewire.emit('showModal', 'modals.create-module-modal',  'BT\\Modules\\Documents\\Models\\Workorder', 'Workorder', 'create' )"--}}
                         onclick="window.Livewire.dispatch('showModal', {alias: 'modals.create-module-modal', params: { modulefullname: 'BT\\Modules\\Documents\\Models\\Workorder', module_type: 'Workorder', moduleop: 'create' }})"
                 ><i class="fa fa-plus"></i> @lang('bt.create_workorder')
                 </button>

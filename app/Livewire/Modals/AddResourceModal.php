@@ -51,16 +51,19 @@ class AddResourceModal extends Component
         }
     }
 
-    public function doCancel()
-    {
-        $this->dispatch('hideModal');
-    }
+    //replaced with data-bs-dismiss="modal" in add-resource-modal.blade.php
+//    public function doCancel()
+//    {
+//        $this->dispatch('hideModal');
+//    }
 
     public function addItems()
     {
-        $this->dispatch('addItems', ['resources' => $this->selected_resources, 'resource_type' => $this->resource_type]);
+        $params = ['resources' => $this->selected_resources, 'resource_type' => $this->resource_type];
+        $this->dispatch('addItems', $params);
         // Close Modal After Logic
-        $this->dispatch('hideModal');
+        //replaced with data-bs-dismiss="modal" in add-resource-modal.blade.php
+//        $this->dispatch('hideModal');
     }
 
     public function render()

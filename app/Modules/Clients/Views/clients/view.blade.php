@@ -27,17 +27,14 @@
                 <div class="btn-group float-end">
                     <a class="btn btn-primary rounded me-1" href="#" id="btn-create-quote"
                        {{--                    params 3 thru ... mount($modulefullname, $module_type, $moduleop, $resource_id = null, $module_id = null, $readonly = null, $lineitem = null)--}}
-                       {{--                       onclick="window.livewire.emit('showModal', 'modals.create-module-modal', '{{ addslashes(get_class($client->quotes()->getRelated())) }}', 'Quote', 'create', {{ $client->id }}, null, true)">--}}
                        onclick="window.Livewire.dispatch('showModal', {alias: 'modals.create-module-modal', params: { modulefullname: '{{ addslashes(get_class($client->quotes()->getRelated())) }}', module_type: 'Quote', moduleop: 'create', resource_id: {{ $client->id }}, module_id: null, readonly: true }})">
                         <i class="fa fa-plus"></i> @lang('bt.create_quote')</a>
                     <a class="btn btn-primary rounded me-1" href="#" id="btn-create-workorder"
                        {{--                    params 3 thru ... mount($modulefullname, $module_type, $moduleop, $resource_id = null, $module_id = null, $readonly = null, $lineitem = null)--}}
-                       {{--                       onclick="window.livewire.emit('showModal', 'modals.create-module-modal', '{{ addslashes(get_class($client->workorders()->getRelated())) }}', 'Workorder', 'create', {{ $client->id }}, null, true)">--}}
                        onclick="window.Livewire.dispatch('showModal', {alias: 'modals.create-module-modal', params: { modulefullname: '{{ addslashes(get_class($client->workorders()->getRelated())) }}', module_type: 'Workorder', moduleop: 'create', resource_id: {{ $client->id }}, module_id: null, readonly: true }})">
                         <i class="fa fa-plus"></i> @lang('bt.create_workorder')</a>
                     <a class="btn btn-primary rounded me-1" href="#" id="btn-create-invoice"
                        {{--                    params 3 thru ... mount($modulefullname, $module_type, $moduleop, $resource_id = null, $module_id = null, $readonly = null, $lineitem = null)--}}
-                       {{--                       onclick="window.livewire.emit('showModal', 'modals.create-module-modal', '{{ addslashes(get_class($client->invoices()->getRelated())) }}', 'Invoice', 'create', {{ $client->id }}, null, true)">--}}
                        onclick="window.Livewire.dispatch('showModal', {alias: 'modals.create-module-modal', params: { modulefullname: '{{ addslashes(get_class($client->invoices()->getRelated())) }}', module_type: 'Invoice', moduleop: 'create', resource_id: {{ $client->id }}, module_id: null, readonly: true }})">
                         <i class="fa fa-plus"></i> @lang('bt.create_invoice')</a>
                     <a href="{{ $returnUrl }}" class="btn btn-green rounded me-1"><i

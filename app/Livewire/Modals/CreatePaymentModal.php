@@ -113,7 +113,7 @@ class CreatePaymentModal extends Component
         $this->validate();
 
         $swaldata['message'] = __('bt.saving');
-        $this->dispatch('swal:saving', $swaldata);
+        $this->dispatch('swal:saving', ...$swaldata);
 
         $module = Payment::create($createfields);
 

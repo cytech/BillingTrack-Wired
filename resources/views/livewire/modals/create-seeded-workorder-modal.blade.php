@@ -91,7 +91,7 @@
                     @lang('bt.select_workers_toworkorder')<br>
                     <div class="form-check" id="ScrollCB1" style="max-height:200px;overflow:auto;padding-left:1.75em">
                         @foreach($available_employees as $key => $value)
-                            <div wire:key="{{ $value->id }}">
+                            <div wire:key="ae-div-{{ $value->id }}">
                                 <input class="form-check-input"
                                        type="checkbox"
                                        name="workers[]"
@@ -118,7 +118,7 @@
                     @lang('bt.select_items_toworkorder')
                     <div class="form-check" id="ScrollCB2" style="max-height:200px;overflow:auto;padding-left:1.75em">
                         @foreach($available_resources as $key => $value)
-                            <div wire:key="{{ $value->id }}">
+                            <div wire:key="ar-div-{{ $value->id }}">
                                 <input class="form-check-input"
                                        type="checkbox"
                                        name="resources[]"

@@ -21,7 +21,7 @@
                         <div class="col-sm-6">
                             <livewire:employee-search
                                     {{-- module base name, adds hidden fields with _id and _name --}}
-                                    wire:onload="$emit('refreshSearch', ['searchTerm' => null, 'value' => null, 'description' => null, 'optionsValues' => null]);"
+                                    wire:onload="$dispatch('refreshSearch', ['searchTerm' => null, 'value' => null, 'description' => null, 'optionsValues' => null]);"
                                     name="employee"
                                     value="{{ $schedule->employee_id ?? null}}"
                                     description="{{ $schedule->employee_name }}"

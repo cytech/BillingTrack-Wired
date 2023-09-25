@@ -210,7 +210,7 @@ class ModuleTable extends DataTableComponent
                 'route' => $route,
                 'status' => $status,
             ];
-            $this->dispatch('swal:bulkConfirm', $swaldata);
+            $this->dispatch('swal:bulkConfirm', ...$swaldata);
         }
     }
 
@@ -235,7 +235,7 @@ class ModuleTable extends DataTableComponent
                 'ids' => $ids,
                 'route' => $route,
             ];
-            $this->dispatch('swal:bulkConfirm', $swaldata);
+            $this->dispatch('swal:bulkConfirm', ...$swaldata);
         }
     }
 

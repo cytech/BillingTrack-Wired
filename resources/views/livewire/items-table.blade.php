@@ -5,23 +5,17 @@
                 <h3 class="card-title fw-bold">@lang('bt.add_item')</h3>
                 <div class="card-tools float-right">
                     <button class="btn btn-primary btn-sm"
-                            {{--                                     params 3 thru ...> mount(,,$modulefullname, $module_id = null, $resource_type)--}}
-{{--                            onclick="window.livewire.emit('showModal', 'modals.add-resource-modal', '{{  addslashes(get_class($module)) }}', {{$module->id}}, 'Product')"--}}
-                                    {{--                        $modulefullname, $module_id, $resource_type--}}
-                        onclick="window.Livewire.dispatch('showModal', { alias: 'modals.add-resource-modal', params: { modulefullname: '{{  addslashes(get_class($module)) }}', module_id: {{$module->id}}, resource_type: 'Product' }, classes: 'modal-xl'})">
+                            {{--                        [$modulefullname, $module_id, $resource_type], $classes--}}
+                            onclick="window.Livewire.dispatch('showModal', { alias: 'modals.add-resource-modal', params: { modulefullname: '{{  addslashes(get_class($module)) }}', module_id: {{$module->id}}, resource_type: 'Product' }, classes: 'modal-xl'})">
                         <i class="fa fa-plus"></i> @lang('bt.add_product')</button>
                     @if($module->module_type != 'Purchaseorder')
                         <button class="btn btn-primary btn-sm"
-                                {{--                                     params 3 thru ...> mount(,,$modulefullname, $module_id = null, $resource_type)--}}
-{{--                                onclick="window.livewire.emit('showModal', 'modals.add-resource-modal', '{{  addslashes(get_class($module)) }}', {{$module->id}}, 'Employee')">--}}
-                            {{--                        $modulefullname, $module_id, $resource_type--}}
-                            onclick="window.Livewire.dispatch('showModal', { alias: 'modals.add-resource-modal', params: { modulefullname: '{{  addslashes(get_class($module)) }}', module_id: {{$module->id}}, resource_type: 'Employee' }, classes: 'modal-xl'})">
+                                {{--                        [$modulefullname, $module_id, $resource_type] , $classes--}}
+                                onclick="window.Livewire.dispatch('showModal', { alias: 'modals.add-resource-modal', params: { modulefullname: '{{  addslashes(get_class($module)) }}', module_id: {{$module->id}}, resource_type: 'Employee' }, classes: 'modal-xl'})">
                             <i class="fa fa-plus"></i> @lang('bt.add_employee')</button>
                         <button class="btn btn-primary btn-sm"
-                                {{--                                     params 3 thru ...> mount(,,$modulefullname, $module_id = null, $resource_type)--}}
-{{--                                onclick="window.livewire.emit('showModal', 'modals.add-resource-modal', '{{  addslashes(get_class($module)) }}', {{$module->id}}, 'ItemLookup')">--}}
-                            {{--                        $modulefullname, $module_id, $resource_type--}}
-                            onclick="window.Livewire.dispatch('showModal', { alias: 'modals.add-resource-modal', params: { modulefullname: '{{  addslashes(get_class($module)) }}', module_id: {{$module->id}}, resource_type: 'ItemLookup' }, classes: 'modal-xl'})">
+                                {{--                        [$modulefullname, $module_id, $resource_type], $classes--}}
+                                onclick="window.Livewire.dispatch('showModal', { alias: 'modals.add-resource-modal', params: { modulefullname: '{{  addslashes(get_class($module)) }}', module_id: {{$module->id}}, resource_type: 'ItemLookup' }, classes: 'modal-xl'})">
                             <i class="fa fa-plus"></i> @lang('bt.add_lookup')</button>
                     @endif
                 </div>
@@ -144,36 +138,38 @@
                     </thead>
                     <tbody id="tbody">
                     @foreach ($module_items as $index => $item)
-                        <tr wire:key="tr-item-{{ $loop->index }}" class="todo-list item" id="tr-item-{{ $item->id }}">
-                            {{ html()->hidden($module_id_type, $module->id) }}
+                        <tr wire:key="tr-item-{{ $loop->index }}" class="todo-list item"
+                            id="tr-item-{{ $loop->index }}">
+                            {{ html()->hidden('document_id', $module->id) }}
                             {{ html()->hidden('resource_id', $item->resource_id ?? null) }}
                             {{ html()->hidden('resource_table', $item->resource_table ?? null) }}
-                            {{ html()->hidden('resource_name', $item->resource_name ?? null) }}
-                            <input type="hidden" name="id" value="{{$item->id ?? null}}"/>
+                            {{ html()->hidden('id', $item->id ?? null) }}
                             <td><i class="fas fa-arrows-alt-v handle"></i></td>
                             <td>
-                                <input wire:model.live="module_items.{{$index}}.name" name="name"
-                                       class="form-control item-lookup" readonly>
+                                <input
+                                        wire:model.live="module_items.{{$index}}.name"
+                                        name="name"
+                                        class="form-control item-lookup" readonly>
                             </td>
                             <td><textarea name="description" rows="1" cols="50" class="form-control"
                                         {{($readonly) ? 'readonly' : ''}}>{{$item->description}}</textarea></td>
                             @if(isset($item->product->numstock) && $item->product->numstock < 0 && $item->resource_table == 'products')
                                 <td>
-                                    {{ html()->text('quantity', $item->quantity)->style('background-color:yellow')->attribute('title', __('bt.negative_stock'))->class('form-control') }}
+                                    {{ html()->text('quantity', $item->quantity)->style('background-color:yellow')->attribute('title', __('bt.negative_stock'))->class('form-control')->id('quantity' . $loop->index) }}
                                 </td>
                             @else
                                 <td>
-                                    {{ html()->text('quantity', $item->quantity)->class('form-control') }}
+                                    {{ html()->text('quantity', $item->quantity)->class('form-control')->id('quantity' . $loop->index) }}
                                 </td>
                             @endif
                             <td>
-                                {{ html()->text('price', $item->price ?? $item->cost)->class('form-control') }}
+                                {{ html()->text('price', $item->price ?? $item->cost)->class('form-control')->id('price' . $loop->index) }}
                             </td>
                             <td>
-                                {{ html()->select('tax_rate_id', $taxRates, $item->tax_rate_id)->class('form-select') }}
+                                {{ html()->select('tax_rate_id', $taxRates, $item->tax_rate_id)->class('form-select')->id('tax_rate_id' . $loop->index) }}
                             </td>
                             <td>
-                                {{ html()->select('tax_rate_2_id', $taxRates, $item->tax_rate_2_id)->class('form-select') }}
+                                {{ html()->select('tax_rate_2_id', $taxRates, $item->tax_rate_2_id)->class('form-select')->id('tax_rate_2_id' . $loop->index) }}
                             </td>
                             <td style="text-align: right; padding-right: 25px;">{{ $item->amount->formatted_subtotal ?? null}}</td>
                             <td>
