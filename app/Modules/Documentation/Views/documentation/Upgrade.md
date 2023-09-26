@@ -10,6 +10,7 @@ Upgrade
 
 <a id="how-to-upgrade-billingtrack"></a>
 # How to Upgrade BillingTrack
+**Minimum PHP requirement for BillingTrack-Wired (v7.X.X) is PHP >= 8.2**
 **Upgrade Existing v6.x.x installation**
 - Git pull (if originally cloned) or download and overwrite existing
   installation.

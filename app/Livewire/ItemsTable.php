@@ -2,7 +2,6 @@
 
 namespace BT\Livewire;
 
-use BT\Modules\TaxRates\Models\TaxRate;
 use Illuminate\Support\Str;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -10,6 +9,8 @@ use Livewire\Component;
 class ItemsTable extends Component
 {
     public $module;
+
+    public $module_id;
 
     public $module_type;
 
@@ -46,45 +47,45 @@ class ItemsTable extends Component
     protected function rules()
     {
         return [
-            'new_item.document_id' => 'integer',
-            'new_item.id' => 'integer',
-            'new_item.name' => 'required|string',
-            'new_item.description' => 'required|string',
-            'new_item.quantity' => 'required|numeric',
-            'new_item.price' => 'required|numeric',
-            'new_item.tax_rate_id' => 'integer',
-            'new_item.tax_rate_2_id' => 'integer',
-            'new_item.resource_table' => 'string',
-            'new_item.resource_id' => 'integer',
-            'module_items.*.document_id' => 'integer',
-            'module_items.*.id' => 'integer',
-            'module_items.*.name' => 'string',
-            'module_items.*.description' => 'string',
-            'module_items.*.quantity' => 'numeric',
-            'module_items.*.price' => 'numeric',
-            'module_items.*.tax_rate_id' => 'integer',
-            'module_items.*.tax_rate_2_id' => 'integer',
+            'new_item.document_id'          => 'integer',
+            'new_item.id'                   => 'integer',
+            'new_item.name'                 => 'required|string',
+            'new_item.description'          => 'required|string',
+            'new_item.quantity'             => 'required|numeric',
+            'new_item.price'                => 'required|numeric',
+            'new_item.tax_rate_id'          => 'integer',
+            'new_item.tax_rate_2_id'        => 'integer',
+            'new_item.resource_table'       => 'string',
+            'new_item.resource_id'          => 'integer',
+            'module_items.*.document_id'    => 'integer',
+            'module_items.*.id'             => 'integer',
+            'module_items.*.name'           => 'string',
+            'module_items.*.description'    => 'string',
+            'module_items.*.quantity'       => 'numeric',
+            'module_items.*.price'          => 'numeric',
+            'module_items.*.tax_rate_id'    => 'integer',
+            'module_items.*.tax_rate_2_id'  => 'integer',
             'module_items.*.resource_table' => 'string',
-            'module_items.*.resource_id' => 'integer',
+            'module_items.*.resource_id'    => 'integer',
         ];
     }
 
     public function mount()
     {
-        $this->module_fullname = get_class($this->module);
-        $this->module_type = class_basename($this->module);
+        $this->module_id = $this->module->id;
+        $this->module_fullname = addslashes(get_class($this->module));
+        $this->module_type = $this->module->module_type;
         $this->moduleitem_fullname = 'BT\Modules\Documents\Models\DocumentItem';
         $this->moduleitem_type = 'DocumentItem';
         $this->new_item_cfg =
-            ['document_id' => $this->module->id,
-            'quantity' => 1,
-            'price' => 1,
-            'tax_rate_id' => config('bt.itemTaxRate'),
-            'tax_rate_2_id' => config('bt.itemTax2Rate')];
+            ['document_id'   => $this->module_id,
+             'quantity'      => 1,
+             'price'         => 1,
+             'tax_rate_id'   => config('bt.itemTaxRate'),
+             'tax_rate_2_id' => config('bt.itemTax2Rate')];
         $this->new_item = new $this->moduleitem_fullname($this->new_item_cfg);
-        $this->new_item->document_id = $this->module->id;
+        $this->new_item->document_id = $this->module_id;
         $this->module_items = $this->module->items;
-        $this->taxRates = TaxRate::getList();
     }
 
     #[On('resource_idUpdated')]
@@ -92,14 +93,14 @@ class ItemsTable extends Component
     {
         $this->resource_id = $object['value'];
         if ($object['value']) {
-            $this->search_mod_fullname = 'BT\\Modules\\'.ucfirst($object['name']).'s\\Models\\'.ucfirst($object['name']);
+            $this->search_mod_fullname = 'BT\\Modules\\' . ucfirst($object['name']) . 's\\Models\\' . ucfirst($object['name']);
             $resource = $this->search_mod_fullname::find($object['value']);
             $this->new_item->name = $resource->name;
             $this->new_item->description = $resource->description;
             $this->new_item->price = $resource->price ?? $resource->cost; //product has cost, itemlookup has price, employee has billing_rate
             $this->new_item->tax_rate_id = $resource->tax_rate_id;
             $this->new_item->tax_rate_2_id = $resource->tax_rate_2_id;
-            $this->new_item->resource_table = Str::snake($object['name']).'s';
+            $this->new_item->resource_table = Str::snake($object['name']) . 's';
             $this->new_item->resource_id = $this->resource_id;
         }
     }
@@ -107,7 +108,7 @@ class ItemsTable extends Component
     #[On('descriptionUpdated')]
     public function setResourceName($object)
     {
-        $this->search_mod_fullname = 'BT\\Modules\\'.ucfirst($object['name']).'s\\Models\\'.ucfirst($object['name']);
+        $this->search_mod_fullname = 'BT\\Modules\\' . ucfirst($object['name']) . 's\\Models\\' . ucfirst($object['name']);
         $this->new_item = new $this->moduleitem_fullname($this->new_item_cfg);
         $this->resource_name = $object['description'];
         $this->new_item->name = $object['description'];
@@ -116,11 +117,11 @@ class ItemsTable extends Component
     #[On('addItems')]
     public function addItems($params)
     {
-        $search_mod_fullname = 'BT\\Modules\\'.ucfirst($params['resource_type']).'s\\Models\\'.ucfirst($params['resource_type']);
+        $search_mod_fullname = 'BT\\Modules\\' . ucfirst($params['resource_type']) . 's\\Models\\' . ucfirst($params['resource_type']);
 
         foreach ($params['resources'] as $val) {
             $add_item = new $this->moduleitem_fullname($this->new_item_cfg);
-            $add_item->document_id = $this->module->id;
+            $add_item->document_id = $this->module_id;
 
             $res = $search_mod_fullname::where('id', '=', $val)->firstOrFail();
 
@@ -129,10 +130,10 @@ class ItemsTable extends Component
             $add_item->price = $res->price;
             $add_item->tax_rate_id = $res->tax_rate_id;
             $add_item->tax_rate_2_id = $res->tax_rate_2_id;
-            $add_item->resource_table = Str::snake($params['resource_type']).'s';
+            $add_item->resource_table = Str::snake($params['resource_type']) . 's';
             $add_item->resource_id = $res->id;
 
-            if ($params['resource_type'] == 'Product' && $this->module->module_type == 'Purchaseorder') {
+            if ($params['resource_type'] == 'Product' && $this->module_type == 'Purchaseorder') {
                 $add_item->price = $res->cost;
             }
 
@@ -149,16 +150,16 @@ class ItemsTable extends Component
 
     public function addItem()
     {
-        $this->validate(['new_item.name' => 'required|string',
-            'new_item.description' => 'required|string',
-            'new_item.quantity' => 'required|numeric',
-            'new_item.price' => 'required|numeric', ]);
-        if ($this->save_item_as && ! $this->resource_id) {
+        $this->validate(['new_item.name'        => 'required|string',
+                         'new_item.description' => 'required|string',
+                         'new_item.quantity'    => 'required|numeric',
+                         'new_item.price'       => 'required|numeric',]);
+        if ($this->save_item_as && !$this->resource_id) {
             $this->search_mod_fullname::create([
-                'name' => $this->new_item->name,
-                'description' => $this->new_item->description,
-                'price' => $this->new_item->price,
-                'tax_rate_id' => $this->new_item->tax_rate_id ?? 0,
+                'name'          => $this->new_item->name,
+                'description'   => $this->new_item->description,
+                'price'         => $this->new_item->price,
+                'tax_rate_id'   => $this->new_item->tax_rate_id ?? 0,
                 'tax_rate_2_id' => $this->new_item->tax_rate_2_id ?? 0,
             ]);
         }
@@ -177,12 +178,12 @@ class ItemsTable extends Component
     {
         if ($this->module_items[$index]->id) {
             $swaldata = [
-                'message' => __('bt.trash_record_warning'),
-                'index' => $index,
-                'id' => $this->module_items[$index]->id,
-                'route' => route('documentItem.delete'),
+                'message'     => __('bt.trash_record_warning'),
+                'index'       => $index,
+                'id'          => $this->module_items[$index]->id,
+                'route'       => route('documentItem.delete'),
                 'totalsRoute' => route('documents.documentEdit.refreshTotals'),
-                'entityID' => $this->module->id,
+                'entityID'    => $this->module_id,
             ];
             $this->dispatch('swal:deleteConfirm', ...$swaldata);
         } else {

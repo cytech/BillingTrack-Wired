@@ -27,8 +27,6 @@
                             <li class="nav-item"><a class="nav-link active show" href="#tab-general"
                                                     data-bs-toggle="tab">@lang('bt.general')</a></li>
                             @if ($editMode)
-                                {{--                                <li class="nav-item"><a class="nav-link" href="#tab-contacts"--}}
-                                {{--                                                        data-bs-toggle="tab">@lang('bt.contacts')</a></li>--}}
                                 <li class="nav-item"><a class="nav-link" href="#tab-attachments"
                                                         data-bs-toggle="tab">@lang('bt.attachments')</a></li>
                                 <li class="nav-item"><a class="nav-link" href="#tab-notes"
@@ -42,9 +40,6 @@
                                 @include('vendors._form')
                             </div>
                             @if ($editMode)
-                                {{--                                <div class="tab-pane" id="tab-contacts">--}}
-                                {{--                                    @include('vendors._contacts', ['contacts' => $vendor->contacts()->orderBy('name')->get(), 'vendorId' => $vendor->id])--}}
-                                {{--                                </div>--}}
                                 <div class="tab-pane" id="tab-attachments">
                                     @include('attachments._table', ['object' => $vendor, 'model' => 'BT\Modules\Vendors\Models\Vendor'])
                                 </div>

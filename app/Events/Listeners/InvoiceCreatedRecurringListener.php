@@ -2,11 +2,13 @@
 
 namespace BT\Events\Listeners;
 
+use AllowDynamicProperties;
 use BT\Events\DocumentEmailed;
 use BT\Events\InvoiceCreatedRecurring;
 use BT\Modules\MailQueue\Support\MailQueue;
 use BT\Support\Parser;
 
+#[AllowDynamicProperties]
 class InvoiceCreatedRecurringListener
 {
     public function __construct(MailQueue $mailQueue)

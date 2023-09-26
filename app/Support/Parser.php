@@ -11,6 +11,9 @@
 
 namespace BT\Support;
 
+use AllowDynamicProperties;
+
+#[AllowDynamicProperties]
 class Parser
 {
     public function __construct($object)

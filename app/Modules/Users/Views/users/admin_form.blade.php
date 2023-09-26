@@ -97,9 +97,9 @@
             </div>
         </div>
         @if ($customFields->count())
-            <div class=" card card-light">
-                <div class="box-header">
-                    <h3 class="box-title">@lang('bt.custom_fields')</h3>
+            <div class=" card card-light mt-3">
+                <div class="card-header">
+                    <h3 class="card-title">@lang('bt.custom_fields')</h3>
                 </div>
                 <div class="card-body">
                     @if ($editMode)

@@ -6,16 +6,16 @@
                 <div class="card-tools float-right">
                     <button class="btn btn-primary btn-sm"
                             {{--                        [$modulefullname, $module_id, $resource_type], $classes--}}
-                            onclick="window.Livewire.dispatch('showModal', { alias: 'modals.add-resource-modal', params: { modulefullname: '{{  addslashes(get_class($module)) }}', module_id: {{$module->id}}, resource_type: 'Product' }, classes: 'modal-xl'})">
+                            onclick="window.Livewire.dispatch('showModal', { alias: 'modals.add-resource-modal', params: { modulefullname: '{{ $module_fullname }}', module_id: {{$module_id}}, resource_type: 'Product' }, classes: 'modal-xl'})">
                         <i class="fa fa-plus"></i> @lang('bt.add_product')</button>
-                    @if($module->module_type != 'Purchaseorder')
+                    @if($module_type != 'Purchaseorder')
                         <button class="btn btn-primary btn-sm"
                                 {{--                        [$modulefullname, $module_id, $resource_type] , $classes--}}
-                                onclick="window.Livewire.dispatch('showModal', { alias: 'modals.add-resource-modal', params: { modulefullname: '{{  addslashes(get_class($module)) }}', module_id: {{$module->id}}, resource_type: 'Employee' }, classes: 'modal-xl'})">
+                                onclick="window.Livewire.dispatch('showModal', { alias: 'modals.add-resource-modal', params: { modulefullname: '{{ $module_fullname }}', module_id: {{$module_id}}, resource_type: 'Employee' }, classes: 'modal-xl'})">
                             <i class="fa fa-plus"></i> @lang('bt.add_employee')</button>
                         <button class="btn btn-primary btn-sm"
                                 {{--                        [$modulefullname, $module_id, $resource_type], $classes--}}
-                                onclick="window.Livewire.dispatch('showModal', { alias: 'modals.add-resource-modal', params: { modulefullname: '{{  addslashes(get_class($module)) }}', module_id: {{$module->id}}, resource_type: 'ItemLookup' }, classes: 'modal-xl'})">
+                                onclick="window.Livewire.dispatch('showModal', { alias: 'modals.add-resource-modal', params: { modulefullname: '{{ $module_fullname }}', module_id: {{$module_id}}, resource_type: 'ItemLookup' }, classes: 'modal-xl'})">
                             <i class="fa fa-plus"></i> @lang('bt.add_lookup')</button>
                     @endif
                 </div>
@@ -25,7 +25,7 @@
                         <th style="width: 20%;">@lang('bt.product')</th>
                         <th style="width: 25%;">@lang('bt.description')</th>
                         <th style="width: 10%;">@lang('bt.qty')</th>
-                        <th style="width: 10%;">@if($module->module_type != 'Purchaseorder')
+                        <th style="width: 10%;">@if($module_type != 'Purchaseorder')
                                 @lang('bt.price')
                             @else
                                 @lang('bt.product_cost')
@@ -39,7 +39,7 @@
                     <tbody id="new-tbody">
                     <tr class="todo-list new-item" id="tr-new-item">
                         <td style="width: 20%;">
-                            @if($module->module_type == 'Purchaseorder')
+                            @if($module_type == 'Purchaseorder')
                                 <livewire:product-search
                                         {{--module base name, adds hidden fields with _id and _name--}}
                                         wire:onload="$dispatch('refreshSearch', ['searchTerm' => null, 'value' => null, 'description' => null, 'optionsValues' => null]);"
@@ -70,7 +70,7 @@
                                            name="save_item_as"
                                            id="save_item_as"
                                            tabindex="999">
-                                    @if($module->module_type == 'Purchaseorder')
+                                    @if($module_type == 'Purchaseorder')
                                         @lang('bt.save_item_as_product')
                                     @else
                                         @lang('bt.save_item_as_lookup')
@@ -125,7 +125,7 @@
                         <th style="width: 20%;">@lang('bt.product')</th>
                         <th style="width: 25%;">@lang('bt.description')</th>
                         <th style="width: 10%;">@lang('bt.qty')</th>
-                        <th style="width: 10%;">@if($module->module_type != 'Purchaseorder')
+                        <th style="width: 10%;">@if($module_type != 'Purchaseorder')
                                 @lang('bt.price')
                             @else
                                 @lang('bt.product_cost')
@@ -140,7 +140,7 @@
                     @foreach ($module_items as $index => $item)
                         <tr wire:key="tr-item-{{ $loop->index }}" class="todo-list item"
                             id="tr-item-{{ $loop->index }}">
-                            {{ html()->hidden('document_id', $module->id) }}
+                            {{ html()->hidden('document_id', $module_id) }}
                             {{ html()->hidden('resource_id', $item->resource_id ?? null) }}
                             {{ html()->hidden('resource_table', $item->resource_table ?? null) }}
                             {{ html()->hidden('id', $item->id ?? null) }}

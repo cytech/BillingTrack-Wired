@@ -9,13 +9,11 @@
     <title>{{ config('bt.headerTitleText') }}</title>
     <link rel="stylesheet" href="/build/assets/app.css">
     @include('layouts._head')
-{{--    <script defer src="{{ asset('plugins/alpinejs/cdn.min.js') }}"></script>--}}
     <script src="/build/assets/app.js"></script>
     {{--    @vite(['resources/js/app.js'])--}}
     @include('layouts._js_global')
 
     @yield('javaScript')
-{{--    @livewireStyles--}}
 </head>
 <body class="layout-fixed sidebar-expand-lg sidebar-mini sidebar-{{$sidebarMode}}">
 <div class="app-wrapper">
@@ -31,7 +29,6 @@
 </a>
 @stack('scripts')
 <livewire:modals/>
-{{--@livewireScripts--}}
 </body>
 </html>
 

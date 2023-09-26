@@ -163,7 +163,7 @@
                     </div>
                 </div>
             @endif
-            <livewire:items-table :module="$document"/>
+            <livewire:items-table :module="$document" :taxRates="$taxRates"/>
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card card-outline card-primary m-2">

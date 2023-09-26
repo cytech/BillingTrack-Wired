@@ -2,6 +2,7 @@
 
 namespace BT\Observers;
 
+use AllowDynamicProperties;
 use BT\Modules\Currencies\Support\CurrencyConverterFactory;
 use BT\Modules\CustomFields\Models\DocumentCustom;
 use BT\Modules\Documents\Models\Document;
@@ -10,6 +11,7 @@ use BT\Modules\Groups\Models\Group;
 use BT\Support\DateFormatter;
 use BT\Support\Statuses\DocumentStatuses;
 
+#[AllowDynamicProperties]
 class DocumentObserver
 {
     public function __construct(DocumentCalculate $documentCalculate)

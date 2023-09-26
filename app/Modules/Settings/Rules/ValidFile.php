@@ -11,17 +11,18 @@
 
 namespace BT\Modules\Settings\Rules;
 
-use Illuminate\Contracts\Validation\Rule;
+use Closure;
+use Illuminate\Contracts\Validation\ValidationRule;
 
-class ValidFile implements Rule
+class ValidFile implements ValidationRule
 {
-    public function passes($attribute, $value)
+    /**
+     * Run the validation rule.
+     */
+    public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        return is_file($value);
-    }
-
-    public function message()
-    {
-        return trans('bt.pdf_driver_wkhtmltopdf');
+        if (!is_file($value)) {
+            $fail('bt.pdf_driver_wkhtmltopdf')->translate();
+        }
     }
 }

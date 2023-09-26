@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## 7.0.0
+- Requires PHP "^8.2"
 - merged core modules
 - replace laravelcollective/html with spatie/laravel-html
 - added vendor payments

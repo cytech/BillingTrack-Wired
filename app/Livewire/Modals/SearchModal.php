@@ -55,11 +55,7 @@ class SearchModal extends Component
     public function changeResource()
     {
         $this->validate();
-        if (class_basename($this->module) == 'Purchaseorder') {
-            $this->module->update(['vendor_id' => $this->resource_id]);
-        } else {
-            $this->module->update(['client_id' => $this->resource_id]);
-        }
+        $this->module->update(['client_id' => $this->resource_id]);
         $this->dispatch('hideModal');
         $this->dispatch('resource-changed', id: $this->module->id);
     }

@@ -4,11 +4,13 @@ namespace BT\Observers;
 
 //use BT\Events\InvoiceModified;
 
+use AllowDynamicProperties;
 use BT\Events\DocumentModified;
 use BT\Modules\CustomFields\Models\PaymentCustom;
 use BT\Modules\MailQueue\Support\MailQueue;
 use BT\Modules\Payments\Models\Payment;
 
+#[AllowDynamicProperties]
 class PaymentObserver
 {
     public function __construct(MailQueue $mailQueue)

@@ -2,9 +2,11 @@
 
 namespace BT\Support;
 
+use AllowDynamicProperties;
 use Artisan;
 use Illuminate\Support\Facades\File;
 
+#[AllowDynamicProperties]
 class Migrations
 {
     protected $exception;

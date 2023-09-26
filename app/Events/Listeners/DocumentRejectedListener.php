@@ -2,10 +2,12 @@
 
 namespace BT\Events\Listeners;
 
+use AllowDynamicProperties;
 use BT\Events\DocumentRejected;
 use BT\Modules\MailQueue\Support\MailQueue;
 use BT\Support\Parser;
 
+#[AllowDynamicProperties]
 class DocumentRejectedListener
 {
     public function __construct(MailQueue $mailQueue)

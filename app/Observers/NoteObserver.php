@@ -2,9 +2,11 @@
 
 namespace BT\Observers;
 
+use AllowDynamicProperties;
 use BT\Modules\MailQueue\Support\MailQueue;
 use BT\Modules\Notes\Models\Note;
 
+#[AllowDynamicProperties]
 class NoteObserver
 {
     public function __construct(MailQueue $mailQueue)

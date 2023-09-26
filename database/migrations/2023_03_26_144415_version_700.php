@@ -173,6 +173,7 @@ return new class extends Migration {
         Setting::saveByKey('workorderApprovedEmailBody','<p><a href="{{ $workorder->public_url }}">Workorder #{{ $workorder->number }}</a> has been APPROVED.</p>');
         Setting::saveByKey('workorderRejectedEmailBody','<p><a href="{{ $workorder->public_url }}">Workorder #{{ $workorder->number }}</a> has been REJECTED.</p>');
         Setting::writeEmailTemplates();
+        Setting::deleteByKey('displayProfileImage');
 
         Setting::saveByKey('version', '7.0.0');
 

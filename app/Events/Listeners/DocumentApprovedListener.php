@@ -2,12 +2,14 @@
 
 namespace BT\Events\Listeners;
 
+use AllowDynamicProperties;
 use BT\Events\DocumentApproved;
 use BT\Modules\MailQueue\Support\MailQueue;
 use BT\Support\ConvertToModule;
 use BT\Support\DateFormatter;
 use BT\Support\Parser;
 
+#[AllowDynamicProperties]
 class DocumentApprovedListener
 {
     public function __construct(MailQueue $mailQueue, ConvertToModule $documentToInvoice)

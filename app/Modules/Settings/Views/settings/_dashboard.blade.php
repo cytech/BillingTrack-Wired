@@ -1,11 +1,3 @@
-{{--<div class="row col-md-6">--}}
-{{--    <div class="col-md-4">--}}
-{{--        <div class="mb-3">--}}
-{{--            <label class="form-label fw-bold">@lang('bt.display_profile_image'): </label>--}}
-{{--                {{ html()->select('setting[displayProfileImage]', $yesNoArray, config('bt.displayProfileImage'))->class('form-select') }}--}}
-{{--        </div>--}}
-{{--    </div>--}}
-{{--</div>--}}
 <div class="col-md-2">
     <div class="mb-3">
         <label class="form-label fw-bold">@lang('bt.avatar_driver'): </label>
