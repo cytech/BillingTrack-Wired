@@ -22,8 +22,9 @@ class PaymentController extends Controller
     public function index()
     {
         $statuses = ['1' => __('bt.client_payments'), '2' => __('bt.vendor_payments')];
+        $modulefullname = Payment::class;
 
-        return view('payments.index', compact('statuses'));
+        return view('payments.index', compact('statuses', 'modulefullname'));
     }
 
     public function edit($id)

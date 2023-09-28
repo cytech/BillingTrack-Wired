@@ -15,7 +15,7 @@
             <div class="col-lg-12">
                 <div class="card card-light">
                     <div class="card-body">
-                        <livewire:data-tables.module-table :module_type="'RecurringEvent'"/>
+                        <livewire:data-tables.module-table :module_type="'RecurringEvent'" :module_fullname="$modulefullname"/>
                     </div>
                 </div>
             </div>

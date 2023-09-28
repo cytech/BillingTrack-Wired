@@ -18,7 +18,8 @@ class MailLogController extends Controller
 {
     public function index()
     {
-        return view('mail_log.index');
+        $modulefullname = MailQueue::class;
+        return view('mail_log.index')->with('modulefullname', $modulefullname);
     }
 
     public function content()

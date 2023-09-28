@@ -30,8 +30,9 @@ class ProjectController extends Controller
         $statuses = ['' => trans('bt.all_statuses')] + TimeTrackingProjectStatuses::lists();
         $companyProfiles = ['' => trans('bt.all_company_profiles')] + CompanyProfile::getList();
         $keyedStatuses = collect(TimeTrackingProjectStatuses::lists());
+        $modulefullname = TimeTrackingProject::class;
 
-        return view('time_tracking.project_index', compact('keyedStatuses', 'statuses', 'companyProfiles'));
+        return view('time_tracking.project_index', compact('modulefullname','keyedStatuses', 'statuses', 'companyProfiles'));
     }
 
     public function create()

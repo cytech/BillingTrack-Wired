@@ -22,7 +22,7 @@
                         })
                     })
                 </script>
-                <livewire:data-tables.module-table :module_type="'MailQueue'"/>
+                <livewire:data-tables.module-table :module_type="'MailQueue'" :module_fullname="$modulefullname"/>
             </div>
         </div>
     </section>

@@ -31,8 +31,9 @@ class ClientController extends Controller
         $this->setReturnUrl();
         $status = (request('status')) ?: 'all';
         $keyedStatuses = collect([0 => __('bt.inactive'), 1 => __('bt.active')]);
+        $modulefullname = Client::class;
 
-        return view('clients.index', ['status' => $status, 'keyedStatuses' => $keyedStatuses]);
+        return view('clients.index', ['modulefullname' => $modulefullname, 'status' => $status, 'keyedStatuses' => $keyedStatuses]);
     }
 
     public function create()

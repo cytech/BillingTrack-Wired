@@ -21,7 +21,8 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        return view('categories.index');
+        $modulefullname = Category::class;
+        return view('categories.index')->with('modulefullname', $modulefullname);
     }
 
     /**

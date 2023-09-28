@@ -45,7 +45,7 @@
                 wire:input="selectAllFilterOptions('{{ $filter->getKey() }}')"
                 class="form-check-input"
             >
-            <label class="form-check-label" for="{{ $tableName }}-filter-{{ $filter->getKey() }}-@if($filter->hasCustomPosition()){{ $filter->getCustomPosition() }}@endif-select-all">@lang('All')</label>
+            <label class="form-check-label" for="{{ $tableName }}-filter-{{ $filter->getKey() }}-@if($filter->hasCustomPosition()){{ $filter->getCustomPosition() }} @endif -select-all">@lang('All')</label>
         </div>
 
         @foreach($filter->getOptions() as $key => $value)

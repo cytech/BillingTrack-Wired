@@ -20,7 +20,8 @@ class ItemLookupController extends Controller
 {
     public function index()
     {
-        return view('item_lookups.index');
+        $modulefullname = ItemLookup::class;
+        return view('item_lookups.index')->with('modulefullname', $modulefullname);
     }
 
     public function create()

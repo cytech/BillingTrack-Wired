@@ -224,12 +224,14 @@ class SchedulerController extends Controller
 
     public function tableEvent(EventRequest $request)
     {
-        return view('schedule.tableEvent');
+        $modulefullname = Schedule::class;
+        return view('schedule.tableEvent')->with('modulefullname', $modulefullname);
     }
 
     public function tableRecurringEvent(Request $request)
     {
-        return view('schedule.tableRecurringEvent');
+        $modulefullname = Schedule::class;
+        return view('schedule.tableRecurringEvent')->with('modulefullname', $modulefullname);
     }
 
     public function scheduledResources($date)

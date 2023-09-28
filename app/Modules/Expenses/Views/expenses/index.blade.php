@@ -41,7 +41,7 @@
         @include('layouts._alerts')
         <div class="card ">
             <div class="card-body">
-                <livewire:data-tables.module-table :module_type="'Expense'"/>
+                <livewire:data-tables.module-table :module_type="'Expense'" :module_fullname="$modulefullname"/>
             </div>
         </div>
     </section>

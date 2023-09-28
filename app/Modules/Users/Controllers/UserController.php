@@ -30,9 +30,10 @@ class UserController extends Controller
     public function index()
     {
         $this->setReturnUrl();
+        $modulefullname = User::class;
 
         return view('users.index',
-            ['userTypes' => ['' => trans('bt.all_accounts'), 'admin' => trans('bt.admin_accounts'), 'client' => trans('bt.client_accounts')]]);
+            ['userTypes' => ['' => trans('bt.all_accounts'), 'admin' => trans('bt.admin_accounts'), 'client' => trans('bt.client_accounts')], 'modulefullname' => $modulefullname,]);
 
     }
 

@@ -4,7 +4,6 @@ namespace BT\Observers;
 
 use AllowDynamicProperties;
 use BT\Modules\Currencies\Support\CurrencyConverterFactory;
-use BT\Modules\CustomFields\Models\DocumentCustom;
 use BT\Modules\Documents\Models\Document;
 use BT\Modules\Documents\Support\DocumentCalculate;
 use BT\Modules\Groups\Models\Group;

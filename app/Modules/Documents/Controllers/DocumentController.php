@@ -39,23 +39,23 @@ class DocumentController extends Controller
         switch ($module) {
             case 'Quote':
                 $module_type = $module;
-                $modulefullname = addslashes(Quote::class);
+                $modulefullname = Quote::class;
                 break;
             case 'Workorder':
                 $module_type = $module;
-                $modulefullname = addslashes(Workorder::class);
+                $modulefullname = Workorder::class;
                 break;
             case 'Invoice':
                 $module_type = $module;
-                $modulefullname = addslashes(Invoice::class);
+                $modulefullname = Invoice::class;
                 break;
             case 'Purchaseorder':
                 $module_type = $module;
-                $modulefullname = addslashes(Purchaseorder::class);
+                $modulefullname = Purchaseorder::class;
                 break;
             case 'Recurringinvoice':
                 $module_type = $module;
-                $modulefullname = addslashes(Recurringinvoice::class);
+                $modulefullname = Recurringinvoice::class;
                 break;
         }
 

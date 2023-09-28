@@ -17,7 +17,7 @@
         @include('layouts._alerts')
         <div class="card card-light">
             <div class="card-body">
-                <livewire:data-tables.module-table :module_type="'ScheduleCategory'"/>
+                <livewire:data-tables.module-table :module_type="'ScheduleCategory'" :module_fullname="$modulefullname"/>
             </div>
         </div>
     </section>

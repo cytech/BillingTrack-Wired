@@ -18,7 +18,8 @@ class SchedulerCategoryController extends Controller
 {
     public function index()
     {
-        return view('schedulecategories.index');
+        $modulefullname = Category::class;
+        return view('schedulecategories.index')->with('modulefullname', $modulefullname);
     }
 
     public function create()

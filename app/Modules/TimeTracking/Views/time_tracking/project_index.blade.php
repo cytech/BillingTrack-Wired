@@ -26,6 +26,7 @@
         <div class="card ">
             <div class="card-body">
                 <livewire:data-tables.module-table :module_type="'TimeTrackingProject'"
+                                                   :module_fullname="$modulefullname"
                                                    :keyedStatuses="$keyedStatuses"/>
             </div>
         </div>
