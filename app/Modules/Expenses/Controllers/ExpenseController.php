@@ -29,14 +29,9 @@ class ExpenseController extends Controller
     public function index()
     {
         $this->setReturnUrl();
-        $status = request('status');
-        $categories = ['' => trans('bt.all_categories')] + Category::getList();
-        $vendors = ['' => trans('bt.all_vendors')] + Vendor::getList();
-        $statuses = ['' => trans('bt.all_statuses'), 'billed' => trans('bt.billed'), 'not_billed' => trans('bt.not_billed'), 'not_billable' => trans('bt.not_billable')];
-        $companyProfiles = ['' => trans('bt.all_company_profiles')] + CompanyProfile::getList();
         $modulefullname = Expense::class;
 
-        return view('expenses.index', compact('status', 'modulefullname', 'categories', 'vendors', 'statuses', 'companyProfiles'));
+        return view('expenses.index', compact( 'modulefullname'));
 
     }
 

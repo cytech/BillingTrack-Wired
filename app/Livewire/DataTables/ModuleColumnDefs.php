@@ -318,7 +318,11 @@ class ModuleColumnDefs
                     ->format(fn ($value, $row, Column $column) => '<a href="/clients/'.$row->client->id.'">'.$value.'</a>')
                     ->html(),
                 Column::make(__('bt.status'), 'status_id')
-                    ->format(fn ($value, $row, Column $column) => $statuses[$row->status_text]),
+                    ->format(function ($value, $row, Column $column) use ($statuses) {
+                        $ret = '<span class="badge badge-' . strtolower($statuses[$row->status_text]) . '">' . $statuses[$row->status_text] . '</span>';
+                        return $ret;
+                    })
+                    ->html(),
                 Column::make(__('bt.created'), 'created_at')
                     ->sortable()
                     ->format(fn ($value, $row, Column $column) => $row->formatted_created_at),

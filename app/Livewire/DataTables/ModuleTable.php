@@ -2,6 +2,7 @@
 
 namespace BT\Livewire\DataTables;
 
+use BT\Modules\Categories\Models\Category;
 use BT\Modules\CompanyProfiles\Models\CompanyProfile;
 use BT\Modules\Vendors\Models\Vendor;
 use BT\Support\Statuses\DocumentStatuses;
@@ -113,7 +114,27 @@ class ModuleTable extends DataTableComponent
 
     public function filters(): array
     {
-        //filters only applied to 'Invoice', 'Quote', 'Workorder'
+        if ($this->module_type == 'TimeTrackingProject' || $this->module_type == 'Expense') {
+            $statusclass = 'BT\\Support\\Statuses\\' . $this->module_type . 'Statuses';
+            $options = $statusclass::listsAllFlatDT($this->module_type);
+            $statusidfilter = SelectFilter::make(__('bt.status'))
+                ->options($options)
+                ->filter(function (Builder $builder, string $value) {
+                    if ($value) {
+                        $builder->StatusId($value); //scope
+                    }
+                });
+        }
+
+        $companyfilter = SelectFilter::make(__('bt.company_profiles'), 'company_profile_id')
+            ->options(['' => trans('bt.all_company_profiles')] + CompanyProfile::getList())
+            ->filter(function (Builder $builder, string $value) {
+                if ($value) {
+                    $builder->where('company_profile_id', $value);
+                }
+            });
+
+        //filters for 'Quote', 'Workorder', 'Invoice', 'Purchaseorder', 'Recurringinvoice'
         if (in_array($this->module_type, $this->core_modules)) {
             $options = DocumentStatuses::listsAllFlatDT($this->module_type);
 
@@ -127,11 +148,32 @@ class ModuleTable extends DataTableComponent
                             $builder->where('document_status_id', $value);
                         }
                     }),
-                SelectFilter::make(__('bt.company_profiles'), 'company_profile_id')
-                    ->options(['' => trans('bt.all_company_profiles')] + CompanyProfile::getList())
+                $companyfilter
+            ];
+        } elseif ($this->module_type == 'TimeTrackingProject') {
+            return [
+                $statusidfilter,
+                $companyfilter
+            ];
+        } elseif ($this->module_type == 'Expense') {
+            $categories = ['' => trans('bt.all_categories')] + Category::getList();
+            $vendors = ['' => trans('bt.all_vendors')] + Vendor::getList();
+
+            return [
+                $statusidfilter,
+                $companyfilter,
+                SelectFilter::make(__('bt.categories'))
+                    ->options($categories)
                     ->filter(function (Builder $builder, string $value) {
                         if ($value) {
-                            $builder->where('company_profile_id', $value);
+                            $builder->where('category_id', $value);
+                        }
+                    }),
+                SelectFilter::make(__('bt.vendors'))
+                    ->options($vendors)
+                    ->filter(function (Builder $builder, string $value) {
+                        if ($value) {
+                            $builder->where('vendor_id', $value);
                         }
                     }),
             ];
@@ -236,9 +278,12 @@ class ModuleTable extends DataTableComponent
                     ->status(request('status'))
                     ->companyProfileId(request('company_profile'));
             case 'TimeTrackingProject':
-                return $this->module_fullname::companyProfileId(request('company_profile'))
-                    ->statusId(request('status'))
-                    ->getSelect();
+                //$this->setFilter(snake_case(__('bt.status')), 1); // 1 = active
+                return $this->module_fullname::
+                //companyProfileId(request('company_profile'))
+                //->statusId(request('status'))
+                //    ->
+                getSelect();
             case 'Schedule':
                 return $this->module_fullname::where('isRecurring', '<>', '1')->select('schedule.*');
             case 'RecurringEvent':

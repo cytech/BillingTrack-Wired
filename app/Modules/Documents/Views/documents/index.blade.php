@@ -18,7 +18,7 @@
                     <button class="btn btn-primary rounded border"
                             type="button"
                             {{--                    params 3 thru ... mount($modulefullname, $module_type, $moduleop, $resource_id = null, $module_id = null, $readonly = null, $lineitem = null)--}}
-                            onclick="window.Livewire.dispatch('showModal', {alias: 'modals.create-module-modal', params: { modulefullname: '{{$modulefullname}}', module_type: '{{$module_type}}', moduleop: 'create' }})"
+                            onclick="window.Livewire.dispatch('showModal', {alias: 'modals.create-module-modal', params: { modulefullname: '{{addslashes($modulefullname)}}', module_type: '{{$module_type}}', moduleop: 'create' }})"
 
                     ><i class="fa fa-plus"></i> @lang('bt.create_' . strtolower($module_type))
                     </button>

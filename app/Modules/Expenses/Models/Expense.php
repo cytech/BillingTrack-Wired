@@ -206,9 +206,32 @@ class Expense extends Model
                     $query->where('invoice_id', '<>', 0);
                     break;
                 case 'not_billed':
-                    $query->where('client_id', '<>', 0)->where('invoice_id', '=', 0)->orWhere('invoice_id', '=', null);
+                    $query->where('client_id', '<>', 0)->where(function ($q){
+                        $q->where('invoice_id', '=', 0)->orWhere('invoice_id', '=', null);
+                    });
                     break;
                 case 'not_billable':
+                    $query->where('client_id', 0);
+                    break;
+            }
+        }
+
+        return $query;
+    }
+
+    public function scopeStatusId($query, $status = null)
+    {
+        if ($status) {
+            switch ($status) {
+                case 1:
+                    $query->where('invoice_id', '<>', 0);
+                    break;
+                case 2:
+                    $query->where('client_id', '<>', 0)->where(function ($q){
+                        $q->where('invoice_id', '=', 0)->orWhere('invoice_id', '=', null);
+                    });
+                    break;
+                case 3:
                     $query->where('client_id', 0);
                     break;
             }
