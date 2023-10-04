@@ -1,8 +1,10 @@
 <div>
     <div class="modal-header">
-        <h4 class="modal-title">@lang('bt.enter_payment')@if($module)
-                : @lang('bt.' . strtolower($module->module_type))
-                #{{ $module['number'] }}
+        <h4 class="modal-title">
+            @if($module)
+                @lang('bt.enter_payment') : @lang('bt.' . strtolower($module->module_type)) #{{ $module['number'] }}
+            @else
+                @lang('bt.enter_client_payment')
             @endif</h4>
         <button type="button" class="btn-close" wire:click.prevent="doCancel()" aria-hidden="true"></button>
     </div>

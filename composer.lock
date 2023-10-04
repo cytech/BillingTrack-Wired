@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dd4f52b9dab798e963acd634b306c744",
+    "content-hash": "a15bfaed045ce5f991bfbc0085b0ab6d",
     "packages": [
         {
             "name": "askedio/laravel-soft-cascade",
@@ -5125,16 +5125,16 @@
         },
         {
             "name": "rappasoft/laravel-livewire-tables",
-            "version": "dev-v3-develop",
+            "version": "dev-v3-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rappasoft/laravel-livewire-tables.git",
-                "reference": "6c977c4e90db3703bc4ca0a6de64c738fe558b09"
+                "reference": "c519a09093c5d44b03d02749ddd1c1c2865b20f0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rappasoft/laravel-livewire-tables/zipball/6c977c4e90db3703bc4ca0a6de64c738fe558b09",
-                "reference": "6c977c4e90db3703bc4ca0a6de64c738fe558b09",
+                "url": "https://api.github.com/repos/rappasoft/laravel-livewire-tables/zipball/c519a09093c5d44b03d02749ddd1c1c2865b20f0",
+                "reference": "c519a09093c5d44b03d02749ddd1c1c2865b20f0",
                 "shasum": ""
             },
             "require": {
@@ -5204,7 +5204,7 @@
                 "tables"
             ],
             "support": {
-                "source": "https://github.com/rappasoft/laravel-livewire-tables/tree/v3-develop",
+                "source": "https://github.com/rappasoft/laravel-livewire-tables/tree/v3-master",
                 "issues": "https://github.com/rappasoft/laravel-livewire-tables/issues"
             },
             "funding": [
@@ -5213,7 +5213,7 @@
                     "url": "https://github.com/rappasoft"
                 }
             ],
-            "time": "2023-10-01T01:50:17+00:00"
+            "time": "2023-10-04T03:14:40+00:00"
         },
         {
             "name": "sabberworm/php-css-parser",
@@ -9059,16 +9059,16 @@
         },
         {
             "name": "phpunit/php-code-coverage",
-            "version": "10.1.6",
+            "version": "10.1.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "56f33548fe522c8d82da7ff3824b42829d324364"
+                "reference": "355324ca4980b8916c18b9db29f3ef484078f26e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/56f33548fe522c8d82da7ff3824b42829d324364",
-                "reference": "56f33548fe522c8d82da7ff3824b42829d324364",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/355324ca4980b8916c18b9db29f3ef484078f26e",
+                "reference": "355324ca4980b8916c18b9db29f3ef484078f26e",
                 "shasum": ""
             },
             "require": {
@@ -9125,7 +9125,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/php-code-coverage/issues",
                 "security": "https://github.com/sebastianbergmann/php-code-coverage/security/policy",
-                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/10.1.6"
+                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/10.1.7"
             },
             "funding": [
                 {
@@ -9133,7 +9133,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-09-19T04:59:03+00:00"
+            "time": "2023-10-04T15:34:17+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",

@@ -22,7 +22,7 @@ class WorkorderSummaryWidgetComposer
         return CurrencyFormatter::format(DocumentAmount::join('documents', 'documents.id', '=', 'document_amounts.document_id')
             ->whereHas('workorder', function ($q) {
                 $q->draft();
-                $q->where('invoice_id', 0);
+                $q->where(function ($qq){$qq->where('invoice_id', 0)->orWhereNull('invoice_id');});
                 switch (config('bt.widgetWorkorderSummaryDashboardTotals')) {
                     case 'year_to_date':
                         $q->yearToDate();
@@ -42,7 +42,7 @@ class WorkorderSummaryWidgetComposer
         return CurrencyFormatter::format(DocumentAmount::join('documents', 'documents.id', '=', 'document_amounts.document_id')
             ->whereHas('workorder', function ($q) {
                 $q->sent();
-                $q->where('invoice_id', 0);
+                $q->where(function ($qq){$qq->where('invoice_id', 0)->orWhereNull('invoice_id');});
                 switch (config('bt.widgetWorkorderSummaryDashboardTotals')) {
                     case 'year_to_date':
                         $q->yearToDate();
@@ -62,7 +62,7 @@ class WorkorderSummaryWidgetComposer
         return CurrencyFormatter::format(DocumentAmount::join('documents', 'documents.id', '=', 'document_amounts.document_id')
             ->whereHas('workorder', function ($q) {
                 $q->approved();
-                $q->where('invoice_id', 0);
+                $q->where(function ($qq){$qq->where('invoice_id', 0)->orWhereNull('invoice_id');});
                 switch (config('bt.widgetWorkorderSummaryDashboardTotals')) {
                     case 'year_to_date':
                         $q->yearToDate();
@@ -82,7 +82,7 @@ class WorkorderSummaryWidgetComposer
         return CurrencyFormatter::format(DocumentAmount::join('documents', 'documents.id', '=', 'document_amounts.document_id')
             ->whereHas('workorder', function ($q) {
                 $q->rejected();
-                $q->where('invoice_id', 0);
+                $q->where(function ($qq){$qq->where('invoice_id', 0)->orWhereNull('invoice_id');});
                 switch (config('bt.widgetWorkorderSummaryDashboardTotals')) {
                     case 'year_to_date':
                         $q->yearToDate();

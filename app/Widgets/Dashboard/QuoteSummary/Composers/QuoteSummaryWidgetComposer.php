@@ -23,7 +23,7 @@ class QuoteSummaryWidgetComposer
             ->whereHas('quote', function ($q)
             {
                 $q->draft();
-                $q->where('invoice_id', 0);
+                $q->where(function ($qq){$qq->where('invoice_id', 0)->orWhereNull('invoice_id');});
                 switch (config('bt.widgetQuoteSummaryDashboardTotals'))
                 {
                     case 'year_to_date':
@@ -45,7 +45,7 @@ class QuoteSummaryWidgetComposer
             ->whereHas('quote', function ($q)
             {
                 $q->sent();
-                $q->where('invoice_id', 0);
+                $q->where(function ($qq){$qq->where('invoice_id', 0)->orWhereNull('invoice_id');});
                 switch (config('bt.widgetQuoteSummaryDashboardTotals'))
                 {
                     case 'year_to_date':
@@ -67,7 +67,7 @@ class QuoteSummaryWidgetComposer
             ->whereHas('quote', function ($q)
             {
                 $q->approved();
-                $q->where('invoice_id', 0);
+                $q->where(function ($qq){$qq->where('invoice_id', 0)->orWhereNull('invoice_id');});
                 switch (config('bt.widgetQuoteSummaryDashboardTotals'))
                 {
                     case 'year_to_date':
@@ -89,7 +89,7 @@ class QuoteSummaryWidgetComposer
             ->whereHas('quote', function ($q)
             {
                 $q->rejected();
-                $q->where('invoice_id', 0);
+                $q->where(function ($qq){$qq->where('invoice_id', 0)->orWhereNull('invoice_id');});
                 switch (config('bt.widgetQuoteSummaryDashboardTotals'))
                 {
                     case 'year_to_date':

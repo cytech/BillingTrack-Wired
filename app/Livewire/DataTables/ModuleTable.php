@@ -33,6 +33,7 @@ class ModuleTable extends DataTableComponent
     {
         $this->setPrimaryKey('id');
         $this->setPerPageAccepted([10, 25, 50, 100]);
+        $this->setPerPage(config('bt.resultsPerPage'));
         $this->setSearchDebounce(500);
         //$this->setFilterLayoutSlideDown();
         $this->setFilterLayoutPopover();

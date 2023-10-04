@@ -146,14 +146,14 @@
                             <div id="tab-purchaseorders" class="tab-pane">
                                 <div class="card">
                                     <div class="card-body">
-                                        <livewire:data-tables.module-table :module_type="'Purchaseorder'" :clientid="$vendor->id"/>
+                                        <livewire:data-tables.module-table :module_type="'Purchaseorder'" :module_fullname="'BT\Modules\Documents\Models\Purchaseorder'" :clientid="$vendor->id"/>
                                     </div>
                                 </div>
                             </div>
                             <div id="tab-payments" class="tab-pane">
                                 <div class="card">
                                     <div class="card-body">
-                                        <livewire:data-tables.module-table :module_type="'Payment'" :clientid="$vendor->id" :status="2"/>
+                                        <livewire:data-tables.module-table :module_type="'Payment'" :module_fullname="'BT\Modules\Payments\Models\Payment'" :clientid="$vendor->id" :status="2"/>
                                     </div>
                                 </div>
                             </div>

@@ -53,13 +53,13 @@ class UtilityController
         $ids = request('ids');
         $module_type = request('module_type');
         if ($module_type == 'Schedule') {
-            $module_model = 'BT\\Modules\\Scheduler\\Models\\'.$module_type;
+            $module_model = 'BT\\Modules\\Scheduler\\Models\\' . $module_type;
         } elseif ($module_type == 'TimeTrackingProject') {
-            $module_model = 'BT\\Modules\\TimeTracking\\Models\\'.$module_type;
+            $module_model = 'BT\\Modules\\TimeTracking\\Models\\' . $module_type;
         } elseif (in_array($module_type, ['Invoice', 'Quote', 'Workorder', 'Purchaseorder', 'Recurringinvoice'])) {
-            $module_model = 'BT\\Modules\\Documents\\Models\\'.$module_type;
+            $module_model = 'BT\\Modules\\Documents\\Models\\' . $module_type;
         } else {
-            $module_model = 'BT\\Modules\\'.$module_type.'s\\Models\\'.$module_type;
+            $module_model = 'BT\\Modules\\' . $module_type . 's\\Models\\' . $module_type;
         }
 
         foreach ($ids as $id) {
@@ -74,13 +74,13 @@ class UtilityController
         $ids = request('ids');
         $module_type = request('module_type');
         if ($module_type == 'Schedule') {
-            $module_model = 'BT\\Modules\\Scheduler\\Models\\'.$module_type;
+            $module_model = 'BT\\Modules\\Scheduler\\Models\\' . $module_type;
         } elseif ($module_type == 'TimeTrackingProject') {
-            $module_model = 'BT\\Modules\\TimeTracking\\Models\\'.$module_type;
+            $module_model = 'BT\\Modules\\TimeTracking\\Models\\' . $module_type;
         } elseif (in_array($module_type, ['Invoice', 'Quote', 'Workorder', 'Purchaseorder', 'Recurringinvoice'])) {
-            $module_model = 'BT\\Modules\\Documents\\Models\\'.$module_type;
+            $module_model = 'BT\\Modules\\Documents\\Models\\' . $module_type;
         } else {
-            $module_model = 'BT\\Modules\\'.$module_type.'s\\Models\\'.$module_type;
+            $module_model = 'BT\\Modules\\' . $module_type . 's\\Models\\' . $module_type;
         }
 
         foreach ($ids as $id) {
@@ -101,13 +101,22 @@ class UtilityController
                     //quotes sent or approved, not converted to workorder or invoice
                     $batchtypes = Quote::whereBetween('document_date', [$start, $end])
                         ->whereBetween('document_status_id', [2, 3])
-                        ->where('invoice_id', 0)->orWhereNull('invoice_id')->where('workorder_id', 0)->get();
+                        ->where(function ($q) {
+                            $q->where('invoice_id', 0)->orWhereNull('invoice_id');
+                        })
+                        ->where(function ($q) {
+                            $q->where('workorder_id', 0)->orWhereNull('workorder_id');
+                        })
+                        ->get();
                     break;
                 case 'workorders':
                     //workorders sent or approved, not converted to invoice
                     $batchtypes = Workorder::whereBetween('job_date', [$start, $end])
                         ->whereBetween('document_status_id', [2, 3])
-                        ->where('invoice_id', 0)->orWhereNull('invoice_id')->get();
+                        ->where(function ($q) {
+                            $q->where('invoice_id', 0)->orWhereNull('invoice_id');
+                        })
+                        ->get();
                     break;
                 case 'invoices':
                     //invoices sent (not paid)
@@ -121,7 +130,7 @@ class UtilityController
                     break;
             }
 
-            if (! count($batchtypes)) {
+            if (!count($batchtypes)) {
                 return redirect()->back()->with('alert', trans('bt.batch_nodata_alert'));
             }
 

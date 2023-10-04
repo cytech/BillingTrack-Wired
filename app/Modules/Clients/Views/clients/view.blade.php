@@ -173,6 +173,7 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <livewire:data-tables.module-table :module_type="'Quote'"
+                                                                           :module_fullname="'BT\Modules\Documents\Models\Quote'"
                                                                            :clientid="$client->id"/>
                                     </div>
                                 </div>
@@ -181,6 +182,7 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <livewire:data-tables.module-table :module_type="'Workorder'"
+                                                                           :module_fullname="'BT\Modules\Documents\Models\Workorder'"
                                                                            :clientid="$client->id"/>
                                     </div>
                                 </div>
@@ -189,6 +191,7 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <livewire:data-tables.module-table :module_type="'Invoice'"
+                                                                           :module_fullname="'BT\Modules\Documents\Models\Invoice'"
                                                                            :clientid="$client->id"/>
                                     </div>
                                 </div>
@@ -197,6 +200,7 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <livewire:data-tables.module-table :module_type="'Recurringinvoice'"
+                                                                           :module_fullname="'BT\Modules\Documents\Models\Recurringinvoice'"
                                                                            :clientid="$client->id"/>
                                     </div>
                                 </div>
@@ -205,6 +209,7 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <livewire:data-tables.module-table :module_type="'Payment'"
+                                                                           :module_fullname="'BT\Modules\Payments\Models\Payment'"
                                                                            :clientid="$client->id" :status="1"/>
                                     </div>
                                 </div>

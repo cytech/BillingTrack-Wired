@@ -273,8 +273,8 @@ class SchedulerController extends Controller
         $today = new Carbon();
         $employees = Employee::where('schedule', 1)->where('active', 1)->pluck('id');
         $empresources = DocumentItem::whereHas('workorder', function ($q) use ($today) {
-            $q->whereDate('job_date', '>=', $today->subDay(1))->where('document_status_id', 3)
-                ->where('invoice_id', 0)->orWhereNull('invoice_id');
+            $q->whereDate('job_date', '>=', $today->subDay(1))->where('document_status_id', 3);
+            $q->where(function ($qq){$qq->where('invoice_id', 0)->orWhereNull('invoice_id');});
         })->with('workorder')->where('resource_table', 'employees')->whereNotIn('resource_id', $employees)->get();
 
         return view('schedule.orphanCheck')->with('empresources', $empresources);
