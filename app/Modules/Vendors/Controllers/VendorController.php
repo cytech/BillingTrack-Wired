@@ -30,11 +30,10 @@ class VendorController extends Controller
     public function index()
     {
         $this->setReturnUrl();
-        $status = (request('status')) ?: 'all';
         $keyedStatuses = collect([0 => __('bt.inactive'), 1 => __('bt.active')]);
         $modulefullname = Vendor::class;
 
-        return view('vendors.index', ['modulefullname' => $modulefullname, 'status' => $status, 'keyedStatuses' => $keyedStatuses]);
+        return view('vendors.index', ['modulefullname' => $modulefullname, 'keyedStatuses' => $keyedStatuses]);
     }
 
     /**

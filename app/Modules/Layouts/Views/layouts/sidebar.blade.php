@@ -43,7 +43,7 @@
                 @if(\BT\Modules\Settings\Models\Setting::isModuleEnabled('recurringinvoice'))
                     <li class="nav-item">
                         <a class="nav-link"
-                            href="{{ route('documents.index', [ 'module_type' => 'Recurringinvoice']) }}">
+                            href="{{ route('documents.index', ['status' => config('bt.recurringinvoiceStatusFilter'), 'module_type' => 'Recurringinvoice']) }}">
                             <i class="nav-icon fas fa-sync-alt fa-fw"></i>
                             <p>@lang('bt.recurringinvoices')</p>
                         </a>
@@ -74,7 +74,7 @@
                 @endif
                 @if(\BT\Modules\Settings\Models\Setting::isModuleEnabled('time_tracking'))
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('timeTracking.projects.index', ['status' => 1]) }}">
+                        <a class="nav-link" href="{{ route('timeTracking.projects.index') }}">
                             <i class="nav-icon far fa-clock fa-fw"></i>
                             <p>@lang('bt.time_tracking')</p>
                         </a>
@@ -180,26 +180,26 @@
                     </a>
                     <ul class="nav nav-treeview ps-3">
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('clients.index', ['status' => 'active']) }}">
+                            <a class="nav-link" href="{{ route('clients.index') }}">
                                 <i class="nav-icon fas fa-users fa-fw"></i>
                                 <p>@lang('bt.clients')</p>
                             </a>
                         </li>
                         @hasrole('superadmin|admin')
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('employees.index', ['status' => 'active']) }}">
+                            <a class="nav-link" href="{{ route('employees.index') }}">
                                 <i class="nav-icon fa-solid fa-users-gear fa-fw"></i>
                                 <p>@lang('bt.employees')</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('vendors.index', ['status' => 'active']) }}">
+                            <a class="nav-link" href="{{ route('vendors.index') }}">
                                 <i class="nav-icon fa-solid fa-warehouse fa-fw"></i>
                                 <p>@lang('bt.vendors')</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('products.index', ['status' => 'active']) }}">
+                            <a class="nav-link" href="{{ route('products.index') }}">
                                 <i class="nav-icon fa-solid fa-cart-shopping fa-fw"></i>
                                 <p>@lang('bt.products')</p>
                             </a>

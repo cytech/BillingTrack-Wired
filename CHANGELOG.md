@@ -23,6 +23,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - The new API and examples are located in this repository, resources/misc/billingtrack-api-v7.zip
 - update to Laravel Livewire V3
 - update rappasoft-livewire-tables to v3
+- moved all table filters to rappasoft-livewire-tables
 
 ## 6.1.0
 - Upgrade to Laravel 10

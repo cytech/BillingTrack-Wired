@@ -30,11 +30,10 @@ class ProductController extends Controller
     public function index()
     {
         $this->setReturnUrl();
-        $status = (request('status')) ?: 'all';
         $keyedStatuses = collect([0 => __('bt.inactive'), 1 => __('bt.active')]);
         $modulefullname = Product::class;
 
-        return view('products.index', ['modulefullname' => $modulefullname, 'status' => $status, 'keyedStatuses' => $keyedStatuses]);
+        return view('products.index', ['modulefullname' => $modulefullname, 'keyedStatuses' => $keyedStatuses]);
     }
 
     /**
@@ -61,7 +60,7 @@ class ProductController extends Controller
     /**
      * Store a newly created product in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(ProductRequest $request)
@@ -98,7 +97,7 @@ class ProductController extends Controller
     /**
      * Show the form for editing the specified product.
      *
-     * @param  int  $id
+     * @param int $id
      */
     public function edit($id)
     {
@@ -124,8 +123,8 @@ class ProductController extends Controller
     /**
      * Update the specified product in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(ProductRequest $request, $id)

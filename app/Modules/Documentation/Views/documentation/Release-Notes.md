@@ -3,6 +3,7 @@ Release Notes
 ---
 
 ### BillingTrack 7.0.0
+- Requires PHP "^8.2"
 - merged core modules
 - replace laravelcollective/html with spatie/laravel-html
 - added vendor payments
@@ -18,6 +19,9 @@ Release Notes
 - Users will also need to manually modify any customizations to email templates under Admin - System Settings - Email - Templates.
 - The API has also changed so if you are using it you will need to upgrade the API and any code you have referencing it.
 - The new API and examples are located in this repository, resources/misc/billingtrack-api-v7.zip
+- update to Laravel Livewire V3
+- update rappasoft-livewire-tables to v3
+- moved all table filters to rappasoft-livewire-tables
 
 ### BillingTrack 6.1.0 (2023-04-01)
 - Upgrade to Laravel 10

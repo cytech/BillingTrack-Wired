@@ -29,6 +29,7 @@ class ModuleTable extends DataTableComponent
 
     public $core_modules = ['Quote', 'Workorder', 'Invoice', 'Purchaseorder', 'Recurringinvoice'];
 
+
     public function configure(): void
     {
         $this->setPrimaryKey('id');
@@ -118,8 +119,10 @@ class ModuleTable extends DataTableComponent
         if ($this->module_type == 'TimeTrackingProject' || $this->module_type == 'Expense') {
             $statusclass = 'BT\\Support\\Statuses\\' . $this->module_type . 'Statuses';
             $options = $statusclass::listsAllFlatDT($this->module_type);
+            $deffilter = $this->module_type == 'TimeTrackingProject' ? 1 : '';
             $statusidfilter = SelectFilter::make(__('bt.status'))
                 ->options($options)
+                ->setFilterDefaultValue($deffilter)
                 ->filter(function (Builder $builder, string $value) {
                     if ($value) {
                         $builder->StatusId($value); //scope
@@ -129,57 +132,93 @@ class ModuleTable extends DataTableComponent
 
         $companyfilter = SelectFilter::make(__('bt.company_profiles'), 'company_profile_id')
             ->options(['' => trans('bt.all_company_profiles')] + CompanyProfile::getList())
+            ->setFilterDefaultValue('')
             ->filter(function (Builder $builder, string $value) {
                 if ($value) {
                     $builder->where('company_profile_id', $value);
                 }
             });
 
-        //filters for 'Quote', 'Workorder', 'Invoice', 'Purchaseorder', 'Recurringinvoice'
-        if (in_array($this->module_type, $this->core_modules)) {
-            $options = DocumentStatuses::listsAllFlatDT($this->module_type);
-
-            return [
-                SelectFilter::make(__('bt.status'))
-                    ->options($options)
+        // for 'Quote', 'Workorder', 'Invoice', 'Purchaseorder', 'Recurringinvoice'
+        // filter status passed through dashboard widget and sidebar (settings default filter)
+        switch ($this->module_type) {
+            case 'Quote':
+            case 'Workorder':
+            case 'Invoice':
+            case 'Purchaseorder':
+            case 'Recurringinvoice':
+                $options = DocumentStatuses::listsAllFlatDT($this->module_type);
+                if ($this->reqstatus != 'overdue') {
+                    $reqstatus = DocumentStatuses::getStatusId($this->reqstatus);
+                } else {
+                    $reqstatus = 'overdue';
+                }
+                return [
+                    SelectFilter::make(__('bt.status'))
+                        ->options($options)
+                        ->setFilterDefaultValue($reqstatus)
+                        ->filter(function (Builder $builder, string $value) {
+                            if ($value === 'overdue') {
+                                $builder->Overdue();
+                            } else {
+                                $builder->where('document_status_id', $value);
+                            }
+                        }),
+                    $companyfilter
+                ];
+            case 'TimeTrackingProject':
+                return [
+                    $statusidfilter,
+                    $companyfilter
+                ];
+            case 'Expense':
+                $categories = ['' => trans('bt.all_categories')] + Category::getList();
+                $vendors = ['' => trans('bt.all_vendors')] + Vendor::getList();
+                return [
+                    $statusidfilter,
+                    $companyfilter,
+                    SelectFilter::make(__('bt.categories'))
+                        ->options($categories)
+                        ->filter(function (Builder $builder, string $value) {
+                            if ($value) {
+                                $builder->where('category_id', $value);
+                            }
+                        }),
+                    SelectFilter::make(__('bt.vendors'))
+                        ->options($vendors)
+                        ->filter(function (Builder $builder, string $value) {
+                            if ($value) {
+                                $builder->where('vendor_id', $value);
+                            }
+                        }),
+                ];
+            case 'Client':
+            case 'Employee':
+            case 'Vendor':
+            case 'Product':
+                $options1 = ['' => __('bt.all_statuses'), 1 => __('bt.active'), 0 => __('bt.inactive')];
+                $options2 = ['' => __('bt.all_types'), 1 => __('bt.company'), 0 => __('bt.individual')];
+                $statusfilter = SelectFilter::make(__('bt.status'))
+                    ->options($options1)
+                    ->setFilterDefaultValue(1)
                     ->filter(function (Builder $builder, string $value) {
-                        if ($value === 'overdue') {
-                            $builder->Overdue();
-                        } else {
-                            $builder->where('document_status_id', $value);
-                        }
-                    }),
-                $companyfilter
-            ];
-        } elseif ($this->module_type == 'TimeTrackingProject') {
-            return [
-                $statusidfilter,
-                $companyfilter
-            ];
-        } elseif ($this->module_type == 'Expense') {
-            $categories = ['' => trans('bt.all_categories')] + Category::getList();
-            $vendors = ['' => trans('bt.all_vendors')] + Vendor::getList();
-
-            return [
-                $statusidfilter,
-                $companyfilter,
-                SelectFilter::make(__('bt.categories'))
-                    ->options($categories)
-                    ->filter(function (Builder $builder, string $value) {
-                        if ($value) {
-                            $builder->where('category_id', $value);
-                        }
-                    }),
-                SelectFilter::make(__('bt.vendors'))
-                    ->options($vendors)
-                    ->filter(function (Builder $builder, string $value) {
-                        if ($value) {
-                            $builder->where('vendor_id', $value);
-                        }
-                    }),
-            ];
+                        $builder->where(lcfirst($this->module_type) . 's.active', $value);
+                    });
+                if ($this->module_type == 'Client') {
+                    return [
+                        $statusfilter,
+                        SelectFilter::make(__('bt.type'))
+                            ->options($options2)
+                            ->setFilterDefaultValue('')
+                            ->filter(function (Builder $builder, string $value) {
+                                $builder->where(lcfirst($this->module_type) . 's.is_company', $value);
+                            }),
+                    ];
+                } else
+                    return [
+                        $statusfilter
+                    ];
         }
-
         return [];
     }
 
@@ -272,19 +311,6 @@ class ModuleTable extends DataTableComponent
                     return $this->module_fullname::statusId($this->status)
                         ->select(lcfirst($this->module_type) . 's.*');
                 }
-            case 'Expense':
-                return $this->module_fullname::select(lcfirst($this->module_type) . 's.*')
-                    ->categoryId(request('category'))
-                    ->vendorId(request('vendor'))
-                    ->status(request('status'))
-                    ->companyProfileId(request('company_profile'));
-            case 'TimeTrackingProject':
-                //$this->setFilter(snake_case(__('bt.status')), 1); // 1 = active
-                return $this->module_fullname::
-                //companyProfileId(request('company_profile'))
-                //->statusId(request('status'))
-                //    ->
-                getSelect();
             case 'Schedule':
                 return $this->module_fullname::where('isRecurring', '<>', '1')->select('schedule.*');
             case 'RecurringEvent':
@@ -292,12 +318,14 @@ class ModuleTable extends DataTableComponent
             case 'Category':
             case 'ScheduleCategory':
                 return $this->module_fullname::select(Str::snake(Str::plural($this->module_type)) . '.*');
-            case 'Vendor':
+            case 'TimeTrackingProject':
             case 'Client':
-                return $this->module_fullname::getSelect()->status(request('status'));
+            case 'Vendor':
+                return $this->module_fullname::getSelect();
+            case 'Expense':
             case 'Product':
             case 'Employee':
-                return $this->module_fullname::select(lcfirst($this->module_type) . 's.*')->status(request('status'));
+                return $this->module_fullname::select(lcfirst($this->module_type) . 's.*');
             case 'ItemLookup':
                 return $this->module_fullname::select('item_lookups.*')->orderBy('resource_table', 'asc')->orderBy('name', 'asc');
             case 'MailQueue':
@@ -311,18 +339,8 @@ class ModuleTable extends DataTableComponent
                         ->role(['admin', 'user', 'client']);
                 }
             default: //'Quote', 'Workorder', 'Invoice', 'Purchaseorder', 'Recurringinvoice'
-                // filter status passed through dashboard widget
-                if ($this->reqstatus) {
-                    if ($this->reqstatus != 'overdue') {
-                        $this->setFilter(snake_case(__('bt.status')), DocumentStatuses::getStatusId($this->reqstatus));
-                    } else {
-                        $this->setFilter(snake_case(__('bt.status')), 'overdue');
-                    }
-                }
-
                 return $this->module_fullname::select('documents.*')->where('document_type', $this->module_fullname)
-                    ->clientId($this->clientid)
-                    ->companyProfileId(request('company_profile'));
+                    ->clientId($this->clientid);
         }
     }
 }

@@ -16,7 +16,6 @@ use BT\Modules\Employees\Requests\EmployeeRequest;
 use BT\Http\Controllers\Controller;
 use BT\Modules\ItemLookups\Models\ItemLookup;
 use BT\Modules\Titles\Models\Title;
-use BT\Support\Statuses\TimeTrackingProjectStatuses;
 use BT\Traits\ReturnUrl;
 
 class EmployeeController extends Controller
@@ -30,12 +29,10 @@ class EmployeeController extends Controller
     public function index()
     {
         $this->setReturnUrl();
-        $status = (request('status')) ?: 'all';
         $keyedStatuses = collect([0 => __('bt.inactive'), 1 => __('bt.active')]);
         $modulefullname = Employee::class;
 
-        return view('employees.index', ['modulefullname' => $modulefullname,'status' => $status, 'keyedStatuses' => $keyedStatuses]);
-
+        return view('employees.index', ['modulefullname' => $modulefullname, 'keyedStatuses' => $keyedStatuses]);
     }
 
     /**

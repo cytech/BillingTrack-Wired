@@ -10,16 +10,29 @@ Upgrade
 
 <a id="how-to-upgrade-billingtrack"></a>
 # How to Upgrade BillingTrack
-**Minimum PHP requirement for BillingTrack-Wired (v7.X.X) is PHP >= 8.2**
-**Upgrade Existing v6.x.x installation**
+**Upgrade Existing v6.x.x installation to v7.0.0**
+- NOTE: BillingTrack-wired v7.0.0 and later require PHP &gt;= 8.2
+- **BREAKING CHANGES v7.x.x**
+- This update combines the core modules (Quote, Workorder, Invoice, Recurringinvoice, and Purchaseorder) database tables into a single documents table.
+- User defined custom templates (in the custom/templates directory) will be affected by this change.
+- Note that the existing "custom.blade.php" file in each module directory will be overwritten by the upgrade. If you have modified it directly (without copying it to a new name first) you will need to BACK IT UP prior to upgrade.
+- This "custom.blade.php" file is meant to be a starting point for creating your own custom template.
+- During Migration, existing custom templates will be copied to a new directory named "V6Backup" in the custom/templates directory.
+- The migration will then modify the original custom templates and change all occurrences of ($quote, $workorder, $invoice, and $purchaseorder) to $document.
+- It will also modify any references to ${module}->formatted_due_at or ${module}->formatted_expires_at to ${module}->formatted_action_date.
+- ANY TEMPLATE CUSTOMIZATIONS OUTSIDE OF THESE PARAMETERS WILL HAVE TO BE CHANGED BY THE USER.
+- Users will also need to manually modify any customizations to email templates under Admin - System Settings - Email - Templates.
+- The API has also changed so if you are using it you will need to upgrade the API and any code you have referencing it.
+- The new API and examples are located in this repository, resources/misc/billingtrack-api-v7.zip
+- BACKUP YOUR EXISTING DATABASE !!!!
 - Git pull (if originally cloned) or download and overwrite existing
   installation.
 - if downloading and extracting zip, delete the
   contents of:
-    - "YOUR\_BILLINGTRACK\_WEBSITE/public"
-    - "YOUR_BILLINGTRACK_WEBSITE/database/seeds"
-    - "YOUR\_BILLINGTRACK\_WEBSITE/app"  
-      directories prior to extracting.
+  - "YOUR\_BILLINGTRACK\_WEBSITE/public"
+  - "YOUR_BILLINGTRACK_WEBSITE/database/seeds"
+  - "YOUR\_BILLINGTRACK\_WEBSITE/app"  
+    directories prior to extracting.
 - Run composer update
 - Start-> YOUR\_BILLINGTRACK\_WEBSITE/setup
 - After migration completes, signin.

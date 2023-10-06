@@ -69,6 +69,7 @@ return [
     'all_company_profiles'                     => 'All Company Profiles',
     'all_statuses'                             => 'All Statuses',
     'all_time'                                 => 'All Time',
+    'all_types'                                => 'All Types',
     'all_vendors'                              => 'All Vendors',
     'allow_login'                              => 'Allow Login',
     'allow_payments_without_balance'           => 'Allow Entering Payments on Invoices Without Balance',
