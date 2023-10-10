@@ -14,6 +14,7 @@
     @include('layouts._js_global')
 
     @yield('javaScript')
+{{--    @livewireStyles--}}
 </head>
 <body class="layout-fixed sidebar-expand-lg sidebar-mini sidebar-{{$sidebarMode}}">
 <div class="app-wrapper">
@@ -29,6 +30,7 @@
 </a>
 @stack('scripts')
 <livewire:modals/>
+{{--@livewireScripts--}}
 </body>
 </html>
 

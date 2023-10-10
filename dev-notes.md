@@ -1,3 +1,5 @@
+update to laravel/livewire v3.0.6 causes Route [livewire.update] not defined
+
 ~~Illuminate\Contracts\Validation\Rule; deprecated in laravel 10
 see Illuminate\Contracts\ValidationRule;
 affects app/Modules/Settings/Rules/ValidFile.php~~
