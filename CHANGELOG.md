@@ -24,6 +24,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - update to Laravel Livewire V3
 - update rappasoft-livewire-tables to v3
 - moved all table filters to rappasoft-livewire-tables
+- added Workorder, Workorder Items, Purchaseorder and Purchaseorder Items export
 
 ## 6.1.0
 - Upgrade to Laravel 10

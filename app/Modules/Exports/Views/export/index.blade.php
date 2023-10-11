@@ -22,9 +22,17 @@
                             <li class="nav-item"><a class="nav-link" data-bs-toggle="tab"
                                                     href="#tab-quote-items">@lang('bt.quote_items')</a></li>
                             <li class="nav-item"><a class="nav-link" data-bs-toggle="tab"
+                                                    href="#tab-workorders">@lang('bt.workorders')</a></li>
+                            <li class="nav-item"><a class="nav-link" data-bs-toggle="tab"
+                                                    href="#tab-workorder-items">@lang('bt.workorder_items')</a></li>
+                            <li class="nav-item"><a class="nav-link" data-bs-toggle="tab"
                                                     href="#tab-invoices">@lang('bt.invoices')</a></li>
                             <li class="nav-item"><a class="nav-link" data-bs-toggle="tab"
                                                     href="#tab-invoice-items">@lang('bt.invoice_items')</a></li>
+                            <li class="nav-item"><a class="nav-link" data-bs-toggle="tab"
+                                                    href="#tab-purchaseorders">@lang('bt.purchaseorders')</a></li>
+                            <li class="nav-item"><a class="nav-link" data-bs-toggle="tab"
+                                                    href="#tab-purchaseorder-items">@lang('bt.purchaseorder_items')</a></li>
                             <li class="nav-item"><a class="nav-link" data-bs-toggle="tab"
                                                     href="#tab-payments">@lang('bt.payments')</a></li>
                             <li class="nav-item"><a class="nav-link" data-bs-toggle="tab"
@@ -62,6 +70,26 @@
                                         class="fa fa-download"></i> @lang('bt.export_quote_items')</button>
                             {{ html()->form()->close() }}
                         </div>
+                        <div id="tab-workorders" class="tab-pane">
+                            {{ html()->form('POST', route('export.export', 'Workorders'))->attribute('id', 'workorder-export-form')->target('_blank')->open() }}
+                            <div class="mb-3">
+                                <label>@lang('bt.format'):</label>
+                                {{ html()->select('writer', $writers, null)->class('form-select') }}
+                            </div>
+                            <button class="btn btn-primary"><i
+                                        class="fa fa-download"></i> @lang('bt.export_workorders')</button>
+                            {{ html()->form()->close() }}
+                        </div>
+                        <div id="tab-workorder-items" class="tab-pane">
+                            {{ html()->form('POST', route('export.export', 'WorkorderItems'))->attribute('id', 'workorder-item-export-form')->target('_blank')->open() }}
+                            <div class="mb-3">
+                                <label>@lang('bt.format'):</label>
+                                {{ html()->select('writer', $writers, null)->class('form-select') }}
+                            </div>
+                            <button class="btn btn-primary"><i
+                                        class="fa fa-download"></i> @lang('bt.export_workorder_items')</button>
+                            {{ html()->form()->close() }}
+                        </div>
                         <div id="tab-invoices" class="tab-pane">
                             {{ html()->form('POST', route('export.export', 'Invoices'))->attribute('id', 'invoice-export-form')->target('_blank')->open() }}
                             <div class="mb-3">
@@ -80,6 +108,26 @@
                             </div>
                             <button class="btn btn-primary"><i
                                         class="fa fa-download"></i> @lang('bt.export_invoice_items')</button>
+                            {{ html()->form()->close() }}
+                        </div>
+                        <div id="tab-purchaseorders" class="tab-pane">
+                            {{ html()->form('POST', route('export.export', 'Purchaseorders'))->attribute('id', 'purchaseorder-export-form')->target('_blank')->open() }}
+                            <div class="mb-3">
+                                <label>@lang('bt.format'):</label>
+                                {{ html()->select('writer', $writers, null)->class('form-select') }}
+                            </div>
+                            <button class="btn btn-primary"><i
+                                        class="fa fa-download"></i> @lang('bt.export_purchaseorders')</button>
+                            {{ html()->form()->close() }}
+                        </div>
+                        <div id="tab-purchaseorder-items" class="tab-pane">
+                            {{ html()->form('POST', route('export.export', 'PurchaseorderItems'))->attribute('id', 'purchaseorder-item-export-form')->target('_blank')->open() }}
+                            <div class="mb-3">
+                                <label>@lang('bt.format'):</label>
+                                {{ html()->select('writer', $writers, null)->class('form-select') }}
+                            </div>
+                            <button class="btn btn-primary"><i
+                                        class="fa fa-download"></i> @lang('bt.export_purchaseorder_items')</button>
                             {{ html()->form()->close() }}
                         </div>
                         <div id="tab-payments" class="tab-pane">

@@ -22,6 +22,7 @@ Release Notes
 - update to Laravel Livewire V3
 - update rappasoft-livewire-tables to v3
 - moved all table filters to rappasoft-livewire-tables
+- added Workorder, Workorder Items, Purchaseorder and Purchaseorder Items export
 
 ### BillingTrack 6.1.0 (2023-04-01)
 - Upgrade to Laravel 10
