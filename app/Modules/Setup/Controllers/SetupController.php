@@ -83,14 +83,18 @@ class SetupController extends Controller
         // disable debugbar
         $orig_memory_limit = ini_get('memory_limit');
         ini_set('memory_limit', -1);
+        $maxtime = ini_get('max_execution_time');
+        ini_set('max_execution_time', 0);
         \Debugbar::disable();
         if ($this->migrations->runMigrations(database_path('migrations'))) {
             // restore php memory limits after migrations
             ini_set('memory_limit', $orig_memory_limit);
+            ini_set('max_execution_time', $maxtime);
             return response()->json([], 200);
         }
         // restore php memory limits after migrations
         ini_set('memory_limit', -1);
+        ini_set('max_execution_time', $maxtime);
         return response()->json(['exception' => $this->migrations->getException()->getMessage()], 400);
     }
 
