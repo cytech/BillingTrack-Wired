@@ -19,7 +19,7 @@
         "laravel/legacy-factories": "^1.1",
         "laravel/tinker": "^2.8",
         "laravolt/avatar": "^5.0.0",
-        "livewire/livewire": "3.0.5",
+        "livewire/livewire": "^3.0",
         "mollie/mollie-api-php": "^2.50",
         "rappasoft/laravel-livewire-tables": "v3.0.0-beta.2",
         "simshaun/recurr": "^v5.0.0",

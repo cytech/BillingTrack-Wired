@@ -15,9 +15,11 @@ namespace BT\Providers;
 
 use BT\Support\Directory;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
+use Livewire\Livewire;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -28,15 +30,19 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Livewire::setUpdateRoute(function ($handle) {
+            return Route::name('livewire.update')
+                ->post('/livewire/update', $handle)
+                ->middleware(['web', 'auth.admin']);
+        });
+
         Schema::defaultStringLength(125);
 
-        if (config('proxies.trust_all'))
-        {
+        if (config('proxies.trust_all')) {
             request()->setTrustedProxies([request()->getClientIp()]);
         }
 
-        if (!$this->app->environment('testing') and $this->app->config->get('app.key') == 'ReplaceThisWithYourOwnLicenseKey')
-        {
+        if (!$this->app->environment('testing') and $this->app->config->get('app.key') == 'ReplaceThisWithYourOwnLicenseKey') {
             session()->flash('error', '<strong>' . trans('bt.error') . '</strong> - ' . 'Please enter your license key in config/app.php.');
         }
 
@@ -44,24 +50,20 @@ class AppServiceProvider extends ServiceProvider
 
         $modules = Directory::listDirectories(app_path('Modules'));
 
-        foreach ($modules as $module)
-        {
+        foreach ($modules as $module) {
             $routesPath = app_path('Modules/' . $module . '/routes.php');
-            $viewsPath  = app_path('Modules/' . $module . '/Views');
+            $viewsPath = app_path('Modules/' . $module . '/Views');
 
-            if (file_exists($routesPath))
-            {
+            if (file_exists($routesPath)) {
                 require $routesPath;
             }
 
-            if (file_exists($viewsPath))
-            {
+            if (file_exists($viewsPath)) {
                 $this->app->view->addLocation($viewsPath);
             }
         }
 
-        foreach (File::files(app_path('Helpers')) as $helper)
-        {
+        foreach (File::files(app_path('Helpers')) as $helper) {
             require_once $helper;
         }
 

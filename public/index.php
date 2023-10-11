@@ -3,9 +3,9 @@
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;
 
-if (version_compare(PHP_VERSION, '8.2', '<'))
+if (version_compare(PHP_VERSION, '8.0.2', '<'))
 {
-    die('BillingTrack v7 requires PHP 8.2 or higher. Please upgrade your PHP version to use BillingTrack.');
+    die('BillingTrack requires PHP 8.0.2 or higher. Please upgrade your PHP version to use BillingTrack.');
 }
 
 define('LARAVEL_START', microtime(true));
