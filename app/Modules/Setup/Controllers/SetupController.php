@@ -79,10 +79,18 @@ class SetupController extends Controller
 
     public function postMigration()
     {
+        // lift php memory limits for migrations
+        // disable debugbar
+        $orig_memory_limit = ini_get('memory_limit');
+        ini_set('memory_limit', -1);
+        \Debugbar::disable();
         if ($this->migrations->runMigrations(database_path('migrations'))) {
+            // restore php memory limits after migrations
+            ini_set('memory_limit', $orig_memory_limit);
             return response()->json([], 200);
         }
-
+        // restore php memory limits after migrations
+        ini_set('memory_limit', -1);
         return response()->json(['exception' => $this->migrations->getException()->getMessage()], 400);
     }
 
