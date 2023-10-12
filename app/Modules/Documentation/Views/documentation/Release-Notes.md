@@ -3,6 +3,11 @@ Release Notes
 ---
 
 ### BillingTrack 7.0.0
+**Upgrade Existing v6.x.x installation to v7.0.0**  
+**Do not attempt to upgrade a Billingtrack version older than v6.x.x**
+- **The upgrade migration is very complex and can take a long time (a test database containing 24,000 documents takes 4 hours to complete)**
+- **The migration function removes PHP memory_limit and max_execution_time limits during processing (restores them to original when complete)**
+- **This could severely affect your server performance**
 - Requires PHP "^8.2"
 - merged core modules
 - replace laravelcollective/html with spatie/laravel-html
@@ -23,6 +28,9 @@ Release Notes
 - update rappasoft-livewire-tables to v3
 - moved all table filters to rappasoft-livewire-tables
 - added Workorder, Workorder Items, Purchaseorder and Purchaseorder Items export
+
+## BillingTrack 6.1.1 (2023-04-04)
+- fix duplicate item creation after module save
 
 ### BillingTrack 6.1.0 (2023-04-01)
 - Upgrade to Laravel 10

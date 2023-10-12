@@ -192,7 +192,12 @@ Note: In some instances a fresh install will throw an "unknown error" alert box.
 10. sign in
 
 # How to Upgrade BillingTrack
-**Upgrade Existing v6.x.x installation to v7.0.0**
+**Upgrade Existing v6.x.x installation to v7.0.0**  
+**Do not attempt to upgrade a Billingtrack version older than v6.x.x [SEE UPGRADING FROM BILLINGTRACK 5.X.X](#upgrade-from-billingtrack-5xx)**
+- **The upgrade migration is very complex and can take a long time (a test database containing 24,000 documents takes 4 hours to complete)**
+- **The migration function removes PHP memory_limit and max_execution_time limits during processing (restores them to original when complete)**
+- **This could severely affect your server performance**
+
 - NOTE: BillingTrack-wired v7.0.0 and later require PHP &gt;= 8.2
 - **BREAKING CHANGES v7.x.x**
 - This update combines the core modules (Quote, Workorder, Invoice, Recurringinvoice, and Purchaseorder) database tables into a single documents table.

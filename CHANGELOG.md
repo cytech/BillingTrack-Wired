@@ -26,6 +26,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - moved all table filters to rappasoft-livewire-tables
 - added Workorder, Workorder Items, Purchaseorder and Purchaseorder Items export
 
+## 6.1.1
+- fix duplicate item creation after module save
+
 ## 6.1.0
 - Upgrade to Laravel 10
 - update Laravel deprecated $dates to $casts
