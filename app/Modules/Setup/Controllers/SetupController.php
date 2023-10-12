@@ -81,6 +81,7 @@ class SetupController extends Controller
     {
         // lift php memory limits for migrations
         // disable debugbar
+        // issues with extremely large database upgrade v7
         $orig_memory_limit = ini_get('memory_limit');
         ini_set('memory_limit', -1);
         $maxtime = ini_get('max_execution_time');
@@ -93,7 +94,7 @@ class SetupController extends Controller
             return response()->json([], 200);
         }
         // restore php memory limits after migrations
-        ini_set('memory_limit', -1);
+        ini_set('memory_limit', $orig_memory_limit);
         ini_set('max_execution_time', $maxtime);
         return response()->json(['exception' => $this->migrations->getException()->getMessage()], 400);
     }
