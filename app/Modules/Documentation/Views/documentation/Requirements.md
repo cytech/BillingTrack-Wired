@@ -17,6 +17,7 @@ install and use the software. .
 - cURL PHP Extensiom
 - DOM PHP Extension
 - Fileinfo PHP extension
+- GD PHP extension
 - JSON PHP Extension
 - Mbstring PHP Extension
 - OpenSSL PHP Extension

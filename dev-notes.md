@@ -1,4 +1,15 @@
+update to rappasoft/livewire-tables v3 beta 11 - publishing views adds "rappasoft" directory in vendor.
+previously published under vendor/livewire-tables. must remove "rappsoft" to use published views.  
+
 update to laravel/livewire v3.0.6 causes Route [livewire.update] not defined
+corrected with addition of:  
+Livewire::setUpdateRoute(function ($handle) {
+return Route::name('livewire.update')
+->post('/livewire/update', $handle)
+->middleware(['web', 'auth.admin']);
+});  
+to appserviceprovider boot() method.  
+
 
 ~~Illuminate\Contracts\Validation\Rule; deprecated in laravel 10
 see Illuminate\Contracts\ValidationRule;
