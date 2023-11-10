@@ -50,12 +50,12 @@ class ModuleTable extends DataTableComponent
         }
         $this->setTableAttributes([
             'default' => true,
-            'class'   => 'datatable',
+            'class'   => 'table-striped',
         ]);
 
         $this->setTheadAttributes([
             'default' => true,
-            'class'   => 'bg-body lwtable',
+            'class'   => 'lwtable',
         ]);
 
         $this->setThAttributes(function (Column $column) {

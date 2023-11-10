@@ -33,6 +33,7 @@
 
   .lwtable { //livewire ModuleTable thead textcolor
     --bs-table-color: #ffffff;
+    --bs-table-bg: var(--bs-gray-600);
     color:var(--bs-table-color);
   }
   .sidebar-wrapper {
@@ -82,6 +83,7 @@
 
   .lwtable { //livewire ModuleTable thead textcolor
     --bs-table-color: #ffffff;
+    --bs-table-bg: var(--bs-gray-600);
     color:var(--bs-table-color);
   }
   .sidebar-wrapper {
