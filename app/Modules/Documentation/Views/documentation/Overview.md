@@ -21,6 +21,7 @@ Host on your own server.
 
 Your clients can view and pay their invoices online using the built-in PayPal, Stripe and Mollie integrations.
 
-Built with Laravel
+Built with [Laravel](https://laravel.com)  
+Wired with [Laravel Livewire](https://laravel-livewire.com/)  
 
 If you find this product useful, feel free to make a donation: [https://paypal.me/cytecheng](https://paypal.me/cytecheng)

@@ -86,12 +86,12 @@ class DocumentObserver
             $document->company_profile_id = config('bt.defaultCompanyProfile');
         }
 
-        if (! $document->number) {
-            $document->number = Group::generateNumber($document->group_id);
-        }
-
         if (! $document->group_id) {
             $document->group_id = config('bt.'.$document->lower_case_baseclass.'Group');
+        }
+
+        if (! $document->number) {
+            $document->number = Group::generateNumber($document->group_id);
         }
 
         if (! isset($document->terms)) {

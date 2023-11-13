@@ -4,7 +4,9 @@ Release Notes
 
 ### BillingTrack 7.0.0
 **Upgrade Existing v6.x.x installation to v7.0.0**  
-**Do not attempt to upgrade a Billingtrack version older than v6.x.x**
+**Do not attempt to upgrade a Billingtrack version older than v6.x.x**  
+**If attempting to upgrade from BillingTrack V5.X.X to V7, you will first need to upgrade to V6**  
+**V6.1.1 release is available in the releases section of this repository**  
 - **The upgrade migration is very complex and can take a long time (a test database containing 24,000 documents takes 4 hours to complete)**
 - **The migration function removes PHP memory_limit and max_execution_time limits during processing (restores them to original when complete)**
 - **This could severely affect your server performance**

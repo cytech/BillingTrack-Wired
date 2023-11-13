@@ -25,7 +25,7 @@
     <div class="row">
         <div class="col-lg-3">
             <div class="bs-sidebar">
-                <h4>BillingTrack 6.x.x</h4>
+                <h4>BillingTrack 7.x.x</h4>
                 <p style="padding-left: 15px; font-size: 1em;"><a href="Overview">Overview</a>
                 </p>
 

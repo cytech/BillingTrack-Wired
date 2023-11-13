@@ -11,7 +11,7 @@ Upgrade
 <a id="how-to-upgrade-billingtrack"></a>
 # How to Upgrade BillingTrack
 **Upgrade Existing v6.x.x installation to v7.0.0**  
-**Do not attempt to upgrade a Billingtrack version older than v6.x.x [SEE UPGRADING FROM BILLINGTRACK 5.X.X](#upgrade-from-billingtrack-5xx)**
+**Do not attempt to upgrade a Billingtrack version older than v6.x.x to V7 [SEE UPGRADING FROM BILLINGTRACK 5.X.X](#upgrade-from-billingtrack-5xx)**
 - **The upgrade migration is very complex and can take a long time (a test database containing 24,000 documents takes 4 hours to complete)**
 - **The migration function removes PHP memory_limit and max_execution_time limits during processing (restores them to original when complete)**
 - **This could severely affect your server performance**
@@ -43,7 +43,9 @@ Upgrade
 - After migration completes, signin.
 
 # UPGRADE FROM BILLINGTRACK 5.X.X
-**Minimum PHP requirement for BillingTrack-Wired (v6.X.X) is PHP >= 8.1**
+**If attempting to upgrade from BillingTrack V5.X.X to V7, you will first need to upgrade to V6**  
+**V6.1.1 release is available in the releases section of this repository**  
+**Minimum PHP requirement for BillingTrack-Wired (v6.X.X) is PHP >= 8.1**  
 - Create a new installation/site. (see [How to Install BillingTrack](Installation.md))
 - Although it is theoretically possible to do so, do not attempt to upgrade an existing BillingTrack 5.x.x Site.
 - This is a new repository and existing cloners will not be able to pull the update.
