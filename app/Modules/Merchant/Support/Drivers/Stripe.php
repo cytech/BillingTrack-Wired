@@ -22,6 +22,7 @@ class Stripe extends MerchantDriver
     public function verify(Invoice $invoice)
     {
         \Stripe\Stripe::setApiKey($this->getSetting('secretKey'));
+        \Stripe\Stripe::setApiVersion('2022-11-15'); // test api default '2019-09-09'; v10.21.0 = '2022-11-15'
 
         $clientMerchantId = MerchantClient::getByKey($this->getName(), $invoice->client_id, 'id');
 
