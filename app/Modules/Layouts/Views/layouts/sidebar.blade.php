@@ -84,7 +84,7 @@
                         <a class="nav-link" href="#">
                             <i class="nav-icon far fa-calendar fa-fw"></i>
                             <p>@lang('bt.scheduler')</p>
-                            <i class="end fas fa-angle-right "></i>
+                            <i class="nav-arrow fas fa-angle-right "></i>
                         </a>
                         <ul class="nav nav-treeview ps-3">
                             <li class="nav-item"><a class="nav-link" href="{{ route('scheduler.index') }}"><i
@@ -111,7 +111,7 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="#"><i class="nav-icon fas fa-cogs fa-fw"></i>
                                     <p>@lang('bt.utilities')</p><i
-                                            class="end fas fa-angle-right"></i></a>
+                                            class="nav-arrow fas fa-angle-right"></i></a>
                                 <ul class="nav nav-treeview ps-3">
                                     <li class="nav-item">
                                         <a class="nav-link" href="{{ route('scheduler.categories.index') }}"><i
@@ -134,7 +134,7 @@
                     <a class="nav-link" href="#">
                         <i class="nav-icon fas fa-chart-bar"></i>
                         <p>@lang('bt.reports')</p>
-                        <i class="end fa fa-angle-right"></i>
+                        <i class="nav-arrow fa fa-angle-right"></i>
                     </a>
                     <ul class="nav nav-treeview ps-3">
                         <li class="nav-item"><a class="nav-link"
@@ -173,7 +173,7 @@
                     <a class="nav-link" href="#">
                         <i class="nav-icon fas fa-diagram-project"></i>
                         <p>@lang('bt.resources')</p>
-                        <i class="end fa fa-angle-right"></i>
+                        <i class="nav-arrow fa fa-angle-right"></i>
                     </a>
                     <ul class="nav nav-treeview ps-3">
                         <li class="nav-item">
@@ -207,7 +207,7 @@
                     <a class="nav-link" href="#">
                         <i class="nav-icon fas fa-toolbox fa-fw"></i>
                         <p>@lang('bt.utilities')</p>
-                        <i class="end fa fa-angle-right"></i>
+                        <i class="nav-arrow fa fa-angle-right"></i>
                     </a>
                     <ul class="nav nav-treeview ps-3">
                         <li class="nav-item"><a class="nav-link" href="{{ route('categories.index') }}"><i
@@ -247,7 +247,7 @@
                     <a class="nav-link" href="#">
                         <i class="nav-icon fas fa-gears fa-fw"></i>
                         <p>@lang('bt.admin')</p>
-                        <i class="end fa fa-angle-right"></i>
+                        <i class="nav-arrow fa fa-angle-right"></i>
                     </a>
                     <ul class="nav nav-treeview ps-3">
                         <li class="nav-item"><a class="nav-link" href="{{ route('customFields.index') }}"><i

@@ -17,7 +17,7 @@
     @yield('javaScript')
     @livewireStyles
 </head>
-<body class="layout-fixed sidebar-expand-lg sidebar-{{$sidebarMode}}">
+<body class="layout-fixed sidebar-expand-lg sidebar-mini sidebar-{{$sidebarMode}}">
 <div class="app-wrapper">
     @include('layouts._header')
     @include('layouts.sidebar')
@@ -35,6 +35,38 @@
 </body>
 </html>
 <script>
+    // start for adminlte v4 sidebar scrolling
+    const SELECTOR_SIDEBAR_WRAPPER = ".sidebar-wrapper";
+    let sbartheme
+    if ("{!! str_ends_with($headBackground, 'light') !!}") {
+        sbartheme = "os-theme-dark"
+    } else {
+        sbartheme = "os-theme-light"
+    }
+    const Default = {
+        scrollbarTheme: sbartheme,
+        scrollbarAutoHide: "leave",
+        scrollbarClickScroll: true,
+    };
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const sidebarWrapper = document.querySelector(SELECTOR_SIDEBAR_WRAPPER);
+        if (
+            sidebarWrapper &&
+            typeof OverlayScrollbarsGlobal !== "undefined"
+        ) {
+            OverlayScrollbarsGlobal(sidebarWrapper, {
+                scrollbars: {
+                    theme: Default.scrollbarTheme,
+                    autoHide: Default.scrollbarAutoHide,
+                    clickScroll: Default.scrollbarClickScroll,
+                },
+            });
+        }
+    });
+
+    // end for adminlte v4 sidebar scrolling
+
     // livewire modals-bs5.js
     let modalsElement = document.getElementById('laravel-livewire-modals');
 

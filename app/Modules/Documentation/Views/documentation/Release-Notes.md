@@ -2,6 +2,11 @@ Release Notes
 ---
 ---
 
+### BillingTrack 6.1.2 (2024-02-07)
+- update to admin-lte v4
+- lock stripe api version to stripe-php v10.21 version (stripe api '2022-11-15')
+- Remove unused Constants.php
+
 ### BillingTrack 6.1.1 (2023-04-01)
 - fix duplicate item creation after module save
 

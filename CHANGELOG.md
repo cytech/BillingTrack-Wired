@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 6.1.2
+- update to admin-lte v4
+- lock stripe api version to stripe-php v10.21 version (stripe api '2022-11-15')
+- Remove unused Constants.php
+
 ## 6.1.1
 - fix duplicate item creation after module save
 
