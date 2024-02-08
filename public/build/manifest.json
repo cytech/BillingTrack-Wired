@@ -23,11 +23,13 @@
     "file": "assets/fa-solid-900.woff2",
     "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.woff2"
   },
-  "resources/js/app.css": {
-    "file": "assets/app.css",
-    "src": "resources/js/app.css"
-  },
   "resources/js/app.js": {
+    "file": "assets/app.js",
+    "src": "resources/js/app.js",
+    "isEntry": true,
+    "css": [
+      "assets/app.css"
+    ],
     "assets": [
       "assets/fa-brands-400.woff2",
       "assets/fa-brands-400.ttf",
@@ -35,12 +37,6 @@
       "assets/fa-regular-400.ttf",
       "assets/fa-solid-900.woff2",
       "assets/fa-solid-900.ttf"
-    ],
-    "css": [
-      "assets/app.css"
-    ],
-    "file": "assets/app.js",
-    "isEntry": true,
-    "src": "resources/js/app.js"
+    ]
   }
 }

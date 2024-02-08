@@ -9,10 +9,10 @@
         "@popperjs/core": "^2.11.2",
         "axios": "^1.2.2",
         "bootstrap": "^5.3.1",
-        "laravel-vite-plugin": "^0.8",
+        "laravel-vite-plugin": "^1.0.1",
         "sass": "^1.53.0",
-        "vite": "^4.0.4",
-        "vite-plugin-static-copy": "^0.17.0"
+        "vite": "^5.0.12",
+        "vite-plugin-static-copy": "^1.0.1"
     },
     "dependencies": {
         "@fullcalendar/bootstrap5": "^6.0.2",
@@ -33,5 +33,6 @@
         "tippy.js": "^6.2.7",
         "tom-select": "^2.1.0",
         "vanilla-datetimerange-picker": "github:cytech/vanilla-datetimerange-picker#main"
-    }
+    },
+    "type": "module"
 }

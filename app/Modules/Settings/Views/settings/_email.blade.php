@@ -60,7 +60,7 @@
     </div>
     <div class="col-md-3">
         <label class="form-label fw-bold">@lang('bt.smtp_password'): </label>
-        {{ html()->password('setting[mailPassword]')->class('form-control') }}
+        {{ html()->password('setting[mailPassword]')->class('form-control')->attribute('id', 'mailPassword') }}
     </div>
     <div class="col-md-3">
         <label class="form-label fw-bold">@lang('bt.smtp_encryption'): </label>
