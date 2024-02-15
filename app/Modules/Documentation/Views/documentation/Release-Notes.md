@@ -2,6 +2,11 @@ Release Notes
 ---
 ---
 
+### BillingTrack 7.0.1
+- add merchant StripeV3
+- fix missing attribute in email password settings
+- set stripe (V2) apiversion to match stripe-php v10.21.0
+
 ### BillingTrack 7.0.0
 **Upgrade Existing v6.x.x installation to v7.0.0**  
 **Do not attempt to upgrade a Billingtrack version older than v6.x.x**  

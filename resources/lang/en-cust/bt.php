@@ -650,6 +650,7 @@ return [
     'past_days'                                => 'Number of past days to load',
     'payment'                                  => 'Payment',
     'payment_applied'                          => 'Your payment has been applied',
+    'payment_canceled'                         => 'Payment Process canceled by User',
     'payment_button_text'                      => 'Payment Button Text',
     'payment_date'                             => 'Payment Date',
     'payment_form'                             => 'Payment Form',

@@ -40,7 +40,10 @@ class MerchantController extends Controller
 
     public function cancelUrl($driver, $urlKey)
     {
-        return redirect()->route('clientCenter.public.invoice.show', [$urlKey]);
+        $messageStatus = 'error';
+        $messageContent = trans('bt.payment_canceled');
+        return redirect()->route('clientCenter.public.invoice.show', [$urlKey])
+            ->with($messageStatus, $messageContent);
     }
 
     public function returnUrl($driver, $urlKey)

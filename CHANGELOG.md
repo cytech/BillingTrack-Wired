@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 7.0.1
+- add merchant StripeV3
+- fix missing attribute in email password settings
+- set stripe (V2) apiversion to match stripe-php v10.21.0
+
 ## 7.0.0
 - Requires PHP "^8.2"
 - merged core modules
