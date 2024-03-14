@@ -1,5 +1,9 @@
 @foreach ($merchantDrivers as $driver)
-    <h4>{{ $driver->getName() }}</h4>
+    @if($driver->getName() == 'Stripe')
+    <h4>{{ $driver->getName() }} @lang('bt.deprecated')</h4>
+    @else
+    <h4>{{ $driver->getName() }} </h4>
+    @endif
     <div class="row">
         <div class="col-md-2">
             <div class="mb-3">

@@ -26,6 +26,7 @@
         "sonata-project/exporter": "^3.1.1",
         "spatie/laravel-html": "^3.2",
         "spatie/laravel-permission": "^5.9.1",
+        "square/square": "^34.0",
         "srmklive/paypal": "^3.0.19",
         "stripe/stripe-php": "^v13.10.0",
         "tightenco/parental": "^1.3"
