@@ -37,22 +37,22 @@ class Employee extends Model
     //mutators
     public function firstName(): Attribute
     {
-        return new Attribute(set: fn ($value) => $this->first_name = ucfirst($value));
+        return new Attribute(set: fn ($value) => ucfirst($value ?? ''));
     }
 
     public function lastName(): Attribute
     {
-        return new Attribute(set: fn ($value) => $this->last_name = ucfirst($value));
+        return new Attribute(set: fn ($value) => ucfirst($value ?? ''));
     }
 
     public function fullName(): Attribute
     {
-        return new Attribute(set: fn ($value) => $this->full_name = $this->first_name.' '.$this->last_name);
+        return new Attribute(set: fn ($value) => $this->first_name.' '.$this->last_name);
     }
 
     public function shortName(): Attribute
     {
-        return new Attribute(set: fn ($value) => $this->short_name = $this->first_name.' '.substr($this->last_name, 0, 1).'.');
+        return new Attribute(set: fn ($value) => $this->first_name.' '.substr($this->last_name, 0, 1).'.');
     }
 
     public function formattedShortName(): Attribute

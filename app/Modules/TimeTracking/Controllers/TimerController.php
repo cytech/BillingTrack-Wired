@@ -51,7 +51,7 @@ class TimerController extends Controller
         $endAt = Carbon::parse($endAt);
 
         $timer->end_at = $endAt;
-        $timer->hours = $endAt->diffInSeconds($startAt) / 60 / 60;
+        $timer->hours = $endAt->diffInSeconds($startAt, true) / 60 / 60;
         $timer->save();
     }
 
@@ -74,7 +74,7 @@ class TimerController extends Controller
         $endAt = Carbon::parse($request->end_at);
 
         $timer->end_at = $endAt;
-        $timer->hours = $endAt->diffInSeconds($startAt) / 60 / 60;
+        $timer->hours = $endAt->diffInSeconds($startAt, true) / 60 / 60;
         $timer->save();
     }
 
@@ -98,7 +98,7 @@ class TimerController extends Controller
 
             $startAt = Carbon::parse($timer->start_at);
 
-            $seconds += $endAt->diffInSeconds($startAt);
+            $seconds += $endAt->diffInSeconds($startAt, true);
         }
 
         return $seconds;

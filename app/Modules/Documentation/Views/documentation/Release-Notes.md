@@ -3,10 +3,14 @@ Release Notes
 ---
 
 ### BillingTrack 7.0.1
+- upgrade to Laravel 11
 - add merchant StripeV3
 - fix missing attribute in email password settings
 - set stripe (V2 deprecated) apiversion to match stripe-php v10.21.0
 - added Squareup hosted quickpay merchant
+- fix employee model ucfirst() deprecation and string null
+- using Square hosted checkout page currently does not support a "cancel" or "back to merchant" redirect.  
+  user option is browser back button or close page , both of which are no help in returning to BT customer page..
 
 ### BillingTrack 7.0.0
 **Upgrade Existing v6.x.x installation to v7.0.0**  
