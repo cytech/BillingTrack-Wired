@@ -258,6 +258,14 @@
             </div>
             <div class="card-body">
                 <div class="row">
+                    <div class="col-md-12">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold mb-1 text-danger">@lang('bt.client') @lang('bt.flag_text'): </label>
+                            {{ html()->text('flag_text', null)->maxlength(50)->class('form-control mb-3') }}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label class="form-label fw-bold mb-1">@lang('bt.default_currency'): </label>

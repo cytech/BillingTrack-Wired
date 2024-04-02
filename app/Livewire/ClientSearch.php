@@ -49,6 +49,7 @@ class ClientSearch extends LivewireSelect
                         'value' => $client->id,
                         'description' => $client->name,
                         'title' => $client->unique_name,
+                        'flag_text'  => $client->flag_text,
                     ];
                 });
         }

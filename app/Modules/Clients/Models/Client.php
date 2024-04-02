@@ -208,6 +208,10 @@ class Client extends Model
     | Accessors
     |--------------------------------------------------------------------------
     */
+    public function isFlagged(): bool
+    {
+        return $this->flag_text != null;
+    }
 
     public function formattedCreatedat(): Attribute
     {

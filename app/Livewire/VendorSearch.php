@@ -29,6 +29,7 @@ class VendorSearch extends LivewireSelect
                     'value' => $vendor->id,
                     'description' => $vendor->name,
                     'title' => $vendor->name,
+                    'flag_text'  => $vendor->flag_text,
                 ];
             });
     }

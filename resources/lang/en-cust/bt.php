@@ -438,6 +438,8 @@ return [
     'first_name'                               => 'First Name',
     'first_quarter'                            => 'First Quarter',
     'fixerio_api_key'                          => 'FixerIO API Key',
+    'flag'                                     => 'Flag',
+    'flag_text'                                => 'Flag (50 character max)',
     'footer'                                   => 'Footer',
     'force_employee_update'                    => 'Force Employee Update',
     'force_https'                              => 'Force HTTPS',

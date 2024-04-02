@@ -11,6 +11,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - set stripe (V2 deprecated) apiversion to match stripe-php v10.21.0
 - added Squareup hosted quickpay merchant
 - fix employee model ucfirst() deprecation and string null
+- added client and vendor flag. If set under client/vendor edit, will alert to potential issue when client/vendor is selected.
 - using Square hosted checkout page currently does not support a "cancel" or "back to merchant" redirect.  
   user option is browser back button or close page , both of which are no help in returning to BT customer page..
 

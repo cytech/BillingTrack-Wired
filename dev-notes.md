@@ -1,5 +1,3 @@
-3/14/24
-waiting for laravel 11 compatability release on laravolt/avatar - currently on dev-master
 
 update to rappasoft/livewire-tables v3 beta 11 - publishing views adds "rappasoft" directory in vendor.
 previously published under vendor/livewire-tables. must remove "rappsoft" to use published views.  

@@ -52,6 +52,9 @@
     </section>
     <section class="content">
         @include('layouts._alerts')
+        @if($client->isFlagged())
+            <script>notify('@lang('bt.client') @lang('bt.flag') <br> {{$client->flag_text}}', 'error')</script>
+        @endif
         <div class="card">
             <div class="col-12">
                 <div class="card m-2">

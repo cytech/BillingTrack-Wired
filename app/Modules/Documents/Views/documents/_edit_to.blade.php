@@ -28,14 +28,22 @@
             </div>
             @if($document->module_type != 'Purchaseorder')
                 <div class="card-body">
-                    <strong>{{ $document->client->name }}</strong><br>
+                    @if($document->client->isFlagged())
+                        <strong class="text-danger">{{ $document->client->name }}</strong><br>
+                    @else
+                        <strong>{{ $document->client->name }}</strong><br>
+                    @endif
                     {!! $document->client->formatted_address !!}<br>
                     @lang('bt.phone'): {{ $document->client->phone }}<br>
                     @lang('bt.email'): {{ $document->client->email }}
                 </div>
             @else
                 <div class="card-body">
-                    <strong>{{ $document->vendor->name }}</strong><br>
+                    @if($document->vendor->isFlagged())
+                        <strong class="text-danger">{{ $document->vendor->name }}</strong><br>
+                    @else
+                        <strong>{{ $document->vendor->name }}</strong><br>
+                    @endif
                     {!! $document->vendor->formatted_address !!}<br>
                     @lang('bt.phone'): {{ $document->vendor->phone }}<br>
                     @lang('bt.email'): {{ $document->vendor->email }}

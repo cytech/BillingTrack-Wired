@@ -44,6 +44,9 @@
     </section>
     <section class="content">
         @include('layouts._alerts')
+        @if($vendor->isFlagged())
+            <script>notify('@lang('bt.vendor') @lang('bt.flag') <br> {{$vendor->flag_text}}', 'error')</script>
+        @endif
         <div class="row">
             <div class="col-12">
                 <div class="card m-2">

@@ -243,6 +243,7 @@ class LivewireSelect extends Component
             'searchOptionsContainer' => 'position-absolute datepicker list-group bg-white rounded shadow-lg',
             'searchOptionItem' => 'list-group-item',
             'searchOptionItemActive' => 'list-group-item-action text-bg-secondary',
+            'searchOptionItemActiveFlag' => 'list-group-item-action text-bg-danger',
             'searchOptionItemInactive' => 'bg-white text-black-50',
             'searchNoResults' => 'text-bold text-center text-xs text-danger',
             // tailwind

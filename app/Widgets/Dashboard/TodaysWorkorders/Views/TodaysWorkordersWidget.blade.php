@@ -18,7 +18,11 @@
                     <tbody>
                     @foreach($todaysWorkorders as $workorder)
                         <tr id="{!! $workorder->id !!}">
-                            <td>{!! $workorder->client->name !!}</td>
+                            @if($workorder->client->isFlagged())
+                                <td class="text-danger">{!! $workorder->client->name !!}</td>
+                            @else
+                                <td>{!! $workorder->client->name !!}</td>
+                            @endif
                             <td>{!! $workorder->formatted_start_time !!}</td>
                             <td>{!! $workorder->formatted_end_time !!}</td>
                             <td>{!! ($workorder->will_call == 1 )?'Yes':'No' !!}</td>

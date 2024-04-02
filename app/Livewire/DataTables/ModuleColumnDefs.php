@@ -19,7 +19,12 @@ class ModuleColumnDefs
                     $col_client_vendor = Column::make(__('bt.vendor'), 'vendor.name')
                         ->searchable()
                         ->sortable()
-                        ->format(fn ($value, $row, Column $column) => '<a href="/vendors/'.$row->vendor->id.'">'.$value.'</a>')
+                        ->format(fn ($value, $row, Column $column) =>
+                        $row->vendor->isFlagged() ?
+                            '<div title="'.$row->vendor->flag_text.'"><a class="text-danger" href="/vendors/'.$row->vendor->id.'">'.$value.'</a>'
+                            :
+                            '<a href="/vendors/'.$row->vendor->id.'">'.$value.'</a>'
+                        )
                         ->html();
                     $col_invoice_id = null;
                     $col_title_date_due = __('bt.due');
@@ -30,7 +35,12 @@ class ModuleColumnDefs
                     $col_client_vendor = Column::make(__('bt.client'), 'client.name')
                         ->searchable()
                         ->sortable()
-                        ->format(fn ($value, $row, Column $column) => '<a href="/clients/'.$row->client->id.'">'.$value.'</a>')
+                        ->format(fn ($value, $row, Column $column) =>
+                        $row->client->isFlagged() ?
+                            '<div title="'.$row->client->flag_text.'"><a class="text-danger" href="/clients/'.$row->client->id.'">'.$value.'</a>'
+                            :
+                            '<a href="/clients/'.$row->client->id.'">'.$value.'</a>'
+                        )
                         ->html();
                     $col_invoice_id = null;
                     $col_title_date_due = __('bt.due');
@@ -41,7 +51,12 @@ class ModuleColumnDefs
                     $col_client_vendor = Column::make(__('bt.client'), 'client.name')
                         ->searchable()
                         ->sortable()
-                        ->format(fn ($value, $row, Column $column) => '<a href="/clients/'.$row->client->id.'">'.$value.'</a>')
+                        ->format(fn ($value, $row, Column $column) =>
+                        $row->client->isFlagged() ?
+                            '<div title="'.$row->client->flag_text.'"><a class="text-danger" href="/clients/'.$row->client->id.'">'.$value.'</a>'
+                            :
+                            '<a href="/clients/'.$row->client->id.'">'.$value.'</a>'
+                        )
                         ->html();
                     $col_invoice_id = Column::make(__('bt.converted'), 'invoice_id')
                         ->format(function ($value, $row, Column $column) {
@@ -108,7 +123,12 @@ class ModuleColumnDefs
                 Column::make(__('bt.client'), 'name')
                     ->searchable()
                     ->sortable()
-                    ->format(fn ($value, $row, Column $column) => '<div title="'.$row->unique_name.'"><a href="/clients/'.$row->id.'">'.$value.'</a>')
+                    ->format(fn ($value, $row, Column $column) =>
+                        $row->isFlagged() ?
+                            '<div title="'.$row->flag_text.'"><a class="text-danger" href="/clients/'.$row->id.'">'.$value.'</a>'
+                            :
+                            '<div title="'.$row->unique_name.'"><a href="/clients/'.$row->id.'">'.$value.'</a>'
+                        )
                     ->html(),
                 Column::make(__('bt.email_address'), 'email')
                     ->searchable()
@@ -144,7 +164,12 @@ class ModuleColumnDefs
                 Column::make(__('bt.client'), 'client.name')
                     ->searchable()
                     ->sortable()
-                    ->format(fn ($value, $row, Column $column) => '<a href="/clients/'.$row->client->id.'">'.$value.'</a>')
+                    ->format(fn ($value, $row, Column $column) =>
+                    $row->client->isFlagged() ?
+                        '<div title="'.$row->client->flag_text.'"><a class="text-danger" href="/clients/'.$row->client->id.'">'.$value.'</a>'
+                        :
+                        '<a href="/clients/'.$row->client->id.'">'.$value.'</a>'
+                    )
                     ->html(),
                 Column::make(__('bt.summary'), 'summary')
                     ->sortable()
@@ -172,7 +197,11 @@ class ModuleColumnDefs
                             if ($row->vendor->trashed()) {
                                 $ret .= ' <span class="badge bg-danger" title="'.__('bt.trashed').'">'.__('bt.vendor');
                             } else {
-                                $ret .= '<a href="/vendors/'.$row->vendor->id.'">'.$row->vendor->name.'</a>';
+                                $ret .=
+                                    $row->vendor->isFlagged() ?
+                                        '<div title="'.$row->vendor->flag_text.'"><a class="text-danger" href="/vendors/'.$row->vendor->id.'">'.$value.'</a>'
+                                        :
+                                        '<a href="/vendors/'.$row->vendor->id.'">'.$value.'</a>';
                             }
                         } elseif ($row->client_id == -1) {
                             $ret .= ' <span class="badge bg-danger" title="'.__('bt.deleted').'">'.__('bt.vendor');
@@ -191,7 +220,10 @@ class ModuleColumnDefs
                             if ($row->client->trashed()) {
                                 $ret .= ' <span class="badge bg-danger" title="'.__('bt.trashed').'">'.__('bt.client');
                             } else {
-                                $ret .= '<a href="/clients/'.$row->client->id.'">'.$row->client->name.'</a>';
+                                $ret .= $row->client->isFlagged() ?
+                                        '<div title="'.$row->client->flag_text.'"><a class="text-danger" href="/clients/'.$row->client->id.'">'.$value.'</a>'
+                                        :
+                                        '<a href="/clients/'.$row->client->id.'">'.$value.'</a>';
                             }
                         } elseif ($row->client_id == 0) {
                             $ret .= ' <span class="badge bg-danger" title="'.__('bt.deleted').'">'.__('bt.client');
@@ -315,7 +347,12 @@ class ModuleColumnDefs
                 Column::make(__('bt.client'), 'client.name')
                     ->searchable()
                     ->sortable()
-                    ->format(fn ($value, $row, Column $column) => '<a href="/clients/'.$row->client->id.'">'.$value.'</a>')
+                    ->format(fn ($value, $row, Column $column) =>
+                    $row->client->isFlagged() ?
+                        '<div title="'.$row->client->flag_text.'"><a class="text-danger" href="/clients/'.$row->client->id.'">'.$value.'</a>'
+                        :
+                        '<a href="/clients/'.$row->client->id.'">'.$value.'</a>'
+                    )
                     ->html(),
                 Column::make(__('bt.status'), 'status_id')
                     ->format(function ($value, $row, Column $column) use ($statuses) {
@@ -424,7 +461,12 @@ class ModuleColumnDefs
                 Column::make(__('bt.vendor_name'), 'name')
                     ->sortable()
                     ->searchable()
-                    ->format(fn ($value, $row, Column $column) => '<div title="'.$row->name.'"><a href="/vendors/'.$row->id.'">'.$value.'</a>')
+                    ->format(fn ($value, $row, Column $column) =>
+                    $row->isFlagged() ?
+                        '<div title="'.$row->flag_text.'"><a class="text-danger" href="/vendors/'.$row->id.'">'.$value.'</a>'
+                        :
+                        '<div title="'.$row->unique_name.'"><a href="/vendors/'.$row->id.'">'.$value.'</a>'
+                    )
                     ->html(),
                 Column::make(__('bt.email_address'), 'email')
                     ->sortable()
