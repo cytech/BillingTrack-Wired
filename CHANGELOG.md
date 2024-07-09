@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 7.0.2
+- replace forked admin-lte-v4 with origin "admin-lte": "^4.0.0-beta1"  
+- fix trashcolumndefs for expenses
+
 ## 7.0.1
 - upgrade to Laravel 11
 - add merchant StripeV3

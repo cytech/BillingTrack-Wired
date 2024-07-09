@@ -16,7 +16,7 @@ import * as bootstrap from 'bootstrap'
 
 window.bootstrap = bootstrap
 
-import adminlte from 'admin-lte-v4'
+import adminlte from 'admin-lte'
 
 import flatpickr from 'flatpickr'
 

@@ -251,7 +251,7 @@ class TrashColumnDefs
                 Column::make('Action')
                     ->label(fn ($row, Column $column) => view('utilities._actions')->withModel($row)),
             ];
-        } elseif (! $statuses && $module_type == 'Expense') { //Expense column defs
+        } elseif ($module_type == 'Expense') { //Expense column defs
             $default_columns = [
                 Column::make(__('bt.date'), 'expense_date')
                     ->sortable()

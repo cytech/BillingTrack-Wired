@@ -62,7 +62,7 @@ export default defineConfig({
         alias: {
             '~bootstrap': path.resolve(__dirname, 'node_modules/bootstrap'),
             '~@fortawesome': path.resolve(__dirname, 'node_modules/@fortawesome'),
-            '~admin-lte-v4': path.resolve(__dirname, 'node_modules/admin-lte-v4'),
+            '~admin-lte': path.resolve(__dirname, 'node_modules/admin-lte'),
             '~flatpickr': path.resolve(__dirname, 'node_modules/flatpickr'),
             '~tippy.js': path.resolve(__dirname, 'node_modules/tippy.js'),
         }
