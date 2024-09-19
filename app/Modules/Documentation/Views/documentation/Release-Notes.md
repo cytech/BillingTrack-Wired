@@ -2,6 +2,13 @@ Release Notes
 ---
 ---
 
+### BillingTrack 7.0.3
+- fix workorder_to_invoice modal to reflect workorder job_date
+- update bulk-action.blade.php to reflect livewire-datatables changes
+- change workorder datatable to show job_date instead of workorder date
+- change document summary column length to 255 and truncate summary in datatable to 50 chars
+- update all dependencies (note admin-lte v4.0.0-beta2)
+
 ### BillingTrack 7.0.2
 - replace forked admin-lte-v4 with origin "admin-lte": "^4.0.0-beta1"
 - fix trashcolumndefs for expenses
