@@ -75,7 +75,11 @@ class ModuleTable extends DataTableComponent
         $nosearch_modules = ['ScheduleCategory', 'Category', 'MailQueue', 'User'];
 
         if (in_array($this->module_type, $this->core_modules)) {
-            $this->setDefaultSort('document_date', 'desc');
+            if ($this->module_type == 'Workorder'){
+                $this->setDefaultSort('job_date', 'desc');
+            }else {
+                $this->setDefaultSort('document_date', 'desc');
+            }
             if ($this->module_type === 'Recurringinvoice') {
                 $this->keyedStatuses = collect(('BT\\Support\\Statuses\\DocumentStatuses')::lists())->only(9, 10);
             } else {

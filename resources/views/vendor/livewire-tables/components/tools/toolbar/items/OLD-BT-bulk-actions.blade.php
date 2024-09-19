@@ -18,9 +18,9 @@
                 'inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-700 dark:text-white dark:border-gray-600 dark:hover:bg-gray-600' => $component->isTailwind(),
             ])
             type="button"
-            id="{{ $tableName }}-bulkActionsDropdown" 
-            
-                        
+            id="{{ $tableName }}-bulkActionsDropdown"
+
+
             @if($component->isTailwind())
                         x-on:click="open = !open"
                         @else
@@ -33,7 +33,7 @@
                 <x-heroicon-m-chevron-down class="-mr-1 ml-2 h-5 w-5" />
             @endif
         </button>
-        
+
         @if($component->isTailwind())
             <div
                 x-on:click.away="if (!childElementOpen) { open = false }"
@@ -70,11 +70,15 @@
             <div
                 @class([
                     'dropdown-menu dropdown-menu-right w-100' => $component->isBootstrap4(),
-                    'dropdown-menu dropdown-menu-end w-100' => $component->isBootstrap5(),
+//                    'dropdown-menu dropdown-menu-end w-100' => $component->isBootstrap5(),
+                      'dropdown-menu dropdown-menu-end' => $component->isBootstrap5(),
                 ])
                 aria-labelledby="{{ $tableName }}-bulkActionsDropdown"
             >
                 @foreach ($component->getBulkActions() as $action => $title)
+                    @if($action == 'trash' || $action == 'delete')
+                        <hr class="dropdown-divider">
+                    @endif
                     <a
                         href="#"
                         @if($component->hasConfirmationMessage($action))
@@ -86,7 +90,12 @@
                             'dropdown-item' => $component->isBootstrap(),
                         ])
                     >
-                        {{ $title }}
+                        @if($action == 'trash' || $action == 'delete')
+                            <i class="fa fa-trash-alt text-danger"></i>&nbsp; {{ $title }}</a>
+                        @else
+                            <i class="fa fa-exchange-alt"></i>&nbsp; {{ $title }}</a>
+                        @endif
+                        {{-- {{ $title }} --}}
                     </a>
                 @endforeach
             </div>

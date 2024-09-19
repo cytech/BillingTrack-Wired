@@ -16,7 +16,8 @@
                         <div class="col-sm-6">
                             <x-fp_common
                                     id="to_invoice_date"
-                                    class="form-control">
+                                    class="form-control"
+                                    :value="$invoice_date">
                             </x-fp_common>
                         </div>
                     </div>

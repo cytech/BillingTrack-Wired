@@ -80,6 +80,10 @@ class ModuleColumnDefs
                             return $ret;
                         })
                         ->html();
+                    // if workorder replace document_date with job_date
+                    ($module_type == 'Workorder') ? $col_job_date = Column::make(__('bt.job_date'), 'job_date')
+                        ->sortable()
+                        ->format(fn($value, $row, Column $column) => $row->{'formatted_job_date'}) : $col_job_date = null;
                     $col_title_date_due = __('bt.expires');
                     $col_formatted_balance = null;
             }
@@ -101,7 +105,7 @@ class ModuleColumnDefs
                     ->sortable()
                     ->format(fn ($value, $row, Column $column) => '<a href="/documents/'.$row->id.'/edit">'.$value.'</a>')
                     ->html(),
-                Column::make(__('bt.date'), 'document_date')
+                $col_job_date ?? Column::make(__('bt.date'), 'document_date')
                     ->sortable()
                     ->format(fn ($value, $row, Column $column) => $row->{'formatted_document_date'}),
                 Column::make($col_title_date_due, 'action_date')
@@ -110,7 +114,9 @@ class ModuleColumnDefs
                     ->html(),
                 $col_client_vendor,
                 Column::make(__('bt.summary'), 'summary')
-                    ->sortable(),
+                    ->sortable()
+                    ->format(fn ($value, $row, Column $column) => mb_strimwidth($value, 0, 50, "..."))
+                    ->html(),
                 Column::make(__('bt.total'), 'amount.total')
                     ->format(fn ($value, $row, Column $column) => $row->amount->formatted_total),
                 $col_formatted_balance,

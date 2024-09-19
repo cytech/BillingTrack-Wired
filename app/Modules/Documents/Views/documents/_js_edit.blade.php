@@ -7,7 +7,8 @@
             loadModal('{{ route('documentToInvoice.create') }}', {
                 title: '@lang('bt.'. $document->lower_case_baseclass . '_to_invoice')',
                 document_id: {{ $document->id }},
-                client_id: {{ $document->client_id }}
+                client_id: {{ $document->client_id }},
+                invoice_date: '{{ $document->module_type == 'Workorder' ? $document->job_date->format('Y-m-d') : date('Y-m-d') }}'
             })
         });
 

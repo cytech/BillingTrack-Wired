@@ -35,7 +35,7 @@ class DocumentToInvoiceController extends Controller
             ->with('client_id', request('client_id'))
             ->with('groups', Group::getList())
             ->with('user_id', auth()->user()->id)
-            ->with('invoice_date', date('Y-m-d'));
+            ->with('invoice_date', request('invoice_date'));
     }
 
     public function store(DocumentToInvoiceRequest $request)

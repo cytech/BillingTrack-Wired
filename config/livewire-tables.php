@@ -31,6 +31,11 @@ return [
     'enable_blade_directives ' => false,
 
     /**
+     * Customise Script & Styles Paths
+     */
+    'script_base_path' => '/rappasoft/laravel-livewire-tables',
+
+    /**
      * Filter Default Configuration Options
      *
      * */
@@ -67,6 +72,7 @@ return [
             'dateFormat' => 'Y-m-d', // Date format that will be received by the filter
             'earliestDate' => null, // The earliest acceptable date
             'latestDate' => null, // The latest acceptable date
+            'locale' => 'en', // The default locale
         ],
     ],
 
@@ -82,7 +88,30 @@ return [
             'minRange' => 0, // The minimum possible value
             'maxRange' => 100, // The maximum possible value
             'suffix' => '', // A suffix to append to the values when displayed
+            'prefix' => '', // A prefix to prepend to the values when displayed
         ],
+    ],
+    /**
+     * Configuration options for SelectFilter
+     */
+    'selectFilter' => [
+        'defaultOptions' => [],
+        'defaultConfig' => [],
+    ],
+    /**
+     * Configuration options for MultiSelectFilter
+     */
+    'multiSelectFilter' => [
+        'defaultOptions' => [],
+        'defaultConfig' => [],
+    ],
+
+    /**
+     * Configuration options for MultiSelectDropdownFilter
+     */
+    'multiSelectDropdownFilter' => [
+        'defaultOptions' => [],
+        'defaultConfig' => [],
     ],
 
 ];
