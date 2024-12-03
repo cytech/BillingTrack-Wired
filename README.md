@@ -31,7 +31,6 @@ Wired with [Laravel Livewire](https://laravel-livewire.com/)
 
 [**IMPORTANT** UPGRADING FROM BILLINGTRACK 5.X.X](#upgrade-from-billingtrack-5xx)
 
-[Live Demo](http://billingtrack-demo.cytech-eng.com)
 
 # Installation Prerequisites
 BillingTrack is web-based software, so to install and use it, you must
