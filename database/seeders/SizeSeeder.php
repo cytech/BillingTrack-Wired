@@ -8,7 +8,7 @@ use Illuminate\Database\Seeder;
 
 class SizeSeeder extends Seeder
 {
-    public function run()
+    public function run(): void
     {
         if (Size::exists()) {
             return;

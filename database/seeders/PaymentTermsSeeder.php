@@ -8,7 +8,7 @@ use Illuminate\Database\Seeder;
 
 class PaymentTermsSeeder extends Seeder
 {
-    public function run()
+    public function run(): void
     {
         if (PaymentTerm::exists()) {
             return;

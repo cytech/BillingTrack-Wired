@@ -12,12 +12,19 @@ namespace BT\Modules\Employees\Models;
 
 use BT\Support\CurrencyFormatter;
 use BT\Support\DateFormatter;
+use Database\Factories\EmployeeFactory;
+use Illuminate\Database\Eloquent\Attributes\UseFactory;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+#[UseFactory(EmployeeFactory::class)]
+
 class Employee extends Model
 {
+    use HasFactory;
+
     /**
      * Guarded properties
      *
@@ -34,7 +41,7 @@ class Employee extends Model
         return $this->belongsTo(EmployeeType::class);
     }
 
-    //mutators
+    // mutators
     public function firstName(): Attribute
     {
         return new Attribute(set: fn ($value) => ucfirst($value ?? ''));
@@ -64,7 +71,7 @@ class Employee extends Model
         return new Attribute(get: fn () => $this->short_name);
     }
 
-    //getters
+    // getters
     public function formattedBillingRate(): Attribute
     {
         return new Attribute(get: fn () => CurrencyFormatter::format($this->billing_rate));

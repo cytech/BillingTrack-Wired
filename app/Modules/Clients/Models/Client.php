@@ -32,7 +32,10 @@ use BT\Modules\Users\Models\User;
 use BT\Support\CurrencyFormatter;
 use BT\Support\DateFormatter;
 use BT\Support\Statuses\DocumentStatuses;
+use Database\Factories\ClientFactory;
+use Illuminate\Database\Eloquent\Attributes\UseFactory;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -41,10 +44,13 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
 
+#[UseFactory(ClientFactory::class)]
+
 class Client extends Model
 {
-    use SoftDeletes;
+    use HasFactory;
     use SoftCascadeTrait;
+    use SoftDeletes;
 
     protected $softCascade = ['contacts', 'custom', 'invoices', 'workorders', 'quotes', 'projects', 'recurringinvoices',
         'merchant', 'attachments', 'notes'];
@@ -350,7 +356,7 @@ class Client extends Model
 
     private function getTotalSql()
     {
-        //restrict total (billed) to invoices
+        // restrict total (billed) to invoices
         return DB::table('document_amounts')->select(DB::raw('sum(total)'))->whereIn('document_id', function ($q) {
             $q->select('id')->from('documents')
                 ->where('documents.client_id', '=', DB::raw(DB::getTablePrefix().'clients.id'))

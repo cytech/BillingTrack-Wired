@@ -3,14 +3,14 @@
 namespace Database\Seeders;
 
 use BT\Modules\Products\Models\InventoryType;
-use Illuminate\Database\Seeder;
 use Eloquent;
+use Illuminate\Database\Seeder;
 
 class InventoryTypesSeeder extends Seeder
 {
-    public function run()
+    public function run(): void
     {
-        if (InventoryType::exists()){
+        if (InventoryType::exists()) {
             return;
         }
 

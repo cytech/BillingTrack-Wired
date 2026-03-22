@@ -8,7 +8,7 @@ use Spatie\Permission\Models\Permission;
 
 class PermissionsTableSeeder extends Seeder
 {
-    public static $modules = [
+    public static array $modules = [
         'Client',
         'Quote',
         'Workorder',
@@ -21,7 +21,7 @@ class PermissionsTableSeeder extends Seeder
         'Schedule',
     ];
 
-    public static $reports = [
+    public static array $reports = [
         'ClientStatementReport',
         'ExpenseListReport',
         'ItemSalesReport',
@@ -35,10 +35,8 @@ class PermissionsTableSeeder extends Seeder
 
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
         if (Permission::exists()) {
             return;
@@ -62,7 +60,7 @@ class PermissionsTableSeeder extends Seeder
         ];
 
         foreach (static::$modules as $module) {
-            //$perms += ['name' => 'view_' . $module, 'description' => 'View ' . $module . ' Information', 'guard_name' => 'web'];
+            // $perms += ['name' => 'view_' . $module, 'description' => 'View ' . $module . ' Information', 'guard_name' => 'web'];
             $perms[] = ['name' => 'view_'.$module, 'description' => 'View '.$module.' Information', 'group' => 'Modules.'.$module, 'guard_name' => 'web'];
             $perms[] = ['name' => 'create_'.$module, 'description' => 'Create a new '.$module, 'group' => 'Modules.'.$module, 'guard_name' => 'web'];
             $perms[] = ['name' => 'edit_'.$module, 'description' => 'Edit '.$module.' Information', 'group' => 'Modules.'.$module, 'guard_name' => 'web'];
@@ -74,7 +72,7 @@ class PermissionsTableSeeder extends Seeder
         }
 
         foreach ($perms as $perm) {
-            $permission = new Permission();
+            $permission = new Permission;
             $permission->name = $perm['name'];
             $permission->description = $perm['description'];
             $permission->group = $perm['group'];

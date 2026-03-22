@@ -17,13 +17,20 @@ use BT\Modules\TaxRates\Models\TaxRate;
 use BT\Modules\Vendors\Models\Vendor;
 use BT\Support\CurrencyFormatter;
 use BT\Support\NumberFormatter;
+use Database\Factories\ProductFactory;
+use Illuminate\Database\Eloquent\Attributes\UseFactory;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+#[UseFactory(ProductFactory::class)]
+
 class Product extends Model
 {
+    use HasFactory;
+
     /**
      * Guarded properties
      *
@@ -100,7 +107,7 @@ class Product extends Model
         return new Attribute(get: fn () => $this->active ? trans('bt.yes') : trans('bt.no'));
     }
 
-    //inventory tracked scope
+    // inventory tracked scope
     public function scopeTracked($query)
     {
         return $query->whereIn('inventorytype_id', InventoryType::where('tracked', 1)->get('id'));

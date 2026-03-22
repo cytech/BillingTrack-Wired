@@ -1,30 +1,29 @@
 <?php
 
-use Faker\Generator as Faker;
+namespace Database\Factories;
 
-/*
-|--------------------------------------------------------------------------
-| Model Factories
-|--------------------------------------------------------------------------
-|
-| This directory should contain each of the model factory definitions for
-| your application. Factories provide a convenient way to generate new
-| model instances for testing / seeding your application's database.
-|
-*/
+use BT\Modules\Employees\Models\Employee;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(\BT\Modules\Employees\Models\Employee::class, function (Faker $faker) {
-    return [
-        'number' => $faker->unique()->randomNumber(3),
-        'first_name' => $faker->firstName,
-        'last_name' => $faker->lastName,
-        'full_name' => null,
-        'short_name' => null,
-        'title' => 'Worker',
-        'billing_rate' => '20.00',
-        'schedule' => '1',
-        'active' => '1',
-        'driver' => $faker->numberBetween(0,1),
-
-    ];
-});
+/**
+ * @extends Factory<Employee>
+ */
+class EmployeeFactory extends Factory
+{
+    protected $model = Employee::class;
+    public function definition(): array
+    {
+        return [
+            'number' => fake()->unique()->randomNumber(3),
+            'first_name' => fake()->firstName,
+            'last_name' => fake()->lastName,
+            'full_name' => null,
+            'short_name' => null,
+            'title' => 'Worker',
+            'billing_rate' => '20.00',
+            'schedule' => '1',
+            'active' => '1',
+            'driver' => fake()->numberBetween(0, 1),
+        ];
+    }
+}

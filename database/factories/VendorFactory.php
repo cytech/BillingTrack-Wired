@@ -2,22 +2,21 @@
 
 namespace Database\Factories;
 
-use BT\Modules\Clients\Models\Client;
-use BT\Modules\Clients\Models\Contact;
+use BT\Modules\Vendors\Models\Contact;
+use BT\Modules\Vendors\Models\Vendor;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<Client>
+ * @extends Factory<Vendor>
  */
-class ClientFactory extends Factory
+class VendorFactory extends Factory
 {
-    protected $model = Client::class;
+    protected $model = Vendor::class;
 
     public function definition(): array
     {
-        $company = [
+        $vendor = [
             'name' => fake()->company,
-            'is_company' => 1,
             'address' => fake()->streetAddress,
             'city' => fake()->city,
             'state' => fake()->stateAbbr,
@@ -26,31 +25,14 @@ class ClientFactory extends Factory
             'city_2' => fake()->city,
             'state_2' => fake()->stateAbbr,
             'zip_2' => fake()->postcode,
-            'industry_id' => fake()->numberBetween(2, 34),
-            'size_id' => fake()->numberBetween(2, 7),
             'phone' => fake()->numerify('(###) ###-####'),
             'fax' => fake()->numerify('(###) ###-####'),
             'mobile' => fake()->numerify('(###) ###-####'),
             'email' => fake()->unique()->safeEmail,
         ];
 
-        $individual = [
-            'name' => fake()->firstName.' '.fake()->lastName,
-            'is_company' => 0,
-            'address' => fake()->streetAddress,
-            'city' => fake()->city,
-            'state' => fake()->stateAbbr,
-            'zip' => fake()->postcode,
-            'industry_id' => fake()->numberBetween(2, 34),
-            'size_id' => fake()->numberBetween(2, 7),
-            'phone' => fake()->numerify('(###) ###-####'),
-            'fax' => fake()->numerify('(###) ###-####'),
-            'mobile' => fake()->numerify('(###) ###-####'),
-            'email' => fake()->unique()->safeEmail,
-        ];
+        return $vendor;
 
-        return $company;
-        // return $individual;
     }
 
     public function configure()

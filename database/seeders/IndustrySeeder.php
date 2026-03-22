@@ -2,15 +2,15 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use BT\Modules\Industries\Models\Industry;
 use Eloquent;
+use Illuminate\Database\Seeder;
 
 class IndustrySeeder extends Seeder
 {
-    public function run()
+    public function run(): void
     {
-        if (Industry::exists()){
+        if (Industry::exists()) {
             return;
         }
 

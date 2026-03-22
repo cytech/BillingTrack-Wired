@@ -8,7 +8,7 @@ use Illuminate\Database\Seeder;
 
 class TitleSeeder extends Seeder
 {
-    public function run()
+    public function run(): void
     {
         if (Title::exists()) {
             return;

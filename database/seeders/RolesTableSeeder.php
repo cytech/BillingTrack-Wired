@@ -11,10 +11,8 @@ class RolesTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
 
         if (Role::exists()) {
@@ -31,7 +29,7 @@ class RolesTableSeeder extends Seeder
         ];
 
         foreach ($roles as $r) {
-            $role = new Role();
+            $role = new Role;
             $role->name = $r['name'];
             $role->description = $r['description'];
             $role->guard_name = $r['guard_name'];
@@ -48,7 +46,7 @@ class RolesTableSeeder extends Seeder
                 $role->syncPermissions(Permission::whereNotIn('id', [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16])->get());
             } // attach permissions to client 0
             else {
-                //$role->syncPermissions(Permission::where('name', 'LIKE', 'view_%')->get());
+                // $role->syncPermissions(Permission::where('name', 'LIKE', 'view_%')->get());
             }
         }
         Eloquent::reguard();
