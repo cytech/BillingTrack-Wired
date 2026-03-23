@@ -1,51 +1,52 @@
 {
+    "$schema": "https://getcomposer.org/schema.json",
     "name": "laravel/laravel",
-    "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
-    "license": "MIT",
     "type": "project",
+    "description": "The skeleton application for the Laravel framework.",
+    "keywords": [
+        "laravel",
+        "framework"
+    ],
+    "license": "MIT",
     "require": {
-        "php": "^8.2",
-        "askedio/laravel-soft-cascade": "^12.0.0",
-        "barryvdh/laravel-ide-helper": "^v3.5.5",
+        "php": "^8.3",
+        "askedio/laravel-soft-cascade": "dev-master",
+        "barryvdh/laravel-ide-helper": "^v3.7",
         "dompdf/dompdf": "^v3.1.0",
-        "graham-campbell/markdown": "^v16.0.0",
+        "graham-campbell/markdown": "^v16.1.0",
         "ifsnop/mysqldump-php": "^v2.10",
-        "knplabs/knp-snappy": "^1.2",
-        "laravel/framework": "^12.0",
-        "laravel/helpers": "^1.6",
-        "laravel/legacy-factories": "^1.1",
-        "laravel/tinker": "^2.8",
-        "laravolt/avatar": "^6.1.1",
+        "knplabs/knp-snappy": "^1.6",
+        "laravel/framework": "^13.0",
+        "laravel/helpers": "^1.8",
+        "laravel/tinker": "^3",
+        "laravolt/avatar": "^6.4",
         "livewire/livewire": "^3.6",
-        "mollie/mollie-api-php": "^2.50",
-        "rappasoft/laravel-livewire-tables": "^v3.7.1",
+        "mollie/mollie-api-php": "^3.9",
+        "rappasoft/laravel-livewire-tables": "dev-l13-compatibility",
         "simshaun/recurr": "^v5.0.0",
-        "sonata-project/exporter": "^3.1.1",
-        "spatie/laravel-html": "^3.2",
-        "spatie/laravel-permission": "^6.4.0",
+        "sonata-project/exporter": "^3.4",
+        "spatie/laravel-html": "^3.13",
+        "spatie/laravel-permission": "^7.2.4",
         "square/square": "^38.0.0",
-        "srmklive/paypal": "^3.0.19",
+        "srmklive/paypal": "dev-l13-compatibility",
         "stripe/stripe-php": "^v16.0.0",
-        "tightenco/parental": "^1.3"
+        "tightenco/parental": "^1.6"
     },
     "require-dev": {
-        "barryvdh/laravel-debugbar": "^3.5",
-        "fakerphp/faker": "^1.13",
-        "laravel/pint": "^1.10",
-        "mockery/mockery": "^1.4",
+        "barryvdh/laravel-debugbar": "^v4.1.3",
+        "fakerphp/faker": "^1.24",
+        "laravel/pint": "^1.29",
+        "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^v8.1.1",
-        "phpunit/phpunit": "^11.0",
-        "pestphp/pest": "^3.0",
-        "spatie/laravel-ignition": "^2.0"
+        "phpunit/phpunit": "^12.0",
+        "pestphp/pest": "^4.0",
+        "spatie/laravel-ignition": "^2.12"
     },
     "autoload": {
-        "classmap": [
-            "database/factories"
-        ],
         "psr-4": {
             "BT\\": "app/",
             "Addons\\": "custom/addons/",
+            "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
         }
     },
@@ -54,18 +55,22 @@
             "Tests\\": "tests/"
         }
     },
-    "extra": {
-        "laravel": {
-            "dont-discover": [
-            ]
-        }
-    },
     "scripts": {
-        "post-root-package-install": [
-            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+        "setup": [
+            "composer install",
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
+            "@php artisan key:generate",
+            "@php artisan migrate --force",
+            "npm install",
+            "npm run build"
         ],
-        "post-create-project-cmd": [
-            "@php artisan key:generate --ansi"
+        "dev": [
+            "Composer\\Config::disableProcessTimeout",
+            "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1 --timeout=0\" \"php artisan pail --timeout=0\" \"npm run dev\" --names=server,queue,logs,vite --kill-others"
+        ],
+        "test": [
+            "@php artisan config:clear --ansi",
+            "@php artisan test"
         ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
@@ -75,18 +80,44 @@
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force",
             "php artisan ide-helper:generate",
             "php artisan ide-helper:meta"
+        ],
+        "post-root-package-install": [
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+        ],
+        "post-create-project-cmd": [
+            "@php artisan key:generate --ansi",
+            "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
+            "@php artisan migrate --graceful --ansi"
+        ],
+        "pre-package-uninstall": [
+            "Illuminate\\Foundation\\ComposerScripts::prePackageUninstall"
         ]
     },
+    "extra": {
+        "laravel": {
+            "dont-discover": [
+            ]
+        }
+    },
     "config": {
+        "optimize-autoloader": true,
         "preferred-install": "dist",
         "sort-packages": true,
-        "optimize-autoloader": true,
         "allow-plugins": {
-            "composer/package-versions-deprecated": true,
-            "symfony/thanks": false,
-            "pestphp/pest-plugin": true
+            "pestphp/pest-plugin": true,
+            "php-http/discovery": true
         }
     },
     "minimum-stability": "stable",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/laravel-shift/laravel-livewire-tables.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/laravel-shift/laravel-paypal.git"
+        }
+    ]
 }

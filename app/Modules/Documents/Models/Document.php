@@ -43,8 +43,8 @@ use Parental\HasChildren;
 class Document extends Model
 {
     use HasChildren;
-    use SoftDeletes;
     use SoftCascadeTrait;
+    use SoftDeletes;
 
     protected static function boot()
     {
@@ -55,7 +55,7 @@ class Document extends Model
 
         // using static::observe(...) instead of Config::observe(...)
         // this way the child classes auto-register the observer to their own class
-        static::observe(DocumentObserver::class);
+        static::whenBooted(fn () => static::observe(DocumentObserver::class));
     }
 
     protected $childColumn = 'document_type';
@@ -288,7 +288,7 @@ class Document extends Model
                 $key = $item->taxRate->name;
 
                 if (! isset($taxes[$key])) {
-                    $taxes[$key] = new \stdClass();
+                    $taxes[$key] = new \stdClass;
                     $taxes[$key]->name = $item->taxRate->name;
                     $taxes[$key]->percent = $item->taxRate->formatted_percent;
                     $taxes[$key]->total = $item->amount->tax_1;
@@ -302,7 +302,7 @@ class Document extends Model
                 $key = $item->taxRate2->name;
 
                 if (! isset($taxes[$key])) {
-                    $taxes[$key] = new \stdClass();
+                    $taxes[$key] = new \stdClass;
                     $taxes[$key]->name = $item->taxRate2->name;
                     $taxes[$key]->percent = $item->taxRate2->formatted_percent;
                     $taxes[$key]->total = $item->amount->tax_2;

@@ -2,7 +2,7 @@
  * Tom Select Bootstrap 4
  */
 /**
- * tom-select.css (v2.4.3)
+ * tom-select.css (v2.5.2)
  * Copyright (c) contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
@@ -51,6 +51,7 @@
   background: #efefef;
   color: #343a40;
   border: 0 solid #dee2e6;
+  overflow: auto;
 }
 .ts-wrapper.multi .ts-control > div.active {
   background: #007bff;
@@ -88,7 +89,7 @@
   outline: none !important;
 }
 .has-items .ts-control > input {
-  margin: 0 4px !important;
+  margin: 0px 4px !important;
 }
 .ts-control.rtl {
   text-align: right;
@@ -98,7 +99,7 @@
   right: auto;
 }
 .ts-control.rtl .ts-control > input {
-  margin: 0 4px 0 -2px !important;
+  margin: 0px 4px 0px -2px !important;
 }
 .disabled .ts-control {
   opacity: 0.5;
@@ -493,18 +494,28 @@
 .ts-control {
   min-height: calc(1.5em + 0.75rem + 2px);
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-  display: flex;
-  align-items: center;
 }
 @media (prefers-reduced-motion: reduce) {
   .ts-control {
     transition: none;
   }
 }
+.ts-control {
+  display: flex;
+  align-items: center;
+}
 .focus .ts-control {
   border-color: rgb(127.5, 189, 255);
   outline: 0;
   box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+.ts-control input::-ms-input-placeholder {
+  color: #a7aeb8;
+  opacity: 1;
+}
+.ts-control input::placeholder {
+  color: #a7aeb8;
+  opacity: 1;
 }
 
 .is-invalid .ts-control,
