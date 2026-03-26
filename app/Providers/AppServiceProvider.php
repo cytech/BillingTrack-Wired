@@ -10,15 +10,14 @@
  *         Route::get('/', 'CategoriesController@index')->name('index');
 */
 
-
 namespace BT\Providers;
 
 use BT\Support\Directory;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Pagination\Paginator;
 use Livewire\Livewire;
 
 class AppServiceProvider extends ServiceProvider
@@ -28,7 +27,7 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         Livewire::setUpdateRoute(function ($handle) {
             return Route::name('livewire.update')
@@ -42,8 +41,8 @@ class AppServiceProvider extends ServiceProvider
             request()->setTrustedProxies([request()->getClientIp()]);
         }
 
-        if (!$this->app->environment('testing') and $this->app->config->get('app.key') == 'ReplaceThisWithYourOwnLicenseKey') {
-            session()->flash('error', '<strong>' . trans('bt.error') . '</strong> - ' . 'Please enter your license key in config/app.php.');
+        if (! $this->app->environment('testing') and $this->app->config->get('app.key') == 'ReplaceThisWithYourOwnLicenseKey') {
+            session()->flash('error', '<strong>'.trans('bt.error').'</strong> - '.'Please enter your license key in config/app.php.');
         }
 
         $this->app->view->addLocation(base_path('custom/overrides'));
@@ -51,8 +50,8 @@ class AppServiceProvider extends ServiceProvider
         $modules = Directory::listDirectories(app_path('Modules'));
 
         foreach ($modules as $module) {
-            $routesPath = app_path('Modules/' . $module . '/routes.php');
-            $viewsPath = app_path('Modules/' . $module . '/Views');
+            $routesPath = app_path('Modules/'.$module.'/routes.php');
+            $viewsPath = app_path('Modules/'.$module.'/Views');
 
             if (file_exists($routesPath)) {
                 require $routesPath;
@@ -77,7 +76,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->register('BT\Providers\EventServiceProvider');
         $this->app->register('BT\Providers\ObserverServiceProvider');
 
-        Paginator::useBootstrap();
+        Paginator::useBootstrapFive();
     }
 
     /**
@@ -87,5 +86,4 @@ class AppServiceProvider extends ServiceProvider
     {
         //
     }
-
 }

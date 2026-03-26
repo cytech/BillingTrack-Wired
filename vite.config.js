@@ -101,5 +101,10 @@ export default defineConfig({
                 assetFileNames: `assets/[name].[ext]`
             }
         }
-    }
+    },
+    server: {
+        watch: {
+            ignored: ['**/storage/framework/views/**'],
+        },
+    },
 })
