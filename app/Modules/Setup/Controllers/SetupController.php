@@ -45,26 +45,26 @@ class SetupController extends Controller
     public function prerequisites()
     {
         $errors = [];
-        $versionRequired = '8.2';
+        $versionRequired = '8.3';
         $dbDriver = config('database.default');
-        $dbConfig = config('database.connections.' . $dbDriver);
+        $dbConfig = config('database.connections.'.$dbDriver);
 
         if (version_compare(phpversion(), $versionRequired, '<')) {
             $errors[] = sprintf(trans('bt.php_version_error'), $versionRequired);
         }
 
-        if (!$dbConfig['host'] or !$dbConfig['database'] or !$dbConfig['username'] or !$dbConfig['password']) {
+        if (! $dbConfig['host'] or ! $dbConfig['database'] or ! $dbConfig['username'] or ! $dbConfig['password']) {
             $errors[] = trans('bt.database_not_configured');
         }
 
-        $query = "SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME =  ?";
+        $query = 'SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME =  ?';
         try {
             DB::select($query, [$dbConfig['database']]);
         } catch (\PDOException $e) {
             $errors[] = trans('bt.database_schema_not_configured');
         }
 
-        if (!$errors) {
+        if (! $errors) {
             return redirect()->route('setup.migration');
         }
 
@@ -91,11 +91,13 @@ class SetupController extends Controller
             // restore php memory limits after migrations
             ini_set('memory_limit', $orig_memory_limit);
             ini_set('max_execution_time', $maxtime);
+
             return response()->json([], 200);
         }
         // restore php memory limits after migrations
         ini_set('memory_limit', $orig_memory_limit);
         ini_set('max_execution_time', $maxtime);
+
         return response()->json(['exception' => $this->migrations->getException()->getMessage()], 400);
     }
 
@@ -103,12 +105,13 @@ class SetupController extends Controller
     {
         $role = Role::findByName('superadmin');
 
-        if (!User::count()) {
+        if (! User::count()) {
 
             return view('setup.account');
 
-        } elseif (!$role->users()->count()) {
+        } elseif (! $role->users()->count()) {
             $users = User::whereNull('client_id')->orWhere('client_id', 0)->orderBy('id')->get();
+
             return view('setup.superadmin')->with('users', $users);
         }
 
@@ -118,7 +121,7 @@ class SetupController extends Controller
     public function postAccount(ProfileRequest $request)
     {
         $role = Role::findByName('superadmin');
-        if (!User::count()) {
+        if (! User::count()) {
             $input = request()->all();
 
             unset($input['user']['password_confirmation']);
@@ -133,12 +136,12 @@ class SetupController extends Controller
             $companyProfile = CompanyProfile::create($input['company_profile']);
 
             Setting::saveByKey('defaultCompanyProfile', $companyProfile->id);
-        } elseif (!$role->users()->count()) {
-            $superadmin = $request->role1; //superadmin
+        } elseif (! $role->users()->count()) {
+            $superadmin = $request->role1; // superadmin
             $user = User::find($superadmin);
             $user->assignRole('superadmin');
 
-            $others = $request->role2; //admin or user
+            $others = $request->role2; // admin or user
             if ($others) {
                 foreach ($others as $id => $role) {
                     $user = User::find($id);
@@ -154,6 +157,4 @@ class SetupController extends Controller
     {
         return view('setup.complete');
     }
-
-
 }

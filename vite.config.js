@@ -51,6 +51,21 @@ export default defineConfig({
                     rename: { stripBase: true },
                 },
                 {
+                    src: 'node_modules/bootstrap-icons/font',
+                    dest: '../plugins/bootstrap-icons/font',
+                    rename: { stripBase: true },
+                },
+                {
+                    src: 'node_modules/bootstrap-icons/font/fonts',
+                    dest: '../plugins/bootstrap-icons/font/fonts',
+                    rename: { stripBase: true },
+                },
+                {
+                    src: 'node_modules/bootstrap-icons/icons',
+                    dest: '../plugins/bootstrap-icons/icons',
+                    rename: { stripBase: true },
+                },
+                {
                     src: 'resources/img/credit/*',
                     dest: '../img/credit',
                     rename: { stripBase: true },

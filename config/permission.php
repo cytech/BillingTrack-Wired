@@ -1,5 +1,9 @@
 <?php
 
+use BT\Modules\Users\Models\Permission;
+use Spatie\Permission\DefaultTeamResolver;
+use Spatie\Permission\Models\Role;
+
 return [
 
     'models' => [
@@ -13,8 +17,8 @@ return [
          * `Spatie\Permission\Contracts\Permission` contract.
          */
 
-        //'permission' => Spatie\Permission\Models\Permission::class,
-        'permission' => \BT\Modules\Users\Models\Permission::class,
+        // 'permission' => Spatie\Permission\Models\Permission::class,
+        'permission' => Permission::class,
 
         /*
          * When using the "HasRoles" trait from this package, we need to know which
@@ -25,7 +29,7 @@ return [
          * `Spatie\Permission\Contracts\Role` contract.
          */
 
-        'role' => Spatie\Permission\Models\Role::class,
+        'role' => Role::class,
 
     ],
 
@@ -76,8 +80,8 @@ return [
         /*
          * Change this if you want to name the related pivots other than defaults
          */
-        'role_pivot_key' => null, //default 'role_id',
-        'permission_pivot_key' => null, //default 'permission_id',
+        'role_pivot_key' => null, // default 'role_id',
+        'permission_pivot_key' => null, // default 'permission_id',
 
         /*
          * Change this if you want to name the related model primary key other than
@@ -105,6 +109,24 @@ return [
     'register_permission_check_method' => true,
 
     /*
+    * When set to true, Laravel\Octane\Events\OperationTerminated event listener will be registered
+    * this will refresh permissions on every TickTerminated, TaskTerminated and RequestTerminated
+    * NOTE: This should not be needed in most cases, but an Octane/Vapor combination benefited from it.
+    */
+    'register_octane_reset_listener' => false,
+
+    /*
+     * Events will fire when a role or permission is assigned/unassigned:
+     * \Spatie\Permission\Events\RoleAttachedEvent
+     * \Spatie\Permission\Events\RoleDetachedEvent
+     * \Spatie\Permission\Events\PermissionAttachedEvent
+     * \Spatie\Permission\Events\PermissionDetachedEvent
+     *
+     * To enable, set to true, and then create listeners to watch these events.
+     */
+    'events_enabled' => false,
+
+    /*
      * When set to true the package implements teams using the 'team_foreign_key'. If you want
      * the migrations to register the 'team_foreign_key', you must set this to true
      * before doing the migration. If you already did the migration then you must make a new
@@ -113,6 +135,17 @@ return [
      */
 
     'teams' => false,
+    /*
+    * The class to use to resolve the permissions team id
+    */
+    'team_resolver' => DefaultTeamResolver::class,
+
+    /*
+     * Passport Client Credentials Grant
+     * When set to true the package will use Passports Client to check permissions
+     */
+
+    'use_passport_client_credentials' => false,
 
     /*
      * When set to true, the required permission names are added to the exception
@@ -143,7 +176,7 @@ return [
          * When permissions or roles are updated the cache is flushed automatically.
          */
 
-        'expiration_time' => \DateInterval::createFromDateString('24 hours'),
+        'expiration_time' => DateInterval::createFromDateString('24 hours'),
 
         /*
          * The cache key used to store all permissions.
@@ -157,6 +190,7 @@ return [
          * file. Using 'default' here means to use the `default` set in cache.php.
          */
 
-        'store' => 'default',
+        //'store' => 'default',
+        'store' => 'file',
     ],
 ];

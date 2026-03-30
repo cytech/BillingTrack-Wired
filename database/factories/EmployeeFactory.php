@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class EmployeeFactory extends Factory
 {
     protected $model = Employee::class;
+
     public function definition(): array
     {
         return [
@@ -20,6 +21,7 @@ class EmployeeFactory extends Factory
             'full_name' => null,
             'short_name' => null,
             'title' => 'Worker',
+            'type_id' => fake()->numberBetween(1, 11),
             'billing_rate' => '20.00',
             'schedule' => '1',
             'active' => '1',

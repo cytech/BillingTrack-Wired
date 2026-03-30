@@ -60,14 +60,20 @@
                         <label for="password"
                                class="col-md-4 col-form-label text-md-right">{{ __('bt.password') }}</label>
                         <div class="col-md-8">
-                            <input id="password" type="password"
-                                   class="form-control @error('password') is-invalid @enderror"
-                                   name="password" required autocomplete="current-password">
-                            @error('password')
-                            <span class="invalid-feedback" role="alert">
+                            <div class="input-group ">
+                                <input id="password" type="password"
+                                       class="form-control @error('password') is-invalid @enderror"
+                                       name="password" required autocomplete="current-password">
+                                <div class="input-group-append mt-1">
+                                    <span class="input-group-text" id="basic-addon2"><i class="fa fa-eye-slash"
+                                                                                        id="togglePassword"></i></span>
+                                </div>
+                                @error('password')
+                                <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
-                            @enderror
+                                @enderror
+                            </div>
                         </div>
                     </div>
                     @if(!config('app.demo'))
@@ -78,7 +84,7 @@
                                     <label>
                                         <input type="hidden" name="remember_me" value="0">
                                         <input class="form-check-input" type="checkbox" name="remember_me"
-                                               value="1"> @lang('bt.remember_me')
+                                               value="1" style="border-width: medium"> @lang('bt.remember_me')
                                     </label>
                                 </div>
                             </div>
@@ -115,6 +121,22 @@
 <script type="text/javascript">
     document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('email').focus()
+    });
+
+    const togglePassword = document
+        .querySelector('#togglePassword');
+    const password = document.querySelector('#password');
+    const icon = document.getElementById("togglePassword");
+    togglePassword.addEventListener('click', () => {
+        // Toggle the type attribute using
+        // getAttribure() method
+        const type = password
+            .getAttribute('type') === 'password' ?
+            'text' : 'password';
+        password.setAttribute('type', type);
+        // Toggle the eye and eye-slash icon
+        icon.classList.toggle('fa-eye');
+        icon.classList.toggle('fa-eye-slash');
     });
 </script>
 </body>

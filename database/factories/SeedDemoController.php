@@ -20,6 +20,7 @@ use BT\Modules\Vendors\Models\Vendor;
 /*
  *  run in tinker - includes client/vendor contact seeding
  *  Client::factory(25)->create()
+ *  run Client twice - comment/uncomment return $company; return $individual; in ClientFactory.php between runs
  *  Product::factory(20)->create()
  *  Employee::factory(10)->create()
  *  Vendor::factory(10)->create()

@@ -230,8 +230,8 @@ class CreateModuleModal extends Component
                 'client_id' => $this->resource_id,
                 'group_id' => $this->group_id,
                 'company_profile_id' => $this->company_profile_id,
-                'next_date' => $this->next_date ?? null,
-                'stop_date' => $this->stop_date ?? '0000-00-00',
+                'next_date' => $this->moduletype == 'Recurringinvoice' ? $this->next_date : null,
+                'stop_date' => $this->stop_date ?? null,
                 'recurring_frequency' => $this->recurring_frequency ?? null,
                 'recurring_period' => $this->recurring_period ?? null,
             ];
@@ -298,7 +298,7 @@ class CreateModuleModal extends Component
             'summary' => $fromModule->summary,
             'discount' => $fromModule->discount,
             'next_date' => $this->next_date ?? null,
-            'stop_date' => $this->stop_date ?? '0000-00-00',
+            'stop_date' => $this->stop_date ?? null,
             'recurring_frequency' => $this->recurring_frequency ?? null,
             'recurring_period' => $this->recurring_period ?? null,
         ];

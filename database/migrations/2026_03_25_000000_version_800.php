@@ -4,16 +4,12 @@ use BT\Modules\Settings\Models\Setting;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class Version800 extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @table payments_custom
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::table('documents', function (Blueprint $table) {
             $table->tinyInteger('will_call')->default('0')->nullable()->change();
@@ -27,15 +23,6 @@ class Version800 extends Migration
             $table->string('email')->primary();
             $table->string('token');
             $table->timestamp('created_at')->nullable();
-        });
-
-        Schema::create('sessions', function (Blueprint $table) {
-            $table->string('id')->primary();
-            $table->foreignId('user_id')->nullable()->index();
-            $table->string('ip_address', 45)->nullable();
-            $table->text('user_agent')->nullable();
-            $table->longText('payload');
-            $table->integer('last_activity')->index();
         });
 
         Schema::create('cache', function (Blueprint $table) {
@@ -88,13 +75,10 @@ class Version800 extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('password_reset_tokens');
-        Schema::dropIfExists('sessions');
         Schema::dropIfExists('cache');
         Schema::dropIfExists('cache_locks');
         Schema::dropIfExists('jobs');
@@ -103,4 +87,4 @@ class Version800 extends Migration
 
         Setting::saveByKey('version', '7.0.6');
     }
-}
+};

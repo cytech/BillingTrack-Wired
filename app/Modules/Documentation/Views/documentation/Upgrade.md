@@ -10,8 +10,40 @@ Upgrade
 
 <a id="how-to-upgrade-billingtrack"></a>
 # How to Upgrade BillingTrack
+**Upgrade Existing v7.x.x installation to v8.X.X**  
+**Do not attempt to upgrade a Billingtrack version older than v7.x.x to V8 [SEE UPGRADING FROM BILLINGTRACK 6.X.X](#how-to-upgrade-from-billingtrack6)**
+- NOTE: BillingTrack-wired v8.0.0 and later require PHP &gt;= 8.3
+- BACKUP YOUR EXISTING DATABASE !!!!
+- Git pull (if originally cloned) or download and overwrite existing
+  installation.
+- if downloading and extracting zip, delete the
+  contents of:
+  - "YOUR\_BILLINGTRACK\_WEBSITE/public"
+  - "YOUR_BILLINGTRACK_WEBSITE/database/seeds"
+  - "YOUR\_BILLINGTRACK\_WEBSITE/app"  
+    directories prior to extracting.
+- BillingTrack V7 .env file needs to be updated. It is recommended to backup (or rename) your .env file and then Copy ".env.example" to ".env" .
+  - edit .env and change:
+    - APP_KEY= (your old APP_KEY)
+    - DB_HOST= (your old DB_HOST)
+    - DB_DATABASE= (your old DB_DATABASE)
+    - DB_USERNAME= (your old DB_USERNAME)
+    - DB_PASSWORD= (your old DB_PASSWORD)
+  
+  NOTE: Do not change APP_ENV=local. Changing this will cause migrations to fail without feedback. Changing this value to "production" has no beneficial effect on BillingTrack operation.  
+      Also, do not change DB_STRICT=true. Mysql strict mode is now required for BillingTrack V8.
+
+- save .env file. 
+- Run composer update
+- Start-> YOUR\_BILLINGTRACK\_WEBSITE/setup
+- After migration completes, signin.
+
+<a id="how-to-upgrade-from-billingtrack6"></a>
+# UPGRADE FROM BILLINGTRACK 6.X.X to V7
 **Upgrade Existing v6.x.x installation to v7.0.0**  
-**Do not attempt to upgrade a Billingtrack version older than v6.x.x to V7 [SEE UPGRADING FROM BILLINGTRACK 5.X.X](#upgrade-from-billingtrack-5xx)**
+**Do not attempt to upgrade a Billingtrack version older than v6.x.x to V7 [SEE UPGRADING FROM BILLINGTRACK 5.X.X](#how-to-upgrade-from-billingtrack5)**
+- **If attempting to upgrade from BillingTrack V6.X.X to V8, you will first need to upgrade to V7**  
+  **V7.0.6 release is available in the releases section of this repository**
 - **The upgrade migration is very complex and can take a long time (a test database containing 24,000 documents takes 4 hours to complete)**
 - **The migration function removes PHP memory_limit and max_execution_time limits during processing (restores them to original when complete)**
 - **This could severely affect your server performance**
@@ -42,7 +74,8 @@ Upgrade
 - Start-> YOUR\_BILLINGTRACK\_WEBSITE/setup
 - After migration completes, signin.
 
-# UPGRADE FROM BILLINGTRACK 5.X.X
+<a id="how-to-upgrade-from-billingtrack5"></a>
+# UPGRADE FROM BILLINGTRACK 5.X.X to V6
 **If attempting to upgrade from BillingTrack V5.X.X to V7, you will first need to upgrade to V6**  
 **V6.1.1 release is available in the releases section of this repository**  
 **Minimum PHP requirement for BillingTrack-Wired (v6.X.X) is PHP >= 8.1**  

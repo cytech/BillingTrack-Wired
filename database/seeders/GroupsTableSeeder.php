@@ -21,9 +21,9 @@ class GroupsTableSeeder extends Seeder
 
         Eloquent::unguard();
 
-        Group::create(['id' => 1, 'name' => 'Invoice Default', 'next_id' => 1, 'left_pad' => 0, 'format' => 'INV{NUMBER}', 'last_id' => 0, 'last_year' => 0, 'last_month' => 0, 'last_week' => 0, 'last_number' => 0]);
-        Group::create(['id' => 2, 'name' => 'Quote Default', 'next_id' => 1, 'left_pad' => 0, 'format' => 'QUO{NUMBER}', 'last_id' => 0, 'last_year' => 0, 'last_month' => 0, 'last_week' => 0, 'last_number' => 0]);
-        Group::create(['id' => 3, 'name' => 'Workorder Default', 'next_id' => 1, 'left_pad' => 0, 'format' => 'WO{NUMBER}', 'last_id' => 0, 'last_year' => 0, 'last_month' => 0, 'last_week' => 0, 'last_number' => 0]);
+        Group::create(['id' => 1, 'name' => 'Invoice Default', 'next_id' => 1, 'left_pad' => 0, 'format' => 'INV{NUMBER}', 'reset_number' => 0, 'last_id' => 0, 'last_year' => 0, 'last_month' => 0, 'last_week' => 0, 'last_number' => 0]);
+        Group::create(['id' => 2, 'name' => 'Quote Default', 'next_id' => 1, 'left_pad' => 0, 'format' => 'QUO{NUMBER}', 'reset_number' => 0, 'last_id' => 0, 'last_year' => 0, 'last_month' => 0, 'last_week' => 0, 'last_number' => 0]);
+        Group::create(['id' => 3, 'name' => 'Workorder Default', 'next_id' => 1, 'left_pad' => 0, 'format' => 'WO{NUMBER}', 'reset_number' => 0, 'last_id' => 0, 'last_year' => 0, 'last_month' => 0, 'last_week' => 0, 'last_number' => 0]);
 
         Eloquent::reguard();
     }

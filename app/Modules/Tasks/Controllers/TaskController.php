@@ -177,10 +177,10 @@ class TaskController extends Controller
                 DocumentItem::create($itemData);
             }
 
-            if ($recurringInvoice->stop_date == '0000-00-00' or ($recurringInvoice->stop_date !== '0000-00-00' and ($recurringInvoice->next_date < $recurringInvoice->stop_date))) {
+            if (($recurringInvoice->stop_date == '0000-00-00' or $recurringInvoice->stop_date == null) or (($recurringInvoice->stop_date !== '0000-00-00' or $recurringInvoice->stop_date != null) and ($recurringInvoice->next_date < $recurringInvoice->stop_date))) {
                 $nextDate = DateFormatter::incrementDate(substr($recurringInvoice->next_date, 0, 10), $recurringInvoice->recurring_period, $recurringInvoice->recurring_frequency);
             } else {
-                $nextDate = '0000-00-00';
+                $nextDate = null;
             }
 
             $recurringInvoice->next_date = $nextDate;

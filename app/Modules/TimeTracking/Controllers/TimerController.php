@@ -90,7 +90,7 @@ class TimerController extends Controller
         $timers = TimeTrackingTimer::where('time_tracking_task_id', request('task_id'))->get();
 
         foreach ($timers as $timer) {
-            if ($timer->end_at != '0000-00-00 00:00:00') {
+            if ($timer->end_at != '0000-00-00 00:00:00' && $timer->end_at != null) {
                 $endAt = Carbon::parse($timer->end_at);
             } else {
                 $endAt = Carbon::now();

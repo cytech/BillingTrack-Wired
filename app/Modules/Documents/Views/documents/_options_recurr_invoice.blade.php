@@ -1,6 +1,6 @@
 {{ html()->hidden('number', $document->number) }}
-{{ html()->hidden('document_date', '0000-00-00') }}
-{{ html()->hidden('action_date', '0000-00-00') }}
+{{ html()->hidden('document_date', null) }}
+{{ html()->hidden('action_date', null) }}
 <div class="mb-3">
     <label>@lang('bt.next_date')</label>
     <x-fp_common
@@ -25,7 +25,7 @@
     <x-fp_common
             id="stop_date"
             class="form-control form-control-sm"
-            value="{{$document->stop_date == '0000-00-00' ? '' : $document->stop_date}}"
+            value="{{$document->stop_date == '0000-00-00' || $document->stop_date == null ? '' : $document->stop_date}}"
     ></x-fp_common>
 </div>
 <div class="mb-3">

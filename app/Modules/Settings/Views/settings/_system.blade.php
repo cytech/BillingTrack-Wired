@@ -30,6 +30,8 @@
             {{ html()->text('db_database',env('DB_DATABASE','empty'))->class('form-control')->isReadonly() }}
             <label class="form-label fw-bold">Database UserName: </label>
             {{ html()->text('db_username',env('DB_USERNAME', 'empty'))->class('form-control')->isReadonly() }}
+            <label class="form-label fw-bold">PHP Version: </label>
+            {{ html()->text('php_version', phpversion())->class('form-control')->isReadonly() }}
         </div>
     @endif
 </div>

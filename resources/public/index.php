@@ -1,11 +1,11 @@
 <?php
 
-use Illuminate\Contracts\Http\Kernel;
+use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 
-if (version_compare(PHP_VERSION, '8.0.2', '<'))
+if (version_compare(PHP_VERSION, '8.3', '<'))
 {
-    die('BillingTrack requires PHP 8.0.2 or higher. Please upgrade your PHP version to use BillingTrack.');
+    die('BillingTrack requires PHP 8.3 or higher. Please upgrade your PHP version to use BillingTrack.');
 }
 
 define('LARAVEL_START', microtime(true));
@@ -48,13 +48,9 @@ require __DIR__.'/../vendor/autoload.php';
 | to this client's browser, allowing them to enjoy our application.
 |
 */
-
+/** @var Application $app */
 $app = require_once __DIR__.'/../bootstrap/app.php';
 
-$kernel = $app->make(Kernel::class);
+$app->handleRequest(Request::capture());
 
-$response = $kernel->handle(
-    $request = Request::capture()
-)->send();
 
-$kernel->terminate($request, $response);

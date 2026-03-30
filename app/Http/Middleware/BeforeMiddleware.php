@@ -6,18 +6,21 @@ use BT\Modules\Currencies\Models\Currency;
 use BT\Modules\Settings\Models\Setting;
 use BT\Support\DateFormatter;
 use Closure;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Http\Request;
+use Illuminate\Mail\MailServiceProvider;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class BeforeMiddleware
 {
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next)
     {
         if (config('app.debug')) {
             DB::enableQueryLog();
@@ -31,7 +34,7 @@ class BeforeMiddleware
 
             // This one needs a little special attention
             $dateFormats = DateFormatter::formats();
-            config(['bt.datepickerFormat' => $dateFormats[config('bt.dateFormat')]['datepicker']]); //daterangepicker
+            config(['bt.datepickerFormat' => $dateFormats[config('bt.dateFormat')]['datepicker']]); // daterangepicker
             config(['bt.datetimepickerFormat' => $dateFormats[config('bt.dateFormat')]['datetimepicker']]); // jquery datetimepicker
 
             // Set the environment timezone to the application specific timezone, if available, otherwise UTC
@@ -48,13 +51,13 @@ class BeforeMiddleware
             }
 
             // Override the framework mail configuration with the values provided by the application
-//            config(['mail.driver' => (config('bt.mailDriver')) ? config('bt.mailDriver') : 'smtp']);
-//            config(['mail.host' => config('bt.mailHost')]);
-//            config(['mail.port' => config('bt.mailPort') ? config('bt.mailPort') : null]);
-//            config(['mail.encryption' => config('bt.mailEncryption')]);
-//            config(['mail.username' => config('bt.mailUsername')]);
-//            config(['mail.password' => $mailPassword]);
-//            config(['mail.sendmail' => config('bt.mailSendmail')]);
+            //            config(['mail.driver' => (config('bt.mailDriver')) ? config('bt.mailDriver') : 'smtp']);
+            //            config(['mail.host' => config('bt.mailHost')]);
+            //            config(['mail.port' => config('bt.mailPort') ? config('bt.mailPort') : null]);
+            //            config(['mail.encryption' => config('bt.mailEncryption')]);
+            //            config(['mail.username' => config('bt.mailUsername')]);
+            //            config(['mail.password' => $mailPassword]);
+            //            config(['mail.sendmail' => config('bt.mailSendmail')]);
             config(['mail.default' => (config('bt.mailDriver')) ? config('bt.mailDriver') : 'smtp']);
             config(['mail.mailers.smtp.host' => config('bt.mailHost')]);
             config(['mail.mailers.smtp.port' => config('bt.mailPort') ? config('bt.mailPort') : null]);
@@ -74,13 +77,24 @@ class BeforeMiddleware
             }
 
             // Force the mailer to use these settings
-            (new \Illuminate\Mail\MailServiceProvider(app()))->register();
+            (new MailServiceProvider(app()))->register();
 
             // Set the base currency to a config value
             config(['bt.currency' => Currency::where('code', config('bt.baseCurrency'))->first()]);
         }
 
-        config(['bt.clientCenterRequest' => (($request->segment(1) == 'client_center') ? true : false)]);
+        if (! Schema::hasTable('sessions')) {
+            Schema::create('sessions', function (Blueprint $table) {
+                $table->string('id')->primary();
+                $table->foreignId('user_id')->nullable()->index();
+                $table->string('ip_address', 45)->nullable();
+                $table->text('user_agent')->nullable();
+                $table->longText('payload');
+                $table->integer('last_activity')->index();
+            });
+        }
+
+        config(['bt.clientCenterRequest' => $request->segment(1) == 'client_center']);
 
         if (! config('bt.clientCenterRequest')) {
             app()->setLocale((config('bt.language')) ?: 'en');
@@ -88,7 +102,7 @@ class BeforeMiddleware
             app()->setLocale(auth()->user()->client->language);
         }
 
-        config(['bt.mailConfigured' => (config('bt.mailDriver') ? true : false)]);
+        config(['bt.mailConfigured' => (bool) config('bt.mailDriver')]);
 
         config(['bt.merchant' => json_decode(config('bt.merchant'), true)]);
 

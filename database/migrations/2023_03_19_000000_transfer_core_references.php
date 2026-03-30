@@ -9,6 +9,7 @@ use BT\Modules\Groups\Models\Group;
 use BT\Modules\Payments\Models\Payment;
 use BT\Modules\Settings\Models\Setting;
 use BT\Modules\TimeTracking\Models\TimeTrackingTask;
+use BT\Support\SixtoSeven\Models\RecurringInvoice;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -22,19 +23,19 @@ return new class extends Migration
     {
         Schema::disableForeignKeyConstraints();
 
-        //move invoice status_id to document statuses
+        // move invoice status_id to document statuses
         $invoices = Invoice::withTrashed()->whereIn('document_status_id', [3, 4])->get();
 
         foreach ($invoices as $invoice) {
             if ($invoice->document_status_id == 3) {
                 $invoice->document_status_id = 6;
-            } else { //4
+            } else { // 4
                 $invoice->document_status_id = 5;
             }
             $invoice->updateQuietly();
 
         }
-        //move purchaseorder status_id to document statuses
+        // move purchaseorder status_id to document statuses
         $purchaseorders = Purchaseorder::withTrashed()->whereIn('document_status_id', [3, 4, 5, 6])->get();
 
         foreach ($purchaseorders as $purchaseorder) {
@@ -44,14 +45,14 @@ return new class extends Migration
                 $purchaseorder->document_status_id = 8;
             } elseif ($purchaseorder->document_status_id == 5) {
                 $purchaseorder->document_status_id = 6;
-            } else { //6
+            } else { // 6
                 $purchaseorder->document_status_id = 5;
             }
             $purchaseorder->updateQuietly();
 
         }
 
-        //update quote workorder_id and invoice_id refs to new documents
+        // update quote workorder_id and invoice_id refs to new documents
         $quotes = Quote::withTrashed()->where('workorder_id', '>', 0)->orWhere('invoice_id', '>', 0)->get();
 
         foreach ($quotes as $quote) {
@@ -67,7 +68,7 @@ return new class extends Migration
             }
         }
 
-        //update workorder  invoice_id refs to new documents
+        // update workorder  invoice_id refs to new documents
         $workorders = Workorder::withTrashed()->where('invoice_id', '>', 0)->get();
 
         foreach ($workorders as $workorder) {
@@ -76,7 +77,7 @@ return new class extends Migration
             $workorder->updateQuietly();
         }
 
-        //update payment invoice_id to new documents
+        // update payment invoice_id to new documents
         $payments = Payment::withTrashed()->where('invoice_id', '>', 0)->get();
 
         foreach ($payments as $payment) {
@@ -85,7 +86,7 @@ return new class extends Migration
             $payment->updateQuietly();
         }
 
-        //update timetrackingtasks invoice_id to new documents
+        // update timetrackingtasks invoice_id to new documents
         $timetrackingtasks = TimeTrackingTask::withTrashed()->where('invoice_id', '>', 0)->get();
 
         foreach ($timetrackingtasks as $timetrackingtask) {
@@ -94,7 +95,7 @@ return new class extends Migration
             $timetrackingtask->updateQuietly();
         }
 
-        //update expenses invoice_id to new documents
+        // update expenses invoice_id to new documents
         $expenses = Expense::withTrashed()->where('invoice_id', '>', 0)->get();
 
         foreach ($expenses as $expense) {
@@ -103,35 +104,35 @@ return new class extends Migration
             $expense->updateQuietly();
         }
 
-        //create recurringinvoiceGroup and config setting
+        // create recurringinvoiceGroup and config setting
 
-        $maxrinvs = \BT\Support\SixtoSeven\Models\RecurringInvoice::withTrashed()->max('id') ?? 0;
+        $maxrinvs = RecurringInvoice::withTrashed()->max('id') ?? 0;
         $rinvgroup = Group::create(['name' => 'Recurringinvoice Default', 'format' => 'RINV{NUMBER}', 'next_id' => $maxrinvs + 1,
-            'last_id' => $maxrinvs, 'left_pad' => 0, 'reset_number' => 0]);
+            'last_id' => $maxrinvs, 'left_pad' => 0, 'reset_number' => 0, 'last_year' => 0, 'last_month' => 0, 'last_week' => 0, 'last_number' => 0]);
 
         Setting::saveByKey('recurringinvoiceGroup', $rinvgroup->id);
         Setting::saveByKey('recurringinvoiceFrequency', 1);
         Setting::saveByKey('recurringinvoicePeriod', 3);
         Setting::saveByKey('recurringinvoiceStatusFilter', 'all_statuses');
 
-        $recurringinvoices = \BT\Modules\Documents\Models\Recurringinvoice::withTrashed()->get();
+        $recurringinvoices = BT\Modules\Documents\Models\Recurringinvoice::withTrashed()->get();
         foreach ($recurringinvoices as $recurringinvoice) {
             $recurringinvoice->number = 'RINV'.$recurringinvoice->document_id;
             $recurringinvoice->updateQuietly();
         }
 
-        //remove temporary column
+        // remove temporary column
         Schema::table('documents', function (Blueprint $table) {
             $table->dropColumn('document_id');
         });
 
         Schema::enableForeignKeyConstraints();
 
-        //modify due_at in upcomingPaymentNoticeEmailBody setting
-        //this only affects default installation
-        //any user modified email templates will need to be updated by user
-        //to update, replace all occurrences of 'formatted_due_at' and 'formatted_expires_at'
-        //with 'formatted_action_date'
+        // modify due_at in upcomingPaymentNoticeEmailBody setting
+        // this only affects default installation
+        // any user modified email templates will need to be updated by user
+        // to update, replace all occurrences of 'formatted_due_at' and 'formatted_expires_at'
+        // with 'formatted_action_date'
         $bodyvalue = Setting::getByKey('upcomingPaymentNoticeEmailBody');
         $bodyvalue = str_replace('due_at', 'action_date', $bodyvalue);
         Setting::saveByKey('upcomingPaymentNoticeEmailBody', $bodyvalue);

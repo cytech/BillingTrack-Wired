@@ -71,7 +71,7 @@ class SettingsTableSeeder extends Seeder
         Setting::saveByKey('quoteTemplate', 'default.blade.php');
         Setting::saveByKey('resultsPerPage', '15');
         Setting::saveByKey('roundTaxDecimals', '3');
-        Setting::saveByKey('skin', 'skin-purple.min.css');
+        Setting::saveByKey('skin', '{"headBackground":"purple","headClass":"light","sidebarMode":"open"}');
         Setting::saveByKey('timezone', 'America/Phoenix');
         Setting::saveByKey('upcomingPaymentNoticeEmailBody', '<p>This is a notice to let you know your invoice from {{ $invoice->user->name }} for {{ $invoice->amount->formatted_total }} is due on {{ $invoice->formatted_due_at }}. Click the link below to view the invoice:</p><br><br><p><a href="{{ $invoice->public_url }}">{{ $invoice->public_url }}</a></p>');
         Setting::saveByKey('upcomingPaymentNoticeEmailSubject', 'Upcoming Payment Due Notice: Invoice #{{ $invoice->number }}');

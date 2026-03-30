@@ -28,11 +28,11 @@ class Recurringinvoice extends Document
         return $this::class;
     }
 
-    //relations
+    // relations
 
     public function formattedNextDate(): Attribute
     {
-        if ($this->next_date != '0000-00-00') {
+        if ($this->next_date != '0000-00-00' && $this->next_date != null) {
             return new Attribute(get: fn () => DateFormatter::format($this->next_date));
         }
 
@@ -41,21 +41,23 @@ class Recurringinvoice extends Document
 
     public function formattedStopDate(): Attribute
     {
-        if ($this->stop_date != '0000-00-00') {
+        if ($this->stop_date != '0000-00-00' && $this->next_date != null) {
             return new Attribute(get: fn () => DateFormatter::format($this->stop_date));
         }
 
         return new Attribute(get: fn () => '');
     }
 
-    //scopes
+    // scopes
     public function scopeRecurNow($query)
     {
         $query->where('document_status_id', DocumentStatuses::getStatusId('active'));
         $query->where('next_date', '<>', '0000-00-00');
+        $query->where('next_date', '<>', null);
         $query->where('next_date', '<=', date('Y-m-d'));
         $query->where(function ($q) {
             $q->where('stop_date', '0000-00-00');
+            $q->orWhere('stop_date', null);
             $q->orWhere('next_date', '<=', DB::raw('stop_date'));
         });
 
