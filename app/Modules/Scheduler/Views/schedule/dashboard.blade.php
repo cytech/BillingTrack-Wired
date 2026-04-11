@@ -112,7 +112,7 @@
         </div>
         {{--Reminder table --}}
         <div class="container-fluid">
-            <div class="card card-light">
+            <div class="card">
                 <div class="card-header">
                     <h3 class="card-title"><i class="fa fa-bell"></i> @lang('bt.reminders')</h3>
                 </div>
@@ -147,7 +147,7 @@
             </div>
         </div>
         <div class="container-fluid">
-            <div class="card card-light">
+            <div class="card">
                 <div class="card-header">
                     <h3 class="card-title"><i
                                 class="fa fa-chart-bar fa-bar fa-fw"></i> @lang('bt.month_day_events')</h3>
@@ -158,7 +158,7 @@
             </div>
         </div>
         <div class="container-fluid">
-            <div class="card card-light">
+            <div class="card">
                 <div class="card-header">
                     <h3 class="card-title"><i class="fa fa-chart-bar fa-fw"></i> @lang('bt.year_month_report')
                     </h3>

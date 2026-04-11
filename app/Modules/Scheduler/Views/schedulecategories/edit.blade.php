@@ -5,7 +5,7 @@
 
     <section class="app-content-header">
         {{ html()->modelForm($categories, 'PUT', route('scheduler.categories.update', $categories->id))->attribute('id', 'categories_form')->class('form-horizontal')->open() }}
-        <div class="card card-light">
+        <div class="card">
             <div class="card-header">
                 <h3 class="card-title"><i
                             class="fa fa-edit fa-fw"></i>

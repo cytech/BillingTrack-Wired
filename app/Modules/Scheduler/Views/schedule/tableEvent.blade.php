@@ -16,7 +16,7 @@
         @include('layouts._alerts')
         <div class="card">
             <div class="col-lg-12">
-                <div class="card card-light">
+                <div class="card">
                     <div class="card-body">
                         <livewire:data-tables.module-table :module_type="'Schedule'" :module_fullname="$modulefullname"/>
                     </div>

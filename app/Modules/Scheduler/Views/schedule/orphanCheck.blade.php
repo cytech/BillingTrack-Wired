@@ -18,7 +18,7 @@
         @include('layouts._alerts')
         <div class="row">
             <div class="col-lg-12">
-                <div class="card card-light">
+                <div class="card">
                     <div class="card-body">
                         <table class="table table-hover">
                             <thead>

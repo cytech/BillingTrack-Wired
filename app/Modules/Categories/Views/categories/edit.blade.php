@@ -6,7 +6,7 @@
     <section class="app-content-header">
         {{ html()->modelForm($categories, 'PUT', route('categories.update', $categories->id))->class('form-horizontal')->open() }}
 
-        <div class="card card-light">
+        <div class="card">
             <div class="card-header">
                 <div class="card-title h4 mt-2">
                     @lang('bt.edit_category')

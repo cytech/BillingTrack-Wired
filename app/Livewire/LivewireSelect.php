@@ -236,7 +236,7 @@ class LivewireSelect extends Component
             'default' => 'form-control',
             'search' => 'position-relative',
             'searchSelectedOption' => 'form-control text-start rounded p-2 flex',
-            'searchSelectedOptionTitle' => 'text-black text-start',
+            'searchSelectedOptionTitle' => 'text-start', // Fixes text color issue in dark mode
             'searchSelectedOptionReset' => 'fa fa-times-circle float-end pt-1',
             'searchInput' => 'form-control',
             //datepicker class below setting z-index

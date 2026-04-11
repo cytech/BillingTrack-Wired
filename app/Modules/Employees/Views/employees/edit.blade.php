@@ -5,7 +5,7 @@
     @include('layouts._alerts')
     <section class="app-content-header">
         {{ html()->modelForm($employees, 'PUT', route('employees.update', $employees->id))->class('form-horizontal')->open() }}
-        <div class="card card-light">
+        <div class="card">
             <div class="card-header">
                 <div class="card-title  h4 mt-2"><i
                             class="fa fa-edit fa-fw float-start"></i>

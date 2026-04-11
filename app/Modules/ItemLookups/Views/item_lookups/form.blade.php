@@ -16,7 +16,7 @@
 
     @include('layouts._alerts')
     <section class="app-content-header">
-        <div class="card card-light">
+        <div class="card">
             <div class="card-header">
                 <h3 class="card-title"><i
                             class="fa fa-edit fa-fw float-start"></i>
