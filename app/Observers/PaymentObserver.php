@@ -23,9 +23,11 @@ class PaymentObserver
      */
     public function created(Payment $payment): void
     {
+        // FIX: Safely check for relationship existence before firing events
+        // Prevents TypeError if both invoice and purchaseorder are null
         if ($payment->invoice) {
             event(new DocumentModified($payment->invoice));
-        } else {
+        } elseif ($payment->purchaseorder) {
             event(new DocumentModified($payment->purchaseorder));
         }
 
@@ -33,7 +35,10 @@ class PaymentObserver
         $payment->custom()->save(new PaymentCustom());
 
         if (auth()->guest() or auth()->user()->user_type == 'client') {
-            $payment->invoice->activities()->create(['activity' => 'public.paid']);
+            // FIX: Ensure the invoice relation exists before creating an activity
+            if ($payment->invoice) {
+                $payment->invoice->activities()->create(['activity' => 'public.paid']);
+            }
         }
     }
 
@@ -47,9 +52,10 @@ class PaymentObserver
 
     public function updated(Payment $payment): void
     {
+        // FIX: Prevent TypeError on orphaned payments during updates
         if ($payment->invoice) {
             event(new DocumentModified($payment->invoice));
-        } else {
+        } elseif ($payment->purchaseorder) {
             event(new DocumentModified($payment->purchaseorder));
         }
     }
@@ -67,9 +73,10 @@ class PaymentObserver
 
     public function deleted(Payment $payment): void
     {
+        // FIX: Prevent TypeError on orphaned payments during deletion
         if ($payment->invoice) {
             event(new DocumentModified($payment->invoice));
-        } else {
+        } elseif ($payment->purchaseorder) {
             event(new DocumentModified($payment->purchaseorder));
         }
     }
