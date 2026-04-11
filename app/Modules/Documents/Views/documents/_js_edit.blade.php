@@ -46,7 +46,9 @@
                 const row = {};
                 // check for save item as lookup checkbox, removed with livewire handling it
                 item.querySelectorAll('input,select,textarea').forEach((e) => {
-                    if (e.name !== undefined) {
+                    // FIX: Check for truthy value (ignores both undefined and empty strings "")
+                    // This completely prevents the 500 Internal Server Error when saving nameless UI helpers
+                    if (e.name) {
                         row[e.name] = e.value
                     }
                 });
