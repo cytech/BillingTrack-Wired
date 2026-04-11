@@ -67,7 +67,17 @@ class DocumentController extends Controller
 
     public function delete($id)
     {
-        Document::destroy($id);
+        $document = Document::find($id);
+
+        if ($document) {
+            // Delete items individually to ensure DocumentItemObserver events are fired.
+            // Mass deletion (destroy) bypasses these critical events.
+            foreach ($document->items as $item) {
+                $item->delete();
+            }
+            
+            $document->delete();
+        }
 
         return redirect()->route('documents.index', ['module_type' => \request('module_type')])
             ->with('alert', trans('bt.record_successfully_trashed'));
@@ -75,7 +85,18 @@ class DocumentController extends Controller
 
     public function bulkDelete()
     {
-        Document::destroy(request('ids'));
+        $ids = request('ids', []);
+        $documents = Document::whereIn('id', $ids)->get();
+
+        foreach ($documents as $document) {
+            // Cascade delete items to trigger any attached Observers
+            foreach ($document->items as $item) {
+                $item->delete();
+            }
+            
+            $document->delete();
+        }
+
         return response()->json(['success' => trans('bt.record_successfully_trashed')], 200);
     }
 
