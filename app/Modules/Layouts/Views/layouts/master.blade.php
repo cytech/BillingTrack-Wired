@@ -8,6 +8,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('bt.headerTitleText') }}</title>
     <link rel="stylesheet" href="/build/assets/app.css">
+    <link rel="stylesheet" href="/build/assets/adminlte.rtl.min.css">
+
     @include('layouts._head')
     <script src="/build/assets/app.js"></script>
     {{--    @vite(['resources/js/app.js'])--}}
