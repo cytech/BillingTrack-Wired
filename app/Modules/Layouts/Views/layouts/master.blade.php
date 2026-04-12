@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="{{$headBackground}}">
+<html lang="{{ app()->getLocale() }}" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}" data-bs-theme="{{$headBackground}}">
 <!-- For RTL verison -->
 <!-- <html lang="en" dir="rtl"> -->
 <head>
