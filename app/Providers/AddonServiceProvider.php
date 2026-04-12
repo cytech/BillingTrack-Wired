@@ -10,6 +10,13 @@ class AddonServiceProvider extends ServiceProvider
 {
     public function boot(Request $request)
     {
+
+        // FIX: Bypass database queries during the installation phase
+        // This prevents the "Access denied" SQL error before the setup is completed
+        if (config('app.installed') === false) {
+            return;
+        }
+
         if ($request->segment(1) !== 'setup' and (! app()->runningInConsole() or $this->app->environment('testing'))) {
             config(['bt.menus.navigation' => []]);
             config(['bt.menus.system' => []]);

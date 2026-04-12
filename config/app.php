@@ -221,4 +221,11 @@ return [
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
     ])->toArray(),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Application Installation Status
+    |--------------------------------------------------------------------------
+    */
+    'installed' => env('APP_INSTALLED', false),
 ];

@@ -147,8 +147,56 @@ class SetupController extends Controller
             }
         }
 
+        // Update the .env file status
+        $this->updateEnvFile('APP_INSTALLED', 'true');
+
+        // FIX: Force clear the config cache programmatically.
+        // This ensures the Middleware recognizes the change on the very next request
+        // without requiring a manual 'php artisan config:clear' command.
+        try {
+            \Illuminate\Support\Facades\Artisan::call('config:clear');
+        } catch (\Exception $e) {
+            // Log error if artisan command fails, but proceed with redirect
+            \Illuminate\Support\Facades\Log::error('Failed to clear config cache: ' . $e->getMessage());
+        }
+
         return redirect()->route('setup.complete');
     }
+
+    /**
+     * Update a specific key in the .env file
+     * @param string $key
+     * @param string $value
+     * @return void
+     */
+    private function updateEnvFile($key, $value)
+    {
+        $path = base_path('.env');
+
+        if (file_exists($path)) {
+            // Read the content of the .env file
+            $content = file_get_contents($path);
+
+            // Use regex to find the key and replace its value
+            // This handles cases where the key exists with any value
+            $oldValue = env($key) ? 'false' : 'false'; // Default fallback for this specific logic
+            
+            if (str_contains($content, $key . '=')) {
+                // If key exists, replace it
+                $content = preg_replace(
+                    "/^{$key}=.*/m",
+                    "{$key}={$value}",
+                    $content
+                );
+            } else {
+                // If key doesn't exist, append it
+                $content .= "\n{$key}={$value}";
+            }
+
+            file_put_contents($path, $content);
+        }
+    }
+    
 
     public function complete()
     {

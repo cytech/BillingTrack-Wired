@@ -21,6 +21,9 @@ class Kernel extends HttpKernel
         \BT\Http\Middleware\TrustProxies::class,
         \BT\Http\Middleware\BeforeMiddleware::class,
         \BT\Http\Middleware\AfterMiddleware::class,
+
+        // Inject our installation checker at the very beginning of web requests
+        \BT\Http\Middleware\CheckInstallation::class,
     ];
 
     /**
