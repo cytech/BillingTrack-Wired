@@ -7,6 +7,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## 8.0.0
 - update to Laravel 13, requires PHP >= 8.3
 - update to allow MySql DB_STRICT=true (now required for BillingTrack 8, change in .env)
+- srmklive/paypal archived, replaced with blendbyte/paypal - https://github.com/blendbyte/laravel-paypal
+- update square api to ^45 (using legacy client)
 
 ## 7.0.6
 - fix job end_time validation in workorders

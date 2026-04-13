@@ -2,11 +2,11 @@
 
 namespace BT\Modules\Merchant\Support\Drivers;
 
+use Blendbyte\PayPal\Services\PayPal as PayPalClient;
 use BT\Modules\Documents\Models\Invoice;
 use BT\Modules\Merchant\Models\MerchantPayment;
 use BT\Modules\Merchant\Support\MerchantDriverPayable;
 use BT\Modules\Payments\Models\Payment as BTPayment;
-use Srmklive\PayPal\Services\PayPal as PayPalClient;
 
 class PayPal extends MerchantDriverPayable
 {
@@ -33,8 +33,8 @@ class PayPal extends MerchantDriverPayable
                         'currency_code' => $invoice->currency_code,
                         'value' => $invoice->amount->balance + 0,
                     ],
-                    //enabling this may return error if attempt to pay twice on same invoice
-                    //"invoice_id" => trans('bt.invoice') . ' #' . $invoice->number
+                    // enabling this may return error if attempt to pay twice on same invoice
+                    // "invoice_id" => trans('bt.invoice') . ' #' . $invoice->number
                 ],
             ],
         ]);

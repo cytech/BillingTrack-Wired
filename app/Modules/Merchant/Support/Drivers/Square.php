@@ -6,17 +6,19 @@ use BT\Modules\Documents\Models\Invoice;
 use BT\Modules\Merchant\Models\MerchantPayment;
 use BT\Modules\Merchant\Support\MerchantDriverPayable;
 use BT\Modules\Payments\Models\Payment as BTPayment;
-use Square\Models\Builders\CheckoutOptionsBuilder;
-use Square\Models\Builders\CreatePaymentLinkRequestBuilder;
-use Square\Models\Builders\MoneyBuilder;
-use Square\Models\Builders\QuickPayBuilder;
-use Square\SquareClient;
+// use Square\Environments;  //square api ^41
+use Square\Legacy\Models\Builders\CheckoutOptionsBuilder;
+use Square\Legacy\Models\Builders\CreatePaymentLinkRequestBuilder;
+use Square\Legacy\Models\Builders\MoneyBuilder;
+use Square\Legacy\Models\Builders\QuickPayBuilder;
+use Square\Legacy\SquareClient as LegacySquareClient;
+// use Square\SquareClient;   //square api ^41
 
 class Square extends MerchantDriverPayable
 {
     protected $isRedirect = true;
 
-    public function getSettings()
+    public function getSettings(): array
     {
         return ['applicationId', 'accessToken', 'locationId', 'mode' => ['sandbox' => trans('bt.sandbox'), 'production' => trans('bt.production')]];
     }
@@ -24,7 +26,7 @@ class Square extends MerchantDriverPayable
     public function pay(Invoice $invoice)
     {
         // using Square hosted checkout page currently does not support a "cancel" or "back to merchant" redirect
-        // user option is browser back button or close page , both of which are no help in returning to BT customer page..
+        // user option is browser back button or close page , both of which are no help in returning to BT customer page.
         $apiContext = $this->getApiContext();
 
         $body = CreatePaymentLinkRequestBuilder::init()
@@ -36,7 +38,7 @@ class Square extends MerchantDriverPayable
             ->idempotencyKey(uniqid())
             ->quickPay(
                 QuickPayBuilder::init(
-                    $invoice->companyProfile->company . ' ' .trans('bt.invoice') . ' #' . $invoice->number,
+                    $invoice->companyProfile->company.' '.trans('bt.invoice').' #'.$invoice->number,
                     MoneyBuilder::init()
                         ->amount($invoice->amount->balance * 100)
                         ->currency($invoice->currency_code)
@@ -49,28 +51,30 @@ class Square extends MerchantDriverPayable
 
         if ($apiResponse->isSuccess()) {
             $createPaymentLinkResponse = $apiResponse->getResult();
+
             return $createPaymentLinkResponse->getPaymentLink()->getUrl();
 
         } else {
-            $errors = $apiResponse->getErrors();
+            $errors = $apiResponse->getErrors() ?? __('bt.order_response_error');
+
             return redirect()->back()
-                ->with('error', $errors ?? __('bt.order_response_error'));
+                ->with('error', $errors);
             // Getting more response information
             // var_dump($apiResponse->getStatusCode());
             // var_dump($apiResponse->getHeaders());
         }
     }
 
-    public function verify(Invoice $invoice)
+    public function verify(Invoice $invoice): bool
     {
-        //actual production redirect is supposedly appended like so...: https://www.redirect_url.com/?transactionId=tpEkkmWCsgZFGz9hcj88qeyreXEZY&orderId=tpEkkmWCsgZFGz9hcj88qeyreXEZY
+        // actual production redirect is supposedly appended like so...: https://www.redirect_url.com/?transactionId=tpEkkmWCsgZFGz9hcj88qeyreXEZY&orderId=tpEkkmWCsgZFGz9hcj88qeyreXEZY
         // sandbox does not return to redirect_url...
 
         $orderId = request('orderId');
-        //$orderId = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxx'; // copy from sandbox test payment
+        // $orderId = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxx'; // copy from sandbox test payment
 
         $apiContext = $this->getApiContext();
-        //have to get the order to get the payment info...
+        // have to get the order to get the payment info...
         $order = $apiContext->getOrdersApi()->retrieveOrder($orderId)->getResult()->getOrder();
         $tenders = $order->getTenders();
         $payment_id = $tenders[0]->getPaymentId();
@@ -78,9 +82,9 @@ class Square extends MerchantDriverPayable
             $payment = $apiContext->getPaymentsApi()->getPayment($payment_id)->getResult()->getPayment();
             if ($payment->getStatus() == 'COMPLETED') { // APPROVED, PENDING, COMPLETED, CANCELED, or FAILED
                 $btPayment = BTPayment::create([
-                    'client_id'         => $invoice->client->id,
-                    'invoice_id'        => $invoice->id,
-                    'amount'            => $payment->getTotalMoney()->getAmount() / 100,
+                    'client_id' => $invoice->client->id,
+                    'invoice_id' => $invoice->id,
+                    'amount' => $payment->getTotalMoney()->getAmount() / 100,
                     'payment_method_id' => config('bt.onlinePaymentMethod'),
                 ]);
 
@@ -88,20 +92,30 @@ class Square extends MerchantDriverPayable
 
                 return true;
             }
-        } else {
-            return false;
         }
+
+        return false;
+
     }
 
-    private function getApiContext()
+    private function getApiContext(): LegacySquareClient
     {
         $config = [
             'environment' => $this->getSetting('mode'), // Can only be 'sandbox' Or 'production'.
             'accessToken' => $this->getSetting('accessToken'),
         ];
 
-        $apiContext = new SquareClient($config);
-
-        return $apiContext;
+        return new LegacySquareClient($config);
     }
+
+//     Square api ^41
+//        private function getApiContext(): SquareClient
+//        {
+//            $token = $this->getSetting('accessToken');
+//            $mode = ucfirst($this->getSetting('mode'));
+//            $environment = Environments::{$mode}->value;
+//
+//            return new SquareClient(token:$token ?? '',
+//                options:['baseUrl' => $environment]);
+//        }
 }

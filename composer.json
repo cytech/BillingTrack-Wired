@@ -11,7 +11,7 @@
     "require": {
         "php": "^8.3",
         "askedio/laravel-soft-cascade": "dev-master",
-        "barryvdh/laravel-ide-helper": "^v3.7",
+        "blendbyte/paypal": "^1.0",
         "dompdf/dompdf": "^v3.1.0",
         "graham-campbell/markdown": "^v16.1.0",
         "ifsnop/mysqldump-php": "^v2.10",
@@ -27,8 +27,7 @@
         "sonata-project/exporter": "^3.4",
         "spatie/laravel-html": "^3.13",
         "spatie/laravel-permission": "^7.2.4",
-        "square/square": "^38.0.0",
-        "srmklive/paypal": "dev-l13-compatibility",
+        "square/square": "^45.0.0.20260122",
         "stripe/stripe-php": "^v16.0.0",
         "tightenco/parental": "^1.6"
     },
@@ -77,9 +76,7 @@
             "@php artisan package:discover --ansi"
         ],
         "post-update-cmd": [
-            "@php artisan vendor:publish --tag=laravel-assets --ansi --force",
-            "php artisan ide-helper:generate",
-            "php artisan ide-helper:meta"
+            "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
         ],
         "post-root-package-install": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
@@ -114,10 +111,6 @@
         {
             "type": "vcs",
             "url": "https://github.com/laravel-shift/laravel-livewire-tables.git"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/laravel-shift/laravel-paypal.git"
         }
     ]
 }
