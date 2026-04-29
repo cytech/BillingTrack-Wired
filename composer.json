@@ -10,8 +10,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.3",
-        "askedio/laravel-soft-cascade": "dev-master",
-        "blendbyte/paypal": "^1.0",
+        "askedio/laravel-soft-cascade": "^13.0.0",
         "dompdf/dompdf": "^v3.1.0",
         "graham-campbell/markdown": "^v16.1.0",
         "ifsnop/mysqldump-php": "^v2.10",
@@ -24,6 +23,7 @@
         "mollie/mollie-api-php": "^3.9",
         "rappasoft/laravel-livewire-tables": "dev-l13-compatibility",
         "simshaun/recurr": "^v5.0.0",
+        "srmklive/paypal": "^3.1.0",
         "sonata-project/exporter": "^3.4",
         "spatie/laravel-html": "^3.13",
         "spatie/laravel-permission": "^7.2.4",

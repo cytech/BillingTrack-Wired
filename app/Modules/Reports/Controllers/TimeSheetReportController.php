@@ -14,7 +14,7 @@ use BT\Http\Controllers\Controller;
 use BT\Modules\Reports\Reports\TimeSheetReport;
 use BT\Modules\Reports\Requests\TimeSheetReportRequest;
 use BT\Modules\CompanyProfiles\Models\CompanyProfile;
-use BT\Support\PDF\PDFFactory;
+use BT\Support\domPDF;
 use Carbon\Carbon;
 
 class TimeSheetReportController extends Controller
@@ -61,7 +61,7 @@ class TimeSheetReportController extends Controller
 
     public function pdf()
     {
-        $pdf = PDFFactory::create();
+        $pdf = new domPDF();
         $pdf->setPaperOrientation('landscape');
 
         $results = $this->timeSheetReport->getResults(

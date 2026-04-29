@@ -14,7 +14,7 @@ namespace BT\Modules\Reports\Controllers;
 use BT\Http\Controllers\Controller;
 use BT\Modules\Reports\Reports\TaxSummaryReport;
 use BT\Modules\Reports\Requests\DateRangeRequest;
-use BT\Support\PDF\PDFFactory;
+use BT\Support\domPDF;
 
 class TaxSummaryReportController extends Controller
 {
@@ -50,7 +50,7 @@ class TaxSummaryReportController extends Controller
 
     public function pdf()
     {
-        $pdf = PDFFactory::create();
+        $pdf = new domPDF();
 
         $results = $this->report->getResults(
             request('from_date'),

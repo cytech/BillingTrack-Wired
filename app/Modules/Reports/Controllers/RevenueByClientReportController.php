@@ -15,7 +15,7 @@ use BT\Http\Controllers\Controller;
 use BT\Modules\Reports\Reports\RevenueByClientReport;
 use BT\Modules\Reports\Requests\YearRequest;
 use BT\Support\DateFormatter;
-use BT\Support\PDF\PDFFactory;
+use BT\Support\domPDF;
 
 class RevenueByClientReportController extends Controller
 {
@@ -56,7 +56,7 @@ class RevenueByClientReportController extends Controller
 
     public function pdf()
     {
-        $pdf = PDFFactory::create();
+        $pdf = new domPDF();
         $pdf->setPaperOrientation('landscape');
 
         $results = $this->report->getResults(request('company_profile_id'), request('year'));

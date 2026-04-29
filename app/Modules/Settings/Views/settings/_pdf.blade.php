@@ -45,11 +45,3 @@
         </div>
     </div>
 </div>
-<div class="mb-3">
-    <label class="form-label fw-bold">@lang('bt.pdf_driver'): </label>
-    {{ html()->select('setting[pdfDriver]', $pdfDrivers, config('bt.pdfDriver'))->class('form-select')->attribute('id', 'pdfDriver') }}
-</div>
-<div class="mb-3 wkhtmltopdf-option">
-    <label class="form-label fw-bold">@lang('bt.binary_path'): </label>
-    {{ html()->text('setting[pdfBinaryPath]', config('bt.pdfBinaryPath'))->class('form-control') }}
-</div>

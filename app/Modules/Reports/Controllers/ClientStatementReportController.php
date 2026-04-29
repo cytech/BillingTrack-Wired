@@ -15,7 +15,7 @@ use BT\Http\Controllers\Controller;
 use BT\Modules\CompanyProfiles\Models\CompanyProfile;
 use BT\Modules\Reports\Reports\ClientStatementReport;
 use BT\Modules\Reports\Requests\ClientStatementReportRequest;
-use BT\Support\PDF\PDFFactory;
+use BT\Support\domPDF;
 
 class ClientStatementReportController extends Controller
 {
@@ -51,7 +51,7 @@ class ClientStatementReportController extends Controller
 
     public function pdf()
     {
-        $pdf = PDFFactory::create();
+        $pdf = new domPDF();
         $pdf->setPaperOrientation('landscape');
 
         $results = $this->report->getResults(

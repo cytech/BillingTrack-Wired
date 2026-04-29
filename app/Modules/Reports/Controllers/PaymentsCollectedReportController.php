@@ -14,7 +14,7 @@ namespace BT\Modules\Reports\Controllers;
 use BT\Http\Controllers\Controller;
 use BT\Modules\Reports\Reports\PaymentsCollectedReport;
 use BT\Modules\Reports\Requests\DateRangeRequest;
-use BT\Support\PDF\PDFFactory;
+use BT\Support\domPDF;
 
 class PaymentsCollectedReportController extends Controller
 {
@@ -49,7 +49,7 @@ class PaymentsCollectedReportController extends Controller
 
     public function pdf()
     {
-        $pdf = PDFFactory::create();
+        $pdf = new domPDF();
         $pdf->setPaperOrientation('landscape');
 
         $results = $this->report->getResults(

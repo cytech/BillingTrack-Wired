@@ -16,7 +16,7 @@ use BT\Modules\Documents\Models\Purchaseorder;
 use BT\Modules\Documents\Models\Quote;
 use BT\Modules\Documents\Models\Workorder;
 use BT\Support\FileNames;
-use BT\Support\PDF\PDFFactory;
+use BT\Support\domPDF;
 use Illuminate\Http\Request;
 
 class UtilityController
@@ -134,7 +134,7 @@ class UtilityController
                 return redirect()->back()->with('alert', trans('bt.batch_nodata_alert'));
             }
 
-            $pdf = PDFFactory::create();
+            $pdf = new domPDF();
             $wohtml = [];
             $counter = 1;
             foreach ($batchtypes as $batchtype) {

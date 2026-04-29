@@ -16,7 +16,7 @@ use BT\Modules\Categories\Models\Category;
 use BT\Modules\Reports\Reports\ExpenseListReport;
 use BT\Modules\Reports\Requests\DateRangeRequest;
 use BT\Modules\Vendors\Models\Vendor;
-use BT\Support\PDF\PDFFactory;
+use BT\Support\domPDF;
 
 class ExpenseListReportController extends Controller
 {
@@ -55,7 +55,7 @@ class ExpenseListReportController extends Controller
 
     public function pdf()
     {
-        $pdf = PDFFactory::create();
+        $pdf = new domPDF();
         $pdf->setPaperOrientation('landscape');
 
         $results = $this->report->getResults(

@@ -19,6 +19,10 @@ return new class extends Migration
             $table->tinyInteger('will_call')->default('0')->nullable()->change();
         });
 
+        Schema::table('settings', function (Blueprint $table) {
+            $table->text('setting_value')->nullable()->change();
+        });
+
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
             $table->string('token');
@@ -70,6 +74,8 @@ return new class extends Migration
             $table->timestamp('failed_at')->useCurrent();
         });
 
+        Setting::deleteByKey('pdfBinaryPath');
+        Setting::deleteByKey('pdfDriver');
         Setting::saveByKey('version', '8.0.0');
     }
 

@@ -20,7 +20,7 @@ use BT\Modules\Documents\Models\Quote;
 use BT\Modules\Documents\Models\Recurringinvoice;
 use BT\Modules\Documents\Models\Workorder;
 use BT\Support\FileNames;
-use BT\Support\PDF\PDFFactory;
+use BT\Support\domPDF;
 use BT\Support\Statuses\DocumentStatuses;
 use BT\Support\Statuses\PurchaseorderItemStatuses;
 use BT\Traits\ReturnUrl;
@@ -90,7 +90,7 @@ class DocumentController extends Controller
     {
         $document = Document::find($id);
 
-        $pdf = PDFFactory::create();
+        $pdf = new domPDF();
 
         $pdf->download($document->html, FileNames::document($document));
     }

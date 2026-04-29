@@ -11,7 +11,7 @@
 
 namespace BT\Modules\MailQueue\Support;
 
-use BT\Support\PDF\PDFFactory;
+use BT\Support\domPDF;
 use Illuminate\Support\Facades\Mail;
 
 class MailQueue
@@ -64,7 +64,7 @@ class MailQueue
 
             $pdfPath = base_path('storage/' . $object->pdf_filename);
 
-            $pdf = PDFFactory::create();
+            $pdf = new domPDF();
 
             $pdf->save($object->html, $pdfPath);
 

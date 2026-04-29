@@ -11,33 +11,36 @@
 
 namespace BT\Modules\Settings\Requests;
 
-use BT\Modules\Settings\Rules\ValidFile;
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class SettingUpdateRequest extends FormRequest
 {
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
 
-    public function attributes()
+    public function attributes(): array
     {
         return [
             'setting.invoicesDueAfter' => trans('bt.invoices_due_after'),
             'setting.quotesExpireAfter' => trans('bt.quotes_expire_after'),
             'setting.workordersExpireAfter' => trans('bt.workorders_expire_after'),
-            'setting.pdfBinaryPath' => trans('bt.binary_path'),
         ];
     }
 
-    public function rules()
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, ValidationRule|array<mixed>|string>
+     */
+    public function rules(): array
     {
         $rules = [
             'setting.invoicesDueAfter' => 'required|numeric',
             'setting.quotesExpireAfter' => 'required|numeric',
             'setting.workordersExpireAfter' => 'required|numeric',
-            'setting.pdfBinaryPath' => ['required_if:setting.pdfDriver,wkhtmltopdf', new ValidFile],
         ];
 
         foreach (config('bt.settingValidationRules') as $settingValidationRules) {

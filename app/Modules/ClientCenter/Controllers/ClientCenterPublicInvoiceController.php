@@ -16,7 +16,7 @@ use BT\Http\Controllers\Controller;
 use BT\Modules\Documents\Models\Invoice;
 use BT\Modules\Merchant\Support\MerchantFactory;
 use BT\Support\FileNames;
-use BT\Support\PDF\PDFFactory;
+use BT\Support\domPDF;
 use BT\Support\Statuses\DocumentStatuses;
 
 class ClientCenterPublicInvoiceController extends Controller
@@ -48,7 +48,7 @@ class ClientCenterPublicInvoiceController extends Controller
             event(new DocumentViewed($invoice));
         }
 
-        $pdf = PDFFactory::create();
+        $pdf = new domPDF();
 
         $pdf->download($invoice->html, FileNames::document($invoice));
     }

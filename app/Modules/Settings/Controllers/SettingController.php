@@ -26,7 +26,6 @@ use BT\Support\DashboardWidgets;
 use BT\Support\DateFormatter;
 use BT\Support\Frequency;
 use BT\Support\Languages;
-use BT\Support\PDF\PDFFactory;
 use BT\Support\ProfileImage\ProfileImageFactory;
 use BT\Support\Skins;
 use BT\Support\Statuses\DocumentStatuses;
@@ -71,7 +70,6 @@ class SettingController extends Controller
                 'paperSizes' => ['letter' => trans('bt.letter'), 'A4' => trans('bt.a4'), 'legal' => trans('bt.legal')],
                 'paymentMethods' => PaymentMethod::getList(),
                 'pdfDisposition' => ['inline' => trans('bt.inline'), 'attachment' => trans('bt.attachment')],
-                'pdfDrivers' => PDFFactory::getDrivers(),
                 'periods' => Frequency::lists(),
                 'profileImageDrivers' => ProfileImageFactory::getDrivers(),
                 'purchaseorderStatuses' => collect(DocumentStatuses::listsAllFlat() + ['overdue' => trans('bt.overdue')])->except('approved', 'rejected', 'active', 'inactive'),
@@ -95,12 +93,12 @@ class SettingController extends Controller
 
     public function update(SettingUpdateRequest $request)
     {
-        //check if no enableCoreEvent checkboxes checked
+        // check if no enableCoreEvent checkboxes checked
         if (! $request->has('enabledCoreEvents')) {
             $request['enabledCoreEvents'] = [0];
         }
 
-        //check if no enabledModules checkboxes checked
+        // check if no enabledModules checkboxes checked
         if (! $request->has('enabledModules')) {
             $request['enabledModules'] = [0];
         }

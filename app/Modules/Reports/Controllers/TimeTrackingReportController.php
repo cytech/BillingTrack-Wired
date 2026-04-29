@@ -14,7 +14,7 @@ namespace BT\Modules\Reports\Controllers;
 use BT\Http\Controllers\Controller;
 use BT\Modules\CompanyProfiles\Models\CompanyProfile;
 use BT\Modules\Reports\Reports\TimeTrackingReport;
-use BT\Support\PDF\PDFFactory;
+use BT\Support\domPDF;
 use BT\Support\Statuses\TimeTrackingProjectStatuses;
 
 class TimeTrackingReportController extends Controller
@@ -57,7 +57,7 @@ class TimeTrackingReportController extends Controller
 
     public function pdf()
     {
-        $pdf = PDFFactory::create();
+        $pdf = new domPDF();
 
         $results = $this->timeTrackingReport->getResults(
             request('from_date'),

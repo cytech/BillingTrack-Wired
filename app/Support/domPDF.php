@@ -9,31 +9,51 @@
  * file that was distributed with this source code.
  */
 
-namespace BT\Support\PDF\Drivers;
+namespace BT\Support;
 
-use BT\Support\PDF\PDFAbstract;
 use Dompdf\Dompdf as PDF;
 use Dompdf\Options;
 
-class domPDF extends PDFAbstract
+class domPDF
 {
+    protected $paperSize;
+
+    protected $paperOrientation;
+
+    public function __construct()
+    {
+        $this->paperSize = config('bt.paperSize') ?: 'letter';
+        $this->paperOrientation = config('bt.paperOrientation') ?: 'portrait';
+    }
+
+    public function setPaperSize($paperSize)
+    {
+        $this->paperSize = $paperSize;
+    }
+
+    // used in reports
+    public function setPaperOrientation($paperOrientation)
+    {
+        $this->paperOrientation = $paperOrientation;
+    }
+
     private function getPdf($html)
     {
-        $options = new Options();
+        $options = new Options;
 
         $options->setTempDir(storage_path('/'));
         $options->setFontDir(storage_path('/'));
         $options->setFontCache(storage_path('/'));
         $options->setLogOutputFile(storage_path('dompdf_log'));
         $options->setIsRemoteEnabled(true);
-//        $options->setIsHtml5ParserEnabled(true);
+        //        $options->setIsHtml5ParserEnabled(true);
         $options->setIsFontSubsettingEnabled(true);
 
         $pdf = new PDF($options);
 
         $pdf->setPaper($this->paperSize, $this->paperOrientation);
 
-        //if batch
+        // if batch
         $batch = '';
         if (is_array($html)) {
             foreach ($html as $doc) {
@@ -58,15 +78,18 @@ class domPDF extends PDFAbstract
     public function save($html, $filename)
     {
         file_put_contents($filename, $this->getOutput($html));
+
     }
 
     public function download($html, $filename)
     {
-        $response = response($this->getOutput($html));
+        $pdf = $this->getPdf($html);
 
-        $response->header('Content-Type', 'application/pdf');
-        $response->header('Content-Disposition', ''.config('bt.pdfDisposition').'; filename="' . $filename . '"');
+        if (config('bt.pdfDisposition') == 'attachment') {
+            $pdf->stream($filename);
+        } else {
+            $pdf->stream($filename, ['Attachment' => false]);
+        }
 
-        return $response->send();
     }
 }

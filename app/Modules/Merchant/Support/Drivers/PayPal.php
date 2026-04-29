@@ -2,7 +2,7 @@
 
 namespace BT\Modules\Merchant\Support\Drivers;
 
-use Blendbyte\PayPal\Services\PayPal as PayPalClient;
+use Srmklive\PayPal\Services\PayPal as PayPalClient;
 use BT\Modules\Documents\Models\Invoice;
 use BT\Modules\Merchant\Models\MerchantPayment;
 use BT\Modules\Merchant\Support\MerchantDriverPayable;

@@ -17,7 +17,7 @@ use BT\Events\DocumentViewed;
 use BT\Http\Controllers\Controller;
 use BT\Modules\Documents\Models\Quote;
 use BT\Support\FileNames;
-use BT\Support\PDF\PDFFactory;
+use BT\Support\domPDF;
 use BT\Support\Statuses\DocumentStatuses;
 
 class ClientCenterPublicQuoteController extends Controller
@@ -48,7 +48,7 @@ class ClientCenterPublicQuoteController extends Controller
             event(new DocumentViewed($quote));
         }
 
-        $pdf = PDFFactory::create();
+        $pdf = new domPDF();
 
         $pdf->download($quote->html, FileNames::document($quote));
     }
