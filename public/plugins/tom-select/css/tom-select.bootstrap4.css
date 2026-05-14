@@ -2,7 +2,7 @@
  * Tom Select Bootstrap 4
  */
 /**
- * tom-select.css (v2.6.0)
+ * tom-select.css (v2.6.1)
  * Copyright (c) contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
@@ -60,8 +60,8 @@
 }
 .ts-wrapper.multi.disabled .ts-control > div, .ts-wrapper.multi.disabled .ts-control > div.active {
   color: rgb(134.5, 134.5, 134.5);
-  background: white;
-  border: 0px solid white;
+  background: hsl(0, 0%, 123.7254901961%);
+  border: 0px solid hsl(0, 0%, 118.6274509804%);
 }
 .ts-control > input {
   flex: 1 1 auto;
@@ -252,7 +252,7 @@
   font-size: 20px !important;
 }
 .ts-wrapper .dropdown-header-close:hover {
-  color: black;
+  color: hsl(210, 10.3448275862%, -2.2549019608%);
 }
 
 .plugin-dropdown_input.focus.dropdown-active .ts-control {
@@ -354,7 +354,7 @@
   border-left-color: rgba(0, 0, 0, 0);
 }
 .ts-wrapper.plugin-remove_button:not(.rtl).disabled .item .remove {
-  border-left-color: white;
+  border-left-color: hsl(0, 0%, 118.6274509804%);
 }
 
 .ts-wrapper.plugin-remove_button.rtl .item {
@@ -368,7 +368,7 @@
   border-right-color: rgba(0, 0, 0, 0);
 }
 .ts-wrapper.plugin-remove_button.rtl.disabled .item .remove {
-  border-right-color: white;
+  border-right-color: hsl(0, 0%, 118.6274509804%);
 }
 
 :root {
@@ -493,16 +493,14 @@
 
 .ts-control {
   min-height: calc(1.5em + 0.75rem + 2px);
+  display: flex;
+  align-items: center;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 @media (prefers-reduced-motion: reduce) {
   .ts-control {
     transition: none;
   }
-}
-.ts-control {
-  display: flex;
-  align-items: center;
 }
 .focus .ts-control {
   border-color: rgb(127.5, 189, 255);

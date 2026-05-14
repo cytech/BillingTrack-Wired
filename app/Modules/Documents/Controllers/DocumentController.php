@@ -19,8 +19,8 @@ use BT\Modules\Documents\Models\Purchaseorder;
 use BT\Modules\Documents\Models\Quote;
 use BT\Modules\Documents\Models\Recurringinvoice;
 use BT\Modules\Documents\Models\Workorder;
-use BT\Support\FileNames;
 use BT\Support\domPDF;
+use BT\Support\FileNames;
 use BT\Support\Statuses\DocumentStatuses;
 use BT\Support\Statuses\PurchaseorderItemStatuses;
 use BT\Traits\ReturnUrl;
@@ -67,7 +67,17 @@ class DocumentController extends Controller
 
     public function delete($id)
     {
-        Document::destroy($id);
+        $document = Document::find($id);
+
+        if ($document) {
+            // Delete items individually to ensure DocumentItemObserver events are fired.
+            // Mass deletion (destroy) bypasses these critical events.
+            foreach ($document->items as $item) {
+                $item->delete();
+            }
+
+            $document->delete();
+        }
 
         return redirect()->route('documents.index', ['module_type' => \request('module_type')])
             ->with('alert', trans('bt.record_successfully_trashed'));
@@ -75,7 +85,18 @@ class DocumentController extends Controller
 
     public function bulkDelete()
     {
-        Document::destroy(request('ids'));
+        $ids = request('ids', []);
+        $documents = Document::whereIn('id', $ids)->get();
+
+        foreach ($documents as $document) {
+            // Cascade delete items to trigger any attached Observers
+            foreach ($document->items as $item) {
+                $item->delete();
+            }
+
+            $document->delete();
+        }
+
         return response()->json(['success' => trans('bt.record_successfully_trashed')], 200);
     }
 
@@ -90,7 +111,7 @@ class DocumentController extends Controller
     {
         $document = Document::find($id);
 
-        $pdf = new domPDF();
+        $pdf = new domPDF;
 
         $pdf->download($document->html, FileNames::document($document));
     }
@@ -99,6 +120,7 @@ class DocumentController extends Controller
     {
 
         $items = DocumentItem::where('document_id', request('purchaseorder_id'))->get();
+
         return view('documents._modal_receive')
             ->with('items', $items);
     }
@@ -138,9 +160,9 @@ class DocumentController extends Controller
             $item->price = $cost;
             $item->save();
 
-            //if update products is checked
+            // if update products is checked
             if ($request->itemrec) {
-                //update product table quantities and cost for items
+                // update product table quantities and cost for items
                 if ($item->resource_table == 'products' && $item->resource_id) {
                     $item->product->increment('numstock', $rec_qty, ['cost' => $item->price]);
                 }

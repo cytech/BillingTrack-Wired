@@ -11,7 +11,7 @@
     <section class="app-content-header">
         <div class="card">
             <div class="col-lg-12">
-                <div class="card card-light">
+                <div class="card">
 {{--                    <div class="card-header">--}}
 {{--                        <h6 class="card-title"><i class="fa fa-fw fa-th fa-fw"></i><a--}}
 {{--                                    href="{{ route('scheduler.index') }}">@lang('bt.schedule')</a> @lang('bt.calendar')--}}

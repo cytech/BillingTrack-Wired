@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="{{$headBackground}}">
+{{--<html lang="en" data-bs-theme="{{$headBackground}}">--}}
+<html lang="{{ app()->getLocale() }}" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}" data-bs-theme="{{$headBackground}}">
 <!-- For RTL verison -->
 <!-- <html lang="en" dir="rtl"> -->
 <head>
@@ -8,6 +9,10 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('bt.headerTitleText') }}</title>
     <link rel="stylesheet" href="/build/assets/app.css">
+    @if(app()->getLocale() == 'ar')
+        <link rel="stylesheet" href="/build/assets/adminlte.rtl.min.css">
+    @endif
+
     @include('layouts._head')
     <script src="/build/assets/app.js"></script>
     {{--    @vite(['resources/js/app.js'])--}}

@@ -6,7 +6,7 @@
     <section class="app-content-header">
         <form method='POST' action="{{ route('users.roles.store') }}">
             @csrf
-            <div class="card card-light">
+            <div class="card">
                 <div class="card-header">
                     <h3 class="card-title"><i
                                 class="fa fa-edit fa-fw float-start"></i>

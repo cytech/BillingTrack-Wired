@@ -46,7 +46,7 @@
                 const row = {};
                 // check for save item as lookup checkbox, removed with livewire handling it
                 item.querySelectorAll('input,select,textarea').forEach((e) => {
-                    if (e.name !== undefined) {
+                    if (e.name) {
                         row[e.name] = e.value
                     }
                 });

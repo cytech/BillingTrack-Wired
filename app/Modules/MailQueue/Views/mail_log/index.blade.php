@@ -11,7 +11,7 @@
     </section>
     <section class="container-fluid">
         @include('layouts._alerts')
-        <div class="card card-light">
+        <div class="card">
             <div class="card-body">
                 <script type="text/javascript">
                     ready(function () {

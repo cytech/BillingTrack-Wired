@@ -1,5 +1,5 @@
 /**
- * tom-select.css (v2.6.0)
+ * tom-select.css (v2.6.1)
  * Copyright (c) contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
@@ -57,8 +57,8 @@
 }
 .ts-wrapper.multi.disabled .ts-control > div, .ts-wrapper.multi.disabled .ts-control > div.active {
   color: rgb(124.5, 124.5, 124.5);
-  background: white;
-  border: 0px solid white;
+  background: hsl(0, 0%, 124.9019607843%);
+  border: 0px solid hsl(0, 0%, 111.568627451%);
 }
 .ts-control > input {
   flex: 1 1 auto;
@@ -249,7 +249,7 @@
   font-size: 20px !important;
 }
 .ts-wrapper .dropdown-header-close:hover {
-  color: black;
+  color: hsl(0, 0%, -6.1764705882%);
 }
 
 .plugin-dropdown_input.focus.dropdown-active .ts-control {
@@ -345,7 +345,7 @@
   border-left-color: #cacaca;
 }
 .ts-wrapper.plugin-remove_button:not(.rtl).disabled .item .remove {
-  border-left-color: white;
+  border-left-color: hsl(0, 0%, 111.568627451%);
 }
 
 .ts-wrapper.plugin-remove_button.rtl .item {
@@ -359,7 +359,7 @@
   border-right-color: #cacaca;
 }
 .ts-wrapper.plugin-remove_button.rtl.disabled .item .remove {
-  border-right-color: white;
+  border-right-color: hsl(0, 0%, 111.568627451%);
 }
 
 :root {

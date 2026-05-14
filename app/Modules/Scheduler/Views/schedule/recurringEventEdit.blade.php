@@ -5,7 +5,7 @@
     <section class="app-content-header">
         <div class="container-fluid m-2">
             {{ html()->modelForm($schedule, 'POST', route('scheduler.updaterecurringevent', $schedule->id))->attribute('id', 'recurringevent')->open() }}
-            <div class="card card-light">
+            <div class="card">
                 <div class="card-header">
                     <h3 class="card-title"><i
                                 class="fa fa-edit fa-fw"></i> {{ trans('bt.'.$title) }}

@@ -5,7 +5,7 @@
     @include('layouts._alerts')
     <section class="app-content-header">
         {{ html()->modelForm($products, 'PUT', route('products.update', $products->id))->class('form-horizontal')->attribute('autocomplete', 'off')->open() }}
-        <div class="card card-light">
+        <div class="card">
             <div class="card-header">
                 <div class="card-title h4 mt-2">
                     @lang('bt.edit_product')

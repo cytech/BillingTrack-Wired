@@ -45,7 +45,7 @@
     </section>
     <section class="container-fluid">
         <div id="form-validation-placeholder"></div>
-        <div class="card card-light">
+        <div class="card">
             <div class="card-header">
                 <h3 class="card-title">@lang('bt.options')</h3>
             </div>

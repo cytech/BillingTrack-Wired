@@ -28,7 +28,7 @@
 
     <section class="container-fluid">
         @include('layouts._alerts')
-        <div class="card card-light">
+        <div class="card">
             <div class="card-body">
                 <div class="mb-3">
                     <label>@lang('bt.name'): </label>

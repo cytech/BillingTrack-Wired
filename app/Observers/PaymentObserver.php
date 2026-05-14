@@ -2,7 +2,7 @@
 
 namespace BT\Observers;
 
-//use BT\Events\InvoiceModified;
+// use BT\Events\InvoiceModified;
 
 use AllowDynamicProperties;
 use BT\Events\DocumentModified;
@@ -25,15 +25,17 @@ class PaymentObserver
     {
         if ($payment->invoice) {
             event(new DocumentModified($payment->invoice));
-        } else {
+        } elseif ($payment->purchaseorder) {
             event(new DocumentModified($payment->purchaseorder));
         }
 
         // Create the default custom record.
-        $payment->custom()->save(new PaymentCustom());
+        $payment->custom()->save(new PaymentCustom);
 
         if (auth()->guest() or auth()->user()->user_type == 'client') {
-            $payment->invoice->activities()->create(['activity' => 'public.paid']);
+            if ($payment->invoice) {
+                $payment->invoice->activities()->create(['activity' => 'public.paid']);
+            }
         }
     }
 
@@ -49,7 +51,7 @@ class PaymentObserver
     {
         if ($payment->invoice) {
             event(new DocumentModified($payment->invoice));
-        } else {
+        } elseif ($payment->purchaseorder) {
             event(new DocumentModified($payment->purchaseorder));
         }
     }

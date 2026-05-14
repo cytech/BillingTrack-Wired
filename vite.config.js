@@ -95,6 +95,11 @@ export default defineConfig({
                     dest: '../build/webfonts/',
                     rename: { stripBase: true },
                 },
+                {
+                    src: 'node_modules/admin-lte/dist/css/adminlte.rtl.min.css',
+                    dest: '../build/assets/',
+                    rename: { stripBase: true },
+                },
 
             ]
         })

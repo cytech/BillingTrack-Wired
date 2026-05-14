@@ -18,7 +18,7 @@
         @include('layouts._alerts')
         <div class="row">
             <div class="col-md-12">
-                <div class="card card-light">
+                <div class="card">
                     <div class="card-body">
                         <div class="mb-3">
                             <label>@lang('bt.email_payment_warning')</label>

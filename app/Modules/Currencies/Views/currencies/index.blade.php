@@ -15,7 +15,7 @@
     </section>
     <section class="container-fluid">
         @include('layouts._alerts')
-        <div class="card card-light">
+        <div class="card">
             <div class="card-body">
                 <table class="table table-striped datatable">
                     <thead class="bg-body lwtable">

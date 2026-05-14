@@ -1,5 +1,5 @@
 /**
- * tom-select.css (v2.6.0)
+ * tom-select.css (v2.6.1)
  * Copyright (c) contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
@@ -56,7 +56,7 @@
   border: 1px solid #00578d;
 }
 .ts-wrapper.multi.disabled .ts-control > div, .ts-wrapper.multi.disabled .ts-control > div.active {
-  color: white;
+  color: hsl(0, 0%, 130%);
   background: #d2d2d2;
   border: 1px solid #aaaaaa;
 }
@@ -249,7 +249,7 @@
   font-size: 20px !important;
 }
 .ts-wrapper .dropdown-header-close:hover {
-  color: black;
+  color: hsl(0, 0%, -6.1764705882%);
 }
 
 .plugin-dropdown_input.focus.dropdown-active .ts-control {

@@ -6,7 +6,7 @@
     <section class="app-content-header">
         {{ html()->form('POST', route('categories.store'))->class('form-horizontal')->open() }}
 
-        <div class="card card-light">
+        <div class="card">
             <div class="card-header">
                 <div class="card-title h4 mt-2">
                     @lang('bt.create_category')

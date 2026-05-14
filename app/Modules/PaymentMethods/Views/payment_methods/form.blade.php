@@ -28,7 +28,7 @@
     </section>
     <section class="container-fluid">
         @include('layouts._alerts')
-        <div class=" card card-light">
+        <div class=" card">
             <div class="card-body">
                 <div class="control-group">
                     <label>@lang('bt.payment_method'): </label>
