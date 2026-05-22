@@ -6,11 +6,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## 8.0.0
 - update to Laravel 13, requires PHP >= 8.3
+- update to Livewire V4
+- Adminlte Release v4
 - update to allow MySql DB_STRICT=true (now required for BillingTrack 8, change in .env)
 - srmklive/paypal changed maintainer to blendbyte/laravel-paypal, upgrade to 3.1 - https://github.com/blendbyte/laravel-paypal
 - update square api to ^45 (using legacy client)
 - remove ancient wkhtmltopdf driver - only dompdf now
 - cherry picked items from PR#23 (arabic language, dark mode, some core fixes)
+- NO ACTIVITY on rappasoft/laravel-livewire-tables - forked and applied PR for Laravel13/livewireV4 support and added to composer.
+  https://github.com/cytech/laravel-livewire-tables/tree/feature/laravel-13-livewire-4
 
 ## 7.0.6
 - fix job end_time validation in workorders
