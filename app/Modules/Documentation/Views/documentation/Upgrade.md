@@ -22,7 +22,7 @@ Upgrade
   - "YOUR_BILLINGTRACK_WEBSITE/database/seeds"
   - "YOUR\_BILLINGTRACK\_WEBSITE/app"  
     directories prior to extracting.
-- BillingTrack V7 .env file needs to be updated. It is recommended to backup (or rename) your .env file and then Copy ".env.example" to ".env" .
+- **BillingTrack V7 .env file needs to be updated.** It is recommended to backup (or rename) your .env file and then Copy ".env.example" to ".env" .
   - edit .env and change:
     - APP_KEY= (your old APP_KEY)
     - DB_HOST= (your old DB_HOST)
@@ -31,7 +31,7 @@ Upgrade
     - DB_PASSWORD= (your old DB_PASSWORD)
   
   NOTE: Do not change APP_ENV=local. Changing this will cause migrations to fail without feedback. Changing this value to "production" has no beneficial effect on BillingTrack operation.  
-      Also, do not change DB_STRICT=true. Mysql strict mode is now required for BillingTrack V8.
+      **Also, do not change DB_STRICT=true.** Mysql strict mode is now required for BillingTrack V8.
 
 - save .env file. 
 - Run composer update

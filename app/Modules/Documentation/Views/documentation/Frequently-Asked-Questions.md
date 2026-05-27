@@ -89,7 +89,7 @@ Range.
 ### Can BillingTrack work with XYZ payment gateway?
 
 BillingTrack
-only implements support for Mollie, PayPal and Stripe.
+only implements support for Mollie, PayPal, Square and Stripe.
 
 ---
 

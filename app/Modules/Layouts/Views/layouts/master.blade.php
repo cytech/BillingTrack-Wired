@@ -1,25 +1,22 @@
 <!DOCTYPE html>
-{{--<html lang="en" data-bs-theme="{{$headBackground}}">--}}
-<html lang="{{ app()->getLocale() }}" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}" data-bs-theme="{{$headBackground}}">
-<!-- For RTL verison -->
-<!-- <html lang="en" dir="rtl"> -->
+<html lang="{{ app()->getLocale() }}" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}"
+      data-bs-theme="{{$headBackground}}">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('bt.headerTitleText') }}</title>
     <link rel="stylesheet" href="/build/assets/app.css">
+    <!-- For RTL verison -->
     @if(app()->getLocale() == 'ar')
         <link rel="stylesheet" href="/build/assets/adminlte.rtl.min.css">
     @endif
 
     @include('layouts._head')
     <script src="/build/assets/app.js"></script>
-    {{--    @vite(['resources/js/app.js'])--}}
     @include('layouts._js_global')
 
     @yield('javaScript')
-{{--    @livewireStyles--}}
 </head>
 <body class="layout-fixed sidebar-expand-lg sidebar-mini sidebar-{{$sidebarMode}}">
 <div class="app-wrapper">
@@ -35,10 +32,8 @@
 </a>
 @stack('scripts')
 <livewire:modals/>
-{{--@livewireScripts--}}
 </body>
 </html>
-
 <script>
     // start for adminlte v4 sidebar scrolling
     const SELECTOR_SIDEBAR_WRAPPER = ".sidebar-wrapper";
@@ -54,7 +49,7 @@
         scrollbarClickScroll: true,
     };
 
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function () {
         const sidebarWrapper = document.querySelector(SELECTOR_SIDEBAR_WRAPPER);
         if (
             sidebarWrapper &&
@@ -69,7 +64,6 @@
             });
         }
     });
-
     // end for adminlte v4 sidebar scrolling
 
     // livewire modals-bs5.js
@@ -92,6 +86,13 @@
     modalsElement.addEventListener('hidden.bs.modal', () => {
         window.Livewire.dispatch('resetModal');
     })
+
+    // get rid of “Blocked aria-hidden on an element because its descendant retained focus.” in browser console
+    document.querySelectorAll('.modal').forEach((modal) => {
+        modal.addEventListener('hide.bs.modal', () => {
+            document.activeElement.blur();
+        });
+    });
 
     window.Livewire.on('showBootstrapModal', () => {
         lwModal.show()

@@ -133,32 +133,31 @@ To use currency exchange rates in BillingTrack, you have to signup for a (free) 
 | Paper Size        | The PDF paper size.                                                                                       | Letter   |
 | Paper Orientation | The PDF paper orientation.                                                                                | Portrait |
 | Disposition       | The disposition can be either inline or as an attachment                                                  | Inline   |
-| PDF Driver        | The library used to generate PDF's.                                                                       | domPDF   |
-| Binary Path       | When wkhtmltopdf is selected as the PDF driver, the path to the wkhtmltopdf executable should be entered. |          |
 
 ### Online Payments
-| Setting | Description                                                                 | Default |
-|:--------|:----------------------------------------------------------------------------|:--------|
-| Mollie  | These settings are used to configure the Mollie online payment integration. |         |
-| PayPal  | These settings are used to configure the PayPal online payment integration. |         |
-| Stripe  | These settings are used to configure the Stripe online payment integration. |         |
+| Setting             | Description                                                                              | Default |
+|:--------------------|:-----------------------------------------------------------------------------------------|:--------|
+| Mollie              | These settings are used to configure the Mollie online payment integration.              |         |
+| PayPal              | These settings are used to configure the PayPal online payment integration.              |         |
+| Square              | These settings are used to configure the Square online payment integration.              |         |
+| Stripe (Deprecated) | These settings are used to configure the Stripe (Deprecated) online payment integration. |         |
+| Stripe V3           | These settings are used to configure the Stripe V3 online payment integration.           |         |
 
 ### Scheduler
-| Setting                                | Description                                                                        | Default   |
-|:---------------------------------------|:-----------------------------------------------------------------------------------|:----------|
-| Number of past days to load            | Number of days in the past to load into memory. Affects performance                | 60        |
-| Number of events to show per day       | Number of calendar events to show in day cell before "more" is displayed. 0 = all  | 5         |
-| Enable Create Workorder Functionality  | Enables the Create Workorder Icon in the day cell                                  | No        |
-| Full Calendar theme Systems            | The display theme for fullcalendar. can be:<br>Standard<br>Bootstrap4<br>Jquery-ui | Jquery-ui |
-| Default Timepicker step in minutes     | Sets the step increment in all Timepicker Cells                                    | 30        |
-| Fullcalendar aspect ration             | Sets the width to height ratio of the calendar                                     | 1.75      |
-| Core events to show in calendar        | Select which core modules to show in the calendar                                  | all       |
-| Display invoiced quotes and Workorders | Whether to display invoiced quote and workorder core events in calendar            | No        |
+| Setting                                | Description                                                                       | Default    |
+|:---------------------------------------|:----------------------------------------------------------------------------------|:-----------|
+| Number of past days to load            | Number of days in the past to load into memory. Affects performance               | 60         |
+| Number of events to show per day       | Number of calendar events to show in day cell before "more" is displayed. 0 = all | 5          |
+| Enable Create Workorder Functionality  | Enables the Create Workorder Icon in the day cell                                 | No         |
+| Full Calendar theme Systems            | The display theme for fullcalendar. can be:<br>Standard<br>Bootstrap5             | Bootstrap5 |
+| Default Timepicker step in minutes     | Sets the step increment in all Timepicker Cells                                   | 30         |
+| Fullcalendar aspect ration             | Sets the width to height ratio of the calendar                                    | 1.75       |
+| Core events to show in calendar        | Select which core modules to show in the calendar                                 | all        |
+| Display invoiced quotes and Workorders | Whether to display invoiced quote and workorder core events in calendar           | No         |
 
 
 ### System
 | Setting                                                                                               | Description                                                                                | Default   |
 |:------------------------------------------------------------------------------------------------------|:-------------------------------------------------------------------------------------------|:----------|
 | Modules enabled in sidebar                                                                            | Which modules to show available in sidebar menu                                            | all       |
-| Jquery-UI Theme                                                                                       | Theme applied to Jquery-UI dialogs and calendar (when scheduler theme is set to Jquery-UI) | cupertino |
 | Application URl<br>Debug Enabled<br>Database Driver<br>Database Host<br>Database<br>Database Username | Informational display of some settings in BillingTrack .env file                           |           |

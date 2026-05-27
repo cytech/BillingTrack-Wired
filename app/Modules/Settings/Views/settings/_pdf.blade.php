@@ -1,30 +1,3 @@
-@section('javaScript')
-    @parent
-    <script type="text/javascript">
-        ready(function () {
-            updatePDFOptions();
-
-            addEvent(document, 'change', "#pdfDriver", (e) => {
-                updatePDFOptions();
-            });
-
-            function updatePDFOptions() {
-                document.querySelectorAll('.wkhtmltopdf-option').forEach(function (e) {
-                    e.style.display = 'none'
-                })
-
-                pdfDriver = document.getElementById('pdfDriver').value
-
-                if (pdfDriver === 'wkhtmltopdf') {
-                    document.querySelectorAll('.wkhtmltopdf-option').forEach(function (e) {
-                        e.style.display = 'flex'
-                    })
-                }
-            }
-        });
-    </script>
-@stop
-
 <div class="row">
     <div class="col-md-4">
         <div class="mb-3">
