@@ -104,7 +104,7 @@ class BeforeMiddleware
 
         config(['bt.mailConfigured' => (bool) config('bt.mailDriver')]);
 
-        config(['bt.merchant' => json_decode(config('bt.merchant'), true)]);
+        config(['bt.merchant' => json_decode(config('bt.merchant') ?? '', true)]);
 
         return $next($request);
     }

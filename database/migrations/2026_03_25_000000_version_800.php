@@ -74,9 +74,6 @@ return new class extends Migration
             $table->timestamp('failed_at')->useCurrent();
         });
 
-        Setting::deleteByKey('pdfBinaryPath');
-        Setting::deleteByKey('pdfDriver');
-        Setting::saveByKey('version', '8.0.0');
     }
 
     /**
