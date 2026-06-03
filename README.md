@@ -198,17 +198,17 @@ Note: In some instances a fresh install will throw an "unknown error" alert box.
 
 # How to Upgrade BillingTrack
 **Upgrade Existing v7.x.x installation to v8.X.X**  
-**Do not attempt to upgrade a Billingtrack version older than v7.x.x to V8 [SEE UPGRADING FROM BILLINGTRACK 6.X.X](#upgrade-from-billingtrack-6xx)**
+**Do not attempt to upgrade a Billingtrack version older than v7.x.x to V8 [SEE UPGRADING FROM BILLINGTRACK 6.X.X](#upgrade-from-billingtrack-6xx-)**
 - NOTE: BillingTrack-wired v8.0.0 and later require PHP &gt;= 8.3
 - BACKUP YOUR EXISTING DATABASE !!!!
-- Git pull (if originally cloned) or download and overwrite existing
+- Git pull (if originally cloned V7.X.X) or download zip (https://github.com/cytech/BillingTrack-Wired/archive/refs/tags/v8.0.0.zip) and overwrite existing
   installation.
 - if downloading and extracting zip, delete the
   contents of:
     - "YOUR\_BILLINGTRACK\_WEBSITE/public"
     - "YOUR_BILLINGTRACK_WEBSITE/database/seeds"
     - "YOUR\_BILLINGTRACK\_WEBSITE/app"  
-      directories prior to extracting.
+      directories **PRIOR** to extracting.
 - **BillingTrack V7 .env file needs to be updated**. It is recommended to backup (or rename) your .env file and then Copy ".env.example" to ".env" .
     - edit .env and change:
         - APP_KEY= (your old APP_KEY)
@@ -226,13 +226,13 @@ Note: In some instances a fresh install will throw an "unknown error" alert box.
 - After migration completes, signin.
 
 # UPGRADE FROM BILLINGTRACK 6.X.X  
-**Do not attempt to upgrade a Billingtrack version older than v6.x.x to V7 [SEE UPGRADING FROM BILLINGTRACK 5.X.X](#upgrade-from-billingtrack-5xx)**
+**Do not attempt to upgrade a Billingtrack version older than v6.x.x to V8 [SEE UPGRADING FROM BILLINGTRACK 5.X.X](#upgrade-from-billingtrack-5xx)**
 - **The upgrade migration is very complex and can take a long time (a test database containing 24,000 documents takes 4 hours to complete)**
 - **The migration function removes PHP memory_limit and max_execution_time limits during processing (restores them to original when complete)**
 - **This could severely affect your server performance**
 
-- NOTE: BillingTrack-wired v7.0.0 and later require PHP &gt;= 8.2
-- **BREAKING CHANGES v7.x.x**
+- NOTE: BillingTrack-wired v8.0.0 and later require PHP &gt;= 8.3
+- **BREAKING CHANGES FROM V6 to v7.x.x/V8.X.X**
 - This update combines the core modules (Quote, Workorder, Invoice, Recurringinvoice, and Purchaseorder) database tables into a single documents table.
 - User defined custom templates (in the custom/templates directory) will be affected by this change.
 - Note that the existing "custom.blade.php" file in each module directory will be overwritten by the upgrade. If you have modified it directly (without copying it to a new name first) you will need to BACK IT UP prior to upgrade.
@@ -245,26 +245,38 @@ Note: In some instances a fresh install will throw an "unknown error" alert box.
 - The API has also changed so if you are using it you will need to upgrade the API and any code you have referencing it.
 - The new API and examples are located in this repository, resources/misc/billingtrack-api-v7.zip 
 - BACKUP YOUR EXISTING DATABASE !!!!
-- Git pull (if originally cloned) or download and overwrite existing
+- Git pull (if originally cloned V6, remote repository has changed to https://github.com/cytech/BillingTrack-Wired/tree/main) or download zip (https://github.com/cytech/BillingTrack-Wired/archive/refs/tags/v8.0.0.zip) and overwrite existing
   installation.
 - if downloading and extracting zip, delete the
   contents of:
     - "YOUR\_BILLINGTRACK\_WEBSITE/public"
     - "YOUR_BILLINGTRACK_WEBSITE/database/seeds"
     - "YOUR\_BILLINGTRACK\_WEBSITE/app"  
-      directories prior to extracting.
+      directories **PRIOR** to extracting.
+    - **BillingTrack V6 .env file needs to be updated**. It is recommended to backup (or rename) your .env file and then Copy ".env.example" to ".env" .
+      - edit .env and change:
+          - APP_KEY= (your old APP_KEY)
+          - DB_HOST= (your old DB_HOST)
+          - DB_DATABASE= (your old DB_DATABASE)
+          - DB_USERNAME= (your old DB_USERNAME)
+          - DB_PASSWORD= (your old DB_PASSWORD)
+
+  NOTE: Do not change APP_ENV=local. Changing this will cause migrations to fail without feedback. Changing this value to "production" has no beneficial effect on BillingTrack operation.  
+  **Also, do not change DB_STRICT=true**. Mysql strict mode is now required for BillingTrack V8.
+
 - Run composer update
 - Start-> YOUR\_BILLINGTRACK\_WEBSITE/setup
 - After migration completes, signin.
 
 # UPGRADE FROM BILLINGTRACK 5.X.X
-**If attempting to upgrade from BillingTrack V5.X.X to V7, you will first need to upgrade to V6**  
-**V6.1.1 release is available in the releases section of this repository**  
+**If attempting to upgrade from BillingTrack V5.X.X to V7 or V8, you will first need to upgrade to V6**  
+**V6.1.2 release is available in the releases section of this repository**  
 **Minimum PHP requirement for BillingTrack-Wired (v6.X.X) is PHP >= 8.1**
-- Create a new installation/site. (see [How to Install BillingTrack](#how-to-install-billingtrack))
+- Create a new V6.1.2 installation/site. (see [How to Install BillingTrack](#how-to-install-billingtrack))
 - Although it is theoretically possible to do so, do not attempt to upgrade an existing BillingTrack 5.x.x Site.
 - This is a new repository and existing cloners will not be able to pull the update.
 - This will upgrade the existing BillingTrack database, but it is **HIGHLY** recommended to backup the existing database and copy to a new one.
 - After copying old database to new and modifying the .env file per the installation instructions to reflect the NEW copied database:
 - Start-> YOUR\_BILLINGTRACK\_WEBSITE/setup
 - After migration completes (this may take a while. 10 minutes is not unusual), signin. 
+- With Billingtrack V6.1.2 site installed and functional, you can now proceed to upgrade to V8.X.X (see [How to Upgrade BillingTrack](#how-to-upgrade-billingtrack))

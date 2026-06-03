@@ -7,6 +7,7 @@
     <title>{{ config('bt.headerTitleText') }}</title>
     <link rel="stylesheet" href="/build/assets/app.css">
     <script src="/build/assets/app.js"></script>
+    @include('layouts._js_global')
     @yield('javaScript')
 </head>
 <style>

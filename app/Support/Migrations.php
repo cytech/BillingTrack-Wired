@@ -4,6 +4,7 @@ namespace BT\Support;
 
 use AllowDynamicProperties;
 use Artisan;
+use Database\Seeders\DatabaseSeeder;
 use Database\Seeders\SettingsV7TableSeeder;
 use Illuminate\Support\Facades\File;
 
@@ -27,11 +28,9 @@ class Migrations
             if (! $migrationRepository->getRan()) {
                 Artisan::call('migrate');
                 // run seeder for default setup
-                Artisan::call('db:seed');
-                //seed V7 Settings
-                Artisan::call('db:seed', [
-                    '--class' => SettingsV7TableSeeder::class,
-                ]);
+                (new DatabaseSeeder)->run();
+                // seed V7 Settings
+                (new SettingsV7TableSeeder)->run();
             } else {
                 $this->migrator->run($path);
             }

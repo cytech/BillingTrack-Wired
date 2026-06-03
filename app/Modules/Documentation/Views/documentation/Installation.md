@@ -25,8 +25,8 @@ Installation
    -   DB\_USERNAME=
    -   DB\_PASSWORD=  
    To your \*\*NEW\*\* database settings.  
-   NOTE: Do not change APP_ENV=local. Changing this will cause migrations to fail without feedback. Changing this value to "production" has no beneficial effect on BillingTrack operation.
-<br/><br/>
+   NOTE: Do not change APP_ENV=local. Changing this will cause migrations to fail without feedback. Changing this value to "production" has no beneficial effect on BillingTrack operation.  
+   Also, do not change DB_STRICT=true. Mysql strict mode is now required for BillingTrack V8.  
 6. save .env file.
    -   Run "php artisan key:generate"
    -   This copies the app key into the .env file, attached to the APP_KEY= line.  
