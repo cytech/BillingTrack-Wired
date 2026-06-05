@@ -14,8 +14,7 @@ Upgrade
 **Do not attempt to upgrade a Billingtrack version older than v7.x.x to V8 [SEE UPGRADING FROM BILLINGTRACK 6.X.X](#upgrade-from-billingtrack-6xx)**
 - NOTE: BillingTrack-wired v8.0.0 and later require PHP &gt;= 8.3
 - BACKUP YOUR EXISTING DATABASE !!!!
-- Git pull (if originally cloned V7.X.X) or download zip (https://github.com/cytech/BillingTrack-Wired/archive/refs/tags/v8.0.0.zip) and overwrite existing
-  installation.
+- Git pull (if originally cloned V7.X.X) or download zip (https://github.com/cytech/BillingTrack-Wired/archive/refs/tags/v8.0.0.zip).
 - if downloading and extracting zip, delete the
   contents of:
   - "YOUR\_BILLINGTRACK\_WEBSITE/public"
@@ -58,8 +57,7 @@ Upgrade
 - The API has also changed so if you are using it you will need to upgrade the API and any code you have referencing it.
 - The new API and examples are located in this repository, resources/misc/billingtrack-api-v7.zip
 - BACKUP YOUR EXISTING DATABASE !!!!
-- Git pull (if originally cloned V6, remote repository has changed to https://github.com/cytech/BillingTrack-Wired/tree/main) or download zip (https://github.com/cytech/BillingTrack-Wired/archive/refs/tags/v8.0.0.zip) and overwrite existing
-  installation.
+- Git pull (if originally cloned V6, remote repository has changed to https://github.com/cytech/BillingTrack-Wired/tree/main) or download zip (https://github.com/cytech/BillingTrack-Wired/archive/refs/tags/v8.0.0.zip).
 - if downloading and extracting zip, delete the
   contents of:
   - "YOUR\_BILLINGTRACK\_WEBSITE/public"

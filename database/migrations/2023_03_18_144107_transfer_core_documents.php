@@ -67,7 +67,7 @@ return new class extends Migration
                 $document = new \BT\Modules\Documents\Models\Document();
                 $document->document_type = 'BT\\Modules\\Documents\\Models\\'.ucfirst(strtolower($coredoctype));
                 $document->document_id = $doc->id;
-                $document->document_date = $doc->quote_date ?? $doc->workorder_date ?? $doc->invoice_date ?? $doc->purchaseorder_date ?? '0000-00-00';
+                $document->document_date = $doc->quote_date ?? $doc->workorder_date ?? $doc->invoice_date ?? $doc->purchaseorder_date ?? '1900-01-01';
                 $document->workorder_id = $doc->workorder_id ?? null;
                 $document->invoice_id = $doc->invoice_id ?? null;
                 $document->user_id = $doc->user_id;
@@ -75,7 +75,7 @@ return new class extends Migration
                 $document->company_profile_id = $doc->company_profile_id;
                 $document->group_id = $doc->group_id ?? null;
                 $document->document_status_id = $doc->quote_status_id ?? $doc->workorder_status_id ?? $doc->invoice_status_id ?? $doc->purchaseorder_status_id ?? 9;
-                $document->action_date = $doc->expires_at ?? $doc->due_at ?? '0000-00-00';
+                $document->action_date = $doc->expires_at ?? $doc->due_at ?? '1900-01-01 ';
                 $document->number = $doc->number ?? 0;
                 $document->footer = $doc->footer;
                 $document->url_key = $doc->url_key ?? '';

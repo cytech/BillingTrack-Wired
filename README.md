@@ -170,6 +170,25 @@ BillingTrack.conf
 
 
 # How to Install BillingTrack
+**_Repository Cloning_**  
+Version 8.X.X  
+git clone https://github.com/cytech/BillingTrack-Wired.git, git checkout main  
+
+Version 7.0.6  
+git clone https://github.com/cytech/BillingTrack-Wired.git, git checkout v7.0.6  
+
+Version 6.1.2  
+git clone https://github.com/cytech/BillingTrack-Wired.git, git checkout v6.1.2.FINAL  
+
+**_ZIP Download_**  
+Version 8.0.0  
+https://github.com/cytech/BillingTrack-Wired/archive/refs/tags/v8.0.0.zip  
+
+Version 7.0.6  
+https://github.com/cytech/BillingTrack-Wired/archive/refs/tags/v7.0.6.zip  
+
+Version 6.1.2  
+https://github.com/cytech/BillingTrack-Wired/archive/refs/tags/v6.1.2.zip  
 
 1. Clone or download the repository to a new web directory.
 2. Run "composer install" in web directory
@@ -201,8 +220,7 @@ Note: In some instances a fresh install will throw an "unknown error" alert box.
 **Do not attempt to upgrade a Billingtrack version older than v7.x.x to V8 [SEE UPGRADING FROM BILLINGTRACK 6.X.X](#upgrade-from-billingtrack-6xx-)**
 - NOTE: BillingTrack-wired v8.0.0 and later require PHP &gt;= 8.3
 - BACKUP YOUR EXISTING DATABASE !!!!
-- Git pull (if originally cloned V7.X.X) or download zip (https://github.com/cytech/BillingTrack-Wired/archive/refs/tags/v8.0.0.zip) and overwrite existing
-  installation.
+- Git pull (if originally cloned V7.X.X) or download zip (https://github.com/cytech/BillingTrack-Wired/archive/refs/tags/v8.0.0.zip).
 - if downloading and extracting zip, delete the
   contents of:
     - "YOUR\_BILLINGTRACK\_WEBSITE/public"
@@ -245,8 +263,7 @@ Note: In some instances a fresh install will throw an "unknown error" alert box.
 - The API has also changed so if you are using it you will need to upgrade the API and any code you have referencing it.
 - The new API and examples are located in this repository, resources/misc/billingtrack-api-v7.zip 
 - BACKUP YOUR EXISTING DATABASE !!!!
-- Git pull (if originally cloned V6, remote repository has changed to https://github.com/cytech/BillingTrack-Wired/tree/main) or download zip (https://github.com/cytech/BillingTrack-Wired/archive/refs/tags/v8.0.0.zip) and overwrite existing
-  installation.
+- Git pull (if originally cloned V6, remote repository has changed to https://github.com/cytech/BillingTrack-Wired/tree/main) or download zip (https://github.com/cytech/BillingTrack-Wired/archive/refs/tags/v8.0.0.zip).
 - if downloading and extracting zip, delete the
   contents of:
     - "YOUR\_BILLINGTRACK\_WEBSITE/public"

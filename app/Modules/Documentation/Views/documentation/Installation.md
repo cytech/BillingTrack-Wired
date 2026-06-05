@@ -10,6 +10,25 @@ Installation
 
 <a id="how-to-install-billingtrack"></a>
 ### How to Install BillingTrack
+**_Repository Cloning_**  
+Version 8.X.X  
+git clone https://github.com/cytech/BillingTrack-Wired.git, git checkout main
+
+Version 7.0.6  
+git clone https://github.com/cytech/BillingTrack-Wired.git, git checkout v7.0.6
+
+Version 6.1.2  
+git clone https://github.com/cytech/BillingTrack-Wired.git, git checkout v6.1.2.FINAL
+
+**_ZIP Download_**  
+Version 8.0.0  
+https://github.com/cytech/BillingTrack-Wired/archive/refs/tags/v8.0.0.zip
+
+Version 7.0.6  
+https://github.com/cytech/BillingTrack-Wired/archive/refs/tags/v7.0.6.zip
+
+Version 6.1.2  
+https://github.com/cytech/BillingTrack-Wired/archive/refs/tags/v6.1.2.zip
 
 1. Clone or download the repository to a new web directory.
 
