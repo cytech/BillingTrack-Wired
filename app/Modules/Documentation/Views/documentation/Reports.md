@@ -67,8 +67,8 @@ Generates a preview table of results
 
 Generates a PDF table of results
 
-**Export to Quickbooks Timer:**
-
+**Export to Quickbooks Timer:**  
+**QUICKBOOKS REMOVED THE IMPORT CAPABILITY IN 2023**  
 Generates an IIF file that Quickbooks Desktop can import
 (Quickbooks-File-Utilities-Import-Timer Activities)
 

@@ -11,13 +11,15 @@
 namespace BT\Modules\Reports\Reports;
 
 use BT\Modules\CompanyProfiles\Models\CompanyProfile;
+use BT\Modules\Documents\Models\DocumentItem;
 use BT\Modules\Documents\Models\Invoice;
 use BT\Support\DateFormatter;
+use BT\Support\Statuses\DocumentStatuses;
 use DB;
 
 class TimeSheetReport
 {
-    public function getResults($fromDate, $toDate, $companyProfileId = null, $report_type = null)
+    public function getResults($fromDate, $toDate, $companyProfileId = null, $report_type = null): array
     {
         $results = [
             'from_date' => '',
@@ -27,39 +29,24 @@ class TimeSheetReport
             'records' => [],
         ];
 
-        if ($report_type == 'condensed') {
-            $invoices = Invoice::select('document_items.document_id AS InvoiceID', 'documents.number AS InvoiceNumber',
-                'clients.name AS CustomerName', 'document_items.name AS ItemName',
-                DB::raw('sum(document_items.quantity) AS ItemQty'), 'employees.number AS EmpNumber',
-                'documents.document_date AS DateFinished', DB::raw('CONCAT(employees.last_name,", ",employees.first_name) AS FullName'))
-                ->join('document_items', 'document_items.document_id', '=', 'documents.id')
-                ->join('clients', 'clients.id', '=', 'documents.client_id')
-                ->join('employees', 'employees.id', '=', 'document_items.resource_id')
-                ->whereBetween('document_date', [$fromDate, $toDate])
-                ->where('document_items.resource_table', 'employees')
-                ->groupBy('EmpNumber')
-                ->orderBy('FullName', 'ASC');
+        $invoices = DocumentItem::whereHas('invoice', function ($query) use ($fromDate, $toDate) {
+            $query->whereBetween('document_date', [$fromDate, $toDate])
+                ->where('document_status_id', '<>', DocumentStatuses::getStatusId('canceled'))
+                ->where('document_status_id', '<>', DocumentStatuses::getStatusId('draft'));
+        })
+            ->withAggregate('invoice', 'document_date')
+            ->withAggregate('employee', 'full_name')
+            ->where('resource_table', 'employees')
+            ->orderBy('employee_full_name')
+            ->orderBy('invoice_document_date', 'DESC');
 
-        } else {
-            $invoices = Invoice::select('document_items.document_id AS InvoiceID', 'documents.number AS InvoiceNumber',
-                'clients.name AS CustomerName', 'document_items.name AS ItemName',
-                'document_items.quantity AS ItemQty', 'employees.number AS EmpNumber',
-                'documents.document_date AS DateFinished', DB::raw('CONCAT(employees.last_name,", ",employees.first_name) AS FullName'))
-                ->join('document_items', 'document_items.document_id', '=', 'documents.id')
-                ->join('clients', 'clients.id', '=', 'documents.client_id')
-                ->join('employees', 'employees.id', '=', 'document_items.resource_id')
-                ->whereBetween('document_date', [$fromDate, $toDate])
-                ->where('document_items.resource_table', 'employees')
-                ->orderBy('FullName', 'ASC')
-                ->orderBy('DateFinished', 'ASC');
-        }
         if ($companyProfileId) {
             $companyProfile = CompanyProfile::where('id', $companyProfileId)->first();
             $results['companyProfile_company'] = $companyProfile->company;
 
-            $invoices->where('company_profile_id', $companyProfileId);
+            $invoices->whereRelation('invoice', 'company_profile_id', '=', $companyProfileId);
         } else {
-            $results['companyProfile_company'] = 'All Billing';
+            $results['companyProfile_company'] = __('bt.all_billing');
         }
 
         $invoices = $invoices->get();
@@ -74,19 +61,41 @@ class TimeSheetReport
             return $results;
         }
 
-        $totalhours = $invoices->sum('ItemQty');
+        $totalhours = $invoices->sum('quantity');
 
-        foreach ($invoices as $invoice) {
-            $results['records'][] = [
-                'number' => $invoice->InvoiceNumber,
-                'client_name' => $invoice->CustomerName,
-                'formatted_document_date' => $invoice->DateFinished,
-                'item_name' => $invoice->ItemName,
-                'item_qty' => $invoice->ItemQty,
-                'full_name' => $invoice->FullName,
-                'employee_number' => $invoice->EmpNumber,
-            ];
+        if ($report_type == 'condensed') {
+            $groups = $invoices->groupBy('resource_id');
+            $groupwithcount = $groups->map(function ($group) {
+                return [
+                    'resource_id' => $group->first()->resource_id,
+                    'quantity' => $group->sum('quantity'),
+                    'name' => $group->first()->name,
+                    'full_name' => $group->first()->employee->full_name,
+                    'employee_number' => $group->first()->employee->number,
+                ];
+            });
 
+            foreach ($groupwithcount as $invoice) {
+                $results['records'][] = [
+                    'item_name' => $invoice['name'],
+                    'item_qty' => $invoice['quantity'],
+                    'full_name' => $invoice['full_name'],
+                    'employee_number' => $invoice['employee_number'],
+                ];
+            }
+        } else {
+            foreach ($invoices as $invoice) {
+                $results['records'][] = [
+                    'number' => $invoice->invoice->number,
+                    'client_name' => $invoice->invoice->client->name,
+                    'formatted_document_date' => $invoice->invoice->document_date,
+                    'item_name' => $invoice->name,
+                    'item_qty' => $invoice->quantity,
+                    'full_name' => $invoice->employee->full_name,
+                    'employee_number' => $invoice->employee->number,
+                ];
+
+            }
         }
 
         $results['total_hours'] = $totalhours;
@@ -94,7 +103,8 @@ class TimeSheetReport
         return $results;
     }
 
-    public function getResultsIIF($fromDate, $toDate, $companyProfileId = null)
+    // Deprecated - Quickbooks removed import capability in desktop versions after 2023
+    public function getResultsIIF($fromDate, $toDate, $companyProfileId = null): array
     {
         $results = [
             'from_date' => '',

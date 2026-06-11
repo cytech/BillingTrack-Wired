@@ -26,7 +26,7 @@ use BT\Modules\Scheduler\Models\Schedule;
 use BT\Modules\Scheduler\Models\ScheduleOccurrence;
 use BT\Modules\Scheduler\Models\ScheduleResource;
 use BT\Modules\Scheduler\Requests\EventRequest;
-//for coreevnts
+// for coreevnts
 use BT\Modules\Scheduler\Requests\ReplaceRequest;
 use BT\Modules\Scheduler\Support\CalendarEventPresenter;
 use BT\Modules\Settings\Models\Setting;
@@ -40,7 +40,7 @@ class SchedulerController extends Controller
 {
     public function index()
     {
-        $today = new Carbon();
+        $today = new Carbon;
 
         $thismonthstart = $today->copy()->modify('0:00 first day of this month');
         $thismonthend = $today->copy()->modify('23:59:59 last day of this month');
@@ -49,27 +49,25 @@ class SchedulerController extends Controller
         $nextmonthstart = $today->copy()->modify('0:00 first day of next month');
         $nextmonthend = $today->copy()->modify('23:59:59 last day of next month');
 
-        // alternate eloquent way...
-        //		$data['monthEvent'] = Schedule::whereHas('occurrences',function($q) use($today){
-        //			$q->where( 'start_date', '>=', $today->copy()->modify( '0:00 first day of this month' ) )
-        //			  ->where( 'schedule_occurrences.start_date', '<=', $today->copy()->modify( '23:59:59 last day of this month' ) );
-        //			})->count();
-
         $data['monthEvent'] = Schedule::withOccurrences()->whereBetween('schedule_occurrences.start_date', [$thismonthstart, $thismonthend])->count();
         $data['lastMonthEvent'] = Schedule::withOccurrences()->whereBetween('schedule_occurrences.start_date', [$lastmonthstart, $lastmonthend])->count();
         $data['nextMonthEvent'] = Schedule::withOccurrences()->whereBetween('schedule_occurrences.start_date', [$nextmonthstart, $nextmonthend])->count();
-        $data['fullMonthEvent'] = Schedule::withOccurrences()->select(DB::raw("count('id') as total, DATE_FORMAT(schedule_occurrences.start_date, '%Y%m%d') as start_date"))
-            ->where('schedule_occurrences.start_date', '>=', date('Y-m-01'))
-            ->where('schedule_occurrences.start_date', '<=', date('Y-m-t'))
-            ->groupBy('start_date')
-            ->get();
 
-        $data['fullYearMonthEvent'] = Schedule::withOccurrences()
-            ->select(DB::raw("count('id') as total, DATE_FORMAT(schedule_occurrences.start_date, '%Y%m%d') as start_date"))
-            ->where('start_date', '>=', date('Y-01-01'))
-            ->where('start_date', '<=', date('Y-12-31'))
-            ->groupBy(DB::raw("DATE_FORMAT(start_date, '%Y%m')"))
-            ->get();
+        $data['fullMonthEvent'] = Schedule::withWhereHas('occurrences', function ($query) use ($today) {
+            $query->where('start_date', '>=', $today->format('Y-m-01'))
+                ->where('start_date', '<=', $today->format('Y-m-t'));
+        })
+            ->get()
+            ->sortBy(fn ($q) => $q->occurrences->first()->start_date)
+            ->groupBy(fn ($q) => $q->occurrences->first()->start_date);
+
+        $data['fullYearMonthEvent'] = Schedule::withWhereHas('occurrences', function ($query) use ($today) {
+            $query->where('start_date', '>=', $today->format('Y-01-01'))
+                ->where('start_date', '<=', $today->format('Y-12-31'));
+        })
+            ->get()
+            ->sortBy(fn ($q) => $q->occurrences->first()->start_date)
+            ->groupBy(fn ($q) => $q->occurrences->first()->start_date->format('Y-m'));
 
         $data['reminders_occ'] = ScheduleOccurrence::whereHas('schedule')
             ->whereRaw('? between reminder_date and end_date', [$today->copy()->modify('0:00')])
@@ -97,7 +95,7 @@ class SchedulerController extends Controller
 
     public function calendar()
     {
-        //only fetch back configured amount of days
+        // only fetch back configured amount of days
         $data['status'] = (request('status')) ?: 'now';
         $data['events'] = Schedule::withOccurrences()->with('resources')->whereDate('start_date', '>=',
             Carbon::now()->subDays(config('bt.schedulerPastdays')))->get();
@@ -106,12 +104,12 @@ class SchedulerController extends Controller
         $data['cattxlist'] = Category::pluck('text_color', 'id');
         $data['companyProfiles'] = CompanyProfile::getList();
 
-        //retrieve configured coreevents
+        // retrieve configured coreevents
         $coreevents = [];
-        $filter = request()->filter ?: (new Setting())->coreeventsEnabled();
+        $filter = request()->filter ?: (new Setting)->coreeventsEnabled();
 
         $coredata = [
-            //quote sent or approved,based on displayinvoiced setting, with client
+            // quote sent or approved,based on displayinvoiced setting, with client
             'quote' => (config('bt.schedulerDisplayInvoiced') == 1) ?
                 Quote::where(function ($query) {
                     $query->sentorapproved();
@@ -124,7 +122,7 @@ class SchedulerController extends Controller
                         $query->sentorapproved();
                     })
                     ->with('client'),
-            //workorder sent or approved, based on displayinvoiced setting, with client
+            // workorder sent or approved, based on displayinvoiced setting, with client
             'workorder' => (config('bt.schedulerDisplayInvoiced') == 1) ?
                 Workorder::where(function ($query) {
                     $query->sentorapproved();
@@ -149,13 +147,13 @@ class SchedulerController extends Controller
             if (! count($filter) || in_array($type, $filter)) {
                 $source->where(function ($query) {
                     $start = Carbon::now()->subDays(config('bt.schedulerPastdays'));
-                    $end = Carbon::now()->addCentury(); //really.....
+                    $end = Carbon::now()->addCentury(); // really.....
 
                     return $query->dateRange($start, $end);
                 });
 
                 foreach ($source->get() as $entity) {
-                    $coreevents[] = (new CalendarEventPresenter())->calendarEvent($entity, $type);
+                    $coreevents[] = (new CalendarEventPresenter)->calendarEvent($entity, $type);
                 }
             }
         }
@@ -168,7 +166,7 @@ class SchedulerController extends Controller
     public function showSchedule()
     {
         if (! isset($_POST['back']) && ! isset($_POST['forward'])) {
-            $date = new Carbon();
+            $date = new Carbon;
         }
 
         if (isset($_POST['forward'])) {
@@ -225,12 +223,14 @@ class SchedulerController extends Controller
     public function tableEvent(EventRequest $request)
     {
         $modulefullname = Schedule::class;
+
         return view('schedule.tableEvent')->with('modulefullname', $modulefullname);
     }
 
     public function tableRecurringEvent(Request $request)
     {
         $modulefullname = Schedule::class;
+
         return view('schedule.tableRecurringEvent')->with('modulefullname', $modulefullname);
     }
 
@@ -241,7 +241,7 @@ class SchedulerController extends Controller
         return response()->json(['success' => true, 'available_employees' => $available_employees, 'available_resources' => $available_resources], 200);
     }
 
-    //trash
+    // trash
     public function trashEvent($id)
     {
         $event = Schedule::find($id);
@@ -270,11 +270,13 @@ class SchedulerController extends Controller
 
     public function checkSchedule()
     {
-        $today = new Carbon();
+        $today = new Carbon;
         $employees = Employee::where('schedule', 1)->where('active', 1)->pluck('id');
         $empresources = DocumentItem::whereHas('workorder', function ($q) use ($today) {
             $q->whereDate('job_date', '>=', $today->subDay(1))->where('document_status_id', 3);
-            $q->where(function ($qq){$qq->where('invoice_id', 0)->orWhereNull('invoice_id');});
+            $q->where(function ($qq) {
+                $qq->where('invoice_id', 0)->orWhereNull('invoice_id');
+            });
         })->with('workorder')->where('resource_table', 'employees')->whereNotIn('resource_id', $employees)->get();
 
         return view('schedule.orphanCheck')->with('empresources', $empresources);
@@ -336,7 +338,7 @@ class SchedulerController extends Controller
             ->orderBy('category_id')->orderBy('name')
             ->get(['id', 'name', 'numstock']);
 
-        //check against numstock and remove if necessary
+        // check against numstock and remove if necessary
         foreach ($resources_scheduled as $key => $equip) {
             foreach ($resources_unscheduled as $key1 => $active) {
                 if ($equip->resource_id == $active->id) {

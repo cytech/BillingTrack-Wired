@@ -111,9 +111,10 @@ class Schedule extends Model
     }
 
     //scopes
-    public function scopeWithOccurrences($query)
+    public function scopeWithOccurrences($query): void
     {
         $query->leftjoin('schedule_occurrences', 'schedule.id', '=',
-            'schedule_occurrences.schedule_id')->select('*', 'schedule.id as id', 'schedule_occurrences.id as oid');
+            'schedule_occurrences.schedule_id')
+            ->select('*', 'schedule.id as id', 'schedule_occurrences.id as oid');
     }
 }

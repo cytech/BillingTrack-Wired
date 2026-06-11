@@ -37,18 +37,6 @@ class SchedulerSummaryWidgetComposer
             ->where('start_date', '<=', $today->copy()->modify('23:59:59 last day of next month'))
             ->count();
 
-        $data['fullMonthEvent'] = ScheduleOccurrence::select(DB::raw("count('id') as total, DATE_FORMAT(start_date, '%Y%m') as start_date"))
-            ->where('start_date', '>=', date('Y-m-01'))
-            ->where('start_date', '<=', date('Y-m-t'))
-            ->groupBy('start_date')
-            ->get();
-
-        $data['fullYearMonthEvent'] = ScheduleOccurrence::select(DB::raw("count('id') as total, DATE_FORMAT(start_date, '%Y%m') as start_date"))
-            ->where('start_date', '>=', date('Y-01-01'))
-            ->where('start_date', '<=', date('Y-12-31'))
-            ->groupBy('start_date')
-            ->get();
-
         $data['reminders'] = ScheduleOccurrence::with('Schedule')->where('reminder_date', '>=', $today->copy()->modify('0:00'))->get();
 
         return $data;

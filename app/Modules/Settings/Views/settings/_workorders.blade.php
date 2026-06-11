@@ -63,6 +63,10 @@
     </div>
 </div>
 <div class="row">
+    <hr>
+    <label class="form-label fw-bold"> QUICKBOOKS REMOVED THE IMPORT CAPABILITY IN 2023 </label>
+</div>
+<div class="row">
     <div class="col-md-4">
         <div class="mb-3">
             <label class="form-label fw-bold">@lang('bt.wo_timesheet_companyname')</label>

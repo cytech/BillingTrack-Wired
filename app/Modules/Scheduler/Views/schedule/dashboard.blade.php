@@ -176,19 +176,19 @@
 
     <script>
         var monthEvents = [
-                @foreach($fullMonthEvent as $MonthEvent)
+            @foreach($fullMonthEvent as $key =>  $MonthEvent)
             {
-                x: "{!! date('M-d', strtotime($MonthEvent->start_date)) !!}",
-                y: {!! $MonthEvent->total !!}
+                x: "{!! $MonthEvent->first()->occurrences()->first()->start_date->format('M-d') !!}",
+                y: {!! $MonthEvent->count() !!}
             },
             @endforeach
         ];
 
         var yearEvents = [
-            @foreach($fullYearMonthEvent as $yearMonthEvent)
+            @foreach($fullYearMonthEvent as $key => $yearMonthEvent)
             {
-                x: "{!! date('M-Y', strtotime($yearMonthEvent->start_date)) !!}",
-                y: "{!! $yearMonthEvent->total !!}"
+                x: "{!! $yearMonthEvent->first()->occurrences()->first()->start_date->format('M-Y') !!}",
+                y: "{!! $yearMonthEvent->count() !!}"
             },
             @endforeach
         ];
