@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="{{ asset('plugins/tom-select/css/tom-select.bootstrap4.min.css') }}">
+<link rel="stylesheet" href="{{ asset('plugins/tom-select/css/tom-select.bootstrap5.min.css') }}">
 <script src="{{ asset('plugins/tom-select/js/tom-select.complete.min.js') }}" type="text/javascript"></script>
 @include('documents._js_mail')
 <div class="modal fade" id="modal-mail-document">
@@ -6,7 +6,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">@lang('bt.email_document')</h4>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="false"></button>
             </div>
             <div class="modal-body">
                 <div id="modal-status-placeholder"></div>

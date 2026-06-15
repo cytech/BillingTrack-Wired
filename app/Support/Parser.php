@@ -26,7 +26,7 @@ class Parser
     public function parse($template)
     {
         try {
-            return view('app.email_templates.'.$template)
+            return view('app.private.email_templates.'.$template)
                 ->with(strtolower($this->class), $this->object)
                 ->render();
         } catch (\Exception $e) {

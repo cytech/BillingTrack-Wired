@@ -3,7 +3,6 @@
     ready(function () {
         const modal = bsModal('modal-add-task')
         modal.show()
-        modaleL = document.getElementById('modal-add-task')
         modaleL.addEventListener('shown.bs.modal', function () {
             document.getElementById('add_task_name').focus();
         });
@@ -29,7 +28,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">@lang('bt.add_task')</h4>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="false"></button>
             </div>
             <div class="modal-body">
                 <div id="modal-status-placeholder"></div>

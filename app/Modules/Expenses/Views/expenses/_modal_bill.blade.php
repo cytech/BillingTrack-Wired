@@ -31,7 +31,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">@lang('bt.bill_this_expense')</h4>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="false"></button>
             </div>
             <div class="modal-body">
                 <div id="modal-status-placeholder"></div>

@@ -35,6 +35,11 @@
     }
     // create boostrap modal
     var bsModal = function(selector){
+        modaleL = document.getElementById(selector)
+        // get rid of “Blocked aria-hidden on an element because its descendant retained focus.” in browser console
+        modaleL.addEventListener('hide.bs.modal', () => {
+            document.activeElement.blur();
+        });
         return new bootstrap.Modal(document.getElementById(selector), {backdrop: 'static'});
         }
     // toast for saving event
@@ -283,6 +288,18 @@
         addEvent(document, 'click', '.email-document', (e) => {
             axios.post('{{ route('documentMail.create') }} ', {
                 document_id: e.target.dataset.documentId,
+                redirectTo: e.target.dataset.redirectTo
+            }).then(response => {
+                setInnerHTML(document.getElementById('modal-placeholder'), response.data)
+            }).catch((response) => {
+                notify('@lang('bt.problem_with_email_template')', 'error')
+            })
+        })
+
+        //email payment receipt
+        addEvent(document, 'click', '.email-payment-receipt', (e) => {
+            axios.post('{{ route('payments.paymentMail.create') }} ', {
+                payment_id: e.target.dataset.paymentId,
                 redirectTo: e.target.dataset.redirectTo
             }).then(response => {
                 setInnerHTML(document.getElementById('modal-placeholder'), response.data)

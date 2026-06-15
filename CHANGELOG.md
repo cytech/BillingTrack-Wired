@@ -15,6 +15,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - cherry picked items from PR#23 (arabic language, dark mode, some core fixes)
 - NO ACTIVITY on rappasoft/laravel-livewire-tables - forked and applied PR for Laravel13/livewireV4 support and added to composer.
   https://github.com/cytech/laravel-livewire-tables/tree/feature/laravel-13-livewire-4
+- Fix missing url_key on VERY old clients, documents and attachments
 
 ## 7.0.6
 - fix job end_time validation in workorders

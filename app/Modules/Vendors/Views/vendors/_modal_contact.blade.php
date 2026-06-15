@@ -36,7 +36,7 @@
                         @lang('bt.add_contact')
                     @endif
                 </h4>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="false"></button>
             </div>
             <div class="modal-body">
                 <div id="modal-status-placeholder"></div>

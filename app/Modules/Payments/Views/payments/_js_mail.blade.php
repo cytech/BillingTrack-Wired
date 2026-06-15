@@ -11,7 +11,6 @@
 
         const modal = bsModal('modal-mail-payment')
         modal.show()
-        modaleL = document.getElementById('modal-mail-payment')
         modaleL.addEventListener('shown.bs.modal', function () {
             new TomSelect('#to', tsconfig);
             new TomSelect('#cc', tsconfig);

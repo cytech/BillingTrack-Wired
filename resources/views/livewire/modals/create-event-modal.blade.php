@@ -5,7 +5,7 @@
         @else
             <h4 class="modal-title">@lang('bt.create_event')</h4>
         @endif
-        <button type="button" class="btn-close" wire:click.prevent="doCancel()" aria-hidden="true"></button>
+        <button type="button" class="btn-close" wire:click.prevent="doCancel()" aria-hidden="false"></button>
     </div>
     <div class="modal-body">
         <div id="modal-status-placeholder"></div>

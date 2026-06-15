@@ -6,7 +6,7 @@
             @else
                 @lang('bt.enter_client_payment')
             @endif</h4>
-        <button type="button" class="btn-close" wire:click.prevent="doCancel()" aria-hidden="true"></button>
+        <button type="button" class="btn-close" wire:click.prevent="doCancel()" aria-hidden="false"></button>
     </div>
     <div class="modal-body">
         <div id="modal-status-placeholder"></div>

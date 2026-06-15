@@ -1,18 +1,5 @@
 @extends('layouts.master')
 
-@section('javaScript')
-    <script type="text/javascript">
-        ready(function () {
-            addEvent(document, 'click', ".email-payment-receipt", (e) => {
-                loadModal('{{ route('payments.paymentMail.create') }}', {
-                    payment_id: e.target.dataset.paymentId,
-                    redirectTo: e.target.dataset.redirectTo
-                })
-            })
-        })
-    </script>
-@stop
-
 @section('content')
     <section class="app-content-header">
         <div class="container-fluid">

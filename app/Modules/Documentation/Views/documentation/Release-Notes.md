@@ -11,6 +11,7 @@ Release Notes
 - update square api to ^45 (using legacy client)
 - remove ancient wkhtmltopdf driver - only dompdf now
 - cherry picked items from PR#23 (arabic language, dark mode, some core fixes)
+- fix missing url_key on VERY old clients, documents and attachments
 
 ### BillingTrack 7.0.6
 - fix job end_time validation in workorders
