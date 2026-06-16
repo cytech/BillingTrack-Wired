@@ -24,6 +24,7 @@ use BT\Modules\Quotes\Support\QuoteTemplates;
 use BT\Modules\Workorders\Support\WorkorderTemplates;
 use BT\Support\Languages;
 use BT\Traits\ReturnUrl;
+use Illuminate\Support\Facades\Storage;
 
 class CompanyProfileController extends Controller
 {
@@ -56,7 +57,7 @@ class CompanyProfileController extends Controller
 
         if ($request->hasFile('logo')) {
             $logoFileName = $request->file('logo')->getClientOriginalName();
-            $request->file('logo')->move(storage_path(), $logoFileName);
+            $request->file('logo')->storeAs('companyprofile_logos', $logoFileName);
 
             $input['logo'] = $logoFileName;
         }
@@ -92,12 +93,13 @@ class CompanyProfileController extends Controller
 
         if ($request->hasFile('logo')) {
             $logoFileName = $request->file('logo')->getClientOriginalName();
-            $request->file('logo')->move(storage_path(), $logoFileName);
+            $request->file('logo')->storeAs('companyprofile_logos', $logoFileName);
 
             $input['logo'] = $logoFileName;
         }
 
         $companyProfile = CompanyProfile::find($id);
+
         $companyProfile->fill($input);
         $companyProfile->save();
 
@@ -133,14 +135,14 @@ class CompanyProfileController extends Controller
     public function deleteLogo($id)
     {
         $companyProfile = CompanyProfile::find($id);
-
+        $logoname = $companyProfile->logo;
         $companyProfile->logo = null;
 
         $companyProfile->save();
 
-        if (file_exists(storage_path($companyProfile->logo))) {
+        if (Storage::exists('companyprofile_logos/'.$logoname)) {
             try {
-                unlink(storage_path($companyProfile->logo));
+                Storage::delete('companyprofile_logos/'.$logoname);
             } catch (\Exception $e) {
 
             }

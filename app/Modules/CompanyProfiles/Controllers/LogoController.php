@@ -13,6 +13,7 @@ namespace BT\Modules\CompanyProfiles\Controllers;
 
 use BT\Http\Controllers\Controller;
 use BT\Modules\CompanyProfiles\Models\CompanyProfile;
+use Illuminate\Support\Facades\Storage;
 
 class LogoController extends Controller
 {
@@ -21,7 +22,7 @@ class LogoController extends Controller
         $companyProfile = CompanyProfile::find($id);
 
         if ($companyProfile->logo) {
-            return response(file_get_contents(storage_path($companyProfile->logo)), 200)->header('Content-Type', 'image/jpeg');
+            return response(Storage::get('companyprofile_logos/'.$companyProfile->logo), 200)->header('Content-Type', 'image/jpeg');
         }
 
         return null;

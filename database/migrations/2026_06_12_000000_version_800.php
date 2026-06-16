@@ -2,8 +2,8 @@
 
 use BT\Modules\Attachments\Models\Attachment;
 use BT\Modules\Clients\Models\Client;
+use BT\Modules\CompanyProfiles\Models\CompanyProfile;
 use BT\Modules\Documents\Models\Document;
-use BT\Modules\Settings\Models\Setting;
 use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
@@ -32,8 +32,22 @@ return new class extends Migration
             $document->save();
         }
 
-        // re-write email templates - laravel 13 storage default changed to storage_path('app/private'),
-        Setting::writeEmailTemplates();
+        // move email templates - laravel 13 storage default changed to storage_path('app/private')
+        File::moveDirectory(storage_path('app/email_templates'), Storage::disk('local')->path('email_templates'));
+
+        // move attachments directory to app/private
+        File::moveDirectory(storage_path('attachments'), Storage::disk('local')->path('attachments'));
+
+        // move company_profile logos to app/private
+        $companyprofiles = CompanyProfile::whereNotNull('logo')->get();
+        Storage::makeDirectory('companyprofile_logos');
+        foreach ($companyprofiles as $companyprofile) {
+            File::move(storage_path($companyprofile->logo), Storage::disk('local')->path('companyprofile_logos/'.$companyprofile->logo));
+        }
+
+        // create dompdf temp storage
+        Storage::makeDirectory('dompdf');
+
     }
 
     /**

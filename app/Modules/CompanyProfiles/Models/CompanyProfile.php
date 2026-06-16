@@ -22,11 +22,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Storage;
 
 class CompanyProfile extends Model
 {
-    use SoftDeletes;
     use SoftCascadeTrait;
+    use SoftDeletes;
 
     protected $softCascade = ['custom'];
 
@@ -101,8 +102,8 @@ class CompanyProfile extends Model
 
     public function logo($width = null, $height = null)
     {
-        if ($this->logo and file_exists(storage_path($this->logo))) {
-            $logo = base64_encode(file_get_contents(storage_path($this->logo)));
+        if ($this->logo and Storage::exists('companyprofile_logos/'.$this->logo)) {
+            $logo = base64_encode(Storage::get('companyprofile_logos/'.$this->logo));
 
             $style = '';
 

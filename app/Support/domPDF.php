@@ -13,6 +13,7 @@ namespace BT\Support;
 
 use Dompdf\Dompdf as PDF;
 use Dompdf\Options;
+use Illuminate\Support\Facades\Storage;
 
 class domPDF
 {
@@ -41,10 +42,10 @@ class domPDF
     {
         $options = new Options;
 
-        $options->setTempDir(storage_path('/'));
-        $options->setFontDir(storage_path('/'));
-        $options->setFontCache(storage_path('/'));
-        $options->setLogOutputFile(storage_path('dompdf_log'));
+        $options->setTempDir(Storage::path('dompdf'));
+        $options->setFontDir(Storage::path('dompdf'));
+        $options->setFontCache(Storage::path('dompdf'));
+        $options->setLogOutputFile(Storage::path('dompdf/dompdf_log'));
         $options->setIsRemoteEnabled(true);
         //        $options->setIsHtml5ParserEnabled(true);
         $options->setIsFontSubsettingEnabled(true);
