@@ -48,13 +48,14 @@ class ExpenseBillController extends Controller
 
         $expense->save();
 
-        if (request('add_line_item')) {
+        if (request('add_line_item') == 1) {
             $item = [
                 'document_id' => request('invoice_id'),
                 'name' => request('item_name'),
                 'description' => request('item_description'),
                 'quantity' => 1,
                 'price' => $expense->amount,
+                'tax_rate_id' => $expense->tax
             ];
 
             DocumentItem::create($item);

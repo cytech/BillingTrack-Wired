@@ -5,6 +5,7 @@ use BT\Modules\Clients\Models\Client;
 use BT\Modules\CompanyProfiles\Models\CompanyProfile;
 use BT\Modules\Documents\Models\Document;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 return new class extends Migration
 {
@@ -13,6 +14,11 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // fix default on tax_rate_id
+        Schema::table('document_items', function (Blueprint $table) {
+            $table->unsignedInteger('tax_rate_id')->default('0')->change();
+        });
+
         // fix missing url_key on VERY old clients, documents and attachments
         $clients = Client::where('url_key', null)->orWhere('url_key', '')->get();
         foreach ($clients as $client) {

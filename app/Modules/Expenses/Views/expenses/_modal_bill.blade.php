@@ -4,7 +4,7 @@
         modal.show()
         addEvent(document, 'change', ".add-line-item", (e) => {
             let lio = document.getElementById('line-item-options')
-            if (e.target.id === 'add-line-item') {
+            if (e.target.id === 'add_line_item_1') {
                 lio.style.display = 'block'
             } else {
                 lio.style.display = 'none'
@@ -45,7 +45,7 @@
 
                         <div class="mb-3">
                             <label class="col-form-label">{{ html()->radio('add_line_item', true, 1)->class('add-line-item') }} @lang('bt.add_line_item_to_invoice')</label><br>
-                            <label class="col-form-label">{{ html()->radio('add_line_item')->class('add-line-item') }} @lang('bt.do_not_add_line_item_to_invoice')</label>
+                            <label class="col-form-label">{{ html()->radio('add_line_item', null, 2)->class('add-line-item') }} @lang('bt.do_not_add_line_item_to_invoice')</label>
                         </div>
 
                         <div id="line-item-options">
@@ -54,7 +54,7 @@
                                 {{ html()->text('item_name', $expense->category->name)->class('form-control') }}
                             </div>
                             <div class="mb-3">
-                                <label class="col-form-label">@lang('bt.label_item_description'):</label>
+                                <label class="col-form-label">* @lang('bt.label_item_description'):</label>
                                 {{ html()->textarea('item_description', $expense->description)->rows(3)->class('form-control') }}
                             </div>
                         </div>

@@ -1,6 +1,6 @@
 {{ html()->hidden('number', $document->number) }}
-{{ html()->hidden('document_date', null) }}
-{{ html()->hidden('action_date', null) }}
+{{ html()->hidden('document_date', $document->document_date) }}
+{{ html()->hidden('action_date', $document->action_date) }}
 <div class="mb-3">
     <label>@lang('bt.next_date')</label>
     <x-fp_common

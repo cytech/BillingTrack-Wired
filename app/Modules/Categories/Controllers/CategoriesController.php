@@ -12,6 +12,10 @@ namespace BT\Modules\Categories\Controllers;
 
 use BT\Http\Controllers\Controller;
 use BT\Modules\Categories\Models\Category;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class CategoriesController extends Controller
@@ -22,13 +26,14 @@ class CategoriesController extends Controller
     public function index()
     {
         $modulefullname = Category::class;
+
         return view('categories.index')->with('modulefullname', $modulefullname);
     }
 
     /**
      * Show the form for creating a new product.
      *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @return Application|Factory|View
      */
     public function create()
     {
@@ -38,7 +43,7 @@ class CategoriesController extends Controller
     /**
      * Store a newly created product in storage.
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function store(Request $request)
     {
@@ -53,7 +58,7 @@ class CategoriesController extends Controller
      * Show the form for editing the specified product.
      *
      * @param  int  $id
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @return Application|Factory|View
      */
     public function edit($id)
     {
@@ -66,7 +71,7 @@ class CategoriesController extends Controller
      * Update the specified product in storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function update(Request $request, $id)
     {
@@ -75,5 +80,13 @@ class CategoriesController extends Controller
         $categories->save();
 
         return redirect()->route('categories.index')->with('alertInfo', trans('bt.record_successfully_updated'));
+    }
+
+    public function delete($id)
+    {
+        Category::destroy($id);
+
+        return redirect()->route('categories.index')
+            ->with('alert', trans('bt.record_successfully_deleted'));
     }
 }

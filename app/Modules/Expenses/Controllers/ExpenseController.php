@@ -18,6 +18,7 @@ use BT\Modules\CompanyProfiles\Models\CompanyProfile;
 use BT\Modules\CustomFields\Models\CustomField;
 use BT\Modules\Expenses\Models\Expense;
 use BT\Modules\Expenses\Requests\ExpenseRequest;
+use BT\Modules\TaxRates\Models\TaxRate;
 use BT\Modules\Vendors\Models\Vendor;
 use BT\Support\NumberFormatter;
 use BT\Traits\ReturnUrl;
@@ -31,7 +32,7 @@ class ExpenseController extends Controller
         $this->setReturnUrl();
         $modulefullname = Expense::class;
 
-        return view('expenses.index', compact( 'modulefullname'));
+        return view('expenses.index', compact('modulefullname'));
 
     }
 
@@ -42,6 +43,7 @@ class ExpenseController extends Controller
             ->with('companyProfiles', CompanyProfile::getList())
             ->with('categories', Category::pluck('name', 'id'))
             ->with('currentDate', date('Y-m-d'))
+            ->with('taxRates', TaxRate::getList())
             ->with('customFields', CustomField::forTable('expenses')->get());
     }
 
@@ -50,7 +52,6 @@ class ExpenseController extends Controller
         $record = request()->except('attachments', 'custom');
 
         $record['amount'] = NumberFormatter::unformat($record['amount']);
-        $record['tax'] = ($record['tax']) ? NumberFormatter::unformat($record['tax']) : 0;
 
         $record['category_id'] = Category::firstOrCreate(['name' => $request->category_name])->id;
 
@@ -80,6 +81,7 @@ class ExpenseController extends Controller
             ->with('companyProfiles', CompanyProfile::getList())
             ->with('categories', Category::pluck('name', 'id'))
             ->with('expense', Expense::defaultQuery()->find($id))
+            ->with('taxRates', TaxRate::getList())
             ->with('customFields', CustomField::forTable('expenses')->get());
     }
 
@@ -88,7 +90,6 @@ class ExpenseController extends Controller
         $record = request()->except('attachments', 'custom');
 
         $record['amount'] = NumberFormatter::unformat($record['amount']);
-        $record['tax'] = ($record['tax']) ? NumberFormatter::unformat($record['tax']) : 0;
 
         $record['category_id'] = Category::firstOrCreate(['name' => $request->category_name])->id;
 

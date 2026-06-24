@@ -46,12 +46,15 @@
                             <div class="col-md-4">
                                 <div class="mb-3">
                                     <label>* @lang('bt.category'): </label>
-                                    {{ html()->text('category_name', null)->class('form-control')->attribute('list', 'catlistid') }}
-                                    <datalist id='catlistid'>
-                                        @foreach($categories as $category)
-                                            <option>{!! $category !!}</option>
-                                        @endforeach
-                                    </datalist>
+                                    <livewire:category-search
+                                            name="category"
+                                            value="{!! $editMode ? $expense->category_id : null !!}"
+                                            description="{!! $editMode ? $expense->category->name ?? null : null !!}"
+                                            placeholder="{{ __('bt.select_or_create_category') }}"
+                                            :searchable="true"
+                                            noResultsMessage="{{__('bt.category_not_found_create')}}"
+                                            :readonly="$readonly ?? null"
+                                    />
                                 </div>
                             </div>
                         </div>
@@ -65,7 +68,7 @@
                             <div class="col-md-2">
                                 <div class="mb-3">
                                     <label>@lang('bt.tax'): </label>
-                                    {{ html()->text('tax', (($editMode) ? $expense->formatted_numeric_tax : null))->class('form-control') }}
+                                    {{ html()->select('tax', $taxRates, (($editMode) ? $expense->tax : request('tax')))->class('form-select') }}
                                 </div>
                             </div>
                             <div class="col-md-4">

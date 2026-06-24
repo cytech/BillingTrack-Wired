@@ -260,7 +260,7 @@ class TrashColumnDefs
                     ->sortable()
                     ->format(function ($value, $row, Column $column) {
                         $ret = $row->category->name;
-                        if ($row->vendor->name) {
+                        if ($row->vendor) {
                             $ret .= '<br><span class="text-muted">'.$row->vendor->name.'</span>';
                         }
 
@@ -275,7 +275,7 @@ class TrashColumnDefs
                         $ret = $row->formatted_amount;
                         if ($row->is_billable) {
                             if ($row->has_been_billed) {
-                                $ret .= '<br><a href="'.route('invoices.edit', [$row->invoice_id]).'"><span class="badge bg-success">'.trans('bt.billed').'</span></a>';
+                                $ret .= '<br><a href="'.route('documents.edit', [$row->invoice_id]).'"><span class="badge bg-success">'.trans('bt.billed').'</span></a>';
                             } else {
                                 $ret .= '<br><span class="badge bg-danger">'.trans('bt.not_billed').'</span>';
                             }

@@ -17,4 +17,5 @@ Route::middleware(['web', 'auth.admin'])
         Route::name('update')->put('{id}/edit', [CategoriesController::class, 'update']);
         Route::name('create')->get('create', [CategoriesController::class, 'create']);
         Route::name('store')->post('create', [CategoriesController::class, 'store']);
+        Route::name('delete')->get('delete/{id}', [CategoriesController::class, 'delete']);
     });

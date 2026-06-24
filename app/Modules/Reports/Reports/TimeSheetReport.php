@@ -35,9 +35,9 @@ class TimeSheetReport
                 ->where('document_status_id', '<>', DocumentStatuses::getStatusId('draft'));
         })
             ->withAggregate('invoice', 'document_date')
-            ->withAggregate('employee', 'full_name')
+            ->withAggregate('employee', 'last_name')
             ->where('resource_table', 'employees')
-            ->orderBy('employee_full_name')
+            ->orderBy('employee_last_name')
             ->orderBy('invoice_document_date', 'DESC');
 
         if ($companyProfileId) {
@@ -70,7 +70,7 @@ class TimeSheetReport
                     'resource_id' => $group->first()->resource_id,
                     'quantity' => $group->sum('quantity'),
                     'name' => $group->first()->name,
-                    'full_name' => $group->first()->employee->full_name,
+                    'full_name' => $group->first()->employee->last_name . ', ' . $group->first()->employee->first_name,
                     'employee_number' => $group->first()->employee->number,
                 ];
             });
@@ -91,7 +91,7 @@ class TimeSheetReport
                     'formatted_document_date' => $invoice->invoice->document_date,
                     'item_name' => $invoice->name,
                     'item_qty' => $invoice->quantity,
-                    'full_name' => $invoice->employee->full_name,
+                    'full_name' => $invoice->employee->last_name . ', ' . $invoice->employee->first_name,
                     'employee_number' => $invoice->employee->number,
                 ];
 

@@ -81,7 +81,10 @@
                     </div>
                     <div class="col-sm-7">
                         <x-fp_common
-                                wire:model.blur="next_date"
+                                name="next_date"
+                                id="next_date"
+                                class="form-control"
+                                wire:model.live="next_date"
                         ></x-fp_common>
                         @error('next_date') <span class="text-sm text-danger">{{ $message }}</span> @enderror
                     </div>
@@ -107,8 +110,11 @@
                     </div>
                     <div class="col-sm-7">
                         <x-fp_common
-                                wire:model.blur="stop_date"
-                                value="null"
+                                name="stop_date"
+                                id="stop_date"
+                                class="form-control"
+                                wire:model.live="stop_date"
+                                value=""
                         ></x-fp_common>
                     </div>
                 </div>

@@ -33,6 +33,7 @@ class ExpenseBillRequest extends FormRequest
         return [
             'invoice_id' => 'required',
             'item_name'  => 'required',
+            'item_description' => 'required',
         ];
     }
 }

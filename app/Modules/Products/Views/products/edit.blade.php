@@ -73,12 +73,15 @@
                            for="vendor">@lang('bt.vendor_preferred')</label>
                     </div>
                     <div class="col-md-8">
-                        {{ html()->text('vendor',($products->vendor) ? $products->vendor->name : '')->class('form-control')->attribute('list', 'vendlistid') }}
-                        <datalist id='vendlistid'>
-                            @foreach($vendors as $vendor)
-                                <option>{!! $vendor !!}</option>
-                            @endforeach
-                        </datalist>
+                        <livewire:vendor-search
+                                name="vendor"
+                                value="{!! $products->vendor_id  !!}"
+                                description="{!! $products->vendor->name ?? null  !!}"
+                                placeholder="{{ __('bt.select_or_create_vendor') }}"
+                                :searchable="true"
+                                noResultsMessage="{{__('bt.vendor_not_found_create')}}"
+                                :readonly="$readonly ?? null"
+                        />
                     </div>
                 </div>
                 <!-- Cost input-->
@@ -98,12 +101,15 @@
                            for="category">@lang('bt.product_category')</label>
                     </div>
                     <div class="col-md-8">
-                        {{ html()->text('category',($products->category) ? $products->category->name : '')->class('form-control')->attribute('list', 'prodlistid') }}
-                        <datalist id='prodlistid'>
-                            @foreach($categories as $category)
-                                <option>{!! $category !!}</option>
-                            @endforeach
-                        </datalist>
+                        <livewire:category-search
+                                name="category"
+                                value="{!! $products->category_id !!}"
+                                description="{!! $products->category->name ?? null  !!}"
+                                placeholder="{{ __('bt.select_or_create_category') }}"
+                                :searchable="true"
+                                noResultsMessage="{{__('bt.category_not_found_create')}}"
+                                :readonly="$readonly ?? null"
+                        />
                     </div>
                 </div>
                 <!-- Type input-->
