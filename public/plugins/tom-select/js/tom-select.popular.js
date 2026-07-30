@@ -1,5 +1,5 @@
 /**
-* Tom Select v2.6.1
+* Tom Select v2.6.2
 * Licensed under the Apache License, Version 2.0 (the "License");
 */
 
@@ -3676,7 +3676,7 @@
 
 	        // marking empty option as selected can break validation
 	        // fixes https://github.com/orchidjs/tom-select/issues/303
-	        if (option_el != empty_option || has_selected > 0) {
+	        if (option_el != empty_option || has_selected > 0 || self.settings.mode == 'multi') {
 	          option_el.selected = true;
 	        }
 	        return option_el;
@@ -4357,26 +4357,29 @@
 	 */
 
 	function remove_button (userOptions) {
+	  const self = this;
 	  const options = Object.assign({
-	    label: '&times;',
+	    label: '×',
 	    title: 'Remove',
 	    className: 'remove',
-	    append: true
+	    tabindex: -1,
+	    role: 'button',
+	    html: data => {
+	      var _data$tabindex;
+	      const el = document.createElement('div');
+	      el.className = data.className || '';
+	      el.title = data.title || '';
+	      el.setAttribute('role', data.role || 'button');
+	      el.tabIndex = (_data$tabindex = data.tabindex) != null ? _data$tabindex : -1;
+	      el.textContent = data.label || '';
+	      return el;
+	    }
 	  }, userOptions);
-
-	  //options.className = 'remove-single';
-	  var self = this;
-
-	  // override the render method to add remove button to each item
-	  if (!options.append) {
-	    return;
-	  }
-	  var html = '<a href="javascript:void(0)" class="' + options.className + '" tabindex="-1" title="' + escape_html(options.title) + '">' + options.label + '</a>';
 	  self.hook('after', 'setupTemplates', () => {
 	    var orig_render_item = self.settings.render.item;
 	    self.settings.render.item = (data, escape) => {
 	      var item = getDom(orig_render_item.call(self, data, escape));
-	      var close_button = getDom(html);
+	      var close_button = getDom(options.html(options));
 	      item.appendChild(close_button);
 	      addEvent(close_button, 'mousedown', evt => {
 	        preventDefault(evt, true);

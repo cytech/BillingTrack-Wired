@@ -18,7 +18,7 @@
         "laravel/framework": "^13.0",
         "laravel/helpers": "^1.8",
         "laravel/tinker": "^3",
-        "laravolt/avatar": "^6.4",
+        "laravolt/avatar": "^6.5.1",
         "livewire/livewire": "^4.0",
         "mollie/mollie-api-php": "^3.9",
         "rappasoft/laravel-livewire-tables": "dev-feature/laravel-13-livewire-4",

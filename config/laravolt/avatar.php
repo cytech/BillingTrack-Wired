@@ -12,12 +12,32 @@ return [
     | Avatar use Intervention Image library to process image.
     | Meanwhile, Intervention Image supports "GD Library" and "Imagick" to process images
     | internally. You may choose one of them according to your PHP
-    | configuration. By default PHP's "Imagick" implementation is used.
+    | configuration. By default PHP's "GD Library" implementation is used.
     |
     | Supported: "gd", "imagick"
     |
     */
     'driver' => env('IMAGE_DRIVER', 'gd'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Cache Configuration
+    |--------------------------------------------------------------------------
+    | Control caching behavior for avatars
+    |
+    */
+    'cache' => [
+        // Set to true to enable caching, false to disable
+        'enabled' => env('AVATAR_CACHE_ENABLED', false),
+
+        // Cache prefix to avoid conflicts with other cached items
+        'key_prefix' => 'avatar_',
+
+        // Cache duration in seconds
+        // Set to null to cache forever, 0 to disable cache
+        // Default: 86400 (24 hours)
+        'duration' => env('AVATAR_CACHE_DURATION', 86400),
+    ],
 
     // Initial generator class
     'generator' => \Laravolt\Avatar\Generator\DefaultGenerator::class,
@@ -34,6 +54,9 @@ return [
     // Image height, in pixel
     'height' => 100,
 
+    // Responsive SVG, height and width attributes are not added when true
+    'responsive' => false,
+
     // Number of characters used as initials. If name consists of single word, the first N character will be used
     'chars' => 2,
 
@@ -48,8 +71,7 @@ return [
 
     // Fonts used to render text.
     // If contains more than one fonts, randomly selected based on name supplied
-    //    'fonts' => [__DIR__ . '/../fonts/OpenSans-Bold.ttf', __DIR__ . '/../fonts/rockwell.ttf'],
-    'fonts' => [__DIR__.'/../fonts/OpenSans-Bold.ttf'],
+    'fonts' => [__DIR__.'/../fonts/OpenSans-Bold.ttf', __DIR__.'/../fonts/rockwell.ttf'],
 
     // List of foreground colors to be used, randomly selected based on name supplied
     'foregrounds' => [
@@ -120,13 +142,12 @@ return [
                 '#009688',
                 '#4CAF50',
                 '#8BC34A',
-                '#CDDC39', //too light
-                '#FFC107', //too light
-                '#FF9800', //too light
+                '#CDDC39',
+                '#FFC107',
+                '#FF9800',
                 '#FF5722',
             ],
             'foregrounds' => ['#FFFFFF'],
-
         ],
         'pastel' => [
             'backgrounds' => [

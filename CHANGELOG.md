@@ -7,7 +7,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## 8.0.0
 - update to Laravel 13, requires PHP >= 8.3
 - update to Livewire V4
-- Adminlte Release v4
+- Adminlte Release v4.1
+- For Adminlte 4.1.0, had to copy and modify node_modules/admin-lte/dist/js/adminlte.esm.js with _applyTheme removed to diable ColorMode
 - update to allow MySql DB_STRICT=true (now required for BillingTrack 8, change in .env)
 - srmklive/paypal changed maintainer to blendbyte/laravel-paypal, upgrade to 3.1 - https://github.com/blendbyte/laravel-paypal
 - update square api to ^45 (using legacy client)

@@ -1,5 +1,5 @@
 /**
-* Tom Select v2.6.1
+* Tom Select v2.6.2
 * Licensed under the Apache License, Version 2.0 (the "License");
 */
 
@@ -3676,7 +3676,7 @@
 
 	        // marking empty option as selected can break validation
 	        // fixes https://github.com/orchidjs/tom-select/issues/303
-	        if (option_el != empty_option || has_selected > 0) {
+	        if (option_el != empty_option || has_selected > 0 || self.settings.mode == 'multi') {
 	          option_el.selected = true;
 	        }
 	        return option_el;
@@ -4791,26 +4791,29 @@
 	 */
 
 	function remove_button (userOptions) {
+	  const self = this;
 	  const options = Object.assign({
-	    label: '&times;',
+	    label: '×',
 	    title: 'Remove',
 	    className: 'remove',
-	    append: true
+	    tabindex: -1,
+	    role: 'button',
+	    html: data => {
+	      var _data$tabindex;
+	      const el = document.createElement('div');
+	      el.className = data.className || '';
+	      el.title = data.title || '';
+	      el.setAttribute('role', data.role || 'button');
+	      el.tabIndex = (_data$tabindex = data.tabindex) != null ? _data$tabindex : -1;
+	      el.textContent = data.label || '';
+	      return el;
+	    }
 	  }, userOptions);
-
-	  //options.className = 'remove-single';
-	  var self = this;
-
-	  // override the render method to add remove button to each item
-	  if (!options.append) {
-	    return;
-	  }
-	  var html = '<a href="javascript:void(0)" class="' + options.className + '" tabindex="-1" title="' + escape_html(options.title) + '">' + options.label + '</a>';
 	  self.hook('after', 'setupTemplates', () => {
 	    var orig_render_item = self.settings.render.item;
 	    self.settings.render.item = (data, escape) => {
 	      var item = getDom(orig_render_item.call(self, data, escape));
-	      var close_button = getDom(html);
+	      var close_button = getDom(options.html(options));
 	      item.appendChild(close_button);
 	      addEvent(close_button, 'mousedown', evt => {
 	        preventDefault(evt, true);
@@ -4893,6 +4896,8 @@
 	  var default_values = [];
 	  var default_values_loaded = false;
 	  var default_pagination;
+	  var default_options = [];
+	  var html_values = [];
 	  if (!self.settings.shouldLoadMore) {
 	    // return true if additional results should be loaded
 	    self.settings.shouldLoadMore = () => {
@@ -4924,7 +4929,7 @@
 
 	  // can we load more results for given query?
 	  const canLoadMore = query => {
-	    if (typeof self.settings.maxOptions === 'number' && dropdown_content.children.length >= self.settings.maxOptions) {
+	    if (self.settings.maxOptions !== null && typeof self.settings.maxOptions === 'number' && dropdown_content.children.length >= self.settings.maxOptions) {
 	      return false;
 	    }
 	    if (query in pagination && pagination[query]) {
@@ -4984,7 +4989,11 @@
 	  // wrap the load
 	  self.hook('instead', 'loadCallback', (options, optgroups) => {
 	    if (!loading_more) {
-	      self.clearOptions(clearFilter);
+	      // When searching (non-empty query), keep selected items and HTML default options,
+	      // but remove preloaded remote options so they don't bleed into search results.
+	      // For empty query, use clearFilter (keeps default_values + items).
+	      const activeFilter = self.lastValue !== '' ? (_option, value) => self.items.indexOf(value) >= 0 || html_values.indexOf(value) >= 0 : clearFilter;
+	      self.clearOptions(activeFilter);
 	    } else if (load_more_opt) {
 	      const first_option = options[0];
 	      if (first_option !== undefined) {
@@ -4993,13 +5002,14 @@
 	    }
 	    orig_loadCallback.call(self, options, optgroups);
 
-	    // After the initial preload (empty query), update default_values to include
-	    // preloaded options, not just the HTML <option> elements captured on initialize
+	    // After the initial preload (empty query), snapshot default_values and option objects
+	    // so they can be restored when the user clears their search.
 	    if (!loading_more && !default_values_loaded) {
 	      default_values_loaded = true;
 	      if (self.lastValue === '') {
 	        default_values = Object.keys(self.options);
 	        default_pagination = pagination[''];
+	        default_options = Object.values(self.options);
 	      }
 	    }
 	    loading_more = false;
@@ -5044,6 +5054,9 @@
 	    if (!default_values_loaded) {
 	      return;
 	    }
+	    // Re-add preloaded option objects (clearOptions can only remove, not restore)
+	    self.addOptions(default_options);
+	    // Remove any search results that are not part of the preloaded defaults
 	    self.clearOptions(clearFilter);
 	    if (default_pagination) {
 	      pagination[''] = default_pagination;
@@ -5059,6 +5072,7 @@
 
 	  // add scroll listener and default templates
 	  self.on('initialize', () => {
+	    html_values = Object.keys(self.options);
 	    default_values = Object.keys(self.options);
 	    dropdown_content = self.dropdown_content;
 

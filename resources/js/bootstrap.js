@@ -16,7 +16,10 @@ import * as bootstrap from 'bootstrap'
 
 window.bootstrap = bootstrap
 
-import adminlte from 'admin-lte'
+//import "admin-lte"
+
+// this is copied dist/adminlte.esm.js with _applyTheme removed to disable ColorMode
+import "./bt-adminlte.esm.js"
 
 import flatpickr from 'flatpickr'
 
