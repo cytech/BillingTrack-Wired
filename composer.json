@@ -21,7 +21,7 @@
         "laravolt/avatar": "^6.5.1",
         "livewire/livewire": "^4.0",
         "mollie/mollie-api-php": "^3.9",
-        "rappasoft/laravel-livewire-tables": "dev-feature/laravel-13-livewire-4",
+        "rappasoft/laravel-livewire-tables": "dev-feature/l-13-lw-4-llt380",
         "simshaun/recurr": "^v5.0.0",
         "srmklive/paypal": "^3.1.0",
         "sonata-project/exporter": "^3.4",

@@ -16,10 +16,17 @@ import * as bootstrap from 'bootstrap'
 
 window.bootstrap = bootstrap
 
-//import "admin-lte"
+import "admin-lte"
+
+// to diable adminlte colormode so it stops overwriting data-bs-theme
+import { ColorMode } from 'admin-lte'
+// 1. stop every future write: init, toggle clicks, OS changes
+ColorMode.prototype._applyTheme = () => {}
+// 2. undo the one write that already happened during the import (see below)
+//document.documentElement.setAttribute('data-bs-theme', myTheme)
 
 // this is copied dist/adminlte.esm.js with _applyTheme removed to disable ColorMode
-import "./bt-adminlte.esm.js"
+//import "./bt-adminlte.esm.js"
 
 import flatpickr from 'flatpickr'
 
