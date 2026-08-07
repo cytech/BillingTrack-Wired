@@ -17,7 +17,7 @@ class CalendarEventPresenter
                 $data->id = ucfirst($type).': '.$entity->number;
                 $data->url = url("/documents/{$entity->id}/edit");
                 $data->title = trans("bt.{$type}").' '.$entity->number.' for '.$entity->client->name;
-                $data->description = mb_strimwidth(addslashes($entity->summary), 0, 30, '...');
+                $data->description = mb_strimwidth(addslashes($entity->summary ?? ''), 0, 30, '...');
                 $data->start = $entity->action_date ?: $entity->document_date;
                 $data->category_id = 4;
                 break;
@@ -27,7 +27,7 @@ class CalendarEventPresenter
                 $data->title = trans("bt.{$type}").' '.$entity->number.' for '.$entity->client->name;
                 $data->description = $entity->client->phone.'<br>'
                     .str_replace(["\r\n", "\r", "\n"], '', $entity->client->address)
-                    .'<br>'.$entity->client->city.'<br>'.mb_strimwidth(addslashes($entity->summary), 0, 30, '...');
+                    .'<br>'.$entity->client->city.'<br>'.mb_strimwidth(addslashes($entity->summary ?? ''), 0, 30, '...');
                 $data->start = $entity->job_date->copy()->modify($entity->start_time);
                 $data->end = $entity->job_date->copy()->modify($entity->end_time);
                 $data->category_id = 5;
@@ -45,7 +45,7 @@ class CalendarEventPresenter
                 $data->id = ucfirst($type).': '.$entity->number;
                 $data->url = url("/documents/{$entity->id}/edit");
                 $data->title = trans("bt.{$type}").' '.$entity->number.' for '.$entity->client->name;
-                $data->description = mb_strimwidth(addslashes($entity->summary), 0, 30, '...');
+                $data->description = mb_strimwidth(addslashes($entity->summary ?? ''), 0, 30, '...');
                 $data->start = $entity->action_date ?: $entity->document_date;
                 $data->category_id = 6;
                 break;
@@ -85,7 +85,7 @@ class CalendarEventPresenter
                 $data->id = ucfirst($type).': '.$entity->number;
                 $data->url = url("/documents/{$entity->id}/edit");
                 $data->title = trans("bt.{$type}").' '.$entity->number.' for '.$entity->vendor->name;
-                $data->description = mb_strimwidth(addslashes($entity->summary), 0, 30, '...');
+                $data->description = mb_strimwidth(addslashes($entity->summary ?? ''), 0, 30, '...');
                 $data->start = $entity->action_date ?: $entity->document_date;
                 $data->category_id = 8;
                 break;

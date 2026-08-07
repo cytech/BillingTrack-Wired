@@ -14,6 +14,11 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // fix null on custom_fields field_meta
+        Schema::table('custom_fields', function (Blueprint $table) {
+            $table->text('field_meta')->nullable()->change();
+        });
+
         // fix default on tax_rate_id
         Schema::table('document_items', function (Blueprint $table) {
             $table->unsignedInteger('tax_rate_id')->default('0')->change();

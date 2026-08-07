@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html data-lte-color-mode="off" >
 <head>
     <meta charset="UTF-8">
     <title>@lang('bt.welcome')</title>

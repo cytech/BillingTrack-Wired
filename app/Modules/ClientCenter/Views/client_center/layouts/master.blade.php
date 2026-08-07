@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="purple-light">
+<html lang="en" data-lte-color-mode="off" data-bs-theme="purple-light">
 <!-- For RTL verison -->
 <!-- <html lang="en" dir="rtl"> -->
 <head>

@@ -5,8 +5,7 @@ Release Notes
 ### BillingTrack 8.0.0
 - update to Laravel 13, requires PHP >= 8.3
 - update to Livewire V4
-- Adminlte Release v4.1.0
-- For Adminlte 4.1.0 to disable auto theming over BT theming, had to add to bootstrap.js <<import { ColorMode } from 'admin-lte'>><<ColorMode.prototype._applyTheme = () => {}>> , _look to remove this and replace with html data-lte-color-mode="off" in v4.1.1 in master.blade_
+- Adminlte Release v4.8.5
 - update to allow MySql DB_STRICT=true (now required for BillingTrack 8, change in .env)
 - srmklive/paypal changed maintainer to blendbyte/laravel-paypal, upgrade to 3.1 - https://github.com/blendbyte/laravel-paypal
 - update square api to ^45 (using legacy client)

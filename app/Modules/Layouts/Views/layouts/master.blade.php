@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}"
-      data-bs-theme="{{$headBackground}}">
+      data-lte-color-mode="off" data-bs-theme="{{$headBackground}}">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,7 +18,7 @@
 
     @yield('javaScript')
 </head>
-<body class="layout-fixed sidebar-expand-lg sidebar-mini sidebar-{{$sidebarMode}}">
+<body class="layout-fixed sidebar-expand-lg sidebar-mini sidebar-{{$sidebarMode}}">  {{--sidebar-without-hover --}}
 <div class="app-wrapper">
     @include('layouts._header')
     @include('layouts.sidebar')

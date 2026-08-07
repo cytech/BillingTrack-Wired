@@ -10,14 +10,6 @@ export default defineConfig({
         ]),
         viteStaticCopy({
             targets: [
-                // adminlte 4.1.0 necessary to copy and modify this file
-                // copy resources/adminlte.esm.js to bt-adminlte.esm.js and edit to comment out
-                // line 901 this._applyTheme(theme); to disable ColorMode
-                // {
-                //     src: 'node_modules/admin-lte/dist/js/adminlte.esm.js',
-                //     dest: '../../resources/js',
-                //     rename: { stripBase: true },
-                // },
                 {
                     src: 'node_modules/tom-select/dist/css/*',
                     dest: '../plugins/tom-select/css',
@@ -114,11 +106,11 @@ export default defineConfig({
     ],
     resolve: {
         alias: {
-            '~bootstrap': path.resolve(__dirname, 'node_modules/bootstrap'),
-            '~@fortawesome': path.resolve(__dirname, 'node_modules/@fortawesome'),
-            '~admin-lte': path.resolve(__dirname, 'node_modules/admin-lte'),
-            '~flatpickr': path.resolve(__dirname, 'node_modules/flatpickr'),
-            '~tippy.js': path.resolve(__dirname, 'node_modules/tippy.js'),
+            '~bootstrap': path.resolve(import.meta.dirname, 'node_modules/bootstrap'),
+            '~@fortawesome': path.resolve(import.meta.dirname, 'node_modules/@fortawesome'),
+            '~admin-lte': path.resolve(import.meta.dirname, 'node_modules/admin-lte'),
+            '~flatpickr': path.resolve(import.meta.dirname, 'node_modules/flatpickr'),
+            '~tippy.js': path.resolve(import.meta.dirname, 'node_modules/tippy.js'),
         }
     },
     build: {

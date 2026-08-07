@@ -151,8 +151,8 @@
                         //schedule
                         id: "{!! $event->id !!}",
                         title: "{!! $event->title !!}",
-                        location_str: "{!! addslashes($event->location_str) !!}",
-                        description: "{!! addslashes($event->description) !!}",
+                        location_str: "{!! addslashes($event->location_str ?? '') !!}",
+                        description: "{!! addslashes($event->description ?? '') !!}",
                         isrecurring: "{!! $event->isRecurring !!}",
                         category: "{!! $event->category_id !!}",
                         @isset($event->category_id)
@@ -206,7 +206,7 @@
                                 @foreach($coreevent->resources as $resource)
                             {
                                 resource_table: "{!! $resource->resource_table !!}",
-                                resource_value: "{!! addslashes($resource->name) !!}"
+                                resource_value: "{!! addslashes($resource->name ?? '') !!}"
                             },
                             @endforeach
                         ],
