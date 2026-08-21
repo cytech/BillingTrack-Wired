@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 8.0.1
+- Revert SESSION_DRIVER back to file in .env.example. Causing setup issue on new install.  
+
 ## 8.0.0
 - update to Laravel 13, requires PHP >= 8.3
 - update to Livewire V4
