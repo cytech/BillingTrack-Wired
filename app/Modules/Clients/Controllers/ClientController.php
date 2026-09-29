@@ -52,7 +52,7 @@ class ClientController extends Controller
     {
         $client = Client::create($request->except('custom'));
 
-        $client->custom->update($request->get('custom', []));
+        $client->custom->update($request->input('custom', []));
 
         return redirect()->route('clients.show', [$client->id])
             ->with('alertInfo', trans('bt.record_successfully_created'));
@@ -89,7 +89,7 @@ class ClientController extends Controller
         $client->fill($request->except('custom'));
         $client->save();
 
-        $client->custom->update($request->get('custom', []));
+        $client->custom->update($request->input('custom', []));
 
         return redirect()->route('clients.show', [$id])
             ->with('alertInfo', trans('bt.record_successfully_updated'));
@@ -137,7 +137,7 @@ class ClientController extends Controller
         $client->fill($request->except('custom'));
         $client->save();
 
-        $client->custom->update($request->get('custom', []));
+        $client->custom->update($request->input('custom', []));
 
         return response()->json(['success' => true], 200);
     }

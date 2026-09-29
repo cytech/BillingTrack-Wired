@@ -2,8 +2,12 @@ Release Notes
 ---
 ---
 
-### 8.0.1
+### BillingTrack 8.0.2
+- Fix null email validation on client/vendor store/update.
+ 
+### BillingTrack 8.0.1
 - Revert SESSION_DRIVER back to file in .env.example. Causing setup issue on new install.  
+- If you wish to use database as SESSION_DRIVER, you can change it in .env AFTER v8.0.1 upgrade.
 
 ### BillingTrack 8.0.0
 - update to Laravel 13, requires PHP >= 8.3

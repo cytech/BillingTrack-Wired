@@ -23,9 +23,9 @@ class ClientStoreRequest extends FormRequest
     public function attributes()
     {
         return [
-            'name'        => trans('bt.name'),
+            'name' => trans('bt.name'),
             'unique_name' => trans('bt.unique_name'),
-            'email'       => trans('bt.email'),
+            'email' => trans('bt.email'),
         ];
     }
 
@@ -33,7 +33,7 @@ class ClientStoreRequest extends FormRequest
     {
         $request = $this->all();
 
-        $request['email'] = $this->input('client_email', $this->input('email', ''));
+        $request['email'] = $this->input('client_email');
 
         unset($request['client_email']);
 
@@ -43,9 +43,9 @@ class ClientStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'        => 'required',
+            'name' => 'required',
             'unique_name' => 'required_with:name|unique:clients',
-            'email'       => 'email',
+            'email' => 'nullable|email',
         ];
     }
 
@@ -57,7 +57,7 @@ class ClientStoreRequest extends FormRequest
     public function messages()
     {
         return [
-            'unique_name.unique'   => 'The :attribute has already been taken.<br/> (Duplicate may exist in trash)',
+            'unique_name.unique' => 'The :attribute has already been taken.<br/> (Duplicate may exist in trash)',
         ];
     }
 }

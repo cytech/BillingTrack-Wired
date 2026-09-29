@@ -10,14 +10,15 @@
 
 namespace BT\Modules\Vendors\Controllers;
 
+use BT\Http\Controllers\Controller;
 use BT\Modules\CustomFields\Models\CustomField;
 use BT\Modules\PaymentTerms\Models\PaymentTerm;
 use BT\Modules\Vendors\Models\Vendor;
-use BT\Http\Controllers\Controller;
 use BT\Modules\Vendors\Requests\VendorStoreRequest;
 use BT\Modules\Vendors\Requests\VendorUpdateRequest;
 use BT\Traits\ReturnUrl;
-
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 class VendorController extends Controller
 {
@@ -25,7 +26,6 @@ class VendorController extends Controller
 
     /**
      * Display a listing of the product.
-     *
      */
     public function index()
     {
@@ -38,7 +38,6 @@ class VendorController extends Controller
 
     /**
      * Show the form for creating a new product.
-     *
      */
     public function create()
     {
@@ -53,14 +52,14 @@ class VendorController extends Controller
     /**
      * Store a newly created product in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @param  Request  $request
+     * @return RedirectResponse
      */
     public function store(VendorStoreRequest $request)
     {
         $vendor = Vendor::create($request->except('custom'));
 
-        $vendor->custom->update($request->get('custom', []));
+        $vendor->custom->update($request->input('custom', []));
 
         return redirect()->route('vendors.show', [$vendor->id])
             ->with('alertInfo', trans('bt.record_successfully_created'));
@@ -69,7 +68,7 @@ class VendorController extends Controller
     /**
      * Display the specified product.
      *
-     * @param int $id
+     * @param  int  $id
      */
     public function show($vendorId)
     {
@@ -84,7 +83,7 @@ class VendorController extends Controller
     /**
      * Show the form for editing the specified product.
      *
-     * @param int $id
+     * @param  int  $id
      */
     public function edit($vendorId)
     {
@@ -101,9 +100,9 @@ class VendorController extends Controller
     /**
      * Update the specified product in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
-     * @return \Illuminate\Http\RedirectResponse
+     * @param  Request  $request
+     * @param  int  $id
+     * @return RedirectResponse
      */
     public function update(VendorUpdateRequest $request, $id)
     {
@@ -111,7 +110,7 @@ class VendorController extends Controller
         $vendor->fill($request->except('custom'));
         $vendor->save();
 
-        $vendor->custom->update($request->get('custom', []));
+        $vendor->custom->update($request->input('custom', []));
 
         return redirect()->route('vendors.show', [$id])
             ->with('alertInfo', trans('bt.record_successfully_updated'));
@@ -120,8 +119,8 @@ class VendorController extends Controller
     /**
      * Remove the specified product from storage.
      *
-     * @param int $id
-     * @return \Illuminate\Http\RedirectResponse
+     * @param  int  $id
+     * @return RedirectResponse
      */
     public function delete($id)
     {
@@ -135,7 +134,7 @@ class VendorController extends Controller
     {
         $vendors = Vendor::select('id', 'name')
             ->where('active', 1)
-            ->where('name', 'like', '%' . request('term') . '%')
+            ->where('name', 'like', '%'.request('term').'%')
             ->orderBy('name')
             ->get();
 
@@ -165,7 +164,7 @@ class VendorController extends Controller
         $vendor->fill($request->except('custom'));
         $vendor->save();
 
-        $vendor->custom->update($request->get('custom', []));
+        $vendor->custom->update($request->input('custom', []));
 
         return response()->json(['success' => true], 200);
     }
@@ -173,6 +172,7 @@ class VendorController extends Controller
     public function bulkStatus()
     {
         Vendor::whereIn('id', request('ids'))->update(['active' => request('status')]);
+
         return response()->json(['success' => trans('bt.status_successfully_updated')], 200);
 
     }
@@ -181,5 +181,4 @@ class VendorController extends Controller
     {
         session(['vendorviewTabId' => request('vendorviewTabId')]);
     }
-
 }

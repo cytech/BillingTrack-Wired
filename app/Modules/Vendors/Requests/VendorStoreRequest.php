@@ -32,7 +32,7 @@ class VendorStoreRequest extends FormRequest
     {
         $request = $this->all();
 
-        $request['email'] = $this->input('vendor_email', $this->input('email', ''));
+        $request['email'] = $this->input('vendor_email');
 
         unset($request['vendor_email']);
 
@@ -43,7 +43,7 @@ class VendorStoreRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'email' => 'email',
+            'email' => 'nullable|email',
         ];
     }
 }

@@ -83,16 +83,17 @@ class BeforeMiddleware
             config(['bt.currency' => Currency::where('code', config('bt.baseCurrency'))->first()]);
         }
 
-        if (! Schema::hasTable('sessions')) {
-            Schema::create('sessions', function (Blueprint $table) {
-                $table->string('id')->primary();
-                $table->foreignId('user_id')->nullable()->index();
-                $table->string('ip_address', 45)->nullable();
-                $table->text('user_agent')->nullable();
-                $table->longText('payload');
-                $table->integer('last_activity')->index();
-            });
-        }
+        // had to do this with default SESSION_DRIVER=database in .env . reverted default back to file.
+//        if (! Schema::hasTable('sessions')) {
+//            Schema::create('sessions', function (Blueprint $table) {
+//                $table->string('id')->primary();
+//                $table->foreignId('user_id')->nullable()->index();
+//                $table->string('ip_address', 45)->nullable();
+//                $table->text('user_agent')->nullable();
+//                $table->longText('payload');
+//                $table->integer('last_activity')->index();
+//            });
+//        }
 
         config(['bt.clientCenterRequest' => $request->segment(1) == 'client_center']);
 
