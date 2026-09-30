@@ -213,7 +213,9 @@ Note: In some instances a fresh install will throw an "unknown error" alert box.
 
 
 - Create new account -&gt; creates fresh installation with account
-10. sign in
+10. sign in  
+
+NOTE: If you wish to use database as SESSION_DRIVER, you can change it in .env AFTER v8.0.1 upgrade/install.  
 
 # How to Upgrade BillingTrack
 **Upgrade Existing v7.x.x installation to v8.X.X**  
@@ -241,7 +243,9 @@ Note: In some instances a fresh install will throw an "unknown error" alert box.
 - save .env file.
 - Run composer update
 - Start-> YOUR\_BILLINGTRACK\_WEBSITE/setup
-- After migration completes, signin.
+- After migration completes, signin.  
+
+NOTE: If you wish to use database as SESSION_DRIVER, you can change it in .env AFTER v8.0.1 upgrade/install.  
 
 # UPGRADE FROM BILLINGTRACK 6.X.X  
 **Do not attempt to upgrade a Billingtrack version older than v6.x.x to V8 [SEE UPGRADING FROM BILLINGTRACK 5.X.X](#upgrade-from-billingtrack-5xx)**

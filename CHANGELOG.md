@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## 8.0.2
 - Fix null email validation on client/vendor store/update.
+- Fix document items-table refresh of name after item delete.
+- Major version composer update on laravolt/avatar, simshaun/recurr and spatie/laravel-permission.
 
 ## 8.0.1
 - Revert SESSION_DRIVER back to file in .env.example. Causing setup issue on new install.  

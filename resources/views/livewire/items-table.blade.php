@@ -147,7 +147,7 @@
                             <td><i class="fas fa-arrows-alt-v handle"></i></td>
                             <td>
                                 <input
-                                        wire:model.live="module_items.{{$index}}.name"
+                                        value="{{$item->name}}"
                                         name="name"
                                         class="form-control item-lookup" readonly>
                             </td>
