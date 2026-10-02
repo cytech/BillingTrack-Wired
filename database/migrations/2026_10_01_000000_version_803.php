@@ -25,6 +25,7 @@ return new class extends Migration
         }
 
         Setting::deleteByKey('mailEncryption');
+        Setting::saveByKey('version', '8.0.3');
     }
 
     /**
@@ -32,5 +33,7 @@ return new class extends Migration
      */
     public function down(): void {
         Setting::deleteByKey('mailScheme');
+        Setting::saveByKey('mailEncryption', '0');
+        Setting::saveByKey('version', '8.0.2');
     }
 };
