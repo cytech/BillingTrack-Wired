@@ -49,9 +49,9 @@
         {{ html()->text('setting[mailHost]', config('bt.mailHost'))->class('form-control') }}
     </div>
     <div class="col-md-3">
-        <label class="form-label fw-bold">@lang('bt.smtp_host_port'): </label>
-        {{ html()->text('setting[mailPort]', config('bt.mailPort'))->class('form-control') }}
-    </div>
+    <label class="form-label fw-bold">@lang('bt.smtp_host_port'): </label>
+    {{ html()->select('setting[mailPort]', $emailSmtpPorts, config('bt.mailPort'))->class('form-select') }}
+</div>
 </div>
 <div class="row smtp-option email-option mb-3">
     <div class="col-md-3">
@@ -63,8 +63,8 @@
         {{ html()->password('setting[mailPassword]')->class('form-control')->attribute('id', 'mailPassword') }}
     </div>
     <div class="col-md-3">
-        <label class="form-label fw-bold">@lang('bt.smtp_encryption'): </label>
-        {{ html()->select('setting[mailEncryption]', $emailEncryptions, config('bt.mailEncryption'))->class('form-select') }}
+        <label class="form-label fw-bold">@lang('bt.smtp_scheme'): </label>
+        {{ html()->select('setting[mailScheme]', $emailSchemes, config('bt.mailScheme'))->class('form-select') }}
     </div>
     <div class="col-md-3">
         <label class="form-label fw-bold">@lang('bt.allow_self_signed_cert'): </label>

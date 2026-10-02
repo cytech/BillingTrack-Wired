@@ -5,19 +5,18 @@ use BT\Http\Middleware\AuthenticateAdmin;
 use BT\Http\Middleware\AuthenticateAPI;
 use BT\Http\Middleware\AuthenticateClientCenter;
 use BT\Http\Middleware\BeforeMiddleware;
-use BT\Http\Middleware\CheckForMaintenanceMode;
-use BT\Http\Middleware\EncryptCookies;
 use BT\Http\Middleware\RedirectIfAuthenticated;
-use BT\Http\Middleware\TrimStrings;
-use BT\Http\Middleware\TrustProxies;
-use BT\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Auth\Middleware\Authenticate;
 use Illuminate\Auth\Middleware\AuthenticateWithBasicAuth;
 use Illuminate\Auth\Middleware\Authorize;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
+use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode;
+use Illuminate\Foundation\Http\Middleware\TrimStrings;
+use Illuminate\Http\Middleware\TrustProxies;
 use Illuminate\Http\Middleware\ValidatePostSize;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Routing\Middleware\ThrottleRequests;
@@ -29,9 +28,9 @@ use Spatie\Permission\Middleware\RoleOrPermissionMiddleware;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
-//        web: __DIR__.'/../routes/web.php',
-//        commands: __DIR__.'/../routes/console.php',
-//        health: '/up',
+        //        web: __DIR__.'/../routes/web.php',
+        //        commands: __DIR__.'/../routes/console.php',
+        //        health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->append(CheckForMaintenanceMode::class);
@@ -61,7 +60,6 @@ return Application::configure(basePath: dirname(__DIR__))
                 StartSession::class,
                 // \Illuminate\Session\Middleware\AuthenticateSession::class,
                 ShareErrorsFromSession::class,
-                VerifyCsrfToken::class,
                 SubstituteBindings::class,
             ],
 
@@ -71,6 +69,11 @@ return Application::configure(basePath: dirname(__DIR__))
             'throttle:60,1',
             'bindings',
         ], );
+
+        $middleware->preventRequestForgery(except: [
+            'api/*',
+            'merchant/*',
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

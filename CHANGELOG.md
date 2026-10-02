@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 8.0.3
+- Fix verifycsrftoken for api.
+- Remove redundant middleware.
+- Update Laravel smtp configuration options to scheme.
+
 ## 8.0.2
 - Fix null email validation on client/vendor store/update.
 - Fix document items-table refresh of name after item delete.

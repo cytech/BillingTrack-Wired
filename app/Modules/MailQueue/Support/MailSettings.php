@@ -21,7 +21,7 @@ class MailSettings
     public static function listSendMethods()
     {
         return [
-            '' => '',
+            '' => trans('bt.none'),
             'smtp' => trans('bt.email_send_method_smtp'),
             'mail' => trans('bt.email_send_method_phpmail'),
             'sendmail' => trans('bt.email_send_method_sendmail'),
@@ -29,16 +29,32 @@ class MailSettings
     }
 
     /**
-     * Provide a list of encryption methods.
+     * Provide a list of smtp schemes.
      *
      * @return array
      */
-    public static function listEncryptions()
+    public static function listSchemes()
     {
         return [
-            '0' => trans('bt.none'),
-            'ssl' => 'SSL',
-            'tls' => 'TLS',
+            null => 'Auto (Default)', // smtp-587, unless port set 465 then smtps
+            'smtps' => 'SMTPS',
+            'smtp' => 'SMTP',
+        ];
+    }
+
+    /**
+     * Provide a list of smtp ports.
+     *
+     * @return array
+     */
+    public static function listSmtpPorts()
+    {
+        return [
+            null => 'Auto (Default)',
+            '587' => '587',
+            '465' => '465',
+            '2525' => '2525',
+            '25' => '25'
         ];
     }
 }

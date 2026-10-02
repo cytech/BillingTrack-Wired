@@ -2,6 +2,11 @@ Release Notes
 ---
 ---
 
+### BillingTrack 8.0.3
+- Fix verifycsrftoken for api.
+- Remove redundant middleware.
+- Update Laravel smtp configuration options to scheme.
+
 ### BillingTrack 8.0.2
 - Fix null email validation on client/vendor store/update.
 - Fix document items-table refresh of name after item delete. 
