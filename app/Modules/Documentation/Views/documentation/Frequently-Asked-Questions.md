@@ -3,6 +3,8 @@ Frequently Asked Questions
 
 ---
 
+[How do I setup Gmail smtp?](#how-do-i-setup-gmail-smtp)
+
 [Why can't I change the status to paid?](#why-cant-i-change-the-status-to-paid)
 
 [Why aren't my recurring invoices working?](#why-arent-my-recurring-invoices-working)
@@ -16,6 +18,20 @@ Frequently Asked Questions
 [How can I remove index.php from my URL?](#how-can-i-remove-indexphp-from-my-url)
 
 [How can I force my BillingTrack installation to be served over https?](#how-can-i-force-my-billingtrack-installation-to-be-served-over-https)
+
+---
+
+<a id="how-do-i-setup-gmail-smtp"></a>
+### How do I setup Gmail smtp?
+1.) Set up 2-Step Verification for your Gmail account, go to your Google Account settings, select "Security & sign-in," and then choose "Turn on 2-Step Verification."  
+2.) Set up a Google App Password for your BillingTrack application https://myaccount.google.com/apppasswords.  
+3.) Save the generated 16 digit app password somewhere safe, you will need it later.  
+4.) In BillingTrack-Admin-System Settings, Select the Email tab.  
+5.) Under Email Sending Method, select SMTP.  
+6.) SMTP Host Address = smtp.gmail.com, SMTP Host Port = Auto (Default).  
+7.) SMTP Username = youremailaccount@gmail.com.  
+8.) SMTP Password = the 16 digit app password you generated in step 2.  
+9.) SMTP Scheme = Auto (Default), Allow Self-Signed Certificate = No.  
 
 ---
 

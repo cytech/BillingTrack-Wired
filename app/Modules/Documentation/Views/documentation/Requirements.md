@@ -30,6 +30,7 @@ PHP Extension list from "composer check-platform-reqs"
 
 -   ext-ctype
 -   ext-curl
+-   ext-date
 -   ext-dom
 -   ext-fileinfo
 -   ext-filter
@@ -41,17 +42,18 @@ PHP Extension list from "composer check-platform-reqs"
 -   ext-openssl
 -   ext-pcre
 -   ext-phar
+-   ext-reflection
 -   ext-session
+-   ext-simplexml
 -   ext-tokenizer
 -   ext-xml
--   ext-xmlwriter
--   lib-pcre
+-   ext-xmlwriter  
 
 
 **Composer installed**
 
-Here is a good link with composer installation instructions for Ubuntu 20.04:
-[Composer Install instructions](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-composer-on-ubuntu-20-04)
+Here is a good link with composer installation instructions for Ubuntu:
+[Composer Install instructions](https://linuxcapable.com/how-to-install-composer-on-ubuntu-linux/)
 
 **Sample Apache2 virtual host conf:**
 
